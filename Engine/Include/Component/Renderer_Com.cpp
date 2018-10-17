@@ -75,7 +75,7 @@ Renderer_Com::~Renderer_Com()
 		SAFE_RELEASE(m_RenderState[i]);
 
 	unordered_map<string, RendererCBuffer*>::iterator StartIter = m_CBufferMap.begin();
-	unordered_map<string, RendererCBuffer*>::iterator EndIter = m_CBufferMap.end();
+	unordered_map<string, RendererCBuffer*>::iterator EndIter = m_CBufferMap.end();.
 
 	for (; StartIter != EndIter; StartIter++)
 	{
