@@ -22,6 +22,8 @@ GameObject::GameObject(const GameObject& copyObject)
 {
 	*this = copyObject;
 
+	ReferanceCount = 1;
+
 	m_Transform = copyObject.m_Transform->Clone();
 	m_Transform->m_Transform = m_Transform;
 
@@ -45,6 +47,8 @@ GameObject::GameObject(const GameObject& copyObject)
 	if(getRender != NULLPTR)
 	{
 		getRender->CheckComponent();
+		//
+		//
 		SAFE_RELEASE(getRender);
 	}
 }

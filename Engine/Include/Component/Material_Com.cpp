@@ -38,6 +38,9 @@ Material_Com::Material_Com(const Material_Com& copyData)
 			if (newMaterial->DiffuseTexture != NULLPTR)
 				newMaterial->DiffuseTexture->AddRefCount();
 
+			if (newMaterial->DiffuseSampler != NULLPTR)
+				newMaterial->DiffuseSampler->AddRefCount();
+
 			m_vecMaterial[i].push_back(newMaterial);
 		}
 	}
@@ -107,10 +110,8 @@ void Material_Com::SetMaterial(const Vector4 & Diffuse, int Container, int Subse
 	}
 	//서브셋이 없다면 추가한다.
 	if (Subset >= m_vecMaterial[Container].size())
-	{
-		SubsetMaterial* newMaterial = new SubsetMaterial();
-		m_vecMaterial[Container].push_back(newMaterial);
-	}
+		m_vecMaterial[Container].push_back(CreateSubSet());
+
 	//색상정보셋팅
 	m_vecMaterial[Container][Subset]->MatrialInfo.Diffuse = Diffuse;
 }
@@ -125,10 +126,8 @@ void Material_Com::SetDiffuseTexture(int RegisterNumber, const string & KeyName,
 	}
 	//서브셋이 없다면 추가한다.
 	if (Subset >= m_vecMaterial[Container].size())
-	{
-		SubsetMaterial* newMaterial = new SubsetMaterial();
-		m_vecMaterial[Container].push_back(newMaterial);
-	}
+		m_vecMaterial[Container].push_back(CreateSubSet());
+
 	//텍스쳐 셋팅준비
 	SubsetMaterial*	pMaterial = m_vecMaterial[Container][Subset];
 	SAFE_RELEASE(pMaterial->DiffuseTexture);
@@ -147,10 +146,7 @@ void Material_Com::SetDiffuseTexture(int RegisterNumber, const string & KeyName,
 	}
 
 	if (Subset >= m_vecMaterial[Container].size())
-	{
-		SubsetMaterial* newMaterial = new SubsetMaterial();
-		m_vecMaterial[Container].push_back(newMaterial);
-	}
+		m_vecMaterial[Container].push_back(CreateSubSet());
 
 	SubsetMaterial*	getMaterial = m_vecMaterial[Container][Subset];
 	SAFE_RELEASE(getMaterial->DiffuseTexture);
@@ -170,10 +166,7 @@ void Material_Com::SetDiffuseTexture(int RegisterNumber, Texture * pTexture, int
 	}
 
 	if (Subset >= m_vecMaterial[Container].size())
-	{
-		SubsetMaterial* newMaterial = new SubsetMaterial();
-		m_vecMaterial[Container].push_back(newMaterial);
-	}
+		m_vecMaterial[Container].push_back(CreateSubSet());
 
 	SubsetMaterial*	getMaterial = m_vecMaterial[Container][Subset];
 	pTexture->AddRefCount();
@@ -240,4 +233,11 @@ void Material_Com::SetShader(int Container, int Subset)
 
 	if (getMaterial->DiffuseSampler != NULLPTR)
 		getMaterial->DiffuseSampler->SetSamplerState(getMaterial->SamplerRegister); //PSSetSampler
+}
+
+SubsetMaterial* Material_Com::CreateSubSet()
+{
+	SubsetMaterial* newSubset = new SubsetMaterial();
+	newSubset->DiffuseSampler = ResourceManager::Get()->FindSampler(LINER_SAMPLER);
+	return newSubset;
 }

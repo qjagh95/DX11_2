@@ -109,7 +109,7 @@ void Collider_Com::Render(float DeltaTime)
 		m_Color = Vector4::Red;
 
 	m_Shader->SetShader();
-	Device::Get()->GetContext()->IAGetInputLayout(&m_LayOut);
+	Device::Get()->GetContext()->IASetInputLayout(m_LayOut);
 
 	ShaderManager::Get()->UpdateCBuffer("Collider", &m_Color);
 

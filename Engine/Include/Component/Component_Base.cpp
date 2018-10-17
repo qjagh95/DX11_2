@@ -16,6 +16,7 @@ Component_Base::Component_Base()
 Component_Base::Component_Base(const Component_Base & copyObject)
 {
 	*this = copyObject;
+	ReferanceCount = 1;
 }
 
 Component_Base::~Component_Base()

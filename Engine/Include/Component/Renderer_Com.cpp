@@ -75,7 +75,7 @@ Renderer_Com::~Renderer_Com()
 		SAFE_RELEASE(m_RenderState[i]);
 
 	unordered_map<string, RendererCBuffer*>::iterator StartIter = m_CBufferMap.begin();
-	unordered_map<string, RendererCBuffer*>::iterator EndIter = m_CBufferMap.end();.
+	unordered_map<string, RendererCBuffer*>::iterator EndIter = m_CBufferMap.end();
 
 	for (; StartIter != EndIter; StartIter++)
 	{
@@ -90,7 +90,6 @@ bool Renderer_Com::Init()
 {
 	//내가 가지고있는 오브젝트에 AddComponent
 	m_Material = AddComponent<Material_Com>("Material");
-	SAFE_RELEASE(m_Material);
 
 	CheckComponent();
 

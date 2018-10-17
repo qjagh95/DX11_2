@@ -16,10 +16,7 @@ struct JEONG_DLL SubsetMaterial
 	Sampler* DiffuseSampler;
 	int SamplerRegister;
 
-	SubsetMaterial() : DiffuseTexture(NULLPTR), TextureRegister(-1), DiffuseSampler(NULLPTR), SamplerRegister(0)
-	{
-		DiffuseSampler = ResourceManager::Get()->FindSampler(LINER_SAMPLER);
-	}  
+	SubsetMaterial() : DiffuseTexture(NULLPTR), TextureRegister(-1), DiffuseSampler(NULLPTR), SamplerRegister(0) {}  
 };
 
 class Texture;
@@ -51,6 +48,8 @@ private:
 	Material_Com();
 	Material_Com(const Material_Com& copyData);
 	~Material_Com();
+
+	SubsetMaterial* CreateSubSet();
 
 public:
 	friend class GameObject;
