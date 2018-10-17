@@ -1,0 +1,87 @@
+#pragma once
+#include "Macro.h"
+
+JEONG_BEGIN
+
+enum GAME_MODE
+{
+	GM_2D,
+	GM_3D,
+};
+
+enum COMPONENT_TYPE
+{
+	CT_NONE,
+	CT_TRANSFORM,
+	CT_RENDER,
+	CT_MATERIAL,
+	CT_ANIMATION2D,
+	CT_CAMERA,
+	CT_COLLIDER,
+	CT_MAX,
+};
+
+//각 축의 방향
+enum AXIS
+{
+	AXIS_X,
+	AXIS_Y,
+	AXIS_Z,
+	AXIS_MAX,
+};
+
+enum CBUFFER_SHADER_TYPE
+{
+	CST_VERTEX = 0x1,
+	CST_PIXEL = 0x2,
+};
+
+enum CAMERA_TYPE
+{
+	CT_PERSPECTIVE,
+	CT_ORTHO,
+};
+
+enum RENDER_STATE
+{
+	RS_BLEND,
+	RS_RASTERIZER,
+	RS_DEPTHSTENCIL,
+	RS_END
+};
+
+enum MOVE_DIR
+{
+	MD_RIGHT = 1,
+	MD_LEFT = -1,
+	MD_UP = 1,
+	MD_DOWN = -1
+};
+
+enum ANIMATION2D_TYPE
+{
+	A2D_ATLS,
+	A2D_FRAME,
+};
+
+enum ANIMATION_OPTION
+{
+	AO_LOOP,
+	AO_ONCE_DESTROY,
+};
+
+enum COLLIDER_TYPE
+{
+	CT_RECT,
+};
+
+enum COLLSION_CALLBACK_TYPE
+{
+	CCT_FIRST,
+	CCT_DIONG,
+	CCT_END,
+	CCT_MAX,
+};
+
+
+JEONG_END

@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="WinMain">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="SceneComponent">
+      <UniqueIdentifier>{76cfdf33-402b-44a2-9ff5-942a6d123342}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UserComponent">
+      <UniqueIdentifier>{2ed119b1-b2d7-4629-89ef-77d08fbccfac}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SceneComponent\MainScene.cpp">
+      <Filter>SceneComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="UserComponent\Player_Com.cpp">
+      <Filter>UserComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="UserComponent\Bullet_Com.cpp">
+      <Filter>UserComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="UserComponent\Monster_Com.cpp">
+      <Filter>UserComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>WinMain</Filter>
+    </ClCompile>
+    <ClCompile Include="UserComponent\BulletRot_Com.cpp">
+      <Filter>UserComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="UserComponent\BulletBoom_Com.cpp">
+      <Filter>UserComponent</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SceneComponent\MainScene.h">
+      <Filter>SceneComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="UserComponent\Player_Com.h">
+      <Filter>UserComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="UserComponent\Bullet_Com.h">
+      <Filter>UserComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="UserComponent\Monster_Com.h">
+      <Filter>UserComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientHeader.h">
+      <Filter>WinMain</Filter>
+    </ClInclude>
+    <ClInclude Include="UserComponent\BulletRot_Com.h">
+      <Filter>UserComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="UserComponent\BulletBoom_Com.h">
+      <Filter>UserComponent</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

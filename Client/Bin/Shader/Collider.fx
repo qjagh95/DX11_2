@@ -1,0 +1,24 @@
+#include "Share.fx"
+
+cbuffer Collider : register(b8)
+{
+    float4 g_Color;
+}
+
+VS_OUTPUT_POS ColliderVS(VS_INPUT_POS input)
+{
+    VS_OUTPUT_POS output = (VS_OUTPUT_POS) 0;
+
+    output.vPos = mul(float4(input.vPos, 1.0f), g_WVP);
+
+    return output;
+}
+
+PS_OUTPUT_SINGLE ColliderPS()
+{
+    PS_OUTPUT_SINGLE output = (PS_OUTPUT_SINGLE) 0;
+
+    output.vTarget0 = g_Color;
+
+    return output;
+}
