@@ -1,5 +1,8 @@
 #include "SceneManager.h"
 #include "Scene.h"
+
+#include "../KeyInput.h"
+
 JEONG_USING
 SINGLETON_VAR_INIT(SceneManager)
 
@@ -21,6 +24,8 @@ bool SceneManager::Init()
 
 	if (m_CurScene->Init() == false)
 		return false;
+
+	KeyInput::Get()->ChangeMouseScene(m_CurScene);
 
 	return true;
 }

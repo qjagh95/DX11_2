@@ -22,9 +22,9 @@ Device::~Device()
 	SAFE_RELEASE(m_Device);
 
 #ifdef _DEBUG
-	dxgi_debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_DETAIL);
-	SAFE_RELEASE(dxgi_debug);
-	FreeLibrary(asd);
+	//dxgi_debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_DETAIL);
+	//SAFE_RELEASE(dxgi_debug);
+	//FreeLibrary(asd);
 #endif
 }
 
@@ -36,12 +36,12 @@ bool Device::Init(HWND hWnd, unsigned int Width, unsigned int Height, bool isWin
 	UINT Flag = 0;
 
 #ifdef _DEBUG
-	Flag = D3D11_CREATE_DEVICE_DEBUG;
+	//Flag = D3D11_CREATE_DEVICE_DEBUG;
 
-	asd = LoadLibrary(L"DXGIDebug.dll");
-	auto qwe = reinterpret_cast<HRESULT(*)(REFIID, void**)>(GetProcAddress(asd, "DXGIGetDebugInterface"));
-	qwe(__uuidof(IDXGIDebug), reinterpret_cast<void**>(&dxgi_debug));
-
+	//asd = LoadLibrary(L"DXGIDebug.dll");
+	//auto qwe = reinterpret_cast<HRESULT(*)(REFIID, void**)>(GetProcAddress(asd, "DXGIGetDebugInterface"));
+	//qwe(__uuidof(IDXGIDebug), reinterpret_cast<void**>(&dxgi_debug));
+	 
 #endif
 	//DWrite는 2D에서만 동작을하는데 3D에서도 동작할 수 있도록 옵션설정.
 	Flag |= D3D11_CREATE_DEVICE_BGRA_SUPPORT;
@@ -128,14 +128,16 @@ bool Device::Init(HWND hWnd, unsigned int Width, unsigned int Height, bool isWin
 
 	//만들어준 타겟뷰와 뎁스뷰를 랜더링 파이프라인에 묶어준다. (Output Merser), 카운트와 포인터배열 즉 타겟뷰가 여러개일경우 사용
 	m_Context->OMSetRenderTargets(1, &m_TargerView, m_DepthView); 
+	//계속 타겟뷰에 랜더링 파이프라인에서 마지막단계에 거쳐올 데이터들을 기반으로 화면에 쏴줄것이다.
 
 	D3D11_VIEWPORT ViewPort = {};
+	//뷰포트의 화면크기를 지정한다.
 	ViewPort.Width = (float)Width;
 	ViewPort.Height = (float)Height;
 	ViewPort.MaxDepth = 1;
 	//컨텍스트에 뷰포트를 셋팅한다.  (갯수, 포인터배열) 
 	m_Context->RSSetViewports(1, &ViewPort);
-
+	//레스터라이저가 Depth판단까지 겸해서 한다.
 	return true;
 }
 

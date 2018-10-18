@@ -89,9 +89,8 @@ int Animation2D_Com::LateUpdate(float DeltaTime)
 			}
 		}
 	}
-
-	//프레임을 계산한다.
-
+	
+	//프레임 UV를 계산한다.
 	Renderer_Com* getRender = FindComponentFromType<Renderer_Com>(CT_RENDER);
 
 	if (getRender != NULLPTR)

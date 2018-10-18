@@ -1,139 +1,168 @@
 #include "KeyInput.h"
+#include "GameObject.h"
+#include "Core.h"
+#include "Device.h"
+
+#include "Component/Transform_Com.h"
+#include "Component/Renderer_Com.h"
+#include "Component/Material_Com.h"
+#include "Component/Animation2D_Com.h"
+#include "Component/Camera_Com.h"
+
+#include "Scene/Scene.h"
+
 JEONG_USING
-
-///////////////////////////////////////////////// INPUTDATA
-
-bool KeyInput::InputData::AllKeyCheck()
-{
-	for (size_t i = 0; i < m_AllKey.size(); i++)
-	{
-		// 그 키코드가 눌리지 않았다면
-		if (0 == GetAsyncKeyState(m_AllKey[i]))
-		{
-			return false;
-		}
-	}
-
-	return true;
-}
-
-void KeyInput::InputData::Update()
-{
-	// 여기서 해줄일은
-	// 키가 눌렸는지 눌리지 않았는지 체크부터 한다.
-	bool KeyCheck = AllKeyCheck();
-
-	if (true == KeyCheck)
-	{
-		// 키가 눌렸을때
-		if (true == m_bUpStay)
-		{
-			m_bUp = false;
-			m_bUpStay = false;
-			m_bDown = true;
-			m_bDownStay = true;
-		}
-		else if (false == m_bUpStay)
-		{
-			m_bUp = false;
-			m_bUpStay = false;
-			m_bDown = false;
-			m_bDownStay = true;
-		}
-
-	}
-	else if (false == KeyCheck)
-	{
-		// 키가 눌렸을때
-		if (true == m_bDownStay)
-		{
-			PushTime = 0.0f;
-			m_bUp = true;
-			m_bUpStay = true;
-			m_bDown = false;
-			m_bDownStay = false;
-		}
-		else if (false == m_bDownStay)
-		{
-			m_bUp = false;
-			m_bUpStay = true;
-			m_bDown = false;
-			m_bDownStay = false;
-		}
-	}
-}
-
-///////////////////////////////////////////////// MGR
-
+SINGLETON_VAR_INIT(KeyInput)
 
 KeyInput::KeyInput()
+	:m_NewKey(NULLPTR), m_MouseObject(NULLPTR), m_ShowCursor(false)
 {
 }
-
 
 KeyInput::~KeyInput()
 {
-	unordered_map<string, InputData*>::iterator StartIter = m_MapInputData.begin();
-	unordered_map<string, InputData*>::iterator EndIter = m_MapInputData.end();
+	SAFE_RELEASE(m_MouseObject);
+	Safe_Delete_Map(m_KeyMap);
+}
+
+bool KeyInput::Init()
+{
+	m_MouseObject = GameObject::CreateObject("MouseObject");
+	m_MouseObject->GetTransform()->SetWorldScale(Vector3(31.0f, 32.0f, 0.0f));
+	m_MouseObject->GetTransform()->SetWorldPivot(Vector3(0.0f, 1.0f, 0.0f));
+
+	Renderer_Com* MouseRender = m_MouseObject->AddComponent<Renderer_Com>("MouseRenderer");
+	MouseRender->SetMesh("TextureRect");
+	MouseRender->SetRenderState(ALPHA_BLEND);
+	SAFE_RELEASE(MouseRender);
+
+	Material_Com* MouseMeterial = m_MouseObject->FindComponentFromType<Material_Com>(CT_MATERIAL);
+	MouseMeterial->SetDiffuseTexture(0, "Mouse", TEXT("Mouse/Default/0.png"));
+	SAFE_RELEASE(MouseMeterial);
+
+	ShowCursor(FALSE);
+	return true;
+}
+
+void KeyInput::Update(float DeltaTime)
+{
+	unordered_map<string, KeyInfo*>::iterator StartIter = m_KeyMap.begin();
+	unordered_map<string, KeyInfo*>::iterator EndIter = m_KeyMap.end();
 
 	for (; StartIter != EndIter; StartIter++)
 	{
-		if (NULLPTR != StartIter->second)
+		size_t KeyCount = 0;
+
+		for (size_t i = 0; i < StartIter->second->vecKey.size(); i++)
 		{
-			if (NULLPTR != StartIter->second)
+			if (GetAsyncKeyState(StartIter->second->vecKey[i]))
+				KeyCount++;
+		}
+
+		if (KeyCount == StartIter->second->vecKey.size())
+		{
+			if (StartIter->second->KeyDown == false && StartIter->second->KeyPress == false)
 			{
-				delete StartIter->second;
-				StartIter->second = NULLPTR;
+				StartIter->second->KeyDown = true;
+				StartIter->second->KeyPress = true;
+			}
+			else if (StartIter->second->KeyDown == true)
+			{
+				StartIter->second->KeyDown = false;
 			}
 		}
-	}
 
-	m_MapInputData.clear();
-}
-
-
-void KeyInput::Update()
-{
-	unordered_map<string, InputData*>::iterator StartIter = m_MapInputData.begin();
-	unordered_map<string, InputData*>::iterator EndIter = m_MapInputData.end();
-
-	for (; StartIter != EndIter; StartIter++)
-	{
-		if (NULLPTR != StartIter->second)
+		else if (StartIter->second->KeyPress == true)
 		{
-			StartIter->second->Update();
+			StartIter->second->KeyUp = true;
+			StartIter->second->KeyPress = false;
+			StartIter->second->KeyDown = false;
 		}
+
+		else if (StartIter->second->KeyUp == true)
+			StartIter->second->KeyUp = false;
 	}
-}
 
-bool KeyInput::KeyUp(const string& Name)
-{
-	InputData* pData = FindKey(Name);
+	POINT tempPos;
 
-	if (NULLPTR == pData)
+	GetCursorPos(&tempPos);
+	ScreenToClient(Core::Get()->GetHwnd(), &tempPos);
+
+	//좌표계가 반대니까 빼준다.
+	tempPos.y = Device::Get()->GetWinSize().Height - tempPos.y;
+
+	m_MouseGap.x = tempPos.x - m_MouseScreenPos.x;
+	m_MouseGap.y = tempPos.y - m_MouseScreenPos.y;
+
+	m_MouseScreenPos.x = (float)tempPos.x;
+	m_MouseScreenPos.y = (float)tempPos.y;
+
+	//m_vMouseWorld = m_vMouseClient + GET_SINGLE(CCamera)->GetPos();
+
+	m_MouseObject->GetTransform()->SetWorldPos((float)tempPos.x, (float)tempPos.y, 0.0f);
+
+	m_MouseObject->Update(DeltaTime);
+	m_MouseObject->LateUpdate(DeltaTime);
+
+	if (m_ShowCursor == false && (m_MouseScreenPos.x <= 0.0f && m_MouseScreenPos.x >= Device::Get()->GetWinSize().Width || m_MouseScreenPos.y <= 0.0f && m_MouseScreenPos.y >= Device::Get()->GetWinSize().Height))
 	{
-		return false;
+		m_ShowCursor = true;
+		while (ShowCursor(TRUE) != 0) {}
 	}
 
-	return pData->m_bUp;
+	else if (m_ShowCursor == true && m_MouseScreenPos.x >= 0.0f && m_MouseScreenPos.x <= Device::Get()->GetWinSize().Width && m_MouseScreenPos.y >= 0.0f && m_MouseScreenPos.y <= Device::Get()->GetWinSize().Height)
+	{
+		m_ShowCursor = false;
+		while (ShowCursor(FALSE) >= 0) {}
+	}
 }
 
-bool KeyInput::KeyDown(const string& Name)
+void KeyInput::RenderMouse(float DeltaTime)
 {
-	InputData* pData = FindKey(Name);
-
-	if (NULLPTR == pData)
-		return false;
-
-	return pData->m_bDown;
+	m_MouseObject->Render(DeltaTime);
 }
 
-bool KeyInput::KeyPress(const string& Name)
+bool KeyInput::KeyDown(const string & Name)
 {
-	InputData* pData = FindKey(Name);
+	KeyInfo* getKey = FindKey(Name);
 
-	if (NULLPTR == pData)
+	if (getKey == NULLPTR)
 		return false;
 
-	return pData->m_bDownStay;
+	return getKey->KeyDown;
+}
+
+bool KeyInput::KeyPress(const string & Name)
+{
+	KeyInfo* getKey = FindKey(Name);
+
+	if (getKey == NULLPTR)
+		return false;
+
+	return getKey->KeyPress;
+}
+
+bool KeyInput::KeyUp(const string & Name)
+{
+	KeyInfo* getKey = FindKey(Name);
+
+	if (getKey == NULLPTR)
+		return false;
+
+	return getKey->KeyUp;
+}
+
+void KeyInput::ChangeMouseScene(Scene * pScene)
+{
+	m_MouseObject->SetScene(pScene);
+}
+
+KeyInfo* KeyInput::FindKey(const string& Name)
+{
+	unordered_map<string, KeyInfo*>::iterator FindIter = m_KeyMap.find(Name);
+
+	if (FindIter == m_KeyMap.end())
+		return NULLPTR;
+	
+	return FindIter->second;
 }

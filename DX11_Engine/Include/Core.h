@@ -14,6 +14,9 @@ public:
 	void SetClearColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 	void SetGameMode(GAME_MODE eMode);
 
+	HWND GetHwnd() const { return m_hWnd; }
+	HINSTANCE GetHinstance() const { return m_hIstance; }
+
 private:
 	int Input(float DeltaTime);
 	int Update(float DeltaTime);

@@ -77,9 +77,8 @@ void ColliderRect_Com::Render(float DeltaTime)
 	//사이즈만큼 커져랏
 	matScale.Scaling(m_WorldInfo.Lenth);
 
-	TransformCBuffer TransCBuffer = {};
-
 	Camera_Com*	getCamera = m_Scene->GetMainCamera();
+	TransformCBuffer TransCBuffer = {};
 
 	TransCBuffer.World = matScale * matPos;
 	TransCBuffer.View = getCamera->GetViewMatrix();

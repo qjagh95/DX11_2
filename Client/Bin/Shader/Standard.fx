@@ -71,9 +71,9 @@ PS_OUTPUT_SINGLE Standard_UV_PS(VS_OUTPUT_UV input)
 {
     PS_OUTPUT_SINGLE output = (PS_OUTPUT_SINGLE)0;
     
-    //Diffuse(Texture2D)에 SampleState(재질정보와 UV)를 넣어주고 재질 색상정보를 곱한다
+    //Diffuse(Texture2D)에 SampleState(재질정보와 UV)를 넣어주고 색상정보를 곱한다
     output.vTarget0 = Diffuse.Sample(DiffuseSampler, input.vUV) * g_MaterialDiffuse;
+
     return output;
 }
-
 //////////////////////////////////UVShader/////////////////////////////

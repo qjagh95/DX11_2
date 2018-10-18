@@ -161,6 +161,7 @@ void Collider_Com::CheckPrevCollisionInSection(float DeltaTime)
 	for (; StartIter != EndIter; )
 	{
 		//속해있는 그룹이 같지않으면 End함수호출 후 이전컬라이더를 지운다.
+		//그룹이 같다면 해당사항 없다.
 		if (m_CollisionGroupName != (*StartIter)->m_CollisionGroupName)
 		{
 			OnCollsionEnd((*StartIter), DeltaTime);
@@ -173,10 +174,12 @@ void Collider_Com::CheckPrevCollisionInSection(float DeltaTime)
 			continue;
 		}
 
+		//나와 충돌한 놈의 충돌체 공간인덱스
 		const list<int>* getSectionIndex = (*StartIter)->GetSectionIndexList();
 		list<int>::const_iterator StartIter1 = getSectionIndex->begin();
 		list<int>::const_iterator EndIter1 = getSectionIndex->end();
 
+		//나의 충돌체 공간인덱스
 		list<int>::iterator	StartIter2 = m_SelectionIndexList.begin();
 		list<int>::iterator	EndIter2 = m_SelectionIndexList.end();
 
@@ -198,6 +201,7 @@ void Collider_Com::CheckPrevCollisionInSection(float DeltaTime)
 				break;
 		}
 
+		//충돌하고 공간이 같지않는데 이전컬라이더가 있다면 End함수호출.
 		if (bPair == false)
 		{
 			OnCollsionEnd((*StartIter), DeltaTime);

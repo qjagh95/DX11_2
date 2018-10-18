@@ -46,8 +46,8 @@ private:
 	WinSize m_WinSize;
 
 #ifdef _DEBUG
-	IDXGIDebug* dxgi_debug;
-	HMODULE asd;
+	//IDXGIDebug* dxgi_debug;
+	//HMODULE asd;
 #endif
 
 public:
