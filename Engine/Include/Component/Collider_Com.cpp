@@ -276,3 +276,20 @@ bool Collider_Com::CollsionRectToRect(const BoxInfo & Src, const BoxInfo & Dest)
 
 	return true;
 }
+
+bool Collider_Com::CollsionRectToPoint(const BoxInfo & Src, const Vector3 & Dest)
+{
+	if (Src.Min.x > Dest.x)
+		return false;
+
+	else if (Src.Max.x < Dest.x)
+		return false;
+
+	if (Src.Min.y > Dest.y)
+		return false;
+
+	else if (Src.Max.y < Dest.y)
+		return false;
+
+	return true;
+}

@@ -72,10 +72,13 @@ void ColliderRect_Com::CollisionLateUpdate(float DeltaTime)
 void ColliderRect_Com::Render(float DeltaTime)
 {
 #ifdef _DEBUG
-	Matrix	matPos, matScale;
+	Matrix	matPos, matScale, matView;
 	matPos.Translation(m_WorldInfo.Min);
 	//사이즈만큼 커져랏
 	matScale.Scaling(m_WorldInfo.Lenth);
+
+	if (m_CollisionGroupName != "UI")
+		matView = m_Scene->GetMainCamera()->GetViewMatrix();
 
 	Camera_Com*	getCamera = m_Scene->GetMainCamera();
 	TransformCBuffer TransCBuffer = {};

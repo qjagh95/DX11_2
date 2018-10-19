@@ -216,6 +216,11 @@ int Core::Input(float DeltaTime)
 int Core::Update(float DeltaTime)
 {
 	SceneManager::Get()->Update(DeltaTime);
+
+	if (KeyInput::Get()->KeyDown("Test"))
+	{
+		system("pause");
+	}
 	return 0;
 }
 
@@ -248,5 +253,6 @@ void Core::Render(float DeltaTime)
 
 void Core::SetGameMode(GAME_MODE eMode)
 {
+	m_GameMode = eMode;
 	RenderManager::Get()->SetGameMode(eMode);
 }

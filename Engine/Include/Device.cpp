@@ -5,7 +5,7 @@ JEONG_USING
 SINGLETON_VAR_INIT(Device);
 
 Device::Device()
-	:m_Device(NULLPTR), m_Context(NULLPTR), m_SwapChain(NULLPTR), m_TargerView(NULLPTR), m_DepthView(NULLPTR)
+	:m_Device(NULLPTR), m_Context(NULLPTR), m_SwapChain(NULLPTR), m_TargerView(NULLPTR), m_DepthView(NULLPTR), m_Hwnd(NULLPTR)
 {
 }
 
@@ -30,6 +30,7 @@ Device::~Device()
 
 bool Device::Init(HWND hWnd, unsigned int Width, unsigned int Height, bool isWindowMode)
 {
+	m_Hwnd = hWnd;
 	m_WinSize.Width = Width;
 	m_WinSize.Height = Height;
 
@@ -151,4 +152,12 @@ void Device::Clear(float ClearColor[4])
 void Device::Present()
 {
 	m_SwapChain->Present(0, 0);
+}
+
+Vector2 Device::GetWindowToDeviceRatio() const
+{
+	RECT DeviceSize;
+	GetClientRect(m_Hwnd, &DeviceSize);
+
+	return Vector2((float)m_WinSize.Width / (float)DeviceSize.right , (float)m_WinSize.Height/ (float)DeviceSize.bottom);
 }

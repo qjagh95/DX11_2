@@ -136,6 +136,9 @@
     <Filter Include="Core\05. PathManager">
       <UniqueIdentifier>{48f6e9a7-548c-4725-8616-1a4015796c91}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderPoint">
+      <UniqueIdentifier>{e285afee-4603-4659-b786-6e5cad6f6404}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -249,6 +252,9 @@
     <ClInclude Include="Component\ColliderRect_Com.h">
       <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderRect</Filter>
     </ClInclude>
+    <ClInclude Include="Component\ColliderPoint_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderPoint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Copy.bat">
@@ -351,6 +357,9 @@
     </ClCompile>
     <ClCompile Include="Component\ColliderRect_Com.cpp">
       <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderRect</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ColliderPoint_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderPoint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

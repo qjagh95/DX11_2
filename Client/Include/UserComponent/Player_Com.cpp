@@ -27,12 +27,7 @@ Player_Com::~Player_Com()
 }
 
 bool Player_Com::Init()
-{
-	KeyInput::Get()->AddKey("MoveLeft", VK_LEFT);
-	KeyInput::Get()->AddKey("MoveRight", VK_RIGHT);
-	KeyInput::Get()->AddKey("MoveUp", VK_UP);
-	KeyInput::Get()->AddKey("MoveDown", VK_DOWN);
-				   
+{				   
 	KeyInput::Get()->AddKey("S1", VK_F1);
 	KeyInput::Get()->AddKey("S2", VK_F2);
 	KeyInput::Get()->AddKey("S3", VK_F3);

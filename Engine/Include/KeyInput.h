@@ -5,7 +5,7 @@ JEONG_BEGIN
 struct JEONG_DLL KeyInfo
 {
 	string KeyName;
-	vector<DWORD> vecKey;
+	vector<__int64> vecKey;
 	bool KeyDown;
 	bool KeyPress;
 	bool KeyUp;
@@ -13,6 +13,7 @@ struct JEONG_DLL KeyInfo
 
 class GameObject;
 class Scene;
+class ColliderPoint_Com;
 class JEONG_DLL KeyInput
 {
 public:
@@ -27,6 +28,8 @@ public:
 	Vector2 GetMouseWorldPos() const { return m_MouseWorldPos; }
 	Vector2 GetMouseGap() const { return m_MouseGap; }
 	void ChangeMouseScene(Scene* pScene);
+	void UpdateMousePos();
+	GameObject* GetMouseObject() const { return m_MouseObject; }
 
 	template <typename T>
 	bool AddKey(const T& value)
@@ -43,9 +46,7 @@ public:
 		const char* typeName = typeid(T).name();
 
 		if (strcmp(typeName, "int") == 0 || strcmp(typeName, "char") == 0)
-		{
-			m_NewKey->vecKey.push_back((DWORD&)value);
-		}
+			m_NewKey->vecKey.push_back((__int64)value);
 		else
 		{
 			m_NewKey->KeyName = value;
@@ -70,9 +71,7 @@ public:
 		const char* typeName = typeid(T).name();
 
 		if (strcmp(typeName, "int") == 0 || strcmp(typeName, "char") == 0)
-		{
-			m_NewKey->vecKey.push_back((DWORD&)value);
-		}
+			m_NewKey->vecKey.push_back((__int64)value);
 		else
 		{
 			m_NewKey->KeyName = value;
@@ -82,7 +81,7 @@ public:
 		AddKey(Args...);
 
 		if (m_NewKey != NULLPTR)
-			m_NewKe = NULLPTR;
+			m_NewKey = NULLPTR;
 
 		return true;
 	}
@@ -97,6 +96,7 @@ private:
 	Vector2 m_MouseWorldPos;	//화면내의 좌표
 	Vector2 m_MouseGap;			//화면상 좌표와 화면 내의 좌표의 차이
 	GameObject* m_MouseObject;
+	ColliderPoint_Com* m_MouseWorldPoint;
 	bool m_ShowCursor;
 
 public:

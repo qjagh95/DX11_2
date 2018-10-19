@@ -35,6 +35,7 @@ private:
 	WinSize m_WinSize;
 	HWND m_hWnd;
 	float ClearColor[4];
+	GAME_MODE m_GameMode;
 
 public:
 	CLASS_IN_SINGLE(Core);

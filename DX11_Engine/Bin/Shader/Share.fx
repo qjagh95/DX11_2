@@ -23,6 +23,7 @@ struct VS_OUTPUT_COLOR
     float4 vColor : COLOR;
 };
 
+/////////////////////////////////////////////////////////////////////
 struct VS_INPUT_POS
 {
     float3 vPos : POSITION; 

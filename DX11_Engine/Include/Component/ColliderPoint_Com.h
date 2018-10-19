@@ -3,7 +3,7 @@
 
 JEONG_BEGIN
 
-class JEONG_DLL ColliderRect_Com : public Collider_Com
+class JEONG_DLL ColliderPoint_Com : public Collider_Com
 {
 public:
 	bool Init() override;
@@ -14,22 +14,23 @@ public:
 	bool Collsion(Collider_Com* Dest, float DeltaTime) override;
 	void CollisionLateUpdate(float DeltaTime) override;
 	void Render(float DeltaTime) override;
-	ColliderRect_Com* Clone() override;
+	ColliderPoint_Com* Clone() override;
 
-	BoxInfo GetInfo() const { return m_WorldInfo; }
-	void SetInfo(const Vector3& Min, const Vector3& Max);
+	void SetInfo(const Vector3& value) { m_Virtual = value; }
+	Vector3 GetInfo() const { return m_WorldInfo; }
 
 private:
-	BoxInfo m_Virtual;
-	BoxInfo m_WorldInfo;
+	Vector3 m_Virtual;
+	Vector3 m_WorldInfo;
 
 protected:
-	ColliderRect_Com();
-	ColliderRect_Com(const ColliderRect_Com& CopyCollider);
-	~ColliderRect_Com();
+	ColliderPoint_Com();
+	ColliderPoint_Com(const ColliderPoint_Com& CopyCollider);
+	~ColliderPoint_Com();
 
 public:
 	friend class GameObject;
 };
 
 JEONG_END
+

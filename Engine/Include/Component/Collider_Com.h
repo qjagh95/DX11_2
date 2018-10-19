@@ -41,6 +41,7 @@ public:
 	void OnCollsionEnd(Collider_Com* Dest, float DeltaTime);
 
 	bool CollsionRectToRect(const BoxInfo& Src, const BoxInfo& Dest);
+	bool CollsionRectToPoint(const BoxInfo& Src, const Vector3& Dest);
 
 	void SetCallback(function<void(Collider_Com*, Collider_Com*, float)> const& _function, COLLSION_CALLBACK_TYPE _type);
 	void SetCollsionCallback(COLLSION_CALLBACK_TYPE eType, void(*pFunc)(Collider_Com*, Collider_Com*, float));
