@@ -5,6 +5,7 @@
 #include "Component/Transform_Com.h"
 #include "Component/Renderer_Com.h"
 #include "Component/Material_Com.h"
+#include "Component/ColliderCircle_Com.h"
 
 Monster_Com::Monster_Com()
 	:Target(NULLPTR), TimeVar(0.0f)
@@ -43,7 +44,11 @@ bool Monster_Com::Init()
 	RectColl->SetMyTypeName("Monster");
 	RectColl->SetCollsionCallback<Monster_Com>(CCT_FIRST, this, &Monster_Com::BulletHit);
 	RectColl->SetCollsionCallback<Monster_Com>(CCT_FIRST, this, &Monster_Com::BulletRotHit);
-	//RectColl->SetCallback([this](Collider_Com* _src, Collider_Com* _dest, float _time) { BulletHit(_src, _dest, _time); }, CCT_FIRST);
+
+	//ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("MCircleBody");
+	//CircleColl->SetInfo(60.0f);
+	//CircleColl->SetMyTypeName("M");
+	//SAFE_RELEASE(CircleColl);
 
 	SAFE_RELEASE(RectColl);
 

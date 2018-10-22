@@ -51,7 +51,7 @@ bool Player_Com::Init()
 	//SAFE_RELEASE(RectColl);
 
 	ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("PlayerCircleBody");
-	CircleColl->SetInfo(60.0f);
+	CircleColl->SetInfo(30.0f);
 	CircleColl->SetMyTypeName("Player");
 	SAFE_RELEASE(CircleColl);
 

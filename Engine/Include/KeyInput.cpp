@@ -149,12 +149,12 @@ void KeyInput::ChangeMouseScene(Scene * pScene)
 
 void KeyInput::UpdateMousePos()
 {
+	m_MouseObject->LateUpdate(1.0f);
+
 	Scene* pScene = SceneManager::Get()->GetCurScene();
 	m_MouseWorldPoint->SetInfo(pScene->GetMainCameraTransform()->GetWorldPos());
 
 	SAFE_RELEASE(pScene);
-
-	m_MouseObject->LateUpdate(0.0f);
 }
 
 bool KeyInput::KeyDown(const string & Name)

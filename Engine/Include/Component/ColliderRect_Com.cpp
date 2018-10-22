@@ -125,7 +125,6 @@ bool ColliderRect_Com::Collsion(Collider_Com * Dest, float DeltaTime)
 			return CollsionRectToCircle(m_WorldInfo, ((ColliderCircle_Com*)Dest)->GetInfo());
 			break;
 	}
-
 	return false;
 }
 

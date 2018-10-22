@@ -70,7 +70,6 @@ bool ResourceManager::Init()
 	Vector3	DebugColliderCirclePos[180] = {};
 
 	float Angle = 0.0f;
-
 	for (int i = 0; i < 180; i++)
 	{
 		DebugColliderCirclePos[i] = Vector3(sinf(DegreeToRadian(Angle)), cosf(DegreeToRadian(Angle)), 0.0f);
