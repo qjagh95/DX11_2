@@ -13,6 +13,7 @@ public:
 	ID3D11DeviceContext* GetContext() const { return m_Context; }
 	IDXGISwapChain* GetSwapChain() const { return m_SwapChain; }
 	WinSize GetWinSize() const { return m_WinSize; }
+	Vector2 GetWindowToDeviceRatio() const;
 
 private:
 	//Com - Component Object의 약자 - 전부 RefCount방식으로 돌아간다.
@@ -44,6 +45,7 @@ private:
 	ID3D11RenderTargetView* m_TargerView;   ///랜더타겟뷰 - 출력할 랜더타겟 (디바이스에 등록해놓을 것) 그냥 백퍼버
 	ID3D11DepthStencilView* m_DepthView;    ///깊이스탠실뷰
 	WinSize m_WinSize;
+	HWND m_Hwnd;
 
 #ifdef _DEBUG
 	//IDXGIDebug* dxgi_debug;

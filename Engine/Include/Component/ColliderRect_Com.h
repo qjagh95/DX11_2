@@ -16,7 +16,7 @@ public:
 	void Render(float DeltaTime) override;
 	ColliderRect_Com* Clone() override;
 
-	BoxInfo GetInfo() const { return m_Virtual; }
+	BoxInfo GetInfo() const { return m_WorldInfo; }
 	void SetInfo(const Vector3& Min, const Vector3& Max);
 
 private:

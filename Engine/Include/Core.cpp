@@ -37,7 +37,7 @@ Core::~Core()
 	RenderManager::Delete();
 	TimeManager::Delete();
 	CollsionManager::Delete();
-
+	KeyInput::Delete();
 }
 
 bool Core::Init(HINSTANCE hInst, unsigned int Width, unsigned int Height, const TCHAR * TitleName, const TCHAR * ClassName, int iIconID, int iSmallIconID, bool bWindowMode)
@@ -90,6 +90,12 @@ bool Core::Init(HINSTANCE hInst, HWND hWnd, unsigned int Width, unsigned int Hei
 		return false;
 	}
 
+	if (KeyInput::Get()->Init() == false)
+	{
+		TrueAssert(true);
+		return false;
+	}
+
 	if (SceneManager::Get()->Init() == false)
 	{
 		TrueAssert(true);
@@ -132,8 +138,6 @@ void Core::Logic()
 	getTimer->Update();
 
 	float Time = getTimer->GetDeltaTime();
-
-	KeyInput::Get().Update();
 
 	Input(Time);
 	Update(Time);
@@ -204,6 +208,7 @@ LRESULT Core::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 int Core::Input(float DeltaTime)
 {
+	KeyInput::Get()->Update(DeltaTime);
 	SceneManager::Get()->Input(DeltaTime);
 	return 0;
 }
@@ -211,6 +216,11 @@ int Core::Input(float DeltaTime)
 int Core::Update(float DeltaTime)
 {
 	SceneManager::Get()->Update(DeltaTime);
+
+	if (KeyInput::Get()->KeyDown("Test"))
+	{
+		system("pause");
+	}
 	return 0;
 }
 
@@ -236,11 +246,13 @@ void Core::Render(float DeltaTime)
 	Device::Get()->Clear(ClearColor);
 	{
 		SceneManager::Get()->Render(DeltaTime);
+		KeyInput::Get()->RenderMouse(DeltaTime);
 	}
 	Device::Get()->Present();
 }
 
 void Core::SetGameMode(GAME_MODE eMode)
 {
+	m_GameMode = eMode;
 	RenderManager::Get()->SetGameMode(eMode);
 }

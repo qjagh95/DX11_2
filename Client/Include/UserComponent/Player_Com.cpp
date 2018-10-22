@@ -27,18 +27,13 @@ Player_Com::~Player_Com()
 }
 
 bool Player_Com::Init()
-{
-	KeyInput::Get().CreateKey("MoveLeft", VK_LEFT);
-	KeyInput::Get().CreateKey("MoveRight", VK_RIGHT);
-	KeyInput::Get().CreateKey("MoveUp", VK_UP);
-	KeyInput::Get().CreateKey("MoveDown", VK_DOWN);
+{				   
+	KeyInput::Get()->AddKey("S1", VK_F1);
+	KeyInput::Get()->AddKey("S2", VK_F2);
+	KeyInput::Get()->AddKey("S3", VK_F3);
+	KeyInput::Get()->AddKey("S4", VK_F4);
 
-	KeyInput::Get().CreateKey("S1", VK_F1);
-	KeyInput::Get().CreateKey("S2", VK_F2);
-	KeyInput::Get().CreateKey("S3", VK_F3);
-	KeyInput::Get().CreateKey("S4", VK_F4);
-
-	KeyInput::Get().CreateKey("ChangeAnimation", VK_SPACE);
+	KeyInput::Get()->AddKey("ChangeAnimation", VK_SPACE);
 
 	Renderer_Com* RenderComponent = m_Object->AddComponent<Renderer_Com>("PlayerRender");
 	RenderComponent->SetMesh("TextureRect");
@@ -91,26 +86,22 @@ int Player_Com::Input(float DeltaTime)
 	Material_Com* getMaterial = m_Object->FindComponentFromType<Material_Com>(CT_MATERIAL);
 	getMaterial->SetMaterial(Vector4::White);
 
-	if (KeyInput::Get().KeyDown("ChangeAnimation"))
-	{
-	}
-
 	//나는 정면에서 보고있고 그리는건 앞 에서 그리기때문에 각도-
 	//if (KeyInput::Get().KeyPress("MoveLeft"))
 	//	m_Transform->RotationZ(180.0f, DeltaTime);
 	//else if (KeyInput::Get().KeyPress("MoveRight"))
 	//	m_Transform->RotationZ(-180.0f, DeltaTime);
 
-	if (KeyInput::Get().KeyPress("MoveUp"))
+	if (KeyInput::Get()->KeyPress("MoveUp"))
 		m_Transform->Move(AXIS_Y, 200.0f, DeltaTime);
-	else if (KeyInput::Get().KeyPress("MoveDown"))
+	else if (KeyInput::Get()->KeyPress("MoveDown"))
 		m_Transform->Move(AXIS_Y, -200.0f, DeltaTime);
-	if (KeyInput::Get().KeyPress("MoveRight"))
+	if (KeyInput::Get()->KeyPress("MoveRight"))
 		m_Transform->Move(AXIS_X, 200.0f, DeltaTime);
-	else if (KeyInput::Get().KeyPress("MoveLeft"))
+	else if (KeyInput::Get()->KeyPress("MoveLeft"))
 		m_Transform->Move(AXIS_X, -200.0f, DeltaTime);
 
-	if (KeyInput::Get().KeyDown("S1"))
+	if (KeyInput::Get()->KeyDown("S1"))
 	{
 		GameObject* newClone1 = GameObject::CreateClone("BulletObject", "Bullet_Clone", m_Layer);
 		newClone1->GetTransform()->SetWorldPos(m_Transform->GetWorldPos());
@@ -133,13 +124,13 @@ int Player_Com::Input(float DeltaTime)
 		getMaterial->SetMaterial(Vector4::DarkCyan);
 	}
 
-	if (KeyInput::Get().KeyDown("S2"))
+	if (KeyInput::Get()->KeyDown("S2"))
 	{
 		BaseBullet = GameObject::CreateClone("BulletObject", "Bullet_Clone", m_Layer);
 		BaseBullet->GetTransform()->SetWorldPos(m_Transform->GetWorldPos());
 	}
 
-	if (KeyInput::Get().KeyPress("S2"))
+	if (KeyInput::Get()->KeyPress("S2"))
 	{
 		ScaleVar += 500.0f * DeltaTime;
 
@@ -150,7 +141,7 @@ int Player_Com::Input(float DeltaTime)
 		SAFE_RELEASE(getCom);
 	}
 
-	if (KeyInput::Get().KeyUp("S2"))
+	if (KeyInput::Get()->KeyUp("S2"))
 	{
 		Bullet_Com* getCom = BaseBullet->FindComponentFromType<Bullet_Com>((COMPONENT_TYPE)UT_BULLET);
 		getCom->SetMoveSpeed(500.0f);
@@ -160,7 +151,7 @@ int Player_Com::Input(float DeltaTime)
 		SAFE_RELEASE(BaseBullet);
 	}
 
-	if (KeyInput::Get().KeyDown("S3"))
+	if (KeyInput::Get()->KeyDown("S3"))
 	{
 		GameObject* newClone3 = GameObject::CreateClone("BulletObjectRot", "BulletRot_Clone", m_Layer);
 		newClone3->GetTransform()->SetWorldPos(m_Transform->GetWorldPos());   
@@ -175,7 +166,7 @@ int Player_Com::Input(float DeltaTime)
 		SAFE_RELEASE(getCom);
 	}
 
-	if (KeyInput::Get().KeyDown("S4"))
+	if (KeyInput::Get()->KeyDown("S4"))
 	{
 		GameObject* newClone1 = GameObject::CreateClone("BulletObjectRot", "BulletRot_Clone", m_Layer);
 		newClone1->GetTransform()->SetWorldPos(m_Transform->GetWorldPos());

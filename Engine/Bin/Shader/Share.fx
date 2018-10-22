@@ -23,9 +23,10 @@ struct VS_OUTPUT_COLOR
     float4 vColor : COLOR;
 };
 
+/////////////////////////////////////////////////////////////////////
 struct VS_INPUT_POS
 {
-    float3 vPos : POSITION;
+    float3 vPos : POSITION; 
 };
 
 struct VS_OUTPUT_POS
@@ -34,22 +35,22 @@ struct VS_OUTPUT_POS
 };
 
 /////////////////////////////////////////////////////////////////////
-    struct VS_INPUT_UV
-    {
-        float3 vPos : POSITION;
-        float2 vUV : TEXCOORD;
-    };
+struct VS_INPUT_UV
+{
+    float3 vPos : POSITION; //ºäÆ÷Æ® Pos
+    float2 vUV : TEXCOORD;
+};
 
-    struct VS_OUTPUT_UV
-    {
-        float4 vPos : SV_POSITION;
-        float2 vUV : TEXCOORD;
-    };
+struct VS_OUTPUT_UV
+{
+    float4 vPos : SV_POSITION;
+    float2 vUV : TEXCOORD;
+};
 
-    struct PS_OUTPUT_SINGLE
-    {
-        float4 vTarget0 : SV_Target;
-    };
+struct PS_OUTPUT_SINGLE
+{
+    float4 vTarget0 : SV_Target;
+};
 
 /////////////////////////////////////////////////////////////////////
 

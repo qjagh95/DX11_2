@@ -5,6 +5,7 @@
 #include "../GameObject.h"
 #include "../Device.h"
 #include "../CollsionManager.h"
+#include "../KeyInput.h"
 
 #include "../Component/Camera_Com.h"
 #include "../Component/Transform_Com.h"
@@ -131,6 +132,7 @@ int Scene::Update(float DeltaTime)
 		StartIter1++;
 	}
 
+	KeyInput::Get()->UpdateMousePos();
 	return 0;
 }
 
@@ -223,6 +225,7 @@ void Scene::Collision(float DeltaTime)
 		(*StartIter1)->Collision(DeltaTime);
 		StartIter1++;
 	}
+
 	CollsionManager::Get()->Collsion(DeltaTime);
 }
 

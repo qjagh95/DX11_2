@@ -28,10 +28,10 @@ private:
 	{
 		COLLSION_GROUP_TYPE Type;
 		CollsionSection* SectionList;
-		int CountX;
-		int CountY;
-		int CountZ;
-		int Count;
+		int SpaceCountX;
+		int SpaceCountY;
+		int SpaceCountZ;
+		int SpaceCount;
 		Vector3 Min;		//전체공간의 최소값
 		Vector3 Max;	    //전체공간의 최대값
 		Vector3 Lenth;		//Max - Min = 길이
@@ -43,7 +43,7 @@ private:
 
 public:
 	bool Init();
-	bool CreateGroup(const string& KeyName, const Vector3& Min, const Vector3& Max, int CountX, int CountY, int CountZ, COLLSION_GROUP_TYPE eType = CGT_3D);
+	bool CreateGroup(const string& KeyName, const Vector3& Min, const Vector3& Max, int SpaceCountX, int SpaceCountY, int SpaceCountZ, COLLSION_GROUP_TYPE eType = CGT_3D);
 	void ChangeGroupType(const string& KeyName, COLLSION_GROUP_TYPE eType);
 	void AddCollsion(GameObject* object);
 	void ClearCollsionGroup() { Safe_Delete_Map(m_GroupMap); }

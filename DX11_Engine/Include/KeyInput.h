@@ -2,105 +2,105 @@
 #include "stdafx.h"
 JEONG_BEGIN
 
+struct JEONG_DLL KeyInfo
+{
+	string KeyName;
+	vector<__int64> vecKey;
+	bool KeyDown;
+	bool KeyPress;
+	bool KeyUp;
+};
+
+class GameObject;
+class Scene;
+class ColliderPoint_Com;
 class JEONG_DLL KeyInput
 {
 public:
-	static KeyInput& Get()
+	bool Init();
+	void Update(float DeltaTime);
+	void RenderMouse(float DeltaTime);
+	bool KeyDown(const string& Name);
+	bool KeyPress(const string& Name);
+	bool KeyUp(const string& Name);
+
+	Vector2 GetMouseScreenPos() const { return m_MouseScreenPos; }
+	Vector2 GetMouseWorldPos() const { return m_MouseWorldPos; }
+	Vector2 GetMouseGap() const { return m_MouseGap; }
+	void ChangeMouseScene(Scene* pScene);
+	void UpdateMousePos();
+	GameObject* GetMouseObject() const { return m_MouseObject; }
+
+	template <typename T>
+	bool AddKey(const T& value)
 	{
-		static KeyInput Inst = KeyInput();
-		return Inst;
+		if (m_NewKey == NULLPTR)
+		{
+			m_NewKey = new KeyInfo();
+			m_NewKey->KeyDown = false;
+			m_NewKey->KeyPress = false;
+			m_NewKey->KeyUp = false;
+		}
+
+		//타입이름 가져옴.
+		const char* typeName = typeid(T).name();
+
+		if (strcmp(typeName, "int") == 0 || strcmp(typeName, "char") == 0)
+			m_NewKey->vecKey.push_back((__int64)value);
+		else
+		{
+			m_NewKey->KeyName = value;
+			m_KeyMap.insert(make_pair(m_NewKey->KeyName, m_NewKey));
+		}
+
+		return true;
 	}
 
-private:
-	class InputData
+	template <typename T, typename ... Types>
+	bool AddKey(const T& value, Types ... Args)
 	{
-	private:
-		friend KeyInput;
-
-	private:
-		std::vector<int> m_AllKey;
-		bool m_bUp; // 땐 한순간
-		bool m_bUpStay; // 계속 떼고 있었다. 
-		bool m_bDown; // 처음 누른 한순간
-		bool m_bDownStay; // 계속 누르고 있을때.
-		float PushTime;
-
-	private:
-		template<typename... Rest>
-		void PushKeyData(const int _Value, Rest ... _Arg)
+		if (m_NewKey == NULLPTR)
 		{
-			m_AllKey.push_back(_Value);
-			PushKeyData(_Arg...);
+			m_NewKey = new KeyInfo();
+			m_NewKey->KeyDown = false;
+			m_NewKey->KeyPress = false;
+			m_NewKey->KeyUp = false;
 		}
 
-		// 이녀석 없으면 터진다.
-		void PushKeyData()
+		//타입이름 가져옴.
+		const char* typeName = typeid(T).name();
+
+		if (strcmp(typeName, "int") == 0 || strcmp(typeName, "char") == 0)
+			m_NewKey->vecKey.push_back((__int64)value);
+		else
 		{
+			m_NewKey->KeyName = value;
+			m_KeyMap.insert(make_pair(m_NewKey->KeyName, m_NewKey));
 		}
 
-	public:
-		// 키를 체크하는 단계
-		void Update();
-		bool AllKeyCheck();
+		AddKey(Args...);
 
-	public:
-		InputData(size_t _Count) : m_bUpStay(true), m_bUp(false), m_bDown(false), m_bDownStay(false)
-		{
-			m_AllKey.reserve(_Count);
-		}
-		~InputData() {}
-
-	private:
-		friend class Core;
-	};
-
-private:
-	unordered_map<string, InputData*> m_MapInputData;
-
-private:
-	InputData* FindKey(const string& Name)
-	{
-		unordered_map<string, InputData*>::iterator FindIter = m_MapInputData.find(Name);
-
-		if (FindIter == m_MapInputData.end())
-			return NULLPTR;
-
-		return FindIter->second;
-	}
-
-public:
-	template<typename ... Rest>
-	bool CreateKey(const string& Name, Rest... _Arg)
-	{
-		InputData* pNewKey = FindKey(Name);
-
-		if (nullptr != pNewKey)
-		{
-			TrueAssert(true);
-			return false;
-		}
-
-		pNewKey = new InputData(sizeof...(_Arg));
-		pNewKey->PushKeyData(_Arg...);
-		m_MapInputData.insert(make_pair(Name, pNewKey));
+		if (m_NewKey != NULLPTR)
+			m_NewKey = NULLPTR;
 
 		return true;
 	}
 
 private:
-	void Update();
+	KeyInfo* FindKey(const string& Name);
+
+private:
+	unordered_map<string, KeyInfo*> m_KeyMap;
+	KeyInfo* m_NewKey;
+	Vector2 m_MouseScreenPos;	//화면상의 좌표 (0 ~ 1280, 0 ~ 720)
+	Vector2 m_MouseWorldPos;	//화면내의 좌표
+	Vector2 m_MouseGap;			//화면상 좌표와 화면 내의 좌표의 차이
+	GameObject* m_MouseObject;
+	ColliderPoint_Com* m_MouseWorldPoint;
+	bool m_ShowCursor;
 
 public:
-	bool KeyUp(const string& Name);
-	bool KeyDown(const string& Name);
-	bool KeyPress(const string& Name);
-
-public:
-	KeyInput();
-	~KeyInput();
-
-public:
-	friend class Core;
+	CLASS_IN_SINGLE(KeyInput)
 };
 
 JEONG_END

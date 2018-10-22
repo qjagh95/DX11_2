@@ -1,13 +1,13 @@
 #include "CollsionManager.h"
 #include "GameObject.h"
 #include "Device.h"
+#include "KeyInput.h"
 
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
 
 #include "Component/Transform_Com.h"
-
-
+#include "Component/ColliderPoint_Com.h"
 
 JEONG_USING
 SINGLETON_VAR_INIT(CollsionManager)
@@ -29,7 +29,7 @@ bool CollsionManager::Init()
 	return true;
 }
 
-bool CollsionManager::CreateGroup(const string & KeyName, const Vector3 & Min, const Vector3 & Max, int CountX, int CountY, int CountZ, COLLSION_GROUP_TYPE eType)
+bool CollsionManager::CreateGroup(const string & KeyName, const Vector3 & Min, const Vector3 & Max, int SpaceCountX, int SpaceCountY, int SpaceCountZ, COLLSION_GROUP_TYPE eType)
 {
 	CollsionGroup* newGroup = FindGroup(KeyName);
 
@@ -38,18 +38,18 @@ bool CollsionManager::CreateGroup(const string & KeyName, const Vector3 & Min, c
 
 	newGroup = new CollsionGroup();
 	newGroup->Type = eType;						//2D or 3D
-	newGroup->CountX = CountX;					//X축 분할 크기
-	newGroup->CountY = CountY;					//Y축 분할 크기
-	newGroup->CountZ = CountZ;					//Z축 분할 크기
-	newGroup->Count = CountX * CountY * CountZ; //전체 분할 갯수
+	newGroup->SpaceCountX = SpaceCountX;					//X축 분할 크기
+	newGroup->SpaceCountY = SpaceCountY;					//Y축 분할 크기
+	newGroup->SpaceCountZ = SpaceCountZ;					//Z축 분할 크기
+	newGroup->SpaceCount = SpaceCountX * SpaceCountY * SpaceCountZ; //전체 분할 갯수
 	newGroup->Max = Max;						//공간 전체의 크기
 	newGroup->Min = Min;						//최소값 ex(0 0 0 ~ 1280 720 0)
 	newGroup->Lenth = Max - Min;				//공간의 사이즈
-	newGroup->SpaceLenth = newGroup->Lenth / Vector3((float)CountX, (float)CountY, (float)CountZ);
+	newGroup->SpaceLenth = newGroup->Lenth / Vector3((float)SpaceCountX, (float)SpaceCountY, (float)SpaceCountZ);
 	//공간 하나당 크기. 사이즈 / 분할갯수
 
 	//전체 분할된 공간 갯수만큼 동적할당.
-	newGroup->SectionList = new CollsionSection[newGroup->Count];
+	newGroup->SectionList = new CollsionSection[newGroup->SpaceCount];
 
 	m_GroupMap.insert(make_pair(KeyName, newGroup));
 
@@ -127,7 +127,7 @@ void CollsionManager::AddCollsion(GameObject * object)
 		yMax = (int)(SectionMax.y - getGroup->Min.y) / (int)getGroup->SpaceLenth.y;
 
 		//Z는 무조건 하나는 있어야함. (제로디비전 방지)
-		if (getGroup->CountZ > 1)
+		if (getGroup->SpaceCountZ > 1)
 		{
 			zMin = (int)(SectionMin.z - getGroup->Min.z) / (int)getGroup->SpaceLenth.z;
 			zMax = (int)(SectionMax.z - getGroup->Min.z) / (int)getGroup->SpaceLenth.z;
@@ -137,23 +137,23 @@ void CollsionManager::AddCollsion(GameObject * object)
 		for (int z = zMin; z <= zMax; z++)
 		{
 			//예외처리
-			if (z < 0 || z >= getGroup->CountZ)
+			if (z < 0 || z >= getGroup->SpaceCountZ)
 				continue;
 
 			for (int y = yMin; y <= yMax; y++)
 			{
 				//예외처리
-				if (y < 0 || y >= getGroup->CountY)
+				if (y < 0 || y >= getGroup->SpaceCountY)
 					continue;
 
 				for (int x = xMin; x <= xMax; x++)
 				{
 					//예외처리
-					if (x < 0 || x >= getGroup->CountX)
+					if (x < 0 || x >= getGroup->SpaceCountX)
 						continue;
 
 					//인덱스 공식
-					int	idx = z * (getGroup->CountX * getGroup->CountY) + y * getGroup->CountX + x;
+					int	idx = z * (getGroup->SpaceCountX * getGroup->SpaceCountY) + y * getGroup->SpaceCountX + x;
 					//내가 속한 공간의 인덱스를 넣어준다.
 					((Collider_Com*)*StartIter)->AddCollisionSection(idx);
 					Index.push_back(idx);
@@ -183,6 +183,155 @@ void CollsionManager::AddCollsion(GameObject * object)
 
 void CollsionManager::Collsion(float DeltaTime)
 {
+	//마우스와 오브젝트의 충돌처리
+	GameObject* MouseObject = KeyInput::Get()->GetMouseObject();
+	ColliderPoint_Com* MouseWindowPoint = MouseObject->FindComponentFromTag<ColliderPoint_Com>("MouseWindow");
+
+	MouseWindowPoint->ClearSectionIndex();
+
+	CollsionGroup* getGroup = FindGroup("UI");
+	Vector3 mPoint = MouseWindowPoint->GetInfo();
+
+	int MouseSectionIndexX = (int)(mPoint.x / getGroup->SpaceLenth.x);
+	int MouseSectionIndexY = (int)(mPoint.y / getGroup->SpaceLenth.y);
+
+	bool isUiColl = false;
+
+	//인덱스가 전체분할공간 안에 있을때
+	if (MouseSectionIndexX >= 0 && MouseSectionIndexX < getGroup->SpaceCountX && MouseSectionIndexY >= 0 && MouseSectionIndexY < getGroup->SpaceCountY)
+	{
+		int PointIndex = MouseSectionIndexY * getGroup->SpaceCountX + MouseSectionIndexX;
+		CollsionSection* getSection = &getGroup->SectionList[PointIndex];
+		
+		MouseWindowPoint->AddCollisionSection(PointIndex);
+
+		if (getSection->Size > 0)
+		{
+			//sort(pSection->pColliderArray, &pSection->pColliderArray[pSection->iSize - 1], CCollisionManager::SortZOrder);
+
+			for (int i = 0; i < getSection->Size; i++)
+			{
+				Collider_Com* CollSrc = getSection->ColliderList[i];
+				Collider_Com* CollDest = MouseWindowPoint;
+
+				if (CollDest->Collsion(CollSrc, DeltaTime) == true)
+				{
+					//처음충돌될경우
+					if (CollSrc->CheckPrevCollision(CollDest) == false)
+					{
+						CollSrc->AddPrevCollision(CollDest);
+						CollDest->AddPrevCollision(CollSrc);
+
+						CollSrc->OnCollsionFirst(CollDest, DeltaTime);
+						CollDest->OnCollsionFirst(CollSrc, DeltaTime);
+
+						isUiColl = true;
+						break;
+					}
+					//이전충돌체가 있을경우(충돌중인경우)
+					else
+					{
+						CollSrc->OnCollsionDoing(CollDest, DeltaTime);
+						CollDest->OnCollsionDoing(CollSrc, DeltaTime);
+
+						isUiColl = true;
+						break;
+					}
+				}
+				else
+				{
+					if (CollSrc->CheckPrevCollision(CollDest) == true)
+					{
+						CollSrc->OnCollsionEnd(CollDest, DeltaTime);
+						CollDest->OnCollsionEnd(CollSrc, DeltaTime);
+
+						CollSrc->ErasePrevCollision(CollDest);
+						CollDest->ErasePrevCollision(CollSrc);
+
+					}
+				}
+			}
+		}
+	}
+
+	SAFE_RELEASE(MouseWindowPoint);
+
+	if (isUiColl == false)
+	{
+		ColliderPoint_Com* MouseWorldPoint = MouseObject->FindComponentFromTag<ColliderPoint_Com>("MouseWorld");
+		MouseWorldPoint->ClearSectionIndex();
+
+		unordered_map<string, CollsionGroup*>::iterator StartIter1 = m_GroupMap.begin();
+		unordered_map<string, CollsionGroup*>::iterator EndIter1 = m_GroupMap.end();
+
+		//전체 그룹 수 만큼 반복돈다.
+		for (; StartIter1 != EndIter1; StartIter1++)
+		{
+			if (StartIter1->first == "UI")
+				continue;
+
+			int MouseWorldSpaceIndexX = (int)(MouseWorldPoint->GetInfo().x / StartIter1->second->SpaceLenth.x);
+			int MouseWorldSpaceIndexY = (int)(MouseWorldPoint->GetInfo().y / StartIter1->second->SpaceLenth.y);
+
+			cout << MouseWorldPoint->GetInfo().x <<" "<< MouseWorldPoint->GetInfo().y << endl;
+			cout << MouseWorldSpaceIndexX << " " << MouseWorldSpaceIndexY << endl << endl;
+
+			for (int i = 0; i < StartIter1->second->SpaceCount; i++)
+			{
+				if (StartIter1->second->SectionList[i].Size >= 2)
+				{
+					//sort(iterG->second->pSection[i]->pColliderArray, &iterG->second->pSection[i]->pColliderArray[iterG->second->pSection[i]->iSize - 1],CCollisionManager::SortZ);
+				}
+
+				int MouseWorldIndex = StartIter1->second->SpaceCountX * MouseWorldSpaceIndexY + MouseWorldSpaceIndexX;
+				MouseWorldPoint->AddCollisionSection(MouseWorldIndex);
+
+				CollsionSection* getSection = &StartIter1->second->SectionList[MouseWorldIndex];
+
+				for (int j = 0; j < getSection->Size; j++)
+				{
+					Collider_Com* CollSrc = getSection->ColliderList[j];
+					Collider_Com* CollDest = MouseWorldPoint;
+
+					if (CollDest->Collsion(CollSrc, DeltaTime) == true)
+					{
+						//처음충돌될경우
+						if (CollSrc->CheckPrevCollision(CollDest) == false)
+						{
+							CollSrc->AddPrevCollision(CollDest);
+							CollDest->AddPrevCollision(CollSrc);
+
+							CollSrc->OnCollsionFirst(CollDest, DeltaTime);
+							CollDest->OnCollsionFirst(CollSrc, DeltaTime);
+
+							break;
+						}
+						else
+						{
+							CollSrc->OnCollsionDoing(CollDest, DeltaTime);
+							CollDest->OnCollsionDoing(CollSrc, DeltaTime);
+
+							break;
+						}
+					}
+					else
+					{
+						if (CollSrc->CheckPrevCollision(CollDest) == true)
+						{
+							CollSrc->OnCollsionEnd(CollDest, DeltaTime);
+							CollDest->OnCollsionEnd(CollSrc, DeltaTime);
+
+							CollSrc->ErasePrevCollision(CollDest);
+							CollDest->ErasePrevCollision(CollSrc);
+
+						}
+					}//else
+				}//for(j)
+			}
+		}
+		SAFE_RELEASE(MouseWorldPoint);
+	}
+
 	unordered_map<string, CollsionGroup*>::iterator StartIter = m_GroupMap.begin();
 	unordered_map<string, CollsionGroup*>::iterator EndIter = m_GroupMap.end();
 
@@ -190,13 +339,17 @@ void CollsionManager::Collsion(float DeltaTime)
 	for (; StartIter != EndIter; StartIter++)
 	{
 		//전체 분할된 공간만큼 반복돈다.
-		for (int i = 0; i < StartIter->second->Count; i++)
+		for (int i = 0; i < StartIter->second->SpaceCount; i++)
 		{
 			CollsionSection* getSection = &StartIter->second->SectionList[i];
 
 			//충돌체수가 1개이하면 돌필요가없다.
 			if (getSection->Size < 2)
 			{
+				//공간이 틀어지면 빼줘야한다.
+				//4개의 객체와 충돌중인 플레이어가 이동 후 다른 공간인덱스로 옮겨갔는데
+				//4개의 객체는 충돌되서 사라지고 플레이어객체는 공간이 틀어졌으니 이전컬라이더를 검사해서
+				//있다면 충돌됬단뜻이니 End함수를 한번 호출해야한다.
 				for (int j = 0; j < getSection->Size; j++)
 					getSection->ColliderList[j]->CheckPrevCollisionInSection(DeltaTime);
 
