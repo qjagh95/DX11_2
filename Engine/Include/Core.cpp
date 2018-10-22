@@ -22,9 +22,8 @@ bool Core::m_isLoop = true;
 Core::Core()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	//_CrtSetBreakAlloc(344);
+	//_CrtSetBreakAlloc(675);
 	ZeroMemory(ClearColor, sizeof(float) * 4);
-
 }
 
 Core::~Core()
@@ -217,10 +216,9 @@ int Core::Update(float DeltaTime)
 {
 	SceneManager::Get()->Update(DeltaTime);
 
-	if (KeyInput::Get()->KeyDown("Test"))
-	{
+	if (KeyInput::Get()->KeyDown("SystemPause"))
 		system("pause");
-	}
+
 	return 0;
 }
 

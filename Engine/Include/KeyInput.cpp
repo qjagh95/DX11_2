@@ -35,7 +35,7 @@ bool KeyInput::Init()
 	AddKey("MoveRight", 'D');
 	AddKey("MoveUp", 'W');
 	AddKey("MoveDown", 'S');
-	AddKey("Test", VK_F1);
+	AddKey("SystemPause", VK_F10);
 
 	m_MouseObject = GameObject::CreateObject("MouseObject");
 	m_MouseObject->GetTransform()->SetWorldScale(Vector3(31.0f, 32.0f, 0.0f));
@@ -123,7 +123,6 @@ void KeyInput::Update(float DeltaTime)
 	m_MouseObject->GetTransform()->SetWorldPos((float)DevicePos.x, (float)DevicePos.y, 0.0f);
 
 	m_MouseObject->Update(DeltaTime);
-	m_MouseObject->LateUpdate(DeltaTime);
 
 	if (m_ShowCursor == false && (m_MouseScreenPos.x <= 0.0f && m_MouseScreenPos.x >= Device::Get()->GetWinSize().Width || m_MouseScreenPos.y <= 0.0f && m_MouseScreenPos.y >= Device::Get()->GetWinSize().Height))
 	{
@@ -151,10 +150,11 @@ void KeyInput::ChangeMouseScene(Scene * pScene)
 void KeyInput::UpdateMousePos()
 {
 	Scene* pScene = SceneManager::Get()->GetCurScene();
-
 	m_MouseWorldPoint->SetInfo(pScene->GetMainCameraTransform()->GetWorldPos());
 
 	SAFE_RELEASE(pScene);
+
+	m_MouseObject->LateUpdate(0.0f);
 }
 
 bool KeyInput::KeyDown(const string & Name)

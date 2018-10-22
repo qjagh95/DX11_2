@@ -292,8 +292,6 @@ void Renderer_Com::UpdateTransform()
 	//미리 정의해놓은 상수버퍼(ID3D11Buffer)를 가져와서 업데이트 시킨다.
 	//버텍스쉐이더와 픽셀쉐이더에 위에서 값을 가져온 행렬들을 (상수버퍼) 셋팅해준다. 
 	ShaderManager::Get()->UpdateCBuffer("Transform", &cBuffer);
-
-	SAFE_RELEASE(getCamera);
 }
 
 RendererCBuffer * Renderer_Com::FindCBuffer(const string & KeyName)

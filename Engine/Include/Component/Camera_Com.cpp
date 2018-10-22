@@ -36,8 +36,11 @@ int Camera_Com::Update(float DeltaTime)
 {
 	//m_View.Identity();
 
-	////memcpy 41 ~ 43위치 == Pos위치임.
-	//memcpy(&m_View[3][0], &m_Transform->GetWorldPos(), sizeof(Vector3));
+	//memcpy 41 ~ 43위치 == Pos위치임.
+	Vector3 TempPos = m_Transform->GetWorldPos();
+	TempPos *= -1.0f;
+
+	memcpy(&m_View[3][0], &TempPos, sizeof(Vector3));
 
 	return 0;
 }

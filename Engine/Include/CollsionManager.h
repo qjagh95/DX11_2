@@ -17,7 +17,7 @@ private:
 	struct CollsionSection
 	{
 		Collider_Com** ColliderList;
-		int Size;
+		int Size;					 //충돌체 카운트
 		int Capacity;
 
 		CollsionSection() : Size(0), Capacity(5) { ColliderList = new Collider_Com*[Capacity]; }

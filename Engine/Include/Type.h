@@ -74,6 +74,12 @@ struct JEONG_DLL BoxInfo
 	Vector3 Lenth;
 };
 
+struct JEONG_DLL CircleInfo
+{
+	float Radius;
+	Vector3 CenterPos;
+};
+
 //16
 struct JEONG_DLL TransformCBuffer
 {

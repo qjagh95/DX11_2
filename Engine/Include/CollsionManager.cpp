@@ -247,7 +247,6 @@ void CollsionManager::Collsion(float DeltaTime)
 
 						CollSrc->ErasePrevCollision(CollDest);
 						CollDest->ErasePrevCollision(CollSrc);
-
 					}
 				}
 			}
@@ -264,6 +263,7 @@ void CollsionManager::Collsion(float DeltaTime)
 		unordered_map<string, CollsionGroup*>::iterator StartIter1 = m_GroupMap.begin();
 		unordered_map<string, CollsionGroup*>::iterator EndIter1 = m_GroupMap.end();
 
+		bool isMouseColl = false;
 		//전체 그룹 수 만큼 반복돈다.
 		for (; StartIter1 != EndIter1; StartIter1++)
 		{
@@ -273,25 +273,32 @@ void CollsionManager::Collsion(float DeltaTime)
 			int MouseWorldSpaceIndexX = (int)(MouseWorldPoint->GetInfo().x / StartIter1->second->SpaceLenth.x);
 			int MouseWorldSpaceIndexY = (int)(MouseWorldPoint->GetInfo().y / StartIter1->second->SpaceLenth.y);
 
-			cout << MouseWorldPoint->GetInfo().x <<" "<< MouseWorldPoint->GetInfo().y << endl;
-			cout << MouseWorldSpaceIndexX << " " << MouseWorldSpaceIndexY << endl << endl;
-
-			for (int i = 0; i < StartIter1->second->SpaceCount; i++)
+			if (MouseWorldSpaceIndexX >= 0 && MouseWorldSpaceIndexY >= 0 && MouseWorldSpaceIndexX < StartIter1->second->SpaceCountX && MouseWorldSpaceIndexY < StartIter1->second->SpaceCountY)
 			{
-				if (StartIter1->second->SectionList[i].Size >= 2)
-				{
-					//sort(iterG->second->pSection[i]->pColliderArray, &iterG->second->pSection[i]->pColliderArray[iterG->second->pSection[i]->iSize - 1],CCollisionManager::SortZ);
-				}
-
-				int MouseWorldIndex = StartIter1->second->SpaceCountX * MouseWorldSpaceIndexY + MouseWorldSpaceIndexX;
+				int MouseWorldIndex = MouseWorldSpaceIndexY * StartIter1->second->SpaceCountX + MouseWorldSpaceIndexX;
 				MouseWorldPoint->AddCollisionSection(MouseWorldIndex);
 
+				//순차적으로 공간을 가져온다.
 				CollsionSection* getSection = &StartIter1->second->SectionList[MouseWorldIndex];
 
 				for (int j = 0; j < getSection->Size; j++)
 				{
+					//그 공간 안에있는 충돌체 리스트를 가져옴.
 					Collider_Com* CollSrc = getSection->ColliderList[j];
 					Collider_Com* CollDest = MouseWorldPoint;
+
+					if (isMouseColl == true)
+					{
+						if (CollSrc->CheckPrevCollision(CollDest) == true)
+						{
+							CollSrc->OnCollsionEnd(CollDest, DeltaTime);
+							CollDest->OnCollsionEnd(CollSrc, DeltaTime);
+
+							CollSrc->ErasePrevCollision(CollDest);
+							CollDest->ErasePrevCollision(CollSrc);
+						}
+						continue;
+					}
 
 					if (CollDest->Collsion(CollSrc, DeltaTime) == true)
 					{
@@ -303,15 +310,15 @@ void CollsionManager::Collsion(float DeltaTime)
 
 							CollSrc->OnCollsionFirst(CollDest, DeltaTime);
 							CollDest->OnCollsionFirst(CollSrc, DeltaTime);
-
-							break;
+							 
+							isMouseColl = true;
 						}
 						else
 						{
 							CollSrc->OnCollsionDoing(CollDest, DeltaTime);
 							CollDest->OnCollsionDoing(CollSrc, DeltaTime);
 
-							break;
+							isMouseColl = true;
 						}
 					}
 					else
@@ -323,12 +330,12 @@ void CollsionManager::Collsion(float DeltaTime)
 
 							CollSrc->ErasePrevCollision(CollDest);
 							CollDest->ErasePrevCollision(CollSrc);
-
 						}
 					}//else
 				}//for(j)
 			}
 		}
+		//sort(iterG->second->pSection[i]->pColliderArray, &iterG->second->pSection[i]->pColliderArray[iterG->second->pSection[i]->iSize - 1],CCollisionManager::SortZ);
 		SAFE_RELEASE(MouseWorldPoint);
 	}
 
@@ -376,7 +383,17 @@ void CollsionManager::Collsion(float DeltaTime)
 					Collider_Com* CollSrc = getSection->ColliderList[j];
 					Collider_Com* CollDest = getSection->ColliderList[k];
 
-					if (CollSrc->Collsion(CollDest, DeltaTime) == true)
+					bool Pair = false;
+					for (size_t a = 0; a < CollDest->GetContinueTypeNameSize(); a++)
+					{
+						if (CollSrc->GetMyTypeName() == CollDest->GetContinueTypeName(a))
+							Pair = true;
+					}
+
+					//if (CollSrc->GetContinueTypeName() == CollDest->GetContinueTypeName())
+					//	continue;
+
+					if (CollSrc->Collsion(CollDest, DeltaTime) == true && Pair == false)
 					{
 						//처음충돌될경우
 						if (CollSrc->CheckPrevCollision(CollDest) == false)

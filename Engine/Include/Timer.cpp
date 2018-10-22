@@ -1,4 +1,5 @@
 #include "Timer.h"
+#include "Core.h"
 
 JEONG_USING
 
@@ -42,4 +43,11 @@ void Timer::Update()
 		Fps = 0.0f;
 		TimeVar = 0.0f;
 	}
+
+#ifdef _DEBUG
+	static char Buffer[255] = {};
+	sprintf_s(Buffer, "Frame : %f", ReturnFrame);
+
+	SetWindowTextA(Core::Get()->GetHwnd(), Buffer);
+#endif
 }

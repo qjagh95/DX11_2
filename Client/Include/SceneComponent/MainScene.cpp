@@ -51,7 +51,6 @@ bool MainScene::Init()
 	SAFE_RELEASE(bulletBoom_Com);
 	SAFE_RELEASE(BulletObject2);
 	SAFE_RELEASE(bullet_Com2);
-	SAFE_RELEASE(mainCamera);
 	SAFE_RELEASE(MonsterObject);
 	SAFE_RELEASE(monster_Com);
 	SAFE_RELEASE(bullet_Com);

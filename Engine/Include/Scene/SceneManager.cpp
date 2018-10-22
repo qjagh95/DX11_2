@@ -11,7 +11,6 @@ SceneManager::SceneManager()
 {
 }
 
-
 SceneManager::~SceneManager()
 {
 	SAFE_RELEASE(m_CurScene);

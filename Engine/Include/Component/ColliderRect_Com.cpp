@@ -1,4 +1,6 @@
 #include "ColliderRect_Com.h"
+#include "ColliderPoint_Com.h"
+#include "ColliderCircle_Com.h"
 #include "Transform_Com.h"
 #include "Camera_Com.h"
 
@@ -99,7 +101,6 @@ void ColliderRect_Com::Render(float DeltaTime)
 	TransCBuffer.WVP.Transpose();
 
 	ShaderManager::Get()->UpdateCBuffer("Transform", &TransCBuffer);
-	SAFE_RELEASE(getCamera);
 
 	Collider_Com::Render(DeltaTime);
 #endif // _DEBUG
@@ -116,6 +117,12 @@ bool ColliderRect_Com::Collsion(Collider_Com * Dest, float DeltaTime)
 	{
 		case CT_RECT:
 			return CollsionRectToRect(m_WorldInfo, ((ColliderRect_Com*)Dest)->m_WorldInfo);
+			break;
+		case CT_POINT:
+			return CollsionRectToPoint(m_WorldInfo, ((ColliderPoint_Com*)Dest)->GetInfo());
+			break;
+		case CT_CIRCLE:
+			return CollsionRectToCircle(m_WorldInfo, ((ColliderCircle_Com*)Dest)->GetInfo());
 			break;
 	}
 

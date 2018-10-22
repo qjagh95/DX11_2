@@ -3,6 +3,7 @@
 #include "KeyInput.h"
 
 #include "Component/ColliderRect_Com.h"
+#include "Component/ColliderCircle_Com.h"
 #include "Component/Transform_Com.h"
 #include "Component/Renderer_Com.h"
 #include "Component/Material_Com.h"
@@ -44,9 +45,15 @@ bool Player_Com::Init()
 	MaterialComponent->SetDiffuseTexture(0, "Player", TEXT("Player.png"));
 	SAFE_RELEASE(MaterialComponent);
 
-	ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("PlayerBody");
-	RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(100.0f, 100.0f, 0.0f));
-	SAFE_RELEASE(RectColl);
+	//ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("PlayerBody");
+	//RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(100.0f, 100.0f, 0.0f));
+	//RectColl->SetMyTypeName("Player");
+	//SAFE_RELEASE(RectColl);
+
+	ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("PlayerCircleBody");
+	CircleColl->SetInfo(60.0f);
+	CircleColl->SetMyTypeName("Player");
+	SAFE_RELEASE(CircleColl);
 
 	m_Transform->SetWorldScale(100.0f, 100.0f, 1.0f);
 	m_Transform->SetWorldPivot(0.5f, 0.0f, 0.0f);

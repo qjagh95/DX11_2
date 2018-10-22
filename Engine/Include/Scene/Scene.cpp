@@ -86,6 +86,9 @@ int Scene::Input(float DeltaTime)
 		(*StartIter1)->Input(DeltaTime);
 		StartIter1++;
 	}
+
+	m_MainCameraObject->Input(DeltaTime);
+
 	return 0;
 }
 
@@ -131,8 +134,7 @@ int Scene::Update(float DeltaTime)
 		(*StartIter1)->Update(DeltaTime);
 		StartIter1++;
 	}
-
-	KeyInput::Get()->UpdateMousePos();
+	m_MainCameraObject->Update(DeltaTime);
 	return 0;
 }
 
@@ -179,6 +181,7 @@ int Scene::LateUpdate(float DeltaTime)
 		(*StartIter1)->LateUpdate(DeltaTime);
 		StartIter1++;
 	}
+	m_MainCameraObject->LateUpdate(DeltaTime);
 	return 0;
 }
 
@@ -226,6 +229,7 @@ void Scene::Collision(float DeltaTime)
 		StartIter1++;
 	}
 
+	KeyInput::Get()->UpdateMousePos();
 	CollsionManager::Get()->Collsion(DeltaTime);
 }
 
@@ -466,7 +470,6 @@ GameObject * Scene::FindCamera(const string & TagName)
 
 GameObject * Scene::GetMainCameraObject() const
 {
-	m_MainCameraObject->AddRefCount();
 	return m_MainCameraObject;
 }
 
@@ -477,6 +480,5 @@ Transform_Com * Scene::GetMainCameraTransform() const
 
 Camera_Com * Scene::GetMainCamera() const
 {
-	m_MainCamera->AddRefCount();
 	return m_MainCamera;
 }

@@ -25,7 +25,6 @@ Collider_Com::Collider_Com()
 	m_Mesh = NULLPTR;
 	m_DepthDisable = NULLPTR;
 	m_Color = Vector4::Green;
-
 #endif // _DEBUG
 }
 
@@ -121,7 +120,6 @@ void Collider_Com::Render(float DeltaTime)
 	if (m_DepthDisable != NULLPTR)
 		m_DepthDisable->ResetState();
 #endif
-
 }
 
 bool Collider_Com::CheckPrevCollision(Collider_Com * Dest)
@@ -292,4 +290,52 @@ bool Collider_Com::CollsionRectToPoint(const BoxInfo & Src, const Vector3 & Dest
 		return false;
 
 	return true;
+}
+
+bool Collider_Com::CollsionRectToCircle(const BoxInfo & Src, const CircleInfo & Dest)
+{
+	BoxInfo CircleRect;
+	Vector3 CircleCenterPos = Dest.CenterPos;
+
+	if ((Src.Min.x <= CircleCenterPos.x && Src.Max.x >= CircleCenterPos.x) || (Src.Max.y <= CircleCenterPos.y, Src.Min.y >= CircleCenterPos.y))
+	{
+		CircleRect.Min.x = Src.Min.x - Dest.Radius;
+		CircleRect.Max.y = Src.Max.y + Dest.Radius;
+		CircleRect.Max.x = Src.Max.x + Dest.Radius;
+		CircleRect.Min.y = Src.Min.x - Dest.Radius;
+
+		if ((CircleRect.Min.x < CircleCenterPos.x && CircleRect.Max.x > CircleCenterPos.x) && (CircleRect.Max.y < CircleCenterPos.y && CircleRect.Min.y > CircleCenterPos.y))
+			return true;
+		else
+			return false;
+	}
+
+	else
+	{
+		Vector3 leftbottom = Src.Min;
+		Vector3 righttop = Src.Max;
+		Vector3 lefttop = Vector3(Src.Min.x, Src.Max.y, 1.0f);
+		Vector3 rightbottom = Vector3(Src.Max.x, Src.Min.x, 1.0f);
+
+		bool l = leftbottom.GetDistance(CircleCenterPos) <= Dest.Radius;
+		bool r = righttop.GetDistance(CircleCenterPos) <= Dest.Radius;
+		bool b = lefttop.GetDistance(CircleCenterPos) <= Dest.Radius;
+		bool t = rightbottom.GetDistance(CircleCenterPos) <= Dest.Radius;
+
+		if (l || r || b || t)
+			return true;
+	}
+
+	return false;
+}
+
+bool Collider_Com::CollsionCircleToCircle(CircleInfo & Src, const CircleInfo & Dest)
+{
+	return Src.CenterPos.GetDistance(Dest.CenterPos) <= Src.Radius + Dest.Radius;
+}
+
+bool Collider_Com::CollsionCircleToPoint(CircleInfo & Src, Vector3 & Dest)
+{
+	cout << Src.CenterPos.GetDistance(Dest) << endl;
+	return Src.CenterPos.GetDistance(Dest) <= Src.Radius;
 }

@@ -1,5 +1,6 @@
 #include "ColliderPoint_Com.h"
 #include "ColliderRect_Com.h"
+#include "ColliderCircle_Com.h"
 #include "Camera_Com.h"
 #include "Transform_Com.h"
 
@@ -17,8 +18,11 @@ JEONG_USING
 ColliderPoint_Com::ColliderPoint_Com()
 {
 	m_CollType = CT_POINT;
+
+#ifdef _DEBUG
 	m_DepthDisable = RenderManager::Get()->FindRenderState(DEPTH_DISABLE);
 	m_Mesh = ResourceManager::Get()->FindMesh("ColliderRect");
+#endif
 }
 
 ColliderPoint_Com::ColliderPoint_Com(const ColliderPoint_Com & CopyCollider)
@@ -69,13 +73,14 @@ void ColliderPoint_Com::Render(float DeltaTime)
 {
 #ifdef _DEBUG
 	Matrix	matPos, matScale, matView;
+	Camera_Com*	getCamera = m_Scene->GetMainCamera();
+
 	matPos.Translation(m_WorldInfo - Vector3(1.5f, 1.5f, 0.0f));
 	matScale.Scaling(3.0f, 3.0f, 1.0f);
 
 	if (m_CollisionGroupName != "UI")
-		matView = m_Scene->GetMainCamera()->GetViewMatrix();
+		matView = getCamera->GetViewMatrix();
 
-	Camera_Com*	getCamera = m_Scene->GetMainCamera();
 	TransformCBuffer TransCBuffer = {};
 
 	TransCBuffer.World = matScale * matPos;
@@ -94,8 +99,6 @@ void ColliderPoint_Com::Render(float DeltaTime)
 	TransCBuffer.WVP.Transpose();
 
 	ShaderManager::Get()->UpdateCBuffer("Transform", &TransCBuffer);
-	SAFE_RELEASE(getCamera);
-
 	Collider_Com::Render(DeltaTime);
 #endif // _DEBUG
 }
@@ -106,6 +109,9 @@ bool ColliderPoint_Com::Collsion(Collider_Com * Dest, float DeltaTime)
 	{
 		case CT_RECT:
 			return CollsionRectToPoint(((ColliderRect_Com*)Dest)->GetInfo(), m_WorldInfo);
+			break;
+		case CT_CIRCLE:
+			return CollsionCircleToPoint(((ColliderCircle_Com*)Dest)->GetInfo(), m_WorldInfo);
 			break;
 		case CT_POINT:
 			return m_WorldInfo == ((ColliderPoint_Com*)Dest)->GetInfo();

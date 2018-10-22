@@ -97,21 +97,6 @@
     <Filter Include="Core\10. Resource\Sampler">
       <UniqueIdentifier>{16c7ad73-aa08-4347-957f-fc25406dd022}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\11. Scene">
-      <UniqueIdentifier>{36a4fa68-3853-462f-912a-44e10923d50d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\11. Scene\Manager">
-      <UniqueIdentifier>{0c56c732-d20e-4202-8dc8-15bca95a6ebb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\11. Scene\Component">
-      <UniqueIdentifier>{bdcb1e22-2e1b-4aec-9b4b-aa931d786a25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\11. Scene\Layer">
-      <UniqueIdentifier>{2ae6cd36-b755-472a-b8eb-ed8a188db406}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\11. Scene\Scene">
-      <UniqueIdentifier>{5937b081-513f-4203-ac02-60942f2742b4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\09. Render\RenderState\DepthStancilState">
       <UniqueIdentifier>{162c073a-7463-431e-95d3-805a6d31ca54}</UniqueIdentifier>
     </Filter>
@@ -138,6 +123,24 @@
     </Filter>
     <Filter Include="Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderPoint">
       <UniqueIdentifier>{e285afee-4603-4659-b786-6e5cad6f6404}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderCircle">
+      <UniqueIdentifier>{d0b559ba-cf66-4d80-a38a-9ae1f3027202}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\11. Scene">
+      <UniqueIdentifier>{36a4fa68-3853-462f-912a-44e10923d50d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\11. Scene\Manager">
+      <UniqueIdentifier>{0c56c732-d20e-4202-8dc8-15bca95a6ebb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\11. Scene\Component">
+      <UniqueIdentifier>{bdcb1e22-2e1b-4aec-9b4b-aa931d786a25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\11. Scene\Layer">
+      <UniqueIdentifier>{2ae6cd36-b755-472a-b8eb-ed8a188db406}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\11. Scene\Scene">
+      <UniqueIdentifier>{5937b081-513f-4203-ac02-60942f2742b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +258,9 @@
     <ClInclude Include="Component\ColliderPoint_Com.h">
       <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderPoint</Filter>
     </ClInclude>
+    <ClInclude Include="Component\ColliderCircle_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderCircle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Copy.bat">
@@ -360,6 +366,9 @@
     </ClCompile>
     <ClCompile Include="Component\ColliderPoint_Com.cpp">
       <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ColliderCircle_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderCircle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

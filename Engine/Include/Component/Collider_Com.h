@@ -35,6 +35,11 @@ public:
 	bool CheckPrevCollision(Collider_Com* Dest);
 	void ErasePrevCollision(Collider_Com* Dest);
 	void CheckPrevCollisionInSection(float DeltaTime);
+	void PushContinueTypeName(const string& Name) { m_vecContinueTypeName.push_back(Name); }
+	void SetMyTypeName(const string& Name) { m_MyTypeName = Name; }
+	const string GetMyTypeName() const { return m_MyTypeName; }
+	const string GetContinueTypeName(size_t index) const { return m_vecContinueTypeName[index]; }
+	size_t GetContinueTypeNameSize() const { return m_vecContinueTypeName.size(); }
 
 	void OnCollsionFirst(Collider_Com* Dest, float DeltaTime);
 	void OnCollsionDoing(Collider_Com* Dest, float DeltaTime);
@@ -42,6 +47,9 @@ public:
 
 	bool CollsionRectToRect(const BoxInfo& Src, const BoxInfo& Dest);
 	bool CollsionRectToPoint(const BoxInfo& Src, const Vector3& Dest);
+	bool CollsionRectToCircle(const BoxInfo& Src, const CircleInfo& Dest);
+	bool CollsionCircleToCircle(CircleInfo& Src, const CircleInfo& Dest);
+	bool CollsionCircleToPoint(CircleInfo& Src, Vector3& Dest);
 
 	void SetCallback(function<void(Collider_Com*, Collider_Com*, float)> const& _function, COLLSION_CALLBACK_TYPE _type);
 	void SetCollsionCallback(COLLSION_CALLBACK_TYPE eType, void(*pFunc)(Collider_Com*, Collider_Com*, float));
@@ -63,6 +71,8 @@ protected:
 	Vector3	m_SectionMin;
 	Vector3	m_SectionMax;
 	string m_CollisionGroupName;
+	vector<string> m_vecContinueTypeName;
+	string m_MyTypeName;
 	bool m_UpdateCollision;
 
 #ifdef _DEBUG

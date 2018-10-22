@@ -22,6 +22,7 @@ TimeManager::~TimeManager()
 bool TimeManager::Init()
 {
 	CreateTimer("MainTimer");
+
 	return true;
 }
 

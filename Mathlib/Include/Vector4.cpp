@@ -150,16 +150,16 @@ float & Vector4::operator[](unsigned int Index)
 {
 	switch (Index)
 	{
-		case 1:
+		case 0:
 			return x;
 			break;
-		case 2:
+		case 1:
 			return y;
 			break;
-		case 3:
+		case 2:
 			return z;
 			break;
-		case 4:
+		case 3:
 			return w;
 			break;
 	}

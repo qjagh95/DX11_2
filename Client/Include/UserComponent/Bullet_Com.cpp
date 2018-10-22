@@ -35,6 +35,11 @@ bool Bullet_Com::Init()
 
 	ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("BulletBody");
 	RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(150.0f, 150.0f, 0.0f));
+	RectColl->SetMyTypeName("Bullet");
+	RectColl->PushContinueTypeName("Bullet");
+	RectColl->PushContinueTypeName("Player");
+	RectColl->PushContinueTypeName("MouseWorld");
+
 	SAFE_RELEASE(RectColl);
 
 	m_Transform->SetWorldScale(150.0f, 150.0f, 0.0f);

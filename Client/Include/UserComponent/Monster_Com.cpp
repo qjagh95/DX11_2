@@ -40,6 +40,7 @@ bool Monster_Com::Init()
 
 	ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("MonsterBody");
 	RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(100.0f, 100.0f, 0.0f));
+	RectColl->SetMyTypeName("Monster");
 	RectColl->SetCollsionCallback<Monster_Com>(CCT_FIRST, this, &Monster_Com::BulletHit);
 	RectColl->SetCollsionCallback<Monster_Com>(CCT_FIRST, this, &Monster_Com::BulletRotHit);
 	//RectColl->SetCallback([this](Collider_Com* _src, Collider_Com* _dest, float _time) { BulletHit(_src, _dest, _time); }, CCT_FIRST);
