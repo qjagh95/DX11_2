@@ -11,7 +11,6 @@
 #include <array>
 #include <thread>
 #include <mutex>
-#include <atlstr.h>
 #include <iostream>
 
 //DX11부터는 포함디렉터리 라이브러리 디렉터리 추가없이 바로 헤더추가가 가능하다.

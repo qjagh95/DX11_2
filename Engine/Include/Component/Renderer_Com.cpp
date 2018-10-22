@@ -145,7 +145,7 @@ void Renderer_Com::Render(float DeltaTime)
 	////////////////////////////////////////////////////////////////////////////////////////////
 
 	ShaderManager::Get()->UpdateCBuffer("Component", &m_ComponentCBuffer);
-
+	//버텍스 데이터 덩어리를 쉐이더에 셋팅해주는 역할.
 	Device::Get()->GetContext()->IASetInputLayout(m_LayOut);
 	m_Shader->SetShader();
 
