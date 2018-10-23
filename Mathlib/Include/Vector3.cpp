@@ -280,6 +280,7 @@ Vector3 Vector3::operator*(int ValArr[3]) const
 
 	return Vector3(Src * Dest);
 }
+
 /////////////////////////////////////////////////////////////////////////
 Vector3 Vector3::operator/(const Vector3 & vec) const
 {
@@ -350,6 +351,7 @@ Vector3 Vector3::operator/(int ValArr[3]) const
 
 	return Vector3(Src / Dest);
 }
+
 /////////////////////////////////////////////////////////////////////////
 void Vector3::operator+=(const Vector3 & vec)
 {
@@ -771,6 +773,7 @@ void Vector3::Nomallize()
 
 	*this = XMVector3Normalize(Src);
 }
+
 //벡터 행렬 곱
 Vector3 Vector3::TransformNormal(const Matrix & mat)
 {
@@ -790,6 +793,7 @@ Vector3 Vector3::TransformCoord(const Matrix & mat)
 	XMVECTOR Src = XMLoadFloat3((XMFLOAT3*)this);
 	return Vector3(XMVector3TransformCoord(Src, mat.matrix));
 }
+
 Vector3 Vector3::TransformCoord(const XMMATRIX & mat)
 {
 	XMVECTOR Src = XMLoadFloat3((XMFLOAT3*)this);
@@ -833,7 +837,6 @@ float Vector3::Dot(float Val[3]) const
 	XMVECTOR Dest = XMLoadFloat3((XMFLOAT3*)&Temp);
 
 	return XMVectorGetX(XMVector3Dot(Src, Dest));
-
 }
 
 float Vector3::Dot(int Val[3]) const
@@ -987,6 +990,7 @@ float Vector3::GetAngle(float Val[3]) const
 	//Degree로 변환한다.
 	return RadianToDegree(Angle);
 }
+
 float Vector3::GetAngle(int Val[3]) const
 {
 	//단위벡터로만든다

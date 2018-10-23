@@ -193,6 +193,7 @@ bool ShaderManager::CreateCBuffer(const string & KeyName, int BufferSize, int Re
 
 	return true;
 }
+
 //버텍스와 픽셀쉐이더에 상수버퍼를 셋팅한다.
 bool ShaderManager::UpdateCBuffer(const string& KeyName, void * Info)
 {
@@ -207,7 +208,6 @@ bool ShaderManager::UpdateCBuffer(const string& KeyName, void * Info)
 	{
 		memcpy(mapDesc.pData, Info, getBuffer->BufferSize);
 	}
-
 	Device::Get()->GetContext()->Unmap(getBuffer->cBuffer, 0);
 
 	if (getBuffer->ShaderType & CST_VERTEX)

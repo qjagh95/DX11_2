@@ -46,11 +46,18 @@ int ColliderCircle_Com::Input(float DeltaTime)
 
 int ColliderCircle_Com::Update(float DeltaTime)
 {
-	Vector3 objectPos = m_Object->GetTransform()->GetWorldPos();
+	Vector3 objectPos = m_Transform->GetWorldPos() + m_Pivot * m_VirtualInfo.Radius;
 
 	m_WorldInfo.Radius = m_VirtualInfo.Radius;
+
 	m_WorldInfo.CenterPos.x = objectPos.x;
-	m_WorldInfo.CenterPos.y = objectPos.y;
+	m_WorldInfo.CenterPos.y = objectPos.y + m_WorldInfo.Radius;
+
+	m_SectionMin.x = m_WorldInfo.CenterPos.x - m_WorldInfo.Radius;
+	m_SectionMin.y = m_WorldInfo.CenterPos.y - m_WorldInfo.Radius;
+
+	m_SectionMax.x = m_WorldInfo.CenterPos.x + m_WorldInfo.Radius;
+	m_SectionMax.y = m_WorldInfo.CenterPos.y + m_WorldInfo.Radius;
 
 	return 0;
 }
@@ -72,8 +79,7 @@ void ColliderCircle_Com::Render(float DeltaTime)
 {
 #ifdef _DEBUG
 	Matrix	matPos, matScale, matView;
-	matPos.Translation(m_WorldInfo.CenterPos);
-	//사이즈만큼 커져랏
+	matPos.Translation(Vector3(m_WorldInfo.CenterPos.x + m_WorldInfo.Radius, m_WorldInfo.CenterPos.y, 0.0f));
 	matScale.Scaling(m_WorldInfo.Radius);
 
 	if (m_CollisionGroupName != "UI")
@@ -113,13 +119,13 @@ bool ColliderCircle_Com::Collsion(Collider_Com * Dest, float DeltaTime)
 	switch (Dest->GetCollType())
 	{
 		case CT_RECT:
-			CollsionRectToCircle(((ColliderRect_Com*)Dest)->GetInfo(), m_WorldInfo);
+			return CollsionRectToCircle(((ColliderRect_Com*)Dest)->GetInfo(), m_WorldInfo);
 			break;
 		case CT_CIRCLE:
-			CollsionCircleToCircle(((ColliderCircle_Com*)Dest)->GetInfo(), m_WorldInfo);
+			return CollsionCircleToCircle(((ColliderCircle_Com*)Dest)->GetInfo(), m_WorldInfo);
 			break;
 		case CT_POINT:
-			CollsionCircleToPoint(m_WorldInfo, ((ColliderPoint_Com*)Dest)->GetInfo());
+			return CollsionCircleToPoint(m_WorldInfo, ((ColliderPoint_Com*)Dest)->GetInfo());
 			break;
 	}
 	return false;

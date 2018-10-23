@@ -295,32 +295,32 @@ bool Collider_Com::CollsionRectToPoint(const BoxInfo & Src, const Vector3 & Dest
 bool Collider_Com::CollsionRectToCircle(const BoxInfo & Src, const CircleInfo & Dest)
 {
 	BoxInfo CircleRect;
-	Vector3 CircleCenterPos = Dest.CenterPos;
+	Vector3 CenterPos = Dest.CenterPos;
 
-	if ((Src.Min.x <= CircleCenterPos.x && Src.Max.x >= CircleCenterPos.x) || (Src.Max.y <= CircleCenterPos.y, Src.Min.y >= CircleCenterPos.y))
+	if ((Src.Min.x <= CenterPos.x && Src.Max.x >= CenterPos.x) || (Src.Max.y >= CenterPos.y, Src.Min.y <= CenterPos.y))
 	{
 		CircleRect.Min.x = Src.Min.x - Dest.Radius;
+		CircleRect.Min.y = Src.Min.y - Dest.Radius;
+
 		CircleRect.Max.y = Src.Max.y + Dest.Radius;
 		CircleRect.Max.x = Src.Max.x + Dest.Radius;
-		CircleRect.Min.y = Src.Min.x - Dest.Radius;
 
-		if ((CircleRect.Min.x < CircleCenterPos.x && CircleRect.Max.x > CircleCenterPos.x) && (CircleRect.Max.y < CircleCenterPos.y && CircleRect.Min.y > CircleCenterPos.y))
+		if ((CircleRect.Min.x <= CenterPos.x && CircleRect.Max.x >= CenterPos.x) && (CircleRect.Max.y >= CenterPos.y && CircleRect.Min.y <= CenterPos.y))
 			return true;
 		else
 			return false;
 	}
-
 	else
 	{
-		Vector3 leftbottom = Src.Min;
-		Vector3 righttop = Src.Max;
-		Vector3 lefttop = Vector3(Src.Min.x, Src.Max.y, 1.0f);
-		Vector3 rightbottom = Vector3(Src.Max.x, Src.Min.x, 1.0f);
+		Vector3 LeftBottom = Src.Min;
+		Vector3 RightTop = Src.Max;
+		Vector3 LeftTop = Vector3(Src.Min.x, Src.Max.y, 1.0f);
+		Vector3 RightBottom = Vector3(Src.Max.x, Src.Min.x, 1.0f);
 
-		bool l = leftbottom.GetDistance(CircleCenterPos) <= Dest.Radius;
-		bool r = righttop.GetDistance(CircleCenterPos) <= Dest.Radius;
-		bool b = lefttop.GetDistance(CircleCenterPos) <= Dest.Radius;
-		bool t = rightbottom.GetDistance(CircleCenterPos) <= Dest.Radius;
+		bool l = LeftBottom.GetDistance(CenterPos) <= Dest.Radius;
+		bool r = RightTop.GetDistance(CenterPos) <= Dest.Radius;
+		bool b = LeftTop.GetDistance(CenterPos) <= Dest.Radius;
+		bool t = RightBottom.GetDistance(CenterPos) <= Dest.Radius;
 
 		if (l || r || b || t)
 			return true;
@@ -336,6 +336,26 @@ bool Collider_Com::CollsionCircleToCircle(CircleInfo & Src, const CircleInfo & D
 
 bool Collider_Com::CollsionCircleToPoint(CircleInfo & Src, Vector3 & Dest)
 {
-	cout << Src.CenterPos.GetDistance(Dest) << endl;
 	return Src.CenterPos.GetDistance(Dest) <= Src.Radius;
+}
+
+bool Collider_Com::CollsionOBBToRect(const OBB2DInfo & Src, const BoxInfo & Dest)
+{
+	return true;
+}
+
+bool Collider_Com::CollsionOBBToPoint(OBB2DInfo & Src, const Vector3 & Dest)
+{
+	return true;
+}
+
+bool Collider_Com::CollsionOBBToOBB(OBB2DInfo & Src, OBB2DInfo & Dest)
+{
+	for (int i = 0; i < 2; i++)
+	{
+		float Temp = 0.0f;
+		Src.Axis[i].Dot(Dest.CenterPos);
+	}
+
+	return false;
 }

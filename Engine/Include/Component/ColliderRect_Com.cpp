@@ -1,6 +1,7 @@
 #include "ColliderRect_Com.h"
 #include "ColliderPoint_Com.h"
 #include "ColliderCircle_Com.h"
+#include "ColliderOBB2D_Com.h"
 #include "Transform_Com.h"
 #include "Camera_Com.h"
 
@@ -125,7 +126,6 @@ bool ColliderRect_Com::Collsion(Collider_Com * Dest, float DeltaTime)
 			return CollsionRectToCircle(m_WorldInfo, ((ColliderCircle_Com*)Dest)->GetInfo());
 			break;
 	}
-
 	return false;
 }
 

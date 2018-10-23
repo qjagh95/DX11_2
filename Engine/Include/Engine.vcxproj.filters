@@ -142,6 +142,9 @@
     <Filter Include="Core\11. Scene\Scene">
       <UniqueIdentifier>{5937b081-513f-4203-ac02-60942f2742b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderOBB2D">
+      <UniqueIdentifier>{cb3bf990-d124-4f8c-8a97-67d2c8af8b3e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -258,6 +261,9 @@
     <ClInclude Include="Component\ColliderPoint_Com.h">
       <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderPoint</Filter>
     </ClInclude>
+    <ClInclude Include="Component\ColliderOBB2D_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderOBB2D</Filter>
+    </ClInclude>
     <ClInclude Include="Component\ColliderCircle_Com.h">
       <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderCircle</Filter>
     </ClInclude>
@@ -366,6 +372,9 @@
     </ClCompile>
     <ClCompile Include="Component\ColliderPoint_Com.cpp">
       <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ColliderOBB2D_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderOBB2D</Filter>
     </ClCompile>
     <ClCompile Include="Component\ColliderCircle_Com.cpp">
       <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderCircle</Filter>

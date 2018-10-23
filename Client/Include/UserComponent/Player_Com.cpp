@@ -4,6 +4,7 @@
 
 #include "Component/ColliderRect_Com.h"
 #include "Component/ColliderCircle_Com.h"
+#include "Component/ColliderOBB2D_Com.h"
 #include "Component/Transform_Com.h"
 #include "Component/Renderer_Com.h"
 #include "Component/Material_Com.h"
@@ -50,10 +51,16 @@ bool Player_Com::Init()
 	//RectColl->SetMyTypeName("Player");
 	//SAFE_RELEASE(RectColl);
 
-	ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("PlayerCircleBody");
-	CircleColl->SetInfo(60.0f);
-	CircleColl->SetMyTypeName("Player");
-	SAFE_RELEASE(CircleColl);
+	//ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("PlayerCircleBody");
+	//CircleColl->SetInfo(30.0f);
+	//CircleColl->SetMyTypeName("Player");
+	//SAFE_RELEASE(CircleColl);
+
+	ColliderOBB2D_Com* OBBColl = m_Object->AddComponent<ColliderOBB2D_Com>("PlayerOBBBody");
+	Vector3 Axis[2] = { Vector3::Axis[0], Vector3::Axis[1] };
+	float Lenth[2] = { 50.0f, 50.0f };
+	OBBColl->SetInfo(Vector3(0.0f, 50.0f, 0.0f), Axis, Lenth);
+	SAFE_RELEASE(OBBColl);
 
 	m_Transform->SetWorldScale(100.0f, 100.0f, 1.0f);
 	m_Transform->SetWorldPivot(0.5f, 0.0f, 0.0f);
@@ -100,9 +107,9 @@ int Player_Com::Input(float DeltaTime)
 	//	m_Transform->RotationZ(-180.0f, DeltaTime);
 
 	if (KeyInput::Get()->KeyPress("MoveUp"))
-		m_Transform->Move(AXIS_Y, 200.0f, DeltaTime);
+		m_Transform->RotationZ(180.0f, DeltaTime);
 	else if (KeyInput::Get()->KeyPress("MoveDown"))
-		m_Transform->Move(AXIS_Y, -200.0f, DeltaTime);
+		m_Transform->RotationZ(-180.0f, DeltaTime);
 	if (KeyInput::Get()->KeyPress("MoveRight"))
 		m_Transform->Move(AXIS_X, 200.0f, DeltaTime);
 	else if (KeyInput::Get()->KeyPress("MoveLeft"))

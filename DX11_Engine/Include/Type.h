@@ -80,25 +80,11 @@ struct JEONG_DLL CircleInfo
 	Vector3 CenterPos;
 };
 
-//16
-struct JEONG_DLL TransformCBuffer
+struct JEONG_DLL OBB2DInfo
 {
-	Matrix World;
-	Matrix View;
-	Matrix Projection;
-	Matrix WV;
-	Matrix WVP;
-	Vector3 Pivot; //12
-	float Empty1;	//4바이트
-	Vector3 Lenth; //12
-	float Empty2;   //4바이트 (16바이트패딩으로 바이트 맞춰주기위함)
-};
-
-//나중에 추가할 컴포넌트가 상수버퍼를 사용하는지 안하는지를 판단하는 상수버퍼.
-struct JEONG_DLL ComponentCBuffer
-{
-	int TextureAnimation2D;
-	Vector3 Empty;
+	Vector3 CenterPos;
+	Vector3 Axis[2];
+	float Lenth[2];
 };
 
 struct JEONG_DLL Clip2DFrame
@@ -138,6 +124,27 @@ struct JEONG_DLL RendererCBuffer
 	void* pBuffer;
 	string Name;
 	int BufferSize;
+};
+
+//16
+struct JEONG_DLL TransformCBuffer
+{
+	Matrix World;
+	Matrix View;
+	Matrix Projection;
+	Matrix WV;
+	Matrix WVP;
+	Vector3 Pivot; //12
+	float Empty1;	//4바이트
+	Vector3 Lenth; //12
+	float Empty2;   //4바이트 (16바이트패딩으로 바이트 맞춰주기위함)
+};
+
+//나중에 추가할 컴포넌트가 상수버퍼를 사용하는지 안하는지를 판단하는 상수버퍼.
+struct JEONG_DLL ComponentCBuffer
+{
+	int TextureAnimation2D;
+	Vector3 Empty;
 };
 
 JEONG_END

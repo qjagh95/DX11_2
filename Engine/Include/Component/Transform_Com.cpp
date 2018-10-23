@@ -385,10 +385,6 @@ void Transform_Com::LookAt(const Vector3 & Vec, AXIS eAxis)
 	//가상축과 바라보려는 방향(View)의 각도를 구한다 (내적)
 	float Angle = Axis.GetAngle(View);
 
-	char Buffer[255] = {};
-	sprintf_s(Buffer, "Angle : %f \n", Angle);
-	_cprintf(Buffer);
-
 	Vector3 vRotAxis = Axis.Cross(View);
 	vRotAxis.Nomallize();
 
