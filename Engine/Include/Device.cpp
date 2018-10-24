@@ -67,7 +67,7 @@ bool Device::Init(HWND hWnd, unsigned int Width, unsigned int Height, bool isWin
 	SwapDesc.Windowed = isWindowMode;											 ///창모드 풀스크린모드 설정.
 	SwapDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;								 ///옵션 설정에따라 다르다. 필요한것에 따라서 하자.
 	//여기까지 백버퍼를 만들긴 한것이다.
-	
+
 	//1. 어댑터 타입 (그래픽카드가 2개이상일경우, 하지만 그런경우는 거의 없기때문에 NULLPTR)
 	//2. 드라이버 타입 - 그래픽카드가 DX11을 지원하지 않을경우 CPU가 해주도록하는 설정 (DX11을 지원하지 않으면 느리다. (나중에 드라이버가속등을 사용하기위함.)
 	//3. HMOUDLE - DirceX를 돌려주는 별도의 소프트웨어가 있다면 설정. == 의미없엉

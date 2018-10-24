@@ -89,7 +89,7 @@ void ColliderRect_Com::Render(float DeltaTime)
 	TransCBuffer.World = matScale * matPos;
 	TransCBuffer.View = getCamera->GetViewMatrix();
 	TransCBuffer.Projection = getCamera->GetProjection();
-	TransCBuffer.Pivot = m_Transform->GetPivot();
+	TransCBuffer.Pivot = m_Pivot;
 	TransCBuffer.Lenth = m_Mesh->GetLenth();
 
 	TransCBuffer.WV = TransCBuffer.World * TransCBuffer.View;
@@ -124,6 +124,9 @@ bool ColliderRect_Com::Collsion(Collider_Com * Dest, float DeltaTime)
 			break;
 		case CT_CIRCLE:
 			return CollsionRectToCircle(m_WorldInfo, ((ColliderCircle_Com*)Dest)->GetInfo());
+			break;
+		case CT_OBB2D:
+			return  CollsionOBB2DToRect(((ColliderOBB2D_Com*)Dest)->GetInfo(), m_WorldInfo);
 			break;
 	}
 	return false;

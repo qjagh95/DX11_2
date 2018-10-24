@@ -357,15 +357,18 @@ void CollsionManager::Collsion(float DeltaTime)
 				//4개의 객체와 충돌중인 플레이어가 이동 후 다른 공간인덱스로 옮겨갔는데
 				//4개의 객체는 충돌되서 사라지고 플레이어객체는 공간이 틀어졌으니 이전컬라이더를 검사해서
 				//있다면 충돌됬단뜻이니 End함수를 한번 호출해야한다.
-				for (int j = 0; j < getSection->Size; j++)
-					getSection->ColliderList[j]->CheckPrevCollisionInSection(DeltaTime);
+
+				//TODO
+				//for (int j = 0; j < getSection->Size; j++)
+				//	getSection->ColliderList[j]->CheckPrevCollisionInSection(DeltaTime);
 
 				getSection->Size = 0;
 				continue;
 			}
 
-			for (int j = 0; j < getSection->Size; j++)
-				getSection->ColliderList[j]->CheckPrevCollisionInSection(DeltaTime);
+			//TODO
+			//for (int j = 0; j < getSection->Size; j++)
+			//	getSection->ColliderList[j]->CheckPrevCollisionInSection(DeltaTime);
 
 			//각 영역 별 충돌체 수만큼 반복한다.
 			//버블정렬꼴.
@@ -389,9 +392,6 @@ void CollsionManager::Collsion(float DeltaTime)
 						if (CollSrc->GetMyTypeName() == CollDest->GetContinueTypeName(a))
 							Pair = true;
 					}
-
-					//if (CollSrc->GetContinueTypeName() == CollDest->GetContinueTypeName())
-					//	continue;
 
 					if (CollSrc->Collsion(CollDest, DeltaTime) == true && Pair == false)
 					{

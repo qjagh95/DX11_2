@@ -6,6 +6,7 @@
 #include "Component/Renderer_Com.h"
 #include "Component/Material_Com.h"
 #include "Component/ColliderCircle_Com.h"
+#include "Component/ColliderOBB2D_Com.h"
 
 Monster_Com::Monster_Com()
 	:Target(NULLPTR), TimeVar(0.0f)
@@ -35,23 +36,28 @@ bool Monster_Com::Init()
 
 	SAFE_RELEASE(MaterialComponent);
 
-	m_Transform->SetWorldPos(600.0f, 500.0f, 0.0f);
-	m_Transform->SetWorldScale(100.0f, 100.0f, 1.0f);
+	m_Transform->SetWorldPos(600.0f, 720.0f / 2.0f, 0.0f);
+	m_Transform->SetWorldScale(300.0f, 300.0f, 1.0f);
 	m_Transform->SetWorldPivot(0.5f, 0.0f, 0.0f);
 
-	ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("MonsterBody");
-	RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(100.0f, 100.0f, 0.0f));
-	RectColl->SetMyTypeName("Monster");
-	RectColl->SetPivot(Vector3(0.5f, 0.0f, 0.0f));
-	RectColl->SetCollsionCallback<Monster_Com>(CCT_FIRST, this, &Monster_Com::BulletHit);
-	RectColl->SetCollsionCallback<Monster_Com>(CCT_FIRST, this, &Monster_Com::BulletRotHit);
+	//ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("MonsterBody");
+	//RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(100.0f, 100.0f, 0.0f));
+	//RectColl->SetMyTypeName("Monster");
+	//RectColl->SetCollsionCallback<Monster_Com>(CCT_FIRST, this, &Monster_Com::BulletHit);
+	//RectColl->SetCollsionCallback<Monster_Com>(CCT_FIRST, this, &Monster_Com::BulletRotHit);
 
-	//ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("MCircleBody");
-	//CircleColl->SetInfo(60.0f);
-	//CircleColl->SetMyTypeName("M");
-	//SAFE_RELEASE(CircleColl);
+	//SAFE_RELEASE(RectColl);
 
-	SAFE_RELEASE(RectColl);
+	ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("MCircleBody");
+	CircleColl->SetInfo(60.0f);
+	CircleColl->SetMyTypeName("M");
+	SAFE_RELEASE(CircleColl);
+
+	//ColliderOBB2D_Com* OBBColl = m_Object->AddComponent<ColliderOBB2D_Com>("MonsterOBBBody");
+	//Vector3 Axis[2] = { Vector3::Axis[0], Vector3::Axis[1] };
+	//float Lenth[2] = { 150.0f, 150.0f };
+	//OBBColl->SetInfo(Vector3(0.0f, 150.0f, 0.0f), Axis, Lenth);
+	//SAFE_RELEASE(OBBColl);
 
 	Target = GameObject::FindObject("Player");
 	return true;

@@ -46,25 +46,25 @@ bool Player_Com::Init()
 	MaterialComponent->SetDiffuseTexture(0, "Player", TEXT("Player.png"));
 	SAFE_RELEASE(MaterialComponent);
 
-	//ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("PlayerBody");
-	//RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(100.0f, 100.0f, 0.0f));
-	//RectColl->SetMyTypeName("Player");
-	//SAFE_RELEASE(RectColl);
+	ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("PlayerBody");
+	RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(100.0f, 100.0f, 0.0f));
+	RectColl->SetMyTypeName("Player");
+	SAFE_RELEASE(RectColl);
 
 	//ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("PlayerCircleBody");
 	//CircleColl->SetInfo(30.0f);
 	//CircleColl->SetMyTypeName("Player");
 	//SAFE_RELEASE(CircleColl);
 
-	ColliderOBB2D_Com* OBBColl = m_Object->AddComponent<ColliderOBB2D_Com>("PlayerOBBBody");
-	Vector3 Axis[2] = { Vector3::Axis[0], Vector3::Axis[1] };
-	float Lenth[2] = { 50.0f, 50.0f };
-	OBBColl->SetInfo(Vector3(0.0f, 50.0f, 0.0f), Axis, Lenth);
-	SAFE_RELEASE(OBBColl);
+	//ColliderOBB2D_Com* OBBColl = m_Object->AddComponent<ColliderOBB2D_Com>("PlayerOBBBody");
+	//Vector3 Axis[2] = { Vector3::Axis[0], Vector3::Axis[1] };
+	//float Lenth[2] = { 150.f, 150.f };
+	//OBBColl->SetInfo(Vector3(0.0f, 150.f, 0.0f), Axis, Lenth);
+	//SAFE_RELEASE(OBBColl);
 
-	m_Transform->SetWorldScale(100.0f, 100.0f, 1.0f);
+	m_Transform->SetWorldScale(300.0f, 300.0f, 1.0f);
 	m_Transform->SetWorldPivot(0.5f, 0.0f, 0.0f);
-	m_Transform->SetWorldPos(600.0f, 0.0f, 1.0f);
+	m_Transform->SetWorldPos(600.0f + 300, 720.0f / 2.0f, 1.0f);
 
 	myAnimation = m_Object->AddComponent<Animation2D_Com>("PlayerAnimation");
 		
@@ -106,13 +106,13 @@ int Player_Com::Input(float DeltaTime)
 	//else if (KeyInput::Get().KeyPress("MoveRight"))
 	//	m_Transform->RotationZ(-180.0f, DeltaTime);
 
-	if (KeyInput::Get()->KeyPress("MoveUp"))
+	if (KeyInput::Get()->KeyPress("MoveLeft"))
 		m_Transform->RotationZ(180.0f, DeltaTime);
-	else if (KeyInput::Get()->KeyPress("MoveDown"))
+	else if (KeyInput::Get()->KeyPress("MoveRight"))
 		m_Transform->RotationZ(-180.0f, DeltaTime);
-	if (KeyInput::Get()->KeyPress("MoveRight"))
+	if (KeyInput::Get()->KeyPress("MoveUp"))
 		m_Transform->Move(AXIS_X, 200.0f, DeltaTime);
-	else if (KeyInput::Get()->KeyPress("MoveLeft"))
+	else if (KeyInput::Get()->KeyPress("MoveDown"))
 		m_Transform->Move(AXIS_X, -200.0f, DeltaTime);
 
 	if (KeyInput::Get()->KeyDown("S1"))

@@ -52,7 +52,9 @@ int ColliderOBB2D_Com::Update(float DeltaTime)
 
 int ColliderOBB2D_Com::LateUpdate(float DeltaTime)
 {
+	//내 오브젝트의 회전행렬을 가져온다.
 	Matrix RotMat = m_Transform->GetWorldRotMatrix();
+	//내 오브젝트의 WorldPos를 삽입한다.
 	memcpy(&RotMat[3][0], &m_Transform->GetWorldPos(), sizeof(Vector3));
 
 	//벡터 행렬곱(Pos를 따라와야되니 Coord (w값1))
@@ -63,27 +65,22 @@ int ColliderOBB2D_Com::LateUpdate(float DeltaTime)
 	{
 		//Axis는 방향만 알면되니 Nomal(w값 0)
 		m_WorldInfo.Axis[i] = m_Virtual.Axis[i].TransformNormal(RotMat);
-		m_WorldInfo.Axis[i].Nomallize();
+		//m_WorldInfo.Axis[i].Nomallize();
 		//해당 방향에 해당 길이만큼 늘린다.
 		TempAxis[i] = m_WorldInfo.Axis[i] * m_WorldInfo.Lenth[i];
 	}
 	
 	//4개의 사각형 꼭지점을 구해야한다. (공간할당을 위함)
-	Vector3 v0 = m_WorldInfo.CenterPos - TempAxis[0] - TempAxis[1];
-	Vector3 v1 = m_WorldInfo.CenterPos - TempAxis[0] + TempAxis[1];
-	Vector3 v2 = m_WorldInfo.CenterPos + TempAxis[0] + TempAxis[1];
-	Vector3 v3 = m_WorldInfo.CenterPos + TempAxis[0] - TempAxis[1];
+	Vector3 LB = m_WorldInfo.CenterPos - TempAxis[0] - TempAxis[1];
+	Vector3 LT = m_WorldInfo.CenterPos - TempAxis[0] + TempAxis[1];
+	Vector3 RT = m_WorldInfo.CenterPos + TempAxis[0] + TempAxis[1];
+	Vector3 RB = m_WorldInfo.CenterPos + TempAxis[0] - TempAxis[1];
 
-	pair<float,float> Min = std::minmax({ v0.x, v1.x ,v2.x, v3.x }, [](float const& _first, float const& _second) {
-		return _first < _second;
-	});
+	pair<float, float> XMinMax = minmax({ LB.x, LT.x ,RT.x, RB.x }, [](float const& _first, float const& _second) {return _first < _second;});
+	pair<float, float> YMinMax = minmax({ LB.y, LT.y, RT.y, RB.y }, [](float const& _first, float const& _second) {return _first < _second;});
 
-	pair<float, float> Max = std::minmax({ v0.y, v1.y, v2.y, v3.y }, [](float const& _first, float const& _second) {
-		return _first < _second;
-	});
-
-	m_SectionMin = Vector3{ Min.first, Min.first, 0.0f };
-	m_SectionMax = Vector3{ Max.second, Max.second, 0.0f };
+	m_SectionMin = Vector3{ XMinMax.first, YMinMax.first, 0.0f };
+	m_SectionMax = Vector3{ XMinMax.second, YMinMax.second, 0.0f };
 
 	return 0;
 }
@@ -107,6 +104,7 @@ void ColliderOBB2D_Com::Render(float DeltaTime)
 	//회전 각도를 구한다. (x = 1 y = 0 축과 내적하여 각도를 구한다.)
 	float Angle = m_WorldInfo.Axis[0].GetAngle(Vector3(1.0f, 0.0f, 0.0f));
 
+	//X방향의 y축은 ->방향이 0이고 <-방향이 1이다. 1부터(180도) y축이줄어들기 시작해서 0이된다.
 	if (m_WorldInfo.Axis[0].y < 0.0f)
 		Angle = 360.0f - Angle;
 
@@ -165,8 +163,13 @@ bool ColliderOBB2D_Com::Collsion(Collider_Com * Dest, float DeltaTime)
 	switch (Dest->GetCollType())
 	{
 		case CT_RECT:
+			return CollsionOBB2DToRect(m_WorldInfo, ((ColliderRect_Com*)Dest)->GetInfo());
 			break;
 		case CT_POINT:
+			return CollsionOBB2DToPoint(m_WorldInfo, ((ColliderPoint_Com*)Dest)->GetInfo());
+			break;
+		case CT_OBB2D:
+			return CollsionOBB2DToOBB2D(m_WorldInfo, ((ColliderOBB2D_Com*)Dest)->GetInfo());
 			break;
 	}
 

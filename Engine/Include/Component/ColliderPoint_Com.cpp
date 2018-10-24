@@ -57,7 +57,7 @@ int ColliderPoint_Com::LateUpdate(float DeltaTime)
 	m_WorldInfo = tempPos + m_Virtual;
 
 	m_SectionMin = m_WorldInfo;
-	m_SectionMax = m_SectionMin;
+	m_SectionMax = m_WorldInfo;
 
 	return 0;
 }
@@ -87,7 +87,7 @@ void ColliderPoint_Com::Render(float DeltaTime)
 	TransCBuffer.World = matScale * matPos;
 	TransCBuffer.View = getCamera->GetViewMatrix();
 	TransCBuffer.Projection = getCamera->GetProjection();
-	TransCBuffer.Pivot = m_Transform->GetPivot();
+	TransCBuffer.Pivot = Vector3{ 0.0f, 0.0f, 0.0f };
 	TransCBuffer.Lenth = m_Mesh->GetLenth();
 
 	TransCBuffer.WV = TransCBuffer.World * TransCBuffer.View;
@@ -116,6 +116,9 @@ bool ColliderPoint_Com::Collsion(Collider_Com * Dest, float DeltaTime)
 			break;
 		case CT_POINT:
 			return m_WorldInfo == ((ColliderPoint_Com*)Dest)->GetInfo();
+			break;
+		case CT_OBB2D:
+			return CollsionOBB2DToPoint(((ColliderOBB2D_Com*)Dest)->GetInfo(), m_WorldInfo);
 			break;
 	}
 	return false;
