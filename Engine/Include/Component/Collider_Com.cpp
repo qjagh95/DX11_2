@@ -338,24 +338,3 @@ bool Collider_Com::CollsionCircleToPoint(CircleInfo & Src, Vector3 & Dest)
 {
 	return Src.CenterPos.GetDistance(Dest) <= Src.Radius;
 }
-
-bool Collider_Com::CollsionOBBToRect(const OBB2DInfo & Src, const BoxInfo & Dest)
-{
-	return true;
-}
-
-bool Collider_Com::CollsionOBBToPoint(OBB2DInfo & Src, const Vector3 & Dest)
-{
-	return true;
-}
-
-bool Collider_Com::CollsionOBBToOBB(OBB2DInfo & Src, OBB2DInfo & Dest)
-{
-	for (int i = 0; i < 2; i++)
-	{
-		float Temp = 0.0f;
-		Src.Axis[i].Dot(Dest.CenterPos);
-	}
-
-	return false;
-}
