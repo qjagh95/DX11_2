@@ -295,48 +295,37 @@ bool Collider_Com::CollsionRectToPoint(const BoxInfo & Src, const Vector3 & Dest
 
 bool Collider_Com::CollsionRectToCircle(const BoxInfo & Src, const CircleInfo & Dest)
 {
-	//if ((Src.Min.x <= CenterPos.x && Src.Max.x >= CenterPos.x) || (Src.Max.y >= CenterPos.y, Src.Min.y <= CenterPos.y))
-	//{
-	//	CircleRect.Min.x = Src.Min.x - Dest.Radius;
-	//	CircleRect.Min.y = Src.Min.y - Dest.Radius;
+	BoxInfo CircleRect;
+	Vector3 CenterPos = Dest.CenterPos;
 
-	//	CircleRect.Max.y = Src.Max.y + Dest.Radius;
-	//	CircleRect.Max.x = Src.Max.x + Dest.Radius;
+	if ((Src.Min.x - Dest.Radius <= CenterPos.x && Src.Max.x + Dest.Radius >= CenterPos.x) && (Src.Max.y + Dest.Radius >= CenterPos.y, Src.Min.y  - Dest.Radius <= CenterPos.y))
+	{
+		CircleRect.Min.x = Src.Min.x - Dest.Radius;
+		CircleRect.Min.y = Src.Min.y - Dest.Radius;
 
-	//	if ((CircleRect.Min.x <= CenterPos.x && CircleRect.Max.x >= CenterPos.x) && (CircleRect.Max.y >= CenterPos.y && CircleRect.Min.y <= CenterPos.y))
-	//		return true;
-	//	else
-	//		return false;
-	//}
-	//else
-	//{
-	//	Vector3 LeftBottom = Src.Min;
-	//	Vector3 RightTop = Src.Max;
-	//	Vector3 LeftTop = Vector3(Src.Min.x, Src.Max.y, 1.0f);
-	//	Vector3 RightBottom = Vector3(Src.Max.x, Src.Min.x, 1.0f);
+		CircleRect.Max.x = Src.Max.x + Dest.Radius;
+		CircleRect.Max.y = Src.Max.y + Dest.Radius;
 
-	//	bool l = LeftBottom.GetDistance(CenterPos) <= Dest.Radius;
-	//	bool r = RightTop.GetDistance(CenterPos) <= Dest.Radius;
-	//	bool b = LeftTop.GetDistance(CenterPos) <= Dest.Radius;
-	//	bool t = RightBottom.GetDistance(CenterPos) <= Dest.Radius;
+		if ((CircleRect.Min.x <= CenterPos.x && CircleRect.Max.x >= CenterPos.x) && (CircleRect.Max.y >= CenterPos.y && CircleRect.Min.y <= CenterPos.y))
+			return true;
+		else
+			return false;
+	}
+	else
+	{
+		Vector3 LeftBottom = Src.Min;
+		Vector3 RightTop = Src.Max;
+		Vector3 LeftTop = Vector3(Src.Min.x, Src.Max.y, 1.0f);
+		Vector3 RightBottom = Vector3(Src.Max.x, Src.Min.x, 1.0f);
 
-	//	if (l || r || b || t)
-	//		return true;
-	//}
+		bool l = LeftBottom.GetDistance(CenterPos) <= Dest.Radius;
+		bool r = RightTop.GetDistance(CenterPos) <= Dest.Radius;
+		bool b = LeftTop.GetDistance(CenterPos) <= Dest.Radius;
+		bool t = RightBottom.GetDistance(CenterPos) <= Dest.Radius;
 
-	Vector3 ResultX;
-	Vector3 ResultY;
-	float LengthX;
-	float LengthY;
-
-	ResultX = clamp(Dest.CenterPos.x, Src.Min.x, Src.Max.x);
-	ResultY = clamp(Dest.CenterPos.y, Src.Min.y, Src.Max.y);
-
-	LengthX = ResultX.GetDistance(Dest.CenterPos.x);
-	LengthY = ResultY.GetDistance(Dest.CenterPos.y);
-
-	if (LengthX < Dest.Radius && LengthY < Dest.Radius)
-		return true;
+		if (l || r || b || t)
+			return true;
+	}
 
 	return false;
 }
@@ -368,9 +357,8 @@ bool Collider_Com::CollsionOBB2DToPoint(const OBB2DInfo & Src, const Vector3 & D
 	// OBB 상자가 Z축으로 회전한 만큼 반대로 점을 OBB상자의 중점을 기준으로
 	// 회전시킨 좌표를 구한다. 이렇게 할 경우 이 점을 OBB상자를 월드축에 정렬된
 	// 일반 RECT로 만들었을 경우의 점 위치가 나오게 되기 때문에
-	// Pt In Rect를 이용해서 처리가 가능하다.
-	// 회전각도를 구한다.
-	
+	// Rect를 이용해서 처리가 가능하다.
+
 	// 회전 각도를 구한다. 회전은 2D 이기 때문에 Z축 회전을 한다.
 	float Angle = Src.Axis[0].GetAngle(Vector3(1.0f, 0.0f, 0.0f));
 
@@ -394,8 +382,30 @@ bool Collider_Com::CollsionOBB2DToPoint(const OBB2DInfo & Src, const Vector3 & D
 bool Collider_Com::CollsionOBB2DToCircle(const OBB2DInfo & Src, const CircleInfo & Dest)
 {
 	Vector3 Distance = Src.CenterPos - Dest.CenterPos;
+	Vector3 DestNormal = Vector3::Nomallize(Distance);
 
-	return false;
+	float A = abs(Src.Axis[0].Dot(DestNormal));
+	float B = abs(Src.Axis[1].Dot(DestNormal));
+
+	float Lenth = abs(Distance.Dot(Src.Axis[0]));
+	float Temp1 = Dest.Radius;
+	float Temp2 = A * Src.Lenth[0] + B * Src.Lenth[1];
+
+	if (Lenth >= Temp1 + Temp2)
+		return false;
+
+	cout<<"1 : " << (int)Lenth << " " << (int)Temp2 << endl;
+
+	Lenth = abs(Distance.Dot(Src.Axis[1]));
+	Temp1 = Dest.Radius;
+	Temp2 = A * Src.Lenth[0] + B * Src.Lenth[1];
+
+	if (Lenth >= Temp1 + Temp2)
+		return false;
+
+	cout <<"2 : " << (int)Lenth << " " << (int)Temp2 << endl;
+
+	return true;
 }
 
 bool Collider_Com::CollsionOBB2DToOBB2D(const OBB2DInfo & Src, const OBB2DInfo & Dest)
@@ -403,7 +413,7 @@ bool Collider_Com::CollsionOBB2DToOBB2D(const OBB2DInfo & Src, const OBB2DInfo &
 	//두 점 사이의 거리를 구한다.
 	Vector3 Distance = Dest.CenterPos - Src.CenterPos;
 
-	//미리 내적처리.
+	//미리 내적처리. (방향을 구한다)
 	float SrcXToDestXDot = abs(Src.Axis[0].Dot(Dest.Axis[0]));
 	float SrcXToDestYDot = abs(Src.Axis[0].Dot(Dest.Axis[1]));
 	float SrcYToDestXDot = abs(Src.Axis[1].Dot(Dest.Axis[0]));
@@ -412,35 +422,35 @@ bool Collider_Com::CollsionOBB2DToOBB2D(const OBB2DInfo & Src, const OBB2DInfo &
 	//Src의 X축에 대한 내적처리
 	//Src X축에 대한 길이를 구한다.
 	//Src.Axis X축을 Distance벡터에 투영하겠다.(X축에 대하여 Distance의 길이가나옴)
-	float Lenth = abs(Src.Axis[0].Dot(Distance));
+	float Lenth = abs(Distance.Dot(Src.Axis[0]));
 	float Temp1 = Src.Lenth[0];
 	float Temp2 = (SrcXToDestXDot * Dest.Lenth[0]) + (SrcXToDestYDot * Dest.Lenth[1]);
 
-	if (Lenth > Temp1 + Temp2)
+	if (Lenth >= Temp1 + Temp2)
 		return false;
 
 	//Src의 Y축에 대한 내적처리
-	Lenth = abs(Src.Axis[1].Dot(Distance));
+	Lenth = abs(Distance.Dot(Src.Axis[1]));
 	Temp1 = Src.Lenth[1];
 	Temp2 = (SrcYToDestXDot * Dest.Lenth[0]) + (SrcYToDestYDot * Dest.Lenth[1]);
 
-	if (Lenth > Temp1 + Temp2)
+	if (Lenth >= Temp1 + Temp2)
 		return false;
 
 	//Dest의 X축에 대한 내적처리 
-	Lenth = abs(Dest.Axis[0].Dot(Distance));
+	Lenth = abs(Distance.Dot(Dest.Axis[0]));
 	Temp1 = Dest.Lenth[0];
 	Temp2 = (SrcXToDestXDot * Src.Lenth[0]) + (SrcXToDestYDot * Src.Lenth[1]);
 
-	if (Lenth > Temp1 + Temp2)
+	if (Lenth >= Temp1 + Temp2)
 		return false;
 
 	//Dest의 Y축에 대한 내적처리 
-	Lenth = abs(Dest.Axis[1].Dot(Distance));
-	Temp1 = Dest.Lenth[0];
+	Lenth = abs(Distance.Dot(Dest.Axis[1]));
+	Temp1 = Dest.Lenth[1];
 	Temp2 = (SrcYToDestXDot * Src.Lenth[0]) + (SrcYToDestYDot * Src.Lenth[1]);
 
-	if (Lenth > Temp1 + Temp2)
+	if (Lenth >= Temp1 + Temp2)
 		return false;
 
 	return true;
