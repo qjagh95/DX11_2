@@ -67,16 +67,16 @@ bool ResourceManager::Init()
 
 	CreateMesh("ColliderRect", COLLIDER_SHADER, POS_LAYOUT, DebugColliderPos, 5, sizeof(Vector3), D3D11_USAGE_DEFAULT, D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 
-	Vector3	DebugColliderCirclePos[36] = {};
+	Vector3	DebugColliderCirclePos[37] = {};
 
 	float Angle = 0.0f;
-	for (int i = 0; i < 36; i++)
+	for (int i = 0; i < 37; i++)
 	{
-		DebugColliderCirclePos[i] = Vector3(sinf(DegreeToRadian(Angle)), cosf(DegreeToRadian(Angle)), 0.0f);
+		DebugColliderCirclePos[i] = Vector3(cosf(DegreeToRadian(Angle)), sinf(DegreeToRadian(Angle)), 0.0f);
 		Angle += 10.0f;
 	}
 
-	CreateMesh("ColliderCircle", COLLIDER_SHADER, POS_LAYOUT, DebugColliderCirclePos, 36, sizeof(Vector3), D3D11_USAGE_DEFAULT, D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+	CreateMesh("ColliderCircle", COLLIDER_SHADER, POS_LAYOUT, DebugColliderCirclePos, 37, sizeof(Vector3), D3D11_USAGE_DEFAULT, D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 #endif
 
 	return true;

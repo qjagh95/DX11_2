@@ -32,6 +32,9 @@ bool MainScene::Init()
 
 	Layer* Default = m_Scene->FindLayer("Default");
 
+	GameObject* MonsterObject = GameObject::CreateObject("Monster", Default);
+	Monster_Com* monster_Com = MonsterObject->AddComponent<Monster_Com>("Monster_Com");
+
 	GameObject* PlayerObject = GameObject::CreateObject("Player", Default);
 	Player_Com* player_Com = PlayerObject->AddComponent<Player_Com>("Player_Com");
 
@@ -40,9 +43,6 @@ bool MainScene::Init()
 
 	GameObject* BulletObject2 = GameObject::CreateProtoType("BulletRot_Clone");
 	BulletRot_Com* bullet_Com2 = BulletObject2->AddComponent<BulletRot_Com>("BulletRot_Com");
-
-	GameObject* MonsterObject = GameObject::CreateObject("Monster", Default);
-	Monster_Com* monster_Com = MonsterObject->AddComponent<Monster_Com>("Monster_Com");
 
 	GameObject* BoomObject = GameObject::CreateProtoType("Boom", Default);
 	BulletBoom_Com* bulletBoom_Com = BoomObject->AddComponent<BulletBoom_Com>("Boom_Com");

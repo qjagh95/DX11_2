@@ -17,7 +17,6 @@ public:
 
 	OBB2DInfo GetInfo() const { return m_WorldInfo; }
 	void SetInfo(const Vector3& Center, Vector3 Axis[2], float Lenth[2]);
-
 private:
 	OBB2DInfo m_Virtual;
 	OBB2DInfo m_WorldInfo;

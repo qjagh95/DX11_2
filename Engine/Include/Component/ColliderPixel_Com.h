@@ -1,8 +1,9 @@
+#pragma once
 #include "Collider_Com.h"
 
 JEONG_BEGIN
 
-class JEONG_DLL ColliderOBB2D_Com : public Collider_Com
+class JEONG_DLL ColliderPixel_Com : public Collider_Com
 {
 public:
 	bool Init() override;
@@ -13,18 +14,19 @@ public:
 	bool Collsion(Collider_Com* Dest, float DeltaTime) override;
 	void CollisionLateUpdate(float DeltaTime) override;
 	void Render(float DeltaTime) override;
-	ColliderOBB2D_Com* Clone() override;
+	ColliderPixel_Com* Clone() override;
 
-	OBB2DInfo GetInfo() const { return m_WorldInfo; }
-	void SetInfo(const Vector3& Center, Vector3 Axis[2], float Lenth[2]);
+	PixelInfo GetInfo() const { return m_WorldInfo; }
+	void SetInfo(const Vector3& Min, const Pixel24& OutColor, const char* FileName, const string& PathKey = TEXTURE_PATH);
+
 private:
-	OBB2DInfo m_Virtual;
-	OBB2DInfo m_WorldInfo;
+	PixelInfo m_Virtual;
+	PixelInfo m_WorldInfo;
 
 protected:
-	ColliderOBB2D_Com();
-	ColliderOBB2D_Com(const ColliderOBB2D_Com& CopyCollider);
-	~ColliderOBB2D_Com();
+	ColliderPixel_Com();
+	ColliderPixel_Com(const ColliderPixel_Com& CopyCollider);
+	~ColliderPixel_Com();
 
 public:
 	friend class GameObject;

@@ -49,7 +49,7 @@ bool Monster_Com::Init()
 	//SAFE_RELEASE(RectColl);
 
 	ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("MCircleBody");
-	CircleColl->SetInfo(60.0f);
+	CircleColl->SetInfo(150.0f);
 	CircleColl->SetMyTypeName("M");
 	SAFE_RELEASE(CircleColl);
 

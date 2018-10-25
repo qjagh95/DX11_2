@@ -66,7 +66,7 @@ VS_OUTPUT_UV Standard_UV_VS(VS_INPUT_UV input)
 
     return output;
 }
-
+  
 PS_OUTPUT_SINGLE Standard_UV_PS(VS_OUTPUT_UV input)
 {
     PS_OUTPUT_SINGLE output = (PS_OUTPUT_SINGLE)0;

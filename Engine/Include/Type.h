@@ -87,6 +87,30 @@ struct JEONG_DLL OBB2DInfo
 	float Lenth[2];
 };
 
+struct JEONG_DLL Pixel24
+{
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+};
+
+struct JEONG_DLL Pixel32
+{
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+	unsigned char a;
+};
+
+struct JEONG_DLL PixelInfo
+{
+	BoxInfo ImageRect;
+	Pixel24 *Color;
+	Pixel24 OutColor;
+	int Width;
+	int Height;
+};
+
 struct JEONG_DLL Clip2DFrame
 {
 	Vector2	LeftTop;

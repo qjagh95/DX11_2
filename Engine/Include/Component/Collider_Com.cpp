@@ -1,4 +1,5 @@
 #include "Collider_Com.h"
+#include "Transform_Com.h"
 
 #include "../Device.h"
 
@@ -14,8 +15,8 @@ JEONG_USING
 
 Collider_Com::Collider_Com()
 {
-	m_CollType = CT_RECT;
 	m_ComType = CT_COLLIDER;
+	m_CollType = CT_RECT;
 	m_CollisionGroupName = "Default";
 	m_UpdateCollision = true;
 
@@ -343,6 +344,7 @@ bool Collider_Com::CollsionCircleToPoint(CircleInfo & Src, Vector3 & Dest)
 bool Collider_Com::CollsionOBB2DToRect(const OBB2DInfo & Src, const BoxInfo & Dest)
 {
 	OBB2DInfo BoxToObb;
+
 	BoxToObb.CenterPos = (Dest.Min + Dest.Max) * 0.5f;
 	BoxToObb.Lenth[0] = Dest.Lenth.x * 0.5f;
 	BoxToObb.Lenth[1] = Dest.Lenth.y * 0.5f;
@@ -381,29 +383,25 @@ bool Collider_Com::CollsionOBB2DToPoint(const OBB2DInfo & Src, const Vector3 & D
 
 bool Collider_Com::CollsionOBB2DToCircle(const OBB2DInfo & Src, const CircleInfo & Dest)
 {
-	Vector3 Distance = Src.CenterPos - Dest.CenterPos;
-	Vector3 DestNormal = Vector3::Nomallize(Distance);
+	Vector3 Distance = Dest.CenterPos - Src.CenterPos;
+	Vector3 DistanceNormal = Vector3::Nomallize(Distance);
 
-	float A = abs(Src.Axis[0].Dot(DestNormal));
-	float B = abs(Src.Axis[1].Dot(DestNormal));
+	float A = abs(Src.Axis[0].Dot(DistanceNormal));
+	float B = abs(Src.Axis[1].Dot(DistanceNormal));
 
 	float Lenth = abs(Distance.Dot(Src.Axis[0]));
 	float Temp1 = Dest.Radius;
-	float Temp2 = A * Src.Lenth[0] + B * Src.Lenth[1];
+	float Temp2 = A * Src.Lenth[0];
 
 	if (Lenth >= Temp1 + Temp2)
 		return false;
-
-	cout<<"1 : " << (int)Lenth << " " << (int)Temp2 << endl;
 
 	Lenth = abs(Distance.Dot(Src.Axis[1]));
 	Temp1 = Dest.Radius;
-	Temp2 = A * Src.Lenth[0] + B * Src.Lenth[1];
+	Temp2 = B * Src.Lenth[1];
 
 	if (Lenth >= Temp1 + Temp2)
 		return false;
-
-	cout <<"2 : " << (int)Lenth << " " << (int)Temp2 << endl;
 
 	return true;
 }
@@ -454,4 +452,9 @@ bool Collider_Com::CollsionOBB2DToOBB2D(const OBB2DInfo & Src, const OBB2DInfo &
 		return false;
 
 	return true;
+}
+
+bool Collider_Com::CollsionRectToPixel(PixelInfo Src, const BoxInfo & Dest)
+{
+	return false;
 }

@@ -2,6 +2,7 @@
 #include "ColliderRect_Com.h"
 #include "ColliderPoint_Com.h"
 #include "ColliderCircle_Com.h"
+#include "ColliderPixel_Com.h"
 #include "Transform_Com.h"
 #include "Camera_Com.h"
 
@@ -57,7 +58,7 @@ int ColliderOBB2D_Com::LateUpdate(float DeltaTime)
 	//내 오브젝트의 WorldPos를 삽입한다.
 	memcpy(&RotMat[3][0], &m_Transform->GetWorldPos(), sizeof(Vector3));
 
-	//벡터 행렬곱(Pos를 따라와야되니 Coord (w값1))
+	//벡터 행렬곱(Pos를 중심으로 + Virtual Pos가 된 위치) 따라와야되니 Coord (w값1))
 	m_WorldInfo.CenterPos = m_Virtual.CenterPos.TransformCoord(RotMat);
 
 	Vector3 TempAxis[2]; 
@@ -167,6 +168,9 @@ bool ColliderOBB2D_Com::Collsion(Collider_Com * Dest, float DeltaTime)
 			break;
 		case CT_POINT:
 			return CollsionOBB2DToPoint(m_WorldInfo, ((ColliderPoint_Com*)Dest)->GetInfo());
+			break;
+		case CT_CIRCLE:
+			return CollsionOBB2DToCircle(m_WorldInfo, ((ColliderCircle_Com*)Dest)->GetInfo());
 			break;
 		case CT_OBB2D:
 			return CollsionOBB2DToOBB2D(m_WorldInfo, ((ColliderOBB2D_Com*)Dest)->GetInfo());
