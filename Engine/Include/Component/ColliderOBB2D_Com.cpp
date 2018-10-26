@@ -175,6 +175,9 @@ bool ColliderOBB2D_Com::Collsion(Collider_Com * Dest, float DeltaTime)
 		case CT_OBB2D:
 			return CollsionOBB2DToOBB2D(m_WorldInfo, ((ColliderOBB2D_Com*)Dest)->GetInfo());
 			break;
+		case CT_PIXEL:
+			return false;
+			break;
 	}
 
 	return false;

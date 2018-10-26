@@ -30,6 +30,9 @@ ColliderPixel_Com::ColliderPixel_Com(const ColliderPixel_Com & CopyCollider)
 	:Collider_Com(CopyCollider)
 {
 	m_Virtual = CopyCollider.m_Virtual;
+
+	m_Virtual.Color = new Pixel24[m_Virtual.Width * m_Virtual.Height];
+	memcpy(m_Virtual.Color, CopyCollider.m_Virtual.Color, sizeof(Pixel24) * m_Virtual.Width * m_Virtual.Height);
 }
 
 ColliderPixel_Com::~ColliderPixel_Com()
@@ -54,14 +57,14 @@ int ColliderPixel_Com::Update(float DeltaTime)
 
 int ColliderPixel_Com::LateUpdate(float DeltaTime)
 {
-	//Vector3 TempPos = m_Transform->GetWorldPos() - m_Transform->GetPivot() * m_Transform->GetWorldScale();
+	Vector3 TempPos = m_Transform->GetWorldPos() - m_Transform->GetPivot() * m_Transform->GetWorldScale();
 
-	//m_WorldInfo.Min = TempPos + m_Virtual.Min + m_Pivot * m_Virtual.Lenth;
-	//m_WorldInfo.Max = TempPos + m_Virtual.Max + m_Pivot * m_Virtual.Lenth;
-	//m_WorldInfo.Lenth = m_Virtual.Lenth;
+	m_WorldInfo.ImageRect.Min = TempPos + m_Virtual.ImageRect.Min + m_Pivot * m_Virtual.ImageRect.Lenth;
+	m_WorldInfo.ImageRect.Max = TempPos + m_Virtual.ImageRect.Max + m_Pivot * m_Virtual.ImageRect.Lenth;
+	m_WorldInfo.ImageRect.Lenth = m_Virtual.ImageRect.Lenth;
 
-	//m_SectionMin = m_WorldInfo.Min;
-	//m_SectionMax = m_WorldInfo.Max;
+	m_SectionMin = m_WorldInfo.ImageRect.Min;
+	m_SectionMax = m_WorldInfo.ImageRect.Max;
 
 	return 0;
 }
@@ -76,37 +79,37 @@ void ColliderPixel_Com::CollisionLateUpdate(float DeltaTime)
 
 void ColliderPixel_Com::Render(float DeltaTime)
 {
-//#ifdef _DEBUG
-//	Matrix	matPos, matScale, matView;
-//	matPos.Translation(m_WorldInfo.Min);
-//	//사이즈만큼 커져랏
-//	matScale.Scaling(m_WorldInfo.Lenth);
-//
-//	if (m_CollisionGroupName != "UI")
-//		matView = m_Scene->GetMainCamera()->GetViewMatrix();
-//
-//	Camera_Com*	getCamera = m_Scene->GetMainCamera();
-//	TransformCBuffer TransCBuffer = {};
-//
-//	TransCBuffer.World = matScale * matPos;
-//	TransCBuffer.View = getCamera->GetViewMatrix();
-//	TransCBuffer.Projection = getCamera->GetProjection();
-//	TransCBuffer.Pivot = m_Pivot;
-//	TransCBuffer.Lenth = m_Mesh->GetLenth();
-//
-//	TransCBuffer.WV = TransCBuffer.World * TransCBuffer.View;
-//	TransCBuffer.WVP = TransCBuffer.WV * TransCBuffer.Projection;
-//
-//	TransCBuffer.World.Transpose();
-//	TransCBuffer.View.Transpose();
-//	TransCBuffer.Projection.Transpose();
-//	TransCBuffer.WV.Transpose();
-//	TransCBuffer.WVP.Transpose();
-//
-//	ShaderManager::Get()->UpdateCBuffer("Transform", &TransCBuffer);
-//
-//	Collider_Com::Render(DeltaTime);
-//#endif // _DEBUG
+#ifdef _DEBUG
+	Matrix	matPos, matScale, matView;
+	matPos.Translation(m_WorldInfo.ImageRect.Min);
+	//사이즈만큼 커져랏
+	matScale.Scaling(m_WorldInfo.ImageRect.Lenth);
+
+	if (m_CollisionGroupName != "UI")
+		matView = m_Scene->GetMainCamera()->GetViewMatrix();
+
+	Camera_Com*	getCamera = m_Scene->GetMainCamera();
+	TransformCBuffer TransCBuffer = {};
+
+	TransCBuffer.World = matScale * matPos;
+	TransCBuffer.View = getCamera->GetViewMatrix();
+	TransCBuffer.Projection = getCamera->GetProjection();
+	TransCBuffer.Pivot = m_Pivot;
+	TransCBuffer.Lenth = m_Mesh->GetLenth();
+
+	TransCBuffer.WV = TransCBuffer.World * TransCBuffer.View;
+	TransCBuffer.WVP = TransCBuffer.WV * TransCBuffer.Projection;
+
+	TransCBuffer.World.Transpose();
+	TransCBuffer.View.Transpose();
+	TransCBuffer.Projection.Transpose();
+	TransCBuffer.WV.Transpose();
+	TransCBuffer.WVP.Transpose();
+
+	ShaderManager::Get()->UpdateCBuffer("Transform", &TransCBuffer);
+
+	Collider_Com::Render(DeltaTime);
+#endif // _DEBUG
 }
 
 ColliderPixel_Com * ColliderPixel_Com::Clone()
@@ -143,21 +146,19 @@ void ColliderPixel_Com::SetInfo(const Vector3 & Min, const Pixel24 & OutColor, c
 	m_Virtual.Color = new Pixel24[Width * Height];
 	fread(m_Virtual.Color, sizeof(Pixel24), Width * Height, pFile);
 
-	Pixel24* TempLine = new Pixel24[Width];
-	//BMP는 픽셀정보가 뒤집어져있다.
-	for (int i = 0; i < Height * 0.5f; i++)
-	{
-		memcpy(TempLine, &m_Virtual.Color[i * Width], sizeof(Pixel24) * Width);
-		memcpy(&m_Virtual.Color[i * Width], &m_Virtual.Color[Height - i - 1], sizeof(Pixel24) * Width);
-		memcpy(&m_Virtual.Color[Height - i - 1], &TempLine, sizeof(Pixel24) * Width);
-	}
-
-	delete[] TempLine;
 	fclose(pFile);
 
 	m_Virtual.ImageRect.Min = Min;
-	m_Virtual.ImageRect.Max.x = (float)Width;
-	m_Virtual.ImageRect.Max.y = (float)Height;
+	m_Virtual.ImageRect.Max = Min + Vector3{ (float)Width, (float)Height, 0.0f };
+
+	m_Virtual.ImageRect.Min.z = 0.0f;
+	m_Virtual.ImageRect.Max.z = 0.0f;
+	m_Virtual.ImageRect.Lenth = 1.0f;
+
+	m_Virtual.Width = Width;
+	m_Virtual.Height = Height;
+
+	m_WorldInfo = m_Virtual;
 }
 
 bool ColliderPixel_Com::Collsion(Collider_Com * Dest, float DeltaTime)
@@ -165,6 +166,7 @@ bool ColliderPixel_Com::Collsion(Collider_Com * Dest, float DeltaTime)
 	switch (m_CollType)
 	{
 		case CT_RECT:
+			return CollsionRectToPixel(((ColliderRect_Com*)Dest)->GetInfo(), m_WorldInfo);
 			break;
 	}
 	return false;

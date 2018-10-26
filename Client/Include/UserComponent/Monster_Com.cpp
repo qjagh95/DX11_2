@@ -36,7 +36,7 @@ bool Monster_Com::Init()
 
 	SAFE_RELEASE(MaterialComponent);
 
-	m_Transform->SetWorldPos(600.0f, 720.0f / 2.0f, 0.0f);
+	m_Transform->SetWorldPos(500.0f, 500.0f, 0.0f);
 	m_Transform->SetWorldScale(300.0f, 300.0f, 1.0f);
 	m_Transform->SetWorldPivot(0.5f, 0.0f, 0.0f);
 

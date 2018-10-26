@@ -121,6 +121,9 @@ bool ColliderPoint_Com::Collsion(Collider_Com * Dest, float DeltaTime)
 		case CT_OBB2D:
 			return CollsionOBB2DToPoint(((ColliderOBB2D_Com*)Dest)->GetInfo(), m_WorldInfo);
 			break;
+		case CT_PIXEL:
+			return false;
+			break;
 	}
 	return false;
 }

@@ -51,6 +51,10 @@ public:
 	Transform_Com* GetMainCameraTransform() const;
 	Camera_Com* GetMainCamera() const;
 
+	GameObject* GetUICameraObject() const;
+	Transform_Com* GetUICameraTransform() const;
+	Camera_Com* GetUICamera() const;
+
 private:
 	class GameObject* FindCamera(const string& TagName);
 
@@ -62,6 +66,10 @@ private:
 	Camera_Com* m_MainCamera;
 	Transform_Com* m_MainCameraTransform;
 	GameObject* m_MainCameraObject;
+
+	Camera_Com* m_UICamera;
+	Transform_Com* m_UICameraTransform;
+	GameObject* m_UICameraObject;
 
 private:
 	Scene();

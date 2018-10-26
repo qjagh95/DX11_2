@@ -193,7 +193,6 @@ void Collider_Com::CheckPrevCollisionInSection(float DeltaTime)
 					bPair = true;
 					break;
 				}
-				cout << endl << endl;
 			}
 
 			if (bPair == true)
@@ -344,7 +343,6 @@ bool Collider_Com::CollsionCircleToPoint(CircleInfo & Src, Vector3 & Dest)
 bool Collider_Com::CollsionOBB2DToRect(const OBB2DInfo & Src, const BoxInfo & Dest)
 {
 	OBB2DInfo BoxToObb;
-
 	BoxToObb.CenterPos = (Dest.Min + Dest.Max) * 0.5f;
 	BoxToObb.Lenth[0] = Dest.Lenth.x * 0.5f;
 	BoxToObb.Lenth[1] = Dest.Lenth.y * 0.5f;
@@ -454,7 +452,31 @@ bool Collider_Com::CollsionOBB2DToOBB2D(const OBB2DInfo & Src, const OBB2DInfo &
 	return true;
 }
 
-bool Collider_Com::CollsionRectToPixel(PixelInfo Src, const BoxInfo & Dest)
+bool Collider_Com::CollsionRectToPixel(BoxInfo Src, const PixelInfo& Dest)
 {
+	if (CollsionRectToRect(Dest.ImageRect, Src) == false)
+		return false;
+
+	//Box를 픽셀공간으로 변환한다.
+	Src.Min -= Dest.ImageRect.Min;
+	Src.Max -= Dest.ImageRect.Min;
+
+	Src.Min.x = Src.Min.x <= 0.0f ? 0.0f : Src.Min.x;
+	Src.Min.y = Src.Min.y <= 0.0f ? 0.0f : Src.Min.y;
+
+	Src.Max.x = Src.Max.x <= 0.0f ? 0.0f : Src.Max.x;
+	Src.Max.y = Src.Max.y <= 0.0f ? 0.0f : Src.Max.y;
+
+	for (int y = (int)Src.Min.y; y < (int)Src.Max.y; y++)
+	{
+		for (int x = (int)Src.Min.x; x < (int)Src.Max.x; x++)
+		{
+			int Index = y * Dest.Width + x;
+			Pixel24& TempPixel = Dest.Color[Index];
+
+			if(TempPixel.r != 0 || TempPixel.g != 0 || TempPixel.b != 0)
+				return true;
+		}
+	}
 	return false;
 }
