@@ -127,7 +127,10 @@ bool ColliderRect_Com::Collsion(Collider_Com * Dest, float DeltaTime)
 			return CollsionRectToCircle(m_WorldInfo, ((ColliderCircle_Com*)Dest)->GetInfo());
 			break;
 		case CT_OBB2D:
-			return  CollsionOBB2DToRect(((ColliderOBB2D_Com*)Dest)->GetInfo(), m_WorldInfo);
+			return CollsionOBB2DToRect(((ColliderOBB2D_Com*)Dest)->GetInfo(), m_WorldInfo);
+			break;
+		case CT_PIXEL:
+			return CollsionRectToPixel(m_WorldInfo, ((ColliderPixel_Com*)Dest)->GetInfo());
 			break;
 	}
 	return false;

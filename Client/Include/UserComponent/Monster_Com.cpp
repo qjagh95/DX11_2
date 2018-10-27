@@ -45,7 +45,6 @@ bool Monster_Com::Init()
 	//RectColl->SetMyTypeName("Monster");
 	//RectColl->SetCollsionCallback<Monster_Com>(CCT_FIRST, this, &Monster_Com::BulletHit);
 	//RectColl->SetCollsionCallback<Monster_Com>(CCT_FIRST, this, &Monster_Com::BulletRotHit);
-
 	//SAFE_RELEASE(RectColl);
 
 	ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("MCircleBody");

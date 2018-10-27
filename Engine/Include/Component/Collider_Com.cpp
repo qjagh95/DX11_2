@@ -464,8 +464,8 @@ bool Collider_Com::CollsionRectToPixel(BoxInfo Src, const PixelInfo& Dest)
 	Src.Min.x = Src.Min.x <= 0.0f ? 0.0f : Src.Min.x;
 	Src.Min.y = Src.Min.y <= 0.0f ? 0.0f : Src.Min.y;
 
-	Src.Max.x = Src.Max.x <= 0.0f ? 0.0f : Src.Max.x;
-	Src.Max.y = Src.Max.y <= 0.0f ? 0.0f : Src.Max.y;
+	Src.Max.x = Src.Max.x >= Dest.Width ? Dest.Width : Src.Max.x;
+	Src.Max.y = Src.Max.y >= Dest.Height ? Dest.Height : Src.Max.y;
 
 	for (int y = (int)Src.Min.y; y < (int)Src.Max.y; y++)
 	{

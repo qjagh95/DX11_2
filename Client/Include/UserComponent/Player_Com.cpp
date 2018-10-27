@@ -46,21 +46,22 @@ bool Player_Com::Init()
 	MaterialComponent->SetDiffuseTexture(0, "Player", TEXT("Player.png"));
 	SAFE_RELEASE(MaterialComponent);
 
-	//ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("PlayerBody");
-	//RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(100.0f, 100.0f, 0.0f));
-	//RectColl->SetMyTypeName("Player");
-	//SAFE_RELEASE(RectColl);
+	ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("PlayerBody");
+	RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(100.0f, 100.0f, 0.0f));
+	RectColl->SetMyTypeName("Player");
+	RectColl->SetCollsionCallback(CCT_DIONG, this, &Player_Com::PixelHit);
+	SAFE_RELEASE(RectColl);
 
 	//ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("PlayerCircleBody");
 	//CircleColl->SetInfo(30.0f);
 	//CircleColl->SetMyTypeName("Player");
 	//SAFE_RELEASE(CircleColl);
 
-	ColliderOBB2D_Com* OBBColl = m_Object->AddComponent<ColliderOBB2D_Com>("PlayerOBBBody");
-	Vector3 Axis[2] = { Vector3::Axis[0], Vector3::Axis[1] };
-	float Lenth[2] = { 150.f, 150.f };
-	OBBColl->SetInfo(Vector3(0.0f, 150.f, 0.0f), Axis, Lenth);
-	SAFE_RELEASE(OBBColl);
+	//ColliderOBB2D_Com* OBBColl = m_Object->AddComponent<ColliderOBB2D_Com>("PlayerOBBBody");
+	//Vector3 Axis[2] = { Vector3::Axis[0], Vector3::Axis[1] };
+	//float Lenth[2] = { 150.f, 150.f };
+	//OBBColl->SetInfo(Vector3(0.0f, 150.f, 0.0f), Axis, Lenth);
+	//SAFE_RELEASE(OBBColl);
 
 	m_Transform->SetWorldScale(300.0f, 300.0f, 1.0f);
 	m_Transform->SetWorldPivot(0.5f, 0.0f, 0.0f);
@@ -237,4 +238,11 @@ void Player_Com::Render(float DeltaTime)
 Player_Com * Player_Com::Clone()
 {
 	return new Player_Com(*this);
+}
+
+void Player_Com::PixelHit(Collider_Com * Src, Collider_Com * Dest, float DeltaTime)
+{
+	if (Dest->GetTag() == "TestPixel")
+	{
+	}
 }

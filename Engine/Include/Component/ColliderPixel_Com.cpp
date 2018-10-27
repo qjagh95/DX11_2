@@ -42,7 +42,7 @@ ColliderPixel_Com::~ColliderPixel_Com()
 
 bool ColliderPixel_Com::Init()
 {
-	return false;
+	return true;
 }
 
 int ColliderPixel_Com::Input(float DeltaTime)
@@ -150,10 +150,11 @@ void ColliderPixel_Com::SetInfo(const Vector3 & Min, const Pixel24 & OutColor, c
 
 	m_Virtual.ImageRect.Min = Min;
 	m_Virtual.ImageRect.Max = Min + Vector3{ (float)Width, (float)Height, 0.0f };
+	m_Virtual.ImageRect.Lenth = m_Virtual.ImageRect.Max - m_Virtual.ImageRect.Min;
 
 	m_Virtual.ImageRect.Min.z = 0.0f;
 	m_Virtual.ImageRect.Max.z = 0.0f;
-	m_Virtual.ImageRect.Lenth = 1.0f;
+	m_Virtual.ImageRect.Lenth.z = 1.0f;
 
 	m_Virtual.Width = Width;
 	m_Virtual.Height = Height;

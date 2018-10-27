@@ -69,3 +69,8 @@ Transform_Com * Component_Base::GetTransform() const
 {
 	return m_Transform;
 }
+
+bool Component_Base::CheckComponentFromType(COMPONENT_TYPE eType)
+{
+	return m_Object->CheckComponentType(eType);
+}

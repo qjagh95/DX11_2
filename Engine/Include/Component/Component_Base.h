@@ -24,6 +24,7 @@ public:
 	GameObject* GetGameObject() const;
 	Transform_Com* GetTransform() const;
 	COMPONENT_TYPE GetComType() const { return m_ComType; }
+	bool CheckComponentFromType(COMPONENT_TYPE eType);
 
 	const list<Component_Base*>* FindComponentFromTag(const string& TagName);
 	const list<Component_Base*>* FindComponentFromType(COMPONENT_TYPE type);

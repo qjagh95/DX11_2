@@ -3,6 +3,7 @@
 #include "../ClientHeader.h"
 
 #include "Component/Animation2D_Com.h"
+#include "Component/Collider_Com.h"
 
 JEONG_USING
 
@@ -17,6 +18,8 @@ public:
 	void CollisionLateUpdate(float DeltaTime) override;
 	void Render(float DeltaTime) override;
 	Player_Com* Clone() override;
+
+	void PixelHit(Collider_Com* Src, Collider_Com* Dest, float DeltaTime);
 
 private:
 	bool isCharge;

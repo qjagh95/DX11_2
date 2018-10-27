@@ -270,7 +270,12 @@ void Renderer_Com::UpdateTransform()
 	//AddComponent를 할때 Component가 가진 Transform_Com변수는 오브젝트가 가진 Transform_Com
 	//변수로 이미 초기화가 되어있다.
 
-	Camera_Com* getCamera = m_Scene->GetMainCamera();
+	Camera_Com* getCamera = NULLPTR;
+
+	if (CheckComponentFromType(CT_UI) == true)
+		getCamera = m_Scene->GetUICamera();
+	else
+		getCamera = m_Scene->GetMainCamera();
 	
 	cBuffer.World = m_Transform->GetWorldMatrix();
 	cBuffer.View = getCamera->GetViewMatrix();

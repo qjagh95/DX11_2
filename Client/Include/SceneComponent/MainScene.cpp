@@ -8,6 +8,8 @@
 #include "Component/Transform_Com.h"
 #include "Component/Renderer_Com.h"
 #include "Component/Camera_Com.h"
+#include "Component/ColliderPixel_Com.h"
+#include "Component/Material_Com.h"
 
 #include "../UserComponent/Player_Com.h"
 #include "../UserComponent/Bullet_Com.h"
@@ -47,6 +49,26 @@ bool MainScene::Init()
 	GameObject* BoomObject = GameObject::CreateProtoType("Boom", Default);
 	BulletBoom_Com* bulletBoom_Com = BoomObject->AddComponent<BulletBoom_Com>("Boom_Com");
 
+	GameObject*	TestPixelColl = GameObject::CreateObject("PixelColl", Default);
+	Renderer_Com* Renderer = TestPixelColl->AddComponent<Renderer_Com>("PixelCollRenderer");
+	Renderer->SetMesh("TextureRect");
+
+	Material_Com* Material = TestPixelColl->FindComponentFromType<Material_Com>(CT_MATERIAL);
+	Material->SetDiffuseTexture(0, "TestPixelColl", TEXT("PixelCollider.bmp"));
+
+	ColliderPixel_Com* ColliderPixel = TestPixelColl->AddComponent<ColliderPixel_Com>("TestPixel");
+
+	Pixel24	tPixel = { 255, 0, 255 };
+	ColliderPixel->SetInfo(Vector3(0.0f, 0.0f, 0.0f), tPixel, "PixelCollider.bmp");
+
+	Transform_Com* pTransform = TestPixelColl->GetTransform();
+	pTransform->SetWorldPos(500.0f, 200.0f, 0.0f);
+	pTransform->SetWorldScale(200.0f, 50.0f, 1.0f);
+
+	SAFE_RELEASE(Renderer);
+	SAFE_RELEASE(Material);
+	SAFE_RELEASE(ColliderPixel);
+	SAFE_RELEASE(TestPixelColl);
 	SAFE_RELEASE(BoomObject);
 	SAFE_RELEASE(bulletBoom_Com);
 	SAFE_RELEASE(BulletObject2);
