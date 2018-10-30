@@ -18,15 +18,15 @@ Scene::Scene()
 
 Scene::~Scene()
 {
+	GameObject::DestroyProtoType(this);
+
 	Safe_Release_Map(m_CameraMap);
 	Safe_Release_VecList(m_LayerList);
 	Safe_Release_VecList(m_SceneComponentList);
-	GameObject::DestroyProtoType(this);
 
 	SAFE_RELEASE(m_MainCamera);
 	SAFE_RELEASE(m_MainCameraTransform);
 	SAFE_RELEASE(m_MainCameraObject);
-
 	SAFE_RELEASE(m_UICamera);
 	SAFE_RELEASE(m_UICameraObject);
 	SAFE_RELEASE(m_UICameraTransform);
@@ -42,7 +42,7 @@ bool Scene::Init()
 	m_MainCameraTransform = m_MainCameraObject->GetTransform();
 	m_MainCamera = m_MainCameraObject->FindComponentFromType<Camera_Com>(CT_CAMERA);
 
-	m_UICameraObject = CreateCamera("UICamera", Vector3(0.0f, 0.0f, 0.0f), CT_ORTHO, (float)Device::Get()->GetWinSize().Width, (float)Device::Get()->GetWinSize().Height, 60.0f, 0.03f, 1000.0f);
+	m_UICameraObject = CreateCamera("UICamera", Vector3(0.0f, 0.0f, 0.0f), CT_ORTHO, (float)Device::Get()->GetWinSize().Width, (float)Device::Get()->GetWinSize().Height, 60.0f, 0.0f, 1000.0f);
 	m_UICameraTransform = m_UICameraObject->GetTransform();
 	m_UICamera = m_UICameraObject->FindComponentFromType<Camera_Com>(CT_CAMERA);
 
@@ -474,34 +474,4 @@ GameObject * Scene::FindCamera(const string & TagName)
 		return NULLPTR;
 
 	return FindIter->second;
-}
-
-GameObject * Scene::GetMainCameraObject() const
-{
-	return m_MainCameraObject;
-}
-
-Transform_Com * Scene::GetMainCameraTransform() const
-{
-	return m_MainCameraTransform;
-}
-
-Camera_Com * Scene::GetMainCamera() const
-{
-	return m_MainCamera;
-}
-
-GameObject * Scene::GetUICameraObject() const
-{
-	return m_UICameraObject;
-}
-
-Transform_Com * Scene::GetUICameraTransform() const
-{
-	return m_UICameraTransform;
-}
-
-Camera_Com * Scene::GetUICamera() const
-{
-	return m_UICamera;
 }

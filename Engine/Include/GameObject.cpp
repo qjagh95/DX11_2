@@ -271,6 +271,16 @@ GameObject * GameObject::Clone()
 	return new GameObject(*this);
 }
 
+void GameObject::AfterClone()
+{
+	list<Component_Base*>::iterator StartIter = m_ComponentList.begin();
+	list<Component_Base*>::iterator EndIter = m_ComponentList.end();
+
+	for (;StartIter != EndIter; StartIter++)
+		(*StartIter)->AfterClone();
+
+}
+
 void GameObject::SetScene(Scene * scene)
 {
 	m_Scene = scene;
@@ -414,6 +424,7 @@ GameObject * GameObject::CreateClone(const string & TagName, const string & Prot
 
 	GameObject*	pClone = newCloneObject->Clone();
 	pClone->SetTag(TagName);
+	pClone->AfterClone();
 
 	if (layer != NULLPTR)
 		layer->AddObject(pClone);

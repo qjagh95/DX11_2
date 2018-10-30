@@ -228,8 +228,8 @@ void Collider_Com::OnCollsionFirst(Collider_Com * Dest, float DeltaTime)
 
 void Collider_Com::OnCollsionDoing(Collider_Com * Dest, float DeltaTime)
 {
-	list<function<void(Collider_Com*, Collider_Com*, float)>>::iterator	StartIter = m_CollisionFunc[CCT_DIONG].begin();
-	list<function<void(Collider_Com*, Collider_Com*, float)>>::iterator	EndIter = m_CollisionFunc[CCT_DIONG].end();
+	list<function<void(Collider_Com*, Collider_Com*, float)>>::iterator	StartIter = m_CollisionFunc[CCT_DOING].begin();
+	list<function<void(Collider_Com*, Collider_Com*, float)>>::iterator	EndIter = m_CollisionFunc[CCT_DOING].end();
 
 	//함수포인터 실행
 	for (; StartIter != EndIter; ++StartIter)
@@ -298,7 +298,7 @@ bool Collider_Com::CollsionRectToCircle(const BoxInfo & Src, const CircleInfo & 
 	BoxInfo CircleRect;
 	Vector3 CenterPos = Dest.CenterPos;
 
-	if ((Src.Min.x - Dest.Radius <= CenterPos.x && Src.Max.x + Dest.Radius >= CenterPos.x) && (Src.Max.y + Dest.Radius >= CenterPos.y, Src.Min.y  - Dest.Radius <= CenterPos.y))
+	if ((Src.Min.x <= CenterPos.x && Src.Max.x >= CenterPos.x) && (Src.Max.y >= CenterPos.y && Src.Min.y <= CenterPos.y))
 	{
 		CircleRect.Min.x = Src.Min.x - Dest.Radius;
 		CircleRect.Min.y = Src.Min.y - Dest.Radius;
@@ -315,15 +315,15 @@ bool Collider_Com::CollsionRectToCircle(const BoxInfo & Src, const CircleInfo & 
 	{
 		Vector3 LeftBottom = Src.Min;
 		Vector3 RightTop = Src.Max;
-		Vector3 LeftTop = Vector3(Src.Min.x, Src.Max.y, 1.0f);
-		Vector3 RightBottom = Vector3(Src.Max.x, Src.Min.x, 1.0f);
+		Vector3 LeftTop = Vector3(Src.Min.x, Src.Max.y, 0.0f);
+		Vector3 RightBottom = Vector3(Src.Max.x, Src.Min.y, 0.0f);
 
 		bool l = LeftBottom.GetDistance(CenterPos) <= Dest.Radius;
 		bool r = RightTop.GetDistance(CenterPos) <= Dest.Radius;
 		bool b = LeftTop.GetDistance(CenterPos) <= Dest.Radius;
 		bool t = RightBottom.GetDistance(CenterPos) <= Dest.Radius;
 
-		if (l || r || b || t)
+		if (l == true || r == true || b == true || t == true)
 			return true;
 	}
 

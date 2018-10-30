@@ -44,16 +44,16 @@ public:
 		return true;
 	}
 
-	GameObject* CreateCamera(const string& TagName, const Vector3& Pos,CAMERA_TYPE eType, float Width, float Height, float ViewAngle, float Near, float Far);
+	GameObject* CreateCamera(const string& TagName, const Vector3& Pos, CAMERA_TYPE eType, float Width, float Height, float ViewAngle, float Near, float Far);
 	void ChangeCamera(const string& TagName);
 
-	GameObject* GetMainCameraObject() const;
-	Transform_Com* GetMainCameraTransform() const;
-	Camera_Com* GetMainCamera() const;
+	GameObject* GetMainCameraObject() const { return m_MainCameraObject; }
+	Transform_Com* GetMainCameraTransform() const { return m_MainCameraTransform; }
+	Camera_Com* GetMainCamera() const { return m_MainCamera; }
 
-	GameObject* GetUICameraObject() const;
-	Transform_Com* GetUICameraTransform() const;
-	Camera_Com* GetUICamera() const;
+	GameObject* GetUICameraObject() const { return m_UICameraObject; }
+	Transform_Com* GetUICameraTransform() const { return m_UICameraTransform; }
+	Camera_Com* GetUICamera() const { return m_UICamera; }
 
 private:
 	class GameObject* FindCamera(const string& TagName);

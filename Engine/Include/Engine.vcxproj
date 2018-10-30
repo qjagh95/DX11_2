@@ -180,7 +180,9 @@
   <ItemGroup>
     <ClInclude Include="CollsionManager.h" />
     <ClInclude Include="Component\Animation2D_Com.h" />
+    <ClInclude Include="Component\Button_Com.h" />
     <ClInclude Include="Component\Camera_Com.h" />
+    <ClInclude Include="Component\CheckBox_Com.h" />
     <ClInclude Include="Component\ColliderCircle_Com.h" />
     <ClInclude Include="Component\ColliderOBB2D_Com.h" />
     <ClInclude Include="Component\ColliderPixel_Com.h" />
@@ -191,6 +193,7 @@
     <ClInclude Include="Component\Material_Com.h" />
     <ClInclude Include="Component\Renderer_Com.h" />
     <ClInclude Include="Component\Transform_Com.h" />
+    <ClInclude Include="Component\UIBase_Com.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="GameObject.h" />
@@ -223,7 +226,9 @@
   <ItemGroup>
     <ClCompile Include="CollsionManager.cpp" />
     <ClCompile Include="Component\Animation2D_Com.cpp" />
+    <ClCompile Include="Component\Button_Com.cpp" />
     <ClCompile Include="Component\Camera_Com.cpp" />
+    <ClCompile Include="Component\CheckBox_Com.cpp" />
     <ClCompile Include="Component\ColliderCircle_Com.cpp" />
     <ClCompile Include="Component\ColliderOBB2D_Com.cpp" />
     <ClCompile Include="Component\ColliderPixel_Com.cpp" />
@@ -234,6 +239,7 @@
     <ClCompile Include="Component\Material_Com.cpp" />
     <ClCompile Include="Component\Renderer_Com.cpp" />
     <ClCompile Include="Component\Transform_Com.cpp" />
+    <ClCompile Include="Component\UIBase_Com.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="GameObject.cpp" />

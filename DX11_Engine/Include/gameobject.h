@@ -17,6 +17,7 @@ public:
 	void CollisionLateUpdate(float DeltaTime);
 	void Render(float DeltaTime);
 	GameObject* Clone(); //클론은 디자인패턴의 프로토타입패턴.
+	void AfterClone();
 
 	Scene* GetScene() const { return m_Scene; }
 	Layer* GetLayer() const { return m_Layer; }

@@ -14,6 +14,7 @@ public:
 	 virtual void CollisionLateUpdate(float DeltaTime) override;
 	 virtual void Render(float DeltaTime) override;
 	 virtual UserComponent_Base* Clone() override;
+	 virtual void AfterClone() override {}
 
 protected:
 	UserComponent_Base();

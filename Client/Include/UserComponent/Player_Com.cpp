@@ -49,7 +49,7 @@ bool Player_Com::Init()
 	ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("PlayerBody");
 	RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(100.0f, 100.0f, 0.0f));
 	RectColl->SetMyTypeName("Player");
-	RectColl->SetCollsionCallback(CCT_DIONG, this, &Player_Com::PixelHit);
+	RectColl->SetCollsionCallback(CCT_DOING, this, &Player_Com::PixelHit);
 	SAFE_RELEASE(RectColl);
 
 	//ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("PlayerCircleBody");

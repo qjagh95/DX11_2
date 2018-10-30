@@ -32,29 +32,31 @@ bool SceneManager::Init()
 int SceneManager::Input(float DeltaTime)
 {
 	m_CurScene->Input(DeltaTime);
-	return 0;
+	return ChangeScene();
 }
 
 int SceneManager::Update(float DeltaTime)
 {
 	m_CurScene->Update(DeltaTime);
-	return 0;
+	return ChangeScene();
 }
 
 int SceneManager::LateUpdate(float DeltaTime)
 {
 	m_CurScene->LateUpdate(DeltaTime);
-	return 0;
+	return ChangeScene();
 }
 
-void SceneManager::Collision(float DeltaTime)
+int SceneManager::Collision(float DeltaTime)
 {
 	m_CurScene->Collision(DeltaTime);
+	return ChangeScene();
 }
 
-void SceneManager::CollsionLateUpdate(float DeltaTime)
+int SceneManager::CollsionLateUpdate(float DeltaTime)
 {
 	m_CurScene->CollisionLateUpdate(DeltaTime);
+	return ChangeScene();
 }
 
 void SceneManager::Render(float DeltaTime)
@@ -102,5 +104,34 @@ Layer * SceneManager::FindLayer(const string & TagName, bool isCurrent)
 
 GameObject * SceneManager::FindObject(const string & TagName)
 {
-	return m_CurScene->FindObject(TagName);
+	GameObject* getObject = m_CurScene->FindObject(TagName);
+	
+	if (getObject != NULLPTR)
+		return getObject;
+	else if (getObject == NULLPTR)
+		return NULLPTR;
+
+	return m_NextScene->FindObject(TagName);
+}
+
+void SceneManager::CreateNextScene()
+{
+	SAFE_RELEASE(m_NextScene);
+	m_NextScene = new Scene();
+	m_NextScene->Init();
+}
+
+int SceneManager::ChangeScene()
+{
+	if (m_NextScene != NULLPTR)
+	{
+		SAFE_RELEASE(m_CurScene);
+		m_CurScene = m_NextScene;
+		m_NextScene = NULLPTR;
+
+		KeyInput::Get()->ChangeMouseScene(m_CurScene);
+		return 1;
+	}
+
+	return 0;
 }

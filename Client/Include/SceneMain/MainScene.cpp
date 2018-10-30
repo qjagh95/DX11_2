@@ -1,4 +1,5 @@
 #include "MainScene.h"
+#include "StartScene.h"
 #include "GameObject.h"
 
 #include "Scene/Scene.h"
@@ -10,6 +11,7 @@
 #include "Component/Camera_Com.h"
 #include "Component/ColliderPixel_Com.h"
 #include "Component/Material_Com.h"
+#include "Component/Button_Com.h"
 
 #include "../UserComponent/Player_Com.h"
 #include "../UserComponent/Bullet_Com.h"
@@ -33,6 +35,7 @@ bool MainScene::Init()
 	mainCamera->SetNear(0.0f);
 
 	Layer* Default = m_Scene->FindLayer("Default");
+	Layer* UILayer = m_Scene->FindLayer("UI");
 
 	GameObject* MonsterObject = GameObject::CreateObject("Monster", Default);
 	Monster_Com* monster_Com = MonsterObject->AddComponent<Monster_Com>("Monster_Com");

@@ -17,6 +17,7 @@ public:
 	void CollisionLateUpdate(float DeltaTime) override;
 	void Render(float DeltaTime) override;
 	Renderer_Com* Clone() override;
+	void AfterClone() override;
 
 public:
 	void SetMesh(Mesh* mesh);

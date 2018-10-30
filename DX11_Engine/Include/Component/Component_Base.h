@@ -17,6 +17,7 @@ public:
 	virtual void CollisionLateUpdate(float DeltaTime);
 	virtual void Render(float DeltaTime);
 	virtual Component_Base* Clone() = 0;
+	virtual void AfterClone() {}
 
 public:
 	Scene* GetScene() const { return m_Scene; }

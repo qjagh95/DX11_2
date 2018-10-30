@@ -12,12 +12,13 @@ public:
 	int Input(float DeltaTime);
 	int Update(float DeltaTime);
 	int LateUpdate(float DeltaTime);
-	void Collision(float DeltaTime);
-	void CollsionLateUpdate(float DeltaTime);
+	int Collision(float DeltaTime);
+	int CollsionLateUpdate(float DeltaTime);
 	void Render(float DeltaTime);
 
 	Scene* GetCurScene() const;
 	Scene* GetNextScene() const;
+	void CreateNextScene();
 	void AddLayer(const string& TagName, int ZOrder, bool isCurrent = true);
 	void ChangeLayerZOrder(const string& TagName, int ZOrder, bool isCurrent = true);
 	Layer* FindLayer(const string& TagName, bool isCurrent = true);
@@ -31,6 +32,9 @@ public:
 		
 		return m_NextScene->AddSceneComponent<T>(TagName);
 	}
+
+private:
+	int ChangeScene();
 
 private:
 	Scene* m_CurScene;

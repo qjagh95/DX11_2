@@ -85,5 +85,7 @@ RenderState * RenderManager::FindRenderState(const string & KeyName)
 	if (FindIter == m_RenderStateMap.end())
 		return NULLPTR;
 
+	FindIter->second->AddRefCount();
+
 	return FindIter->second;
 }

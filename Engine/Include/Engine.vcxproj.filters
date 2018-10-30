@@ -148,6 +148,18 @@
     <Filter Include="Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderPixel">
       <UniqueIdentifier>{aee2f1d9-1953-425c-963e-f4ba07c22fa6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\UI">
+      <UniqueIdentifier>{b303c252-a492-48e7-bd92-e36e5ab455d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\UI\Base">
+      <UniqueIdentifier>{d60fd686-cfc0-4ba2-ab24-63d1be0788ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\UI\Button">
+      <UniqueIdentifier>{583f8dae-d1cc-4114-89e3-e238e23b51b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\UI\CheckBox">
+      <UniqueIdentifier>{a4675ced-b4bb-4aa5-8ad3-d2695da5f85e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -273,6 +285,15 @@
     <ClInclude Include="Component\ColliderPixel_Com.h">
       <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderPixel</Filter>
     </ClInclude>
+    <ClInclude Include="Component\UIBase_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Button_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\CheckBox_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\CheckBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Copy.bat">
@@ -387,6 +408,15 @@
     </ClCompile>
     <ClCompile Include="Component\ColliderPixel_Com.cpp">
       <Filter>Core\08. Object\Component\BaseComponent\Collsion\Collider\ColliderPixel</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\UIBase_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Button_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\CheckBox_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\CheckBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -167,10 +167,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SceneMain\MainScene.cpp" />
+    <ClCompile Include="SceneMain\StartScene.cpp" />
     <ClCompile Include="UserComponent\BulletBoom_Com.cpp" />
     <ClCompile Include="UserComponent\BulletRot_Com.cpp" />
     <ClCompile Include="WinMain.cpp" />
-    <ClCompile Include="SceneComponent\MainScene.cpp" />
     <ClCompile Include="UserComponent\Bullet_Com.cpp" />
     <ClCompile Include="UserComponent\Monster_Com.cpp" />
     <ClCompile Include="UserComponent\Player_Com.cpp">
@@ -179,7 +180,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientHeader.h" />
-    <ClInclude Include="SceneComponent\MainScene.h" />
+    <ClInclude Include="SceneMain\MainScene.h" />
+    <ClInclude Include="SceneMain\StartScene.h" />
     <ClInclude Include="UserComponent\BulletBoom_Com.h" />
     <ClInclude Include="UserComponent\BulletRot_Com.h" />
     <ClInclude Include="UserComponent\Bullet_Com.h" />

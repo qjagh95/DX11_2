@@ -126,6 +126,9 @@ int Core::Run()
 		else
 		{
 			Logic();
+
+			if (KeyInput::Get()->KeyDown("SystemPause"))
+				TrueAssert(true);
 		}
 	}
 	return (int)msg.wParam;
@@ -228,9 +231,11 @@ int Core::LateUpdate(float DeltaTime)
 	return 0;
 }
 
-void Core::Collsion(float DeltaTime)
+int Core::Collsion(float DeltaTime)
 {
 	SceneManager::Get()->Collision(DeltaTime);
+	
+	return 0;
 }
 
 int Core::CollsionLateUpdate(float DeltaTime)

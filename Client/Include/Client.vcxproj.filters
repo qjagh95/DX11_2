@@ -5,57 +5,75 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="SceneComponent">
-      <UniqueIdentifier>{76cfdf33-402b-44a2-9ff5-942a6d123342}</UniqueIdentifier>
+    <Filter Include="MainScene">
+      <UniqueIdentifier>{981a1623-d2b2-41ac-9a94-a2c1168dcda0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UserComponent">
-      <UniqueIdentifier>{2ed119b1-b2d7-4629-89ef-77d08fbccfac}</UniqueIdentifier>
+    <Filter Include="MainScene\Component">
+      <UniqueIdentifier>{19c2ecfe-8b36-43ca-9162-6834275c2d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainScene\SceneMain">
+      <UniqueIdentifier>{37e08126-db94-4993-b4d6-5ca798c17fbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StartScene">
+      <UniqueIdentifier>{656c188b-ac89-4e97-b252-ce1c7f931da2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StartScene\SceneMain">
+      <UniqueIdentifier>{22e999a2-6342-43ee-afab-30c31a46db2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StartScene\Component">
+      <UniqueIdentifier>{f9500d82-ec68-4c27-b50e-45e2a487fdf2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SceneComponent\MainScene.cpp">
-      <Filter>SceneComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="UserComponent\Player_Com.cpp">
-      <Filter>UserComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="UserComponent\Bullet_Com.cpp">
-      <Filter>UserComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="UserComponent\Monster_Com.cpp">
-      <Filter>UserComponent</Filter>
-    </ClCompile>
     <ClCompile Include="WinMain.cpp">
       <Filter>WinMain</Filter>
     </ClCompile>
+    <ClCompile Include="UserComponent\Bullet_Com.cpp">
+      <Filter>MainScene\Component</Filter>
+    </ClCompile>
     <ClCompile Include="UserComponent\BulletRot_Com.cpp">
-      <Filter>UserComponent</Filter>
+      <Filter>MainScene\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="UserComponent\Monster_Com.cpp">
+      <Filter>MainScene\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="UserComponent\Player_Com.cpp">
+      <Filter>MainScene\Component</Filter>
     </ClCompile>
     <ClCompile Include="UserComponent\BulletBoom_Com.cpp">
-      <Filter>UserComponent</Filter>
+      <Filter>MainScene\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneMain\MainScene.cpp">
+      <Filter>MainScene\SceneMain</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneMain\StartScene.cpp">
+      <Filter>StartScene\SceneMain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SceneComponent\MainScene.h">
-      <Filter>SceneComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="UserComponent\Player_Com.h">
-      <Filter>UserComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="UserComponent\Bullet_Com.h">
-      <Filter>UserComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="UserComponent\Monster_Com.h">
-      <Filter>UserComponent</Filter>
-    </ClInclude>
     <ClInclude Include="ClientHeader.h">
       <Filter>WinMain</Filter>
     </ClInclude>
-    <ClInclude Include="UserComponent\BulletRot_Com.h">
-      <Filter>UserComponent</Filter>
+    <ClInclude Include="UserComponent\Bullet_Com.h">
+      <Filter>MainScene\Component</Filter>
     </ClInclude>
     <ClInclude Include="UserComponent\BulletBoom_Com.h">
-      <Filter>UserComponent</Filter>
+      <Filter>MainScene\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="UserComponent\BulletRot_Com.h">
+      <Filter>MainScene\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="UserComponent\Monster_Com.h">
+      <Filter>MainScene\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="UserComponent\Player_Com.h">
+      <Filter>MainScene\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMain\MainScene.h">
+      <Filter>MainScene\SceneMain</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMain\StartScene.h">
+      <Filter>StartScene\SceneMain</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

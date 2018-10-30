@@ -367,8 +367,8 @@ void CollsionManager::Collsion(float DeltaTime)
 			}
 
 			//TODO
-			//for (int j = 0; j < getSection->Size; j++)
-			//	getSection->ColliderList[j]->CheckPrevCollisionInSection(DeltaTime);
+			for (int j = 0; j < getSection->Size; j++)
+				getSection->ColliderList[j]->CheckPrevCollisionInSection(DeltaTime);
 
 			//각 영역 별 충돌체 수만큼 반복한다.
 			//버블정렬꼴.

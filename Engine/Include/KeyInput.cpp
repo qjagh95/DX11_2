@@ -35,7 +35,10 @@ bool KeyInput::Init()
 	AddKey("MoveRight", 'D');
 	AddKey("MoveUp", 'W');
 	AddKey("MoveDown", 'S');
-	AddKey("SystemPause", VK_F10);
+	AddKey("SystemPause", VK_F12);
+	AddKey("LButton", VK_LBUTTON);
+	AddKey("RButton", VK_RBUTTON);
+	AddKey("MButton", VK_MBUTTON);
 
 	m_MouseObject = GameObject::CreateObject("MouseObject");
 	m_MouseObject->GetTransform()->SetWorldScale(Vector3(31.0f, 32.0f, 0.0f));

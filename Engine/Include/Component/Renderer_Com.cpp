@@ -48,7 +48,6 @@ Renderer_Com::Renderer_Com(const Renderer_Com& copyObject)
 	}
 
 	m_Material = NULLPTR;
-
 	m_CBufferMap.clear();
 
 	unordered_map<string, RendererCBuffer*>::const_iterator StartIter = copyObject.m_CBufferMap.begin();
@@ -90,7 +89,6 @@ bool Renderer_Com::Init()
 {
 	//내가 가지고있는 오브젝트에 AddComponent
 	m_Material = AddComponent<Material_Com>("Material");
-
 	CheckComponent();
 
 	return true;
@@ -114,13 +112,10 @@ int Renderer_Com::LateUpdate(float DeltaTime)
 
 void Renderer_Com::Collision(float DeltaTime)
 {
-	
 }
 
 void Renderer_Com::CollisionLateUpdate(float DeltaTime)
 {
-	if (m_Material == NULLPTR)
-		m_Material = m_Object->FindComponentFromType<Material_Com>(CT_MATERIAL);
 }
 
 void Renderer_Com::Render(float DeltaTime)
@@ -168,6 +163,11 @@ void Renderer_Com::Render(float DeltaTime)
 Renderer_Com * Renderer_Com::Clone()
 {
 	return new Renderer_Com(*this);
+}
+
+void Renderer_Com::AfterClone()
+{
+	m_Material = FindComponentFromType<Material_Com>(CT_MATERIAL);
 }
 
 void Renderer_Com::SetMesh(Mesh * mesh)
@@ -265,11 +265,11 @@ void Renderer_Com::UpdateRendererCBuffer(const string & KeyName, void * pData, i
 //여기에서 실질적인 투영을위한 변환을 해준다!
 void Renderer_Com::UpdateTransform()
 {
-	TransformCBuffer cBuffer = {};
 	//m_Transform은 GameObject가 생성될때 동적할당으로 자동생성되며 자동초기화를 한다.
 	//AddComponent를 할때 Component가 가진 Transform_Com변수는 오브젝트가 가진 Transform_Com
 	//변수로 이미 초기화가 되어있다.
 
+	TransformCBuffer cBuffer = {};
 	Camera_Com* getCamera = NULLPTR;
 
 	if (CheckComponentFromType(CT_UI) == true)

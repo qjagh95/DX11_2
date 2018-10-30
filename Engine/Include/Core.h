@@ -21,7 +21,7 @@ private:
 	int Input(float DeltaTime);
 	int Update(float DeltaTime);
 	int LateUpdate(float DeltaTime);
-	void Collsion(float DeltaTime);
+	int Collsion(float DeltaTime);
 	int CollsionLateUpdate(float DeltaTime);
 	void Render(float DeltaTime);
 
