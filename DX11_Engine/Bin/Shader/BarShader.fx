@@ -1,11 +1,14 @@
 #include "Share.fx"
 
-cbuffer Button : register(b9)
+cbuffer Bar : register(b9)
 {
-    float4 g_ButtonColor;
+    float g_BarPercent;
+    int g_BarMoveDir;
+    float2 g_BarEmpty;
+    float4 g_BarLight;
 }
 
-cbuffer Animation2D : register(b8)
+cbuffer Animation2D : register(b9)
 {
     float2 g_LeftTopUV;
     float2 g_RightBottomUV;
@@ -13,7 +16,7 @@ cbuffer Animation2D : register(b8)
     float3 g_Empty3;
 }
 
-VS_OUTPUT_UV UIVS(VS_INPUT_UV input)
+VS_OUTPUT_UV BarVS(VS_INPUT_UV input)
 {
     VS_OUTPUT_UV output = (VS_OUTPUT_UV) 0;
 
@@ -39,11 +42,11 @@ VS_OUTPUT_UV UIVS(VS_INPUT_UV input)
     return output;
 }
 
-PS_OUTPUT_SINGLE UIPS(VS_OUTPUT_UV input)
+PS_OUTPUT_SINGLE BarPS(VS_OUTPUT_UV input)
 {
     PS_OUTPUT_SINGLE output = (PS_OUTPUT_SINGLE) 0;
 
-    output.vTarget0 = Diffuse.Sample(DiffuseSampler, input.vUV) * g_ButtonColor;
+    output.vTarget0 = Diffuse.Sample(DiffuseSampler, input.vUV) * g_BarLight;
 
     return output;
 }

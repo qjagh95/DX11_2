@@ -460,5 +460,8 @@
     <FxCompile Include="..\Bin\Shader\UIShader.fx">
       <Filter>Core\09. Render\HLSLSorce</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\Shader\BarShader.fx">
+      <Filter>Core\09. Render\HLSLSorce</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

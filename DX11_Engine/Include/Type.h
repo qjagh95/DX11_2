@@ -176,4 +176,12 @@ struct JEONG_DLL ButtonCBuffer
 	Vector4 DiffuseColor;
 };
 
+struct JEONG_DLL BarCBuffer
+{
+	float Percent;
+	int MoveDir;
+	Vector2 Empty;
+	Vector4 Light;
+};
+
 JEONG_END

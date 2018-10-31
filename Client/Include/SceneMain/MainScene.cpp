@@ -21,11 +21,13 @@
 #include "../UserComponent/Monster_Com.h"
 
 MainScene::MainScene()
+	:m_TestBar(NULLPTR)
 {
 }
 
 MainScene::~MainScene()
 {
+	SAFE_RELEASE(m_TestBar);
 }
 
 bool MainScene::Init()
@@ -53,8 +55,8 @@ bool MainScene::Init()
 	BulletBoom_Com* bulletBoom_Com = BoomObject->AddComponent<BulletBoom_Com>("Boom_Com");
 
 	GameObject*	TestPixelColl = GameObject::CreateObject("PixelColl", Default);
-	Renderer_Com* Renderer = TestPixelColl->AddComponent<Renderer_Com>("PixelCollRenderer");
-	Renderer->SetMesh("TextureRect");
+	Renderer_Com* PixelRenderer = TestPixelColl->AddComponent<Renderer_Com>("PixelCollRenderer");
+	PixelRenderer->SetMesh("TextureRect");
 
 	Material_Com* pixelMaterial = TestPixelColl->FindComponentFromType<Material_Com>(CT_MATERIAL);
 	pixelMaterial->SetDiffuseTexture(0, "TestPixelColl", TEXT("PixelCollider.bmp"));
@@ -68,7 +70,17 @@ bool MainScene::Init()
 	pTransform->SetWorldPos(500.0f, 200.0f, 0.0f);
 	pTransform->SetWorldScale(200.0f, 50.0f, 1.0f);
 
-	SAFE_RELEASE(Renderer);
+	GameObject* BarObject = GameObject::CreateObject("TestBar", UILayer);
+	BarObject->GetTransform()->SetWorldPos(100.0f, 600.0f, 0.0f);
+
+	Bar_Com* TestBar = BarObject->AddComponent<Bar_Com>("HpBar");
+	TestBar->SetDir(BD_LEFT);
+	TestBar->SetScale(200.0f, 30.0f, 0.0f);
+	m_TestBar = TestBar;
+
+	SAFE_RELEASE(TestBar);
+	SAFE_RELEASE(BarObject);
+	SAFE_RELEASE(PixelRenderer);
 	SAFE_RELEASE(pixelMaterial);
 	SAFE_RELEASE(ColliderPixel);
 	SAFE_RELEASE(TestPixelColl);
@@ -91,6 +103,16 @@ bool MainScene::Init()
 
 int MainScene::Input(float DeltaTime)
 {
+	if (GetAsyncKeyState(VK_F7) & 0x8000)
+		m_TestBar->AddValue(-40.0f * DeltaTime);
+	if (GetAsyncKeyState(VK_F8) & 0x8000)
+		m_TestBar->AddValue(40.0f * DeltaTime);
+
+	if (GetAsyncKeyState(VK_F5) & 0x8000)
+		m_TestBar->LightOff();
+	if (GetAsyncKeyState(VK_F6) & 0x8000)
+		m_TestBar->LightOn();
+
 	return 0;
 }
 

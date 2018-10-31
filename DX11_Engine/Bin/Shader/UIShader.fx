@@ -13,7 +13,7 @@ cbuffer Animation2D : register(b8)
     float3 g_Empty3;
 }
 
-VS_OUTPUT_UV ButtonVS(VS_INPUT_UV input)
+VS_OUTPUT_UV UIVS(VS_INPUT_UV input)
 {
     VS_OUTPUT_UV output = (VS_OUTPUT_UV) 0;
 
@@ -39,7 +39,7 @@ VS_OUTPUT_UV ButtonVS(VS_INPUT_UV input)
     return output;
 }
 
-PS_OUTPUT_SINGLE ButtonPS(VS_OUTPUT_UV input)
+PS_OUTPUT_SINGLE UIPS(VS_OUTPUT_UV input)
 {
     PS_OUTPUT_SINGLE output = (PS_OUTPUT_SINGLE) 0;
 

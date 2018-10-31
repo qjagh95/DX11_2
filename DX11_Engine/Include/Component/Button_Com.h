@@ -42,7 +42,7 @@ protected:
 protected:
 	Button_Com();
 	Button_Com(const Button_Com& CopyData);
-	~Button_Com();
+	virtual ~Button_Com();
 
 public:
 	friend class GameObject;

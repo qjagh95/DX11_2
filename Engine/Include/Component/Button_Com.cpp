@@ -39,7 +39,7 @@ bool Button_Com::Init()
 	MaterialComponent->SetDiffuseTexture(0, "Button", TEXT("Start.png"));
 	SAFE_RELEASE(MaterialComponent);
 
-	ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("ButtonBody");	
+	ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("ButtonBody");
 	RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(200.0f, 50.0f, 0.0f));
 	RectColl->SetCollisionGroup("UI");
 	RectColl->SetCollsionCallback(CCT_DOING, this, &Button_Com::MouseHit);

@@ -68,10 +68,19 @@ bool ShaderManager::Init()
 		return false;
 	}
 
-	Entry[ST_VERTEX] = "ButtonVS";
-	Entry[ST_PIXEL] = "ButtonPS";
+	Entry[ST_VERTEX] = "UIVS";
+	Entry[ST_PIXEL] = "UIPS";
 
 	if (LoadShader(BUTTON_SHADER, TEXT("UIShader.fx"), Entry) == false)
+	{
+		TrueAssert(true);
+		return false;
+	}
+
+	Entry[ST_VERTEX] = "BarVS";
+	Entry[ST_PIXEL] = "BarPS";
+
+	if (LoadShader(BAR_SHADER, TEXT("BarShader.fx"), Entry) == false)
 	{
 		TrueAssert(true);
 		return false;
@@ -103,6 +112,7 @@ bool ShaderManager::Init()
 	CreateCBuffer("Component", sizeof(ComponentCBuffer), 2, CST_VERTEX | CST_PIXEL);
 	CreateCBuffer("Collider", sizeof(Vector4), 8, CST_VERTEX | CST_PIXEL);
 	CreateCBuffer("ButtonCBuffer", sizeof(ButtonCBuffer), 9, CST_VERTEX | CST_PIXEL);
+	CreateCBuffer("BarCBuffer", sizeof(BarCBuffer), 9, CST_VERTEX | CST_PIXEL);
 
 	return true;
 }
