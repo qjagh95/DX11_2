@@ -36,22 +36,27 @@ bool StartScene::Init()
 
 	GameObject* newButton = GameObject::CreateObject("StartButton", UILayer);
 	newButton->GetTransform()->SetWorldPos(640.0f, 360.0f, 0.0f);
+	newButton->GetTransform()->SetWorldScale(200.0f, 50.0f, 0.0f);
 
 	Button_Com* buttonCom = newButton->AddComponent<Button_Com>("StartButton");
 	buttonCom->SetCallBack(&StartScene::StartButtonActive, this);
-	
-	GameObject* newCheck = GameObject::CreateObject("newCheck", UILayer);
-	newCheck->GetTransform()->SetWorldPos(100.0f, 360.0f, 0.0f);
-
-	CheckBox_Com* CheckCom = newCheck->AddComponent<CheckBox_Com>("newCheck");
+	buttonCom->SetStateColor(BS_CLICK, Vector4::Red);
+	buttonCom->SetStateColor(BS_MOUSEOVER, Vector4::White * 2.0f);
 
 	SAFE_RELEASE(Default);
 	SAFE_RELEASE(UILayer);
 	SAFE_RELEASE(newButton);
 	SAFE_RELEASE(buttonCom);
+	SAFE_RELEASE(mainCamera);
 
-	SAFE_RELEASE(newCheck);
-	SAFE_RELEASE(CheckCom);
+	//GameObject* newCheck = GameObject::CreateObject("CheckBox", UILayer);
+	//newCheck->GetTransform()->SetWorldPos(100.0f, 360.0f, 0.0f);
+	//newCheck->GetTransform()->SetWorldScale(200.0f, 50.0f, 0.0f);
+	//
+	//CheckBox_Com* CheckCom = newCheck->AddComponent<CheckBox_Com>("CheckBox");
+
+	//SAFE_RELEASE(newCheck);
+	//SAFE_RELEASE(CheckCom);
 
 	return true;
 }

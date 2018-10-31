@@ -245,11 +245,12 @@ void GameObject::Render(float DeltaTime)
 	{
 		if ((*StartIter)->GetIsActive() == false)
 		{
-			Renderer_Com* pRenderer = FindComponentFromType<Renderer_Com>(CT_RENDER);
-			if (pRenderer != NULLPTR)
+			Renderer_Com* getRenderer = FindComponentFromType<Renderer_Com>(CT_RENDER);
+
+			if (getRenderer != NULLPTR)
 			{
-				pRenderer->DeleteComponentCBuffer(*StartIter);
-				SAFE_RELEASE(pRenderer);
+				getRenderer->DeleteComponentCBuffer(*StartIter);
+				SAFE_RELEASE(getRenderer);
 			}
 
 			SAFE_RELEASE((*StartIter));
@@ -261,6 +262,7 @@ void GameObject::Render(float DeltaTime)
 			StartIter++;
 			continue;
 		}
+
 		(*StartIter)->Render(DeltaTime);
 		StartIter++;
 	}
@@ -510,7 +512,6 @@ const list<Component_Base*>* GameObject::FindComponentFromTag(const string& TagN
 			m_FindComList.push_back(*StartIter);
 		}
 	}
-
 	return &m_FindComList;
 }
 

@@ -34,6 +34,7 @@
 #define STANDARD_COLOR_SHADER "StandardColorShader"
 #define STANDARD_UV_SHADER "StandardUVShader"
 #define COLLIDER_SHADER "ColliderShader"
+#define BUTTON_SHADER "ButtonShader"
 
 //Base InputLayOut
 #define POS_COLOR_LAYOUT "PosColorLayOut"

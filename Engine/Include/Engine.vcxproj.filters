@@ -160,6 +160,12 @@
     <Filter Include="Core\08. Object\Component\BaseComponent\UI\CheckBox">
       <UniqueIdentifier>{a4675ced-b4bb-4aa5-8ad3-d2695da5f85e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\UI\Bar">
+      <UniqueIdentifier>{d3d7ec83-cc48-4d3b-a242-db5a2d01e302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\UI\RadioButton">
+      <UniqueIdentifier>{86b7f394-9aaf-4b6e-a9d5-786f456dfbb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -294,6 +300,12 @@
     <ClInclude Include="Component\CheckBox_Com.h">
       <Filter>Core\08. Object\Component\BaseComponent\UI\CheckBox</Filter>
     </ClInclude>
+    <ClInclude Include="Component\Bar_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\Bar</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\RadioButton_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\RadioButton</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Copy.bat">
@@ -418,6 +430,12 @@
     <ClCompile Include="Component\CheckBox_Com.cpp">
       <Filter>Core\08. Object\Component\BaseComponent\UI\CheckBox</Filter>
     </ClCompile>
+    <ClCompile Include="Component\Bar_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\Bar</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\RadioButton_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\RadioButton</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon1.ico">
@@ -437,6 +455,9 @@
       <Filter>Core\09. Render\HLSLSorce</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\Shader\Collider.fx">
+      <Filter>Core\09. Render\HLSLSorce</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\Shader\UIShader.fx">
       <Filter>Core\09. Render\HLSLSorce</Filter>
     </FxCompile>
   </ItemGroup>

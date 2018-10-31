@@ -37,11 +37,12 @@ protected:
 	BUTTON_STATE m_ButtonState;
 	function<void(float)> m_ButtonCallBack;
 	Vector4 m_ButtonColor[BS_MAX];
+	ButtonCBuffer m_ButtonCBuffer;
 
 protected:
 	Button_Com();
 	Button_Com(const Button_Com& CopyData);
-	~Button_Com();
+	virtual ~Button_Com();
 
 public:
 	friend class GameObject;

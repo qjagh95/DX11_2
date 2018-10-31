@@ -43,21 +43,21 @@ bool MainScene::Init()
 	GameObject* PlayerObject = GameObject::CreateObject("Player", Default);
 	Player_Com* player_Com = PlayerObject->AddComponent<Player_Com>("Player_Com");
 
-	GameObject* BulletObject = GameObject::CreateProtoType("Bullet_Clone");
+	GameObject* BulletObject = GameObject::CreateProtoType("Bullet_Clone", false);
 	Bullet_Com* bullet_Com = BulletObject->AddComponent<Bullet_Com>("Bullet_Com");
 
-	GameObject* BulletObject2 = GameObject::CreateProtoType("BulletRot_Clone");
+	GameObject* BulletObject2 = GameObject::CreateProtoType("BulletRot_Clone", false);
 	BulletRot_Com* bullet_Com2 = BulletObject2->AddComponent<BulletRot_Com>("BulletRot_Com");
 
-	GameObject* BoomObject = GameObject::CreateProtoType("Boom", Default);
+	GameObject* BoomObject = GameObject::CreateProtoType("Boom", false);
 	BulletBoom_Com* bulletBoom_Com = BoomObject->AddComponent<BulletBoom_Com>("Boom_Com");
 
 	GameObject*	TestPixelColl = GameObject::CreateObject("PixelColl", Default);
 	Renderer_Com* Renderer = TestPixelColl->AddComponent<Renderer_Com>("PixelCollRenderer");
 	Renderer->SetMesh("TextureRect");
 
-	Material_Com* Material = TestPixelColl->FindComponentFromType<Material_Com>(CT_MATERIAL);
-	Material->SetDiffuseTexture(0, "TestPixelColl", TEXT("PixelCollider.bmp"));
+	Material_Com* pixelMaterial = TestPixelColl->FindComponentFromType<Material_Com>(CT_MATERIAL);
+	pixelMaterial->SetDiffuseTexture(0, "TestPixelColl", TEXT("PixelCollider.bmp"));
 
 	ColliderPixel_Com* ColliderPixel = TestPixelColl->AddComponent<ColliderPixel_Com>("TestPixel");
 
@@ -69,7 +69,7 @@ bool MainScene::Init()
 	pTransform->SetWorldScale(200.0f, 50.0f, 1.0f);
 
 	SAFE_RELEASE(Renderer);
-	SAFE_RELEASE(Material);
+	SAFE_RELEASE(pixelMaterial);
 	SAFE_RELEASE(ColliderPixel);
 	SAFE_RELEASE(TestPixelColl);
 	SAFE_RELEASE(BoomObject);
@@ -83,6 +83,8 @@ bool MainScene::Init()
 	SAFE_RELEASE(player_Com);
 	SAFE_RELEASE(PlayerObject);
 	SAFE_RELEASE(Default);
+	SAFE_RELEASE(UILayer);
+	SAFE_RELEASE(mainCamera);
 
 	return true;
 }

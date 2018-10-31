@@ -27,7 +27,7 @@ public:
 	void SetLayOut(const string& KeyName);
 	void SetRenderState(const string& KeyName);
 
-	bool CreateRendererCBuffer(const string& KeyName, void* pData, int BufferSize);
+	bool CreateRendererCBuffer(const string& KeyName, int BufferSize);
 	void UpdateRendererCBuffer(const string& KeyName, void* pData, int BufferSize);
 
 	void CheckComponent();

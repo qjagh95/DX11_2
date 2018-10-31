@@ -14,8 +14,8 @@ public:
 protected:
 	//ID3D11DeviceChild = BlendState, DepthCilState, ResterizerState의 최상위 부모클래스다.
 	ID3D11DeviceChild* m_RenderState;
-
 	ID3D11DeviceChild* m_OldRenderState;
+
 	RENDER_STATE m_State;
 
 protected:

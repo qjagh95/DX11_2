@@ -22,59 +22,59 @@ CheckBox_Com::~CheckBox_Com()
 
 bool CheckBox_Com::Init()
 {
-	Button_Com::Init();
-	SetCallBack(&CheckBox_Com::Check, this);
+	//Button_Com::Init();
+	//SetCallBack(&CheckBox_Com::Check, this);
 
 	return true;
 }
 
 int CheckBox_Com::Input(float DeltaTime)
 {
-	Button_Com::Input(DeltaTime);
+	//Button_Com::Input(DeltaTime);
 
 	return 0;
 }
 
 int CheckBox_Com::Update(float DeltaTime)
 {
-	Button_Com::Update(DeltaTime);
+	//Button_Com::Update(DeltaTime);
 
-	if (m_CheckState == CBS_TRUE)
-	{
-		Material_Com* getCom = FindComponentFromType<Material_Com>(CT_MATERIAL);
-		getCom->SetMaterial(Vector4::Brown);
-		SAFE_RELEASE(getCom);
-	}
+	//if (m_CheckState == CBS_TRUE)
+	//{
+	//	Material_Com* getCom = FindComponentFromType<Material_Com>(CT_MATERIAL);
+	//	getCom->SetMaterial(Vector4::Brown);
+	//	SAFE_RELEASE(getCom);
+	//}
 
-	else if (m_CheckState == CBS_FALSE)
-	{
-		Material_Com* getCom = FindComponentFromType<Material_Com>(CT_MATERIAL);
-		getCom->SetMaterial(Vector4::White);
-		SAFE_RELEASE(getCom);
-	}
+	//else if (m_CheckState == CBS_FALSE)
+	//{
+	//	Material_Com* getCom = FindComponentFromType<Material_Com>(CT_MATERIAL);
+	//	getCom->SetMaterial(Vector4::White);
+	//	SAFE_RELEASE(getCom);
+	//}
 	return 0;
 }
 
 int CheckBox_Com::LateUpdate(float DeltaTime)
 {
-	Button_Com::LateUpdate(DeltaTime);
+	//Button_Com::LateUpdate(DeltaTime);
 
 	return 0;
 }
 
 void CheckBox_Com::Collision(float DeltaTime)
 {
-	Button_Com::Collision(DeltaTime);
+	//Button_Com::Collision(DeltaTime);
 }
 
 void CheckBox_Com::CollisionLateUpdate(float DeltaTime)
 {
-	Button_Com::CollisionLateUpdate(DeltaTime);
+	//Button_Com::CollisionLateUpdate(DeltaTime);
 }
 
 void CheckBox_Com::Render(float DeltaTime)
 {
-	Button_Com::Render(DeltaTime);
+	//Button_Com::Render(DeltaTime);
 }
 
 CheckBox_Com * CheckBox_Com::Clone()
@@ -88,9 +88,9 @@ void CheckBox_Com::AfterClone()
 
 void CheckBox_Com::Check(float DeltaTime)
 {
-	if (m_CheckState == CBS_TRUE)
-		m_CheckState = CBS_FALSE;
+	//if (m_CheckState == CBS_TRUE)
+	//	m_CheckState = CBS_FALSE;
 
-	else if(m_CheckState == CBS_FALSE)
-		m_CheckState = CBS_TRUE;
+	//else if(m_CheckState == CBS_FALSE)
+	//	m_CheckState = CBS_TRUE;
 }

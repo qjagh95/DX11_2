@@ -180,6 +180,7 @@
   <ItemGroup>
     <ClInclude Include="CollsionManager.h" />
     <ClInclude Include="Component\Animation2D_Com.h" />
+    <ClInclude Include="Component\Bar_Com.h" />
     <ClInclude Include="Component\Button_Com.h" />
     <ClInclude Include="Component\Camera_Com.h" />
     <ClInclude Include="Component\CheckBox_Com.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Component\Collider_Com.h" />
     <ClInclude Include="Component\Component_Base.h" />
     <ClInclude Include="Component\Material_Com.h" />
+    <ClInclude Include="Component\RadioButton_Com.h" />
     <ClInclude Include="Component\Renderer_Com.h" />
     <ClInclude Include="Component\Transform_Com.h" />
     <ClInclude Include="Component\UIBase_Com.h" />
@@ -226,6 +228,7 @@
   <ItemGroup>
     <ClCompile Include="CollsionManager.cpp" />
     <ClCompile Include="Component\Animation2D_Com.cpp" />
+    <ClCompile Include="Component\Bar_Com.cpp" />
     <ClCompile Include="Component\Button_Com.cpp" />
     <ClCompile Include="Component\Camera_Com.cpp" />
     <ClCompile Include="Component\CheckBox_Com.cpp" />
@@ -237,6 +240,7 @@
     <ClCompile Include="Component\Collider_Com.cpp" />
     <ClCompile Include="Component\Component_Base.cpp" />
     <ClCompile Include="Component\Material_Com.cpp" />
+    <ClCompile Include="Component\RadioButton_Com.cpp" />
     <ClCompile Include="Component\Renderer_Com.cpp" />
     <ClCompile Include="Component\Transform_Com.cpp" />
     <ClCompile Include="Component\UIBase_Com.cpp" />
@@ -310,6 +314,24 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">StandardColorVS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\Bin\Shader\UIShader.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>

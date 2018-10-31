@@ -171,4 +171,9 @@ struct JEONG_DLL ComponentCBuffer
 	Vector3 Empty;
 };
 
+struct JEONG_DLL ButtonCBuffer
+{
+	Vector4 DiffuseColor;
+};
+
 JEONG_END

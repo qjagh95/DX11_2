@@ -120,6 +120,9 @@ void Renderer_Com::CollisionLateUpdate(float DeltaTime)
 
 void Renderer_Com::Render(float DeltaTime)
 {
+	if (m_Material == NULLPTR)
+		m_Material = FindComponentFromType<Material_Com>(CT_MATERIAL);	
+
 	//업데이트 함수에서 이미 World행렬은 변환이 되었다.
 	//랜더러 컴포넌트에서 투영변환(Projection)을하고, 쉐이더에 버퍼정보를 보낸다.(UpdateTransform)
 	UpdateTransform();
@@ -229,7 +232,7 @@ void Renderer_Com::SetRenderState(const string & KeyName)
 	m_RenderState[getState->GetStateEnum()] = getState;
 }
 
-bool Renderer_Com::CreateRendererCBuffer(const string & KeyName, void * pData, int BufferSize)
+bool Renderer_Com::CreateRendererCBuffer(const string & KeyName, int BufferSize)
 {
 	RendererCBuffer* newCBuffer = FindCBuffer(KeyName);
 

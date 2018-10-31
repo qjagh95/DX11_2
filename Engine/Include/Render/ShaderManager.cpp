@@ -68,8 +68,16 @@ bool ShaderManager::Init()
 		return false;
 	}
 
-#ifdef _DEBUG
+	Entry[ST_VERTEX] = "ButtonVS";
+	Entry[ST_PIXEL] = "ButtonPS";
 
+	if (LoadShader(BUTTON_SHADER, TEXT("UIShader.fx"), Entry) == false)
+	{
+		TrueAssert(true);
+		return false;
+	}
+
+#ifdef _DEBUG
 	Entry[ST_VERTEX] = "ColliderVS";
 	Entry[ST_PIXEL] = "ColliderPS";
 
@@ -94,6 +102,7 @@ bool ShaderManager::Init()
 	CreateCBuffer("Animation2D", sizeof(Animation2DCBuffer), 8, CST_VERTEX | CST_PIXEL);
 	CreateCBuffer("Component", sizeof(ComponentCBuffer), 2, CST_VERTEX | CST_PIXEL);
 	CreateCBuffer("Collider", sizeof(Vector4), 8, CST_VERTEX | CST_PIXEL);
+	CreateCBuffer("ButtonCBuffer", sizeof(ButtonCBuffer), 9, CST_VERTEX | CST_PIXEL);
 
 	return true;
 }

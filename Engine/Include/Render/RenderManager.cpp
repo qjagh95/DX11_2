@@ -26,7 +26,7 @@ bool RenderManager::Init()
 		return false;
 	}
 
-	AddBlendTargetDesc(TRUE);
+	AddBlendTargetDesc(true);
 	CreateBlendState(ALPHA_BLEND);
 	CreateDepthStencilState(DEPTH_DISABLE, FALSE);
 

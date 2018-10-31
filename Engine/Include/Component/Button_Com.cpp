@@ -31,10 +31,12 @@ bool Button_Com::Init()
 	Renderer_Com* RenderComponent = m_Object->AddComponent<Renderer_Com>("ButtonRender");
 	RenderComponent->SetMesh("TextureRect");
 	RenderComponent->SetRenderState(ALPHA_BLEND);
+	RenderComponent->SetShader(BUTTON_SHADER);
+	RenderComponent->CreateRendererCBuffer("ButtonCBuffer", sizeof(ButtonCBuffer));
 	SAFE_RELEASE(RenderComponent);
 
 	Material_Com* MaterialComponent = m_Object->FindComponentFromType<Material_Com>(CT_MATERIAL);
-	MaterialComponent->SetDiffuseTexture(0, "Button", TEXT("Button.png"));
+	MaterialComponent->SetDiffuseTexture(0, "Button", TEXT("Start.png"));
 	SAFE_RELEASE(MaterialComponent);
 
 	ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("ButtonBody");	
@@ -45,12 +47,12 @@ bool Button_Com::Init()
 	SAFE_RELEASE(RectColl);
 
 	m_ButtonState = BS_NORMAL;
-	m_ButtonColor[BS_DISABLE] = Vector4::Aqua;
-	m_ButtonColor[BS_NORMAL] = Vector4::Crimson;
-	m_ButtonColor[BS_MOUSEOVER] = Vector4::DarkOliveGreen;
-	m_ButtonColor[BS_CLICK] = Vector4::Khaki;
 
-	m_Transform->SetWorldScale(200.0f, 50.0f, 0.0f);
+	m_ButtonColor[BS_DISABLE] = Vector4(0.5f, 0.5f, 0.5f, 1.0f);
+	m_ButtonColor[BS_NORMAL] = Vector4(0.9f, 0.9f, 0.9f, 1.0f);
+	m_ButtonColor[BS_MOUSEOVER] = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_ButtonColor[BS_CLICK] = Vector4(0.7f, 0.7f, 0.7f, 1.0f);
+
 	m_Transform->SetWorldPivot(0.5f, 0.0f, 0.0f);
 
 	return true;
@@ -58,14 +60,7 @@ bool Button_Com::Init()
 
 int Button_Com::Input(float DeltaTime)
 {
-	if (m_ButtonState == BS_MOUSEOVER || m_ButtonState == BS_CLICK)
-	{
-		if (KeyInput::Get()->KeyDown("LButton"))
-			m_ButtonState = BS_CLICK;
 
-		else if (KeyInput::Get()->KeyUp("LButton"))
-			m_ButtonCallBack(DeltaTime);
-	}
 	return 0;
 }
 
@@ -85,10 +80,23 @@ void Button_Com::Collision(float DeltaTime)
 
 void Button_Com::CollisionLateUpdate(float DeltaTime)
 {
+	if (m_ButtonState == BS_MOUSEOVER || m_ButtonState == BS_CLICK)
+	{
+		if (KeyInput::Get()->KeyPress("LButton"))
+			m_ButtonState = BS_CLICK;
+
+		else if (KeyInput::Get()->KeyUp("LButton"))
+			m_ButtonCallBack(DeltaTime);
+	}
 }
 
 void Button_Com::Render(float DeltaTime)
 {
+	m_ButtonCBuffer.DiffuseColor = m_ButtonColor[m_ButtonState];
+	
+	Renderer_Com* getRender = FindComponentFromType<Renderer_Com>(CT_RENDER);
+	getRender->UpdateRendererCBuffer("ButtonCBuffer", &m_ButtonCBuffer, sizeof(ButtonCBuffer));
+	SAFE_RELEASE(getRender);
 }
 
 Button_Com * Button_Com::Clone()

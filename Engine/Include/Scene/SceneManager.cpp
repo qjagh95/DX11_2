@@ -117,6 +117,7 @@ GameObject * SceneManager::FindObject(const string & TagName)
 void SceneManager::CreateNextScene()
 {
 	SAFE_RELEASE(m_NextScene);
+
 	m_NextScene = new Scene();
 	m_NextScene->Init();
 }
