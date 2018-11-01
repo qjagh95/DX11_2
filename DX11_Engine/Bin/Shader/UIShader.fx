@@ -19,16 +19,16 @@ VS_OUTPUT_UV UIVS(VS_INPUT_UV input)
 
     float3 vPos = input.vPos - g_Pivot * g_Length;
 
-    output.vPos = mul(float4(vPos, 1.f), g_WVP);
+    output.vPos = mul(float4(vPos, 1.0f), g_WVP);
 
     if (g_Animation2DEnable == 1)
     {
-        if (input.vUV.x == 0.f)
+        if (input.vUV.x == 0.0f)
             output.vUV.x = g_LeftTopUV.x;
         else
             output.vUV.x = g_RightBottomUV.x;
 
-        if (input.vUV.y == 0.f)
+        if (input.vUV.y == 0.0f)
             output.vUV.y = g_LeftTopUV.y;
         else
             output.vUV.y = g_RightBottomUV.y;

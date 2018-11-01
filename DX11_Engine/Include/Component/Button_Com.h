@@ -26,7 +26,7 @@ public:
 	void MouseOut(Collider_Com* Src, Collider_Com* Dest, float DeltaTime);
 
 	void SetCallBack(void*(pFunc)(float)) { m_ButtonCallBack = bind(pFunc, placeholders::_1); }
-	void SetCallBack(function<void(float)> pFunc) {}
+	void SetCallBack(function<void(float)> pFunc) { m_ButtonCallBack = pFunc; }
 	template<typename T>
 	void SetCallBack(void(T::*pFunc)(float),T* Object)
 	{

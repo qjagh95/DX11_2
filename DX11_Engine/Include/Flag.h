@@ -108,7 +108,9 @@ enum BUTTON_STATE
 
 enum CHECKBOX_STATE
 {
+	CBS_NORMAL,
 	CBS_TRUE,
+	CBS_OVER,
 	CBS_FALSE,
 	CBS_MAX,
 };
@@ -119,6 +121,12 @@ enum BAR_DIR
 	BD_RIGHT,
 	BD_UP,
 	BD_DOWN,
+};
+
+enum RADIO_DIR
+{
+	RD_DOWN,
+	RD_RIGHT,
 };
 
 JEONG_END

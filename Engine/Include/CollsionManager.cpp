@@ -251,6 +251,23 @@ void CollsionManager::Collsion(float DeltaTime)
 				}
 			}
 		}
+		//추가.
+		if (isUiColl == true)
+		{
+			for (int i = 0; i < getSection->Size; i++)
+			{
+				ColliderPoint_Com* MouseWorldPoint = MouseObject->FindComponentFromTag<ColliderPoint_Com>("MouseWorld");
+				Collider_Com* CollSrc = getSection->ColliderList[i];
+				Collider_Com* CollDest = MouseWorldPoint;
+
+				CollSrc->OnCollsionEnd(CollDest, DeltaTime);
+
+				CollSrc->ErasePrevCollision(CollDest);
+				CollDest->ErasePrevCollision(CollSrc);
+
+				SAFE_RELEASE(MouseWorldPoint);
+			}
+		}
 	}
 
 	SAFE_RELEASE(MouseWindowPoint);
@@ -359,16 +376,16 @@ void CollsionManager::Collsion(float DeltaTime)
 				//있다면 충돌됬단뜻이니 End함수를 한번 호출해야한다.
 
 				//TODO
-				//for (int j = 0; j < getSection->Size; j++)
-				//	getSection->ColliderList[j]->CheckPrevCollisionInSection(DeltaTime);
+				for (int j = 0; j < getSection->Size; j++)
+					getSection->ColliderList[j]->CheckPrevCollisionInSection(DeltaTime);
 
 				getSection->Size = 0;
 				continue;
 			}
 
 			//TODO
-			for (int j = 0; j < getSection->Size; j++)
-				getSection->ColliderList[j]->CheckPrevCollisionInSection(DeltaTime);
+			//for (int j = 0; j < getSection->Size; j++)
+			//	getSection->ColliderList[j]->CheckPrevCollisionInSection(DeltaTime);
 
 			//각 영역 별 충돌체 수만큼 반복한다.
 			//버블정렬꼴.

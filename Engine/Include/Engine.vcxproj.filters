@@ -166,6 +166,18 @@
     <Filter Include="Core\08. Object\Component\BaseComponent\UI\RadioButton">
       <UniqueIdentifier>{86b7f394-9aaf-4b6e-a9d5-786f456dfbb7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\TitleBar">
+      <UniqueIdentifier>{0bf88714-69c7-4e70-81dd-820f6ec46000}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\12. Thread">
+      <UniqueIdentifier>{73ca7a5c-6416-4e17-aeb8-a99555ec8519}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\12. Thread\Thread">
+      <UniqueIdentifier>{7a1e183d-6416-4c7a-aada-c6eb1fc35da0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\12. Thread\Manager">
+      <UniqueIdentifier>{8c080a22-124b-491e-8764-d48f4c2ddc79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -306,6 +318,12 @@
     <ClInclude Include="Component\RadioButton_Com.h">
       <Filter>Core\08. Object\Component\BaseComponent\UI\RadioButton</Filter>
     </ClInclude>
+    <ClInclude Include="Thread.h">
+      <Filter>Core\12. Thread\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadManager.h">
+      <Filter>Core\12. Thread\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Copy.bat">
@@ -436,6 +454,12 @@
     <ClCompile Include="Component\RadioButton_Com.cpp">
       <Filter>Core\08. Object\Component\BaseComponent\UI\RadioButton</Filter>
     </ClCompile>
+    <ClCompile Include="Thread.cpp">
+      <Filter>Core\12. Thread\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadManager.cpp">
+      <Filter>Core\12. Thread\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon1.ico">
@@ -461,6 +485,9 @@
       <Filter>Core\09. Render\HLSLSorce</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\Shader\BarShader.fx">
+      <Filter>Core\09. Render\HLSLSorce</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\Shader\CheckBoxShader.fx">
       <Filter>Core\09. Render\HLSLSorce</Filter>
     </FxCompile>
   </ItemGroup>

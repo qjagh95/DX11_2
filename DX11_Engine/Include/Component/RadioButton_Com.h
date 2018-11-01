@@ -1,9 +1,11 @@
 #pragma once
-#include "Button_Com.h"
+#include "CheckBox_Com.h"
 
 JEONG_BEGIN
 
-class JEONG_DLL RadioButton_Com : public Button_Com
+class CheckBox_Com;
+class GameObject;
+class JEONG_DLL RadioButton_Com : public CheckBox_Com
 {
 public:
 	bool Init() override;
@@ -18,7 +20,7 @@ public:
 
 protected:
 	RadioButton_Com();
-	RadioButton_Com(const RadioButton_Com& CopyData);
+	RadioButton_Com(const RadioButton_Com& CopyDaa);
 	~RadioButton_Com();
 
 public:
@@ -26,3 +28,4 @@ public:
 };
 
 JEONG_END
+  

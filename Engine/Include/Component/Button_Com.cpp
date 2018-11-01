@@ -107,7 +107,7 @@ Button_Com * Button_Com::Clone()
 void Button_Com::AfterClone()
 {
 	ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("ButtonBody");
-	RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(200.0f, 50.0f, 0.0f));
+	RectColl->SetInfo(Vector3::Zero, m_Transform->GetWorldScale());
 	SAFE_RELEASE(RectColl);
 }
 

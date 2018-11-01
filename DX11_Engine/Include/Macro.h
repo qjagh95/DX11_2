@@ -36,6 +36,7 @@
 #define COLLIDER_SHADER "ColliderShader"
 #define BUTTON_SHADER "ButtonShader"
 #define BAR_SHADER "BarShader"
+#define CHECKBOX_SHADER "CheckBoxShader"
 
 //Base InputLayOut
 #define POS_COLOR_LAYOUT "PosColorLayOut"

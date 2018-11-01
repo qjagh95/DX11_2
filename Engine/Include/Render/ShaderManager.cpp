@@ -86,6 +86,15 @@ bool ShaderManager::Init()
 		return false;
 	}
 
+	Entry[ST_VERTEX] = "CheckBoxVS";
+	Entry[ST_PIXEL] = "CheckBoxPS";
+
+	if (LoadShader(CHECKBOX_SHADER, TEXT("CheckBoxShader.fx"), Entry) == false)
+	{
+		TrueAssert(true);
+		return false;
+	}
+
 #ifdef _DEBUG
 	Entry[ST_VERTEX] = "ColliderVS";
 	Entry[ST_PIXEL] = "ColliderPS";
@@ -113,6 +122,7 @@ bool ShaderManager::Init()
 	CreateCBuffer("Collider", sizeof(Vector4), 8, CST_VERTEX | CST_PIXEL);
 	CreateCBuffer("ButtonCBuffer", sizeof(ButtonCBuffer), 9, CST_VERTEX | CST_PIXEL);
 	CreateCBuffer("BarCBuffer", sizeof(BarCBuffer), 9, CST_VERTEX | CST_PIXEL);
+	CreateCBuffer("CheckBoxCBuffer", sizeof(CheckBoxCBuffer), 9, CST_VERTEX | CST_PIXEL);
 
 	return true;
 }

@@ -167,6 +167,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SceneMain\LoadingScene.cpp" />
+    <ClCompile Include="SceneMain\LoadingThread.cpp" />
     <ClCompile Include="SceneMain\MainScene.cpp" />
     <ClCompile Include="SceneMain\StartScene.cpp" />
     <ClCompile Include="UserComponent\BulletBoom_Com.cpp" />
@@ -180,6 +182,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientHeader.h" />
+    <ClInclude Include="SceneMain\LoadingScene.h" />
+    <ClInclude Include="SceneMain\LoadingThread.h" />
     <ClInclude Include="SceneMain\MainScene.h" />
     <ClInclude Include="SceneMain\StartScene.h" />
     <ClInclude Include="UserComponent\BulletBoom_Com.h" />

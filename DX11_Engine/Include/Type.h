@@ -176,6 +176,13 @@ struct JEONG_DLL ButtonCBuffer
 	Vector4 DiffuseColor;
 };
 
+struct JEONG_DLL CheckBoxCBuffer
+{
+	int isCheck;
+	Vector3 Empty;
+	Vector4 CheckBoxColor;
+};
+
 struct JEONG_DLL BarCBuffer
 {
 	float Percent;

@@ -25,7 +25,7 @@ public:
 	GameObject* FindObject(const string& TagName);
 
 	template<typename T>
-	bool AddSceneComponent(const string& TagName, bool isCurrent = true)
+	bool AddSceneComponent(const string& TagName, bool isCurrent = true) 
 	{
 		if (isCurrent == true)
 			return m_CurScene->AddSceneComponent<T>(TagName);
