@@ -12,6 +12,7 @@ public:
 	static unsigned int ThreadFunc(void* Arg);
 
 private:
+	//나는 C++쓰레드에서 stl쓰레드로 바꿈.
 	thread* m_Thread;
 
 protected:

@@ -60,7 +60,6 @@ bool Button_Com::Init()
 
 int Button_Com::Input(float DeltaTime)
 {
-
 	return 0;
 }
 

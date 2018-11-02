@@ -13,22 +13,70 @@
 
 JEONG_USING
 
+
+RadioButton_Com::RadioSet::RadioSet()
+	:RadioObject(NULLPTR), CheckCom(NULLPTR)
+{
+}
+
+RadioButton_Com::RadioSet::~RadioSet()
+{
+	SAFE_RELEASE(RadioObject);
+	SAFE_RELEASE(CheckCom);
+}
+
 RadioButton_Com::RadioButton_Com()
 {
 	m_UIType = UT_RADIOBUTTON;
 	SetTag("RadioButton");
-
-	m_CheckState = CBS_FALSE;
-	m_CheckBoxCBuffer = { 0 };
+	m_PrevIndex = NULLPTR;
 }
 
 RadioButton_Com::RadioButton_Com(const RadioButton_Com & CopyData)
-	:CheckBox_Com(CopyData)
+	:UIBase_Com(CopyData)
 {
+	m_RadioMap.clear();
+
+	unordered_map<string, vector<RadioSet*>>::const_iterator StartIter = CopyData.m_RadioMap.begin();
+	unordered_map<string, vector<RadioSet*>>::const_iterator EndIter = CopyData.m_RadioMap.end();
+
+	for (; StartIter != EndIter; StartIter++)
+	{
+		vector<RadioSet*> TempVec;
+		for (size_t i = 0; i < StartIter->second.size(); i++)
+		{
+			RadioSet* newSet = new RadioSet();
+			
+			GameObject* newObject = StartIter->second[i]->RadioObject;
+			CheckBox_Com* newCheck = StartIter->second[i]->CheckCom;
+
+			newSet->CheckCom = newCheck->Clone();
+			newSet->RadioObject = newObject->Clone();
+
+			TempVec.push_back(newSet);
+
+			SAFE_RELEASE(newObject);
+			SAFE_RELEASE(newCheck);
+		}
+
+		m_RadioMap.insert(make_pair(StartIter->first, TempVec));
+		TempVec.clear();
+	}
 }
 
 RadioButton_Com::~RadioButton_Com()
 {
+	unordered_map<string, vector<RadioSet*>>::iterator StartIter = m_RadioMap.begin();
+	unordered_map<string, vector<RadioSet*>>::iterator EndIter = m_RadioMap.end();
+
+	for (; StartIter != EndIter; StartIter++)
+	{
+		for (size_t i = 0; i < StartIter->second.size(); i++)
+		{
+			SAFE_DELETE(StartIter->second[i]);
+		}
+	}
+	m_RadioMap.clear();
 }
 
 bool RadioButton_Com::Init()
@@ -49,50 +97,59 @@ bool RadioButton_Com::Init()
 	ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("RadioBody");
 	RectColl->SetInfo(Vector3::Zero, Vector3(16.0f, 16.0f, 0.0f));
 	RectColl->SetCollisionGroup("UI");
-	RectColl->SetCallback([this](Collider_Com* _src, Collider_Com* _dest, float _time) { MouseHit(_src, _dest, _time);}, CCT_DOING);
-	RectColl->SetCallback([this](Collider_Com* _src, Collider_Com* _dest, float _time) { MouseOut(_src, _dest, _time);}, CCT_END);
-
 	SAFE_RELEASE(RectColl);
-
-	m_CheckBoxCBuffer.CheckBoxColor = Vector4::White;
-	m_CheckBoxCBuffer.isCheck = false;
 
 	return true;
 }
 
 int RadioButton_Com::Input(float DeltaTime)
 {
-	CheckBox_Com::Input(DeltaTime);
 	return 0;
 }
 
 int RadioButton_Com::Update(float DeltaTime)
 {
-	CheckBox_Com::Update(DeltaTime);
+	unordered_map<string, vector<RadioSet*>>::iterator StartIter = m_RadioMap.begin();
+	unordered_map<string, vector<RadioSet*>>::iterator EndIter = m_RadioMap.end();
+
+	int GroupCount = 0;
+	for (; StartIter != EndIter; GroupCount++,StartIter++)
+	{
+		for (size_t i = 0; i < StartIter->second.size(); i++)
+		{
+			if (StartIter->second[i]->CheckCom->GetCheckState() == CBS_TRUE)
+			{
+				m_PrevIndex[GroupCount] = i;
+				StartIter->second[m_PrevIndex[GroupCount]]->CheckCom->SetCheckState(CBS_FALSE);
+				break;
+			}
+		} 
+	}
+
+	if (m_PrevIndex[GroupCount] >= 0)
+	{
+		StartIter->second[m_PrevIndex[GroupCount]]->CheckCom->SetCheckState(CBS_TRUE);
+		m_PrevIndex[GroupCount] = -1;
+	}
 
 	return 0;
 }
 
 int RadioButton_Com::LateUpdate(float DeltaTime)
 {
-	CheckBox_Com::LateUpdate(DeltaTime);
-
 	return 0;
 }
 
 void RadioButton_Com::Collision(float DeltaTime)
 {
-	CheckBox_Com::Collision(DeltaTime);
 }
 
 void RadioButton_Com::CollisionLateUpdate(float DeltaTime)
 {
-	CheckBox_Com::CollisionLateUpdate(DeltaTime);
 }
 
 void RadioButton_Com::Render(float DeltaTime)
 {
-	CheckBox_Com::Render(DeltaTime);
 }
 
 RadioButton_Com * RadioButton_Com::Clone()
@@ -102,4 +159,41 @@ RadioButton_Com * RadioButton_Com::Clone()
 
 void RadioButton_Com::AfterClone()
 {
+}
+
+void RadioButton_Com::CreateRadioGroup(const string & GroupName, int Interval, int ButtonCount, Vector3 StartPos, RADIO_DIR dir)
+{
+	vector<RadioSet*> TempVec;
+	for (size_t i = 0; i < ButtonCount; i++)
+	{
+		RadioSet* newSet = new RadioSet();
+		GameObject* newObject = GameObject::CreateObject("RadioObject", m_Layer);
+		CheckBox_Com* newCheck = newObject->AddComponent<CheckBox_Com>("RadioCom");
+
+		newSet->RadioObject = newObject;
+		newSet->CheckCom = newCheck;
+
+		float xPos;
+		float yPos;
+
+		switch (dir)
+		{
+			case RD_DOWN:
+			{
+				yPos = StartPos.y + (float)Interval * (float)i;
+				newSet->RadioObject->GetTransform()->SetWorldPos(StartPos.y, yPos, 0.0f);
+			}
+				break;
+			case RD_RIGHT:
+			{
+				xPos = StartPos.x + (float)Interval * (float)i;
+				newSet->RadioObject->GetTransform()->SetWorldPos(xPos, StartPos.y, 0.0f);
+			}
+				break;
+		}
+
+		TempVec.push_back(newSet);
+	}
+
+	m_RadioMap.insert(make_pair(GroupName, TempVec));
 }

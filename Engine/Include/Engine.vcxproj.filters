@@ -324,6 +324,9 @@
     <ClInclude Include="ThreadManager.h">
       <Filter>Core\12. Thread\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="Component\TitleBar_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\TitleBar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Copy.bat">
@@ -459,6 +462,9 @@
     </ClCompile>
     <ClCompile Include="ThreadManager.cpp">
       <Filter>Core\12. Thread\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\TitleBar_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\TitleBar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

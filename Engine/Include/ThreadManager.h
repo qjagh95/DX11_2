@@ -16,7 +16,7 @@ public:
 	template<typename T>
 	T* ThreadCreate(const string& ThreadName)
 	{
-		T* newThread = FindThread(ThreadName);
+		T* newThread = (T*)FindThread(ThreadName);
 
 		if (newThread != NULLPTR)
 			return newThread;

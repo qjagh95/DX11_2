@@ -8,6 +8,7 @@
 #include "Component/Transform_Com.h"
 #include "Component/Renderer_Com.h"
 #include "Component/Material_Com.h"
+#include "Component/TitleBar_Com.h"
 
 #include "../UserComponent/Bullet_Com.h"
 #include "../UserComponent/BulletRot_Com.h"
@@ -51,6 +52,9 @@ bool Player_Com::Init()
 	RectColl->SetMyTypeName("Player");
 	RectColl->SetCollsionCallback(CCT_DOING, this, &Player_Com::PixelHit);
 	SAFE_RELEASE(RectColl);
+	
+	TitleBar_Com* TitleCom = m_Object->AddComponent<TitleBar_Com>("TitleBar");
+	SAFE_RELEASE(TitleCom);
 
 	//ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("PlayerCircleBody");
 	//CircleColl->SetInfo(30.0f);

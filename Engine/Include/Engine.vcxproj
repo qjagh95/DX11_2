@@ -194,6 +194,7 @@
     <ClInclude Include="Component\Material_Com.h" />
     <ClInclude Include="Component\RadioButton_Com.h" />
     <ClInclude Include="Component\Renderer_Com.h" />
+    <ClInclude Include="Component\TitleBar_Com.h" />
     <ClInclude Include="Component\Transform_Com.h" />
     <ClInclude Include="Component\UIBase_Com.h" />
     <ClInclude Include="Core.h" />
@@ -244,6 +245,7 @@
     <ClCompile Include="Component\Material_Com.cpp" />
     <ClCompile Include="Component\RadioButton_Com.cpp" />
     <ClCompile Include="Component\Renderer_Com.cpp" />
+    <ClCompile Include="Component\TitleBar_Com.cpp" />
     <ClCompile Include="Component\Transform_Com.cpp" />
     <ClCompile Include="Component\UIBase_Com.cpp" />
     <ClCompile Include="Core.cpp" />

@@ -1,12 +1,22 @@
 #pragma once
-#include "CheckBox_Com.h"
+#include "UIBase_Com.h"
 
 JEONG_BEGIN
 
 class CheckBox_Com;
 class GameObject;
-class JEONG_DLL RadioButton_Com : public CheckBox_Com
+class JEONG_DLL RadioButton_Com : public UIBase_Com
 {
+private:
+	struct JEONG_DLL RadioSet
+	{
+		GameObject* RadioObject;
+		CheckBox_Com* CheckCom;
+
+		RadioSet();
+		~RadioSet();
+	};
+
 public:
 	bool Init() override;
 	int Input(float DeltaTime) override;
@@ -18,11 +28,17 @@ public:
 	RadioButton_Com* Clone() override;
 	void AfterClone() override;
 
+	void CreateRadioGroup(const string& GroupName ,int Interval, int ButtonCount, Vector3 StartPos, RADIO_DIR dir = RD_RIGHT);
+
+private:
+	unordered_map<string, vector<RadioSet*>> m_RadioMap;
+	int m_PrevIndex;
+
 protected:
 	RadioButton_Com();
 	RadioButton_Com(const RadioButton_Com& CopyDaa);
 	~RadioButton_Com();
-
+	
 public:
 	friend class GameObject;
 };

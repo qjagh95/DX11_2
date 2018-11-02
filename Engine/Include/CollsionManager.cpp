@@ -108,7 +108,6 @@ void CollsionManager::AddCollsion(GameObject * object)
 		//if (((Collider_Com*)*StartIter)->GetCollisionGroupName() == "UI")
 		//	CameraPos = Vector3::Zero;
 
-
 		//나의 Pos를 나타낸다.
 		Vector3	SectionMin = ((Collider_Com*)*StartIter)->GetSectionMin();
 		Vector3	SectionMax = ((Collider_Com*)*StartIter)->GetSectionMax();

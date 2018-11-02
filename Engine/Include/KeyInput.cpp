@@ -124,7 +124,6 @@ void KeyInput::Update(float DeltaTime)
 	//m_vMouseWorld = m_vMouseClient + GET_SINGLE(CCamera)->GetPos();
 
 	m_MouseObject->GetTransform()->SetWorldPos((float)DevicePos.x, (float)DevicePos.y, 0.0f);
-
 	m_MouseObject->Update(DeltaTime);
 
 	if (m_ShowCursor == false && (m_MouseScreenPos.x <= 0.0f && m_MouseScreenPos.x >= Device::Get()->GetWinSize().Width || m_MouseScreenPos.y <= 0.0f && m_MouseScreenPos.y >= Device::Get()->GetWinSize().Height))
