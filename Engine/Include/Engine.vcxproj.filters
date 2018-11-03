@@ -178,6 +178,18 @@
     <Filter Include="Core\12. Thread\Manager">
       <UniqueIdentifier>{8c080a22-124b-491e-8764-d48f4c2ddc79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\BarWorld">
+      <UniqueIdentifier>{3bcf4f7a-e15f-4c3e-8ab1-454722289dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\Icon">
+      <UniqueIdentifier>{1a4db33f-74c0-4c6a-9ad0-a5928845f683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\UI\UIcon">
+      <UniqueIdentifier>{c40b2fa9-6dc1-4f78-9f08-eee22c82a8eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\UI\IconSlot">
+      <UniqueIdentifier>{e8cac2f8-8502-4f67-940a-43a4c2fa0eb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -312,9 +324,6 @@
     <ClInclude Include="Component\CheckBox_Com.h">
       <Filter>Core\08. Object\Component\BaseComponent\UI\CheckBox</Filter>
     </ClInclude>
-    <ClInclude Include="Component\Bar_Com.h">
-      <Filter>Core\08. Object\Component\BaseComponent\UI\Bar</Filter>
-    </ClInclude>
     <ClInclude Include="Component\RadioButton_Com.h">
       <Filter>Core\08. Object\Component\BaseComponent\UI\RadioButton</Filter>
     </ClInclude>
@@ -326,6 +335,12 @@
     </ClInclude>
     <ClInclude Include="Component\TitleBar_Com.h">
       <Filter>Core\08. Object\Component\BaseComponent\TitleBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\UIBar_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\Bar</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Bar_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\BarWorld</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -451,9 +466,6 @@
     <ClCompile Include="Component\CheckBox_Com.cpp">
       <Filter>Core\08. Object\Component\BaseComponent\UI\CheckBox</Filter>
     </ClCompile>
-    <ClCompile Include="Component\Bar_Com.cpp">
-      <Filter>Core\08. Object\Component\BaseComponent\UI\Bar</Filter>
-    </ClCompile>
     <ClCompile Include="Component\RadioButton_Com.cpp">
       <Filter>Core\08. Object\Component\BaseComponent\UI\RadioButton</Filter>
     </ClCompile>
@@ -465,6 +477,12 @@
     </ClCompile>
     <ClCompile Include="Component\TitleBar_Com.cpp">
       <Filter>Core\08. Object\Component\BaseComponent\TitleBar</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\UIBar_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\Bar</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Bar_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\BarWorld</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

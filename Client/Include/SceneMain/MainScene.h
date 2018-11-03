@@ -1,6 +1,6 @@
 #pragma once
 #include "Scene/SceneComponent.h"
-#include "Component/Bar_Com.h"
+#include "Component/UIBar_Com.h"
 
 JEONG_USING
 class MainScene : public SceneComponent
@@ -15,7 +15,7 @@ public:
 	void Render(float DeltaTime) override;
 
 private:
-	Bar_Com* m_TestBar;
+	UIBar_Com* m_TestBar;
 
 public:
 	MainScene();

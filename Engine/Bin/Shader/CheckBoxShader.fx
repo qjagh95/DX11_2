@@ -23,13 +23,12 @@ PS_OUTPUT_SINGLE CheckBoxPS(VS_OUTPUT_UV input)
 {
     PS_OUTPUT_SINGLE output = (PS_OUTPUT_SINGLE) 0;
 
-    if (isCheck == 1)
+    output.vTarget0 = Diffuse.Sample(DiffuseSampler, input.vUV);
+    
+    if (isCheck == 0)
     {
-        output.vTarget0 = Diffuse.Sample(DiffuseSampler, input.vUV);
-    }
-    else
-    {
-        output.vTarget0 = float4(1.0f, 1.0f, 1.0f, 1.0f);
+        if (output.vTarget0.a > 0.5f)
+            output.vTarget0 = float4(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     return output;

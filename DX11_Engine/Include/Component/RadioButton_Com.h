@@ -29,10 +29,13 @@ public:
 	void AfterClone() override;
 
 	void CreateRadioGroup(const string& GroupName ,int Interval, int ButtonCount, Vector3 StartPos, RADIO_DIR dir = RD_RIGHT);
+	const string& GetRadioGroupName() const { return m_GroupName; }
 
 private:
-	unordered_map<string, vector<RadioSet*>> m_RadioMap;
-	int m_PrevIndex;
+	vector<RadioSet*> m_vecRadio;
+	string m_GroupName;
+	int SelectIndex;
+	int PrevSelect = INT_MAX;
 
 protected:
 	RadioButton_Com();

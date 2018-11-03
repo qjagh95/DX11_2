@@ -1,8 +1,7 @@
-#include "Bar_Com.h"
+#include "UIBar_Com.h"
 #include "Renderer_Com.h"
 #include "Material_Com.h"
 #include "ColliderRect_Com.h"
-#include "Collider_Com.h"
 #include "Animation2D_Com.h"
 #include "Transform_Com.h"
 
@@ -10,14 +9,15 @@
 
 JEONG_USING
 
-Bar_Com::Bar_Com()
+UIBar_Com::UIBar_Com()
 	:m_RectCollider(NULLPTR)
 {
+	m_UIType = UT_BAR;
 	SetTag("Bar");
 }
 
-Bar_Com::Bar_Com(const Bar_Com & CopyData)
-	:Component_Base(CopyData)
+UIBar_Com::UIBar_Com(const UIBar_Com & CopyData)
+	:Button_Com(CopyData)
 {
 	m_Dir = CopyData.m_Dir;
 	m_MinValue = CopyData.m_MinValue;
@@ -25,16 +25,16 @@ Bar_Com::Bar_Com(const Bar_Com & CopyData)
 	m_Value = CopyData.m_Value;
 
 	m_Scale = CopyData.m_Scale;
-	m_BarCBuffer = CopyData.m_BarCBuffer;
+	m_BarCBuffer= CopyData.m_BarCBuffer;
 	m_ValueLenth = CopyData.m_ValueLenth;
 }
 
-Bar_Com::~Bar_Com()
+UIBar_Com::~UIBar_Com()
 {
 	SAFE_RELEASE(m_RectCollider);
 }
 
-bool Bar_Com::Init()
+bool UIBar_Com::Init()
 {
 	//일단 기본셋팅.
 	SetDir(BD_LEFT);
@@ -59,17 +59,17 @@ bool Bar_Com::Init()
 	m_RectCollider = m_Object->AddComponent<ColliderRect_Com>("BarBody");
 	m_RectCollider->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(200.0f, 30.0f, 0.0f));
 	m_RectCollider->SetCollisionGroup("UI");
-	m_RectCollider->SetCollsionCallback(CCT_DOING, this, &Bar_Com::MouseHit);
+	m_RectCollider->SetCollsionCallback(CCT_DOING, this, &UIBar_Com::MouseHit);
 
 	return true;
 }
 
-int Bar_Com::Input(float DeltaTime)
+int UIBar_Com::Input(float DeltaTime)
 {
 	return 0;
 }
 
-int Bar_Com::Update(float DeltaTime)
+int UIBar_Com::Update(float DeltaTime)
 {
 	Vector3 tempScale = m_Scale;
 	Vector3 TempVar;
@@ -112,37 +112,37 @@ int Bar_Com::Update(float DeltaTime)
 	return 0;
 }
 
-int Bar_Com::LateUpdate(float DeltaTime)
+int UIBar_Com::LateUpdate(float DeltaTime)
 {
 	return 0;
 }
 
-void Bar_Com::Collision(float DeltaTime)
+void UIBar_Com::Collision(float DeltaTime)
 {
 }
 
-void Bar_Com::CollisionLateUpdate(float DeltaTime)
+void UIBar_Com::CollisionLateUpdate(float DeltaTime)
 {
 }
 
-void Bar_Com::Render(float DeltaTime)
+void UIBar_Com::Render(float DeltaTime)
 {
 	Renderer_Com* getRender = FindComponentFromType<Renderer_Com>(CT_RENDER);
 	getRender->UpdateRendererCBuffer("BarCBuffer", &m_BarCBuffer, sizeof(BarCBuffer));
 	SAFE_RELEASE(getRender);
 }
 
-Bar_Com * Bar_Com::Clone()
+UIBar_Com * UIBar_Com::Clone()
 {
-	return new Bar_Com(*this);
+	return new UIBar_Com(*this);
 }
-
-void Bar_Com::AfterClone()
+ 
+void UIBar_Com::AfterClone()
 {
 	m_RectCollider = (ColliderRect_Com*)FindComponentFromType<ColliderRect_Com>(CT_COLLIDER);
 }
 
-void Bar_Com::SetDir(BAR_DIR dir)
+void UIBar_Com::SetDir(BAR_DIR dir)
 {
 	m_Dir = dir;
 	m_BarCBuffer.MoveDir = dir;
@@ -165,7 +165,7 @@ void Bar_Com::SetDir(BAR_DIR dir)
 	}
 }
 
-void Bar_Com::SetValue(float Value)
+void UIBar_Com::SetValue(float Value)
 {
 	m_Value = Value;
 
@@ -176,7 +176,7 @@ void Bar_Com::SetValue(float Value)
 		m_Value = m_MaxValue;
 }
 
-void Bar_Com::AddValue(float Value)
+void UIBar_Com::AddValue(float Value)
 {
 	m_Value += Value;
 
@@ -192,7 +192,7 @@ void Bar_Com::AddValue(float Value)
 	m_BarCBuffer.Percent = (m_Value - m_MinValue) / m_ValueLenth;
 }
 
-void Bar_Com::SetMinMaxValue(float minValue, float maxValue)
+void UIBar_Com::SetMinMaxValue(float minValue, float maxValue)
 {
 	m_MinValue = minValue;
 	m_MaxValue = maxValue;
@@ -207,18 +207,18 @@ void Bar_Com::SetMinMaxValue(float minValue, float maxValue)
 	m_BarCBuffer.Percent = (m_Value - m_MinValue) / m_ValueLenth;
 }
 
-void Bar_Com::SetScale(const Vector3 & Scale)
+void UIBar_Com::SetScale(const Vector3 & Scale)
 {
 	m_Scale = Scale;
 	m_Transform->SetWorldScale(m_Scale);
 }
 
-void Bar_Com::SetScale(float x, float y, float z)
+void UIBar_Com::SetScale(float x, float y, float z)
 {
 	m_Scale = Vector3(x, y, z);
 	m_Transform->SetWorldScale(Vector3(x, y, z));
 }
 
-void Bar_Com::MouseHit(Collider_Com * Src, Collider_Com * Dest, float DeltaTime)
+void UIBar_Com::MouseHit(Collider_Com * Src, Collider_Com * Dest, float DeltaTime)
 {
 }

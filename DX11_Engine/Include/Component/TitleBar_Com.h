@@ -18,6 +18,7 @@ public:
 	void AfterClone() override;
 
 	void MouseHit(Collider_Com* Src, Collider_Com* Dest, float DeltaTime);
+	void MouseOut(Collider_Com* Src, Collider_Com* Dest, float DeltaTime);
 
 private:
 	bool m_isOver;

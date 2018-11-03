@@ -1,10 +1,9 @@
-#pragma once
-#include "Component_Base.h"
+#include "Button_Com.h"
+
 JEONG_BEGIN
 
-class Collider_Com;
 class ColliderRect_Com;
-class JEONG_DLL Bar_Com : public Component_Base
+class JEONG_DLL UIBar_Com : public Button_Com
 {
 public:
 	bool Init() override;
@@ -14,9 +13,9 @@ public:
 	void Collision(float DeltaTime) override;
 	void CollisionLateUpdate(float DeltaTime) override;
 	void Render(float DeltaTime) override;
-	Bar_Com* Clone() override;
+	UIBar_Com* Clone() override;
 	void AfterClone() override;
-	
+
 	void SetDir(BAR_DIR dir);
 	void SetMinValue(float minValue) { m_MinValue = minValue; }
 	void SetMaxValue(float maxValue) { m_MaxValue = maxValue; }
@@ -38,14 +37,14 @@ private:
 	float m_Value;
 	float m_ValueLenth;
 
-	ColliderRect_Com* m_RectCollider;
+	ColliderRect_Com* m_RectCollider; //마우스를 올렸을때 HP표시..를 위함.
 	Vector3 m_Scale;
 	BarCBuffer m_BarCBuffer;
 
 protected:
-	Bar_Com();
-	Bar_Com(const Bar_Com& CopyData);
-	~Bar_Com();
+	UIBar_Com();
+	UIBar_Com(const UIBar_Com& CopyData);
+	~UIBar_Com();
 
 public:
 	friend class GameObject;

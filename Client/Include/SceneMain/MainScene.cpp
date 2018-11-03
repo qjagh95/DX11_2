@@ -71,9 +71,9 @@ bool MainScene::Init()
 	pTransform->SetWorldScale(200.0f, 50.0f, 1.0f);
 
 	GameObject* BarObject = GameObject::CreateObject("TestBar", UILayer);
-	BarObject->GetTransform()->SetWorldPos(100.0f, 600.0f, 0.0f);
+	BarObject->GetTransform()->SetWorldPos(200.0f, 600.0f, 0.0f);
 
-	Bar_Com* TestBar = BarObject->AddComponent<Bar_Com>("HpBar");
+	UIBar_Com* TestBar = BarObject->AddComponent<UIBar_Com>("HpBar");
 	TestBar->SetDir(BD_LEFT);
 	TestBar->SetScale(200.0f, 30.0f, 0.0f);
 	m_TestBar = TestBar;

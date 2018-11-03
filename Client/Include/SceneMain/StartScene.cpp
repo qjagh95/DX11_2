@@ -48,6 +48,10 @@ bool StartScene::Init()
 	newCheck->GetTransform()->SetWorldPos(300.0f, 360.0f, 0.0f);
 	CheckBox_Com* CheckCom = newCheck->AddComponent<CheckBox_Com>("CheckBox");
 
+	GameObject* newRadio = GameObject::CreateObject("CheckBox", UILayer);
+	RadioButton_Com* RadioCom = newRadio->AddComponent<RadioButton_Com>("CheckBox");
+	RadioCom->CreateRadioGroup("Group1", 30.0f, 10, newRadio->GetTransform()->GetWorldPos());
+
 	//GameObject* newCheck1 = GameObject::CreateObject("CheckBox", UILayer);
 	//newCheck1->GetTransform()->SetWorldPos(500.0f, 360.0f, 0.0f);
 	//CheckBox_Com* newCheck1Com = newCheck1->AddComponent<CheckBox_Com>("CheckBox");
@@ -64,6 +68,8 @@ bool StartScene::Init()
 	//	p2->SetCheckState(CBS_TRUE);
 	//});
 
+	SAFE_RELEASE(newRadio);
+	SAFE_RELEASE(RadioCom);
 	SAFE_RELEASE(Default);
 	SAFE_RELEASE(UILayer);
 	SAFE_RELEASE(newButton);
