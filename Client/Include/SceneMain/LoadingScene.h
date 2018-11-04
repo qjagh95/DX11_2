@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene\SceneComponent.h"
+#include "Component/Bar_Com.h"
 
 JEONG_USING
 
@@ -13,6 +14,9 @@ public:
 	void Collision(float DeltaTime) override;
 	void CollisionLateUpdate(float DeltaTime) override;
 	void Render(float DeltaTime) override;
+
+private:
+	Bar_Com* m_LoadingBar;
 
 public:
 	LoadingScene();

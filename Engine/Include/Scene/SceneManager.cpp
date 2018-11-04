@@ -7,7 +7,7 @@ JEONG_USING
 SINGLETON_VAR_INIT(SceneManager)
 
 SceneManager::SceneManager()
-	:m_CurScene(NULLPTR), m_NextScene(NULLPTR)
+	:m_CurScene(NULLPTR), m_NextScene(NULLPTR), m_isChange(false)
 {
 }
 
@@ -114,21 +114,28 @@ GameObject * SceneManager::FindObject(const string & TagName)
 	return m_NextScene->FindObject(TagName);
 }
 
-void SceneManager::CreateNextScene()
+void SceneManager::CreateNextScene(bool isChange)
 {
 	SAFE_RELEASE(m_NextScene);
 
 	m_NextScene = new Scene();
 	m_NextScene->Init();
+	m_isChange = isChange;
+}
+
+void SceneManager::SetIsChange(bool isChange)
+{
+	m_isChange = isChange;
 }
 
 int SceneManager::ChangeScene()
 {
-	if (m_NextScene != NULLPTR)
+	if (m_NextScene != NULLPTR && m_isChange == true)
 	{
 		SAFE_RELEASE(m_CurScene);
 		m_CurScene = m_NextScene;
 		m_NextScene = NULLPTR;
+		m_isChange = false;
 
 		KeyInput::Get()->ChangeMouseScene(m_CurScene);
 		return 1;

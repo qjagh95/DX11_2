@@ -190,6 +190,9 @@
     <Filter Include="Core\08. Object\Component\BaseComponent\UI\IconSlot">
       <UniqueIdentifier>{e8cac2f8-8502-4f67-940a-43a4c2fa0eb4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\12. Thread\Sync">
+      <UniqueIdentifier>{9a56c6ef-1220-483a-a0c8-e79e8b8d38f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -341,6 +344,9 @@
     </ClInclude>
     <ClInclude Include="Component\Bar_Com.h">
       <Filter>Core\08. Object\Component\BaseComponent\BarWorld</Filter>
+    </ClInclude>
+    <ClInclude Include="Sync.h">
+      <Filter>Core\12. Thread\Sync</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -16,6 +16,7 @@
 #include <sstream>
 #include <algorithm>
 #include <atlstr.h>
+#include <process.h>
 
 //DX11부터는 포함디렉터리 라이브러리 디렉터리 추가없이 바로 헤더추가가 가능하다.
 //이전에는 프로젝트 템플릿(VS기능)을 이용하여 프로젝트를 먼저 만들어놓고 추가해서 사용했다.

@@ -24,7 +24,7 @@ PS_OUTPUT_SINGLE CheckBoxPS(VS_OUTPUT_UV input)
     PS_OUTPUT_SINGLE output = (PS_OUTPUT_SINGLE) 0;
 
     output.vTarget0 = Diffuse.Sample(DiffuseSampler, input.vUV);
-
+    
     if (isCheck == 0)
     {
         if (output.vTarget0.a > 0.5f)

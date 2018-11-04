@@ -7,16 +7,21 @@ class JEONG_DLL Thread
 {
 public:
 	bool Init();
+	void Wait();
+	void Awake();
 	virtual void Run() = 0;
 
 	static unsigned int ThreadFunc(void* Arg);
 
 private:
-	//나는 C++쓰레드에서 stl쓰레드로 바꿈.
-	thread* m_Thread;
+	//stl쓰레드로 바꿈.
+	thread m_Thread;
+	HANDLE m_Start;
 
 protected:
 	Thread();
+
+public:
 	virtual ~Thread() = 0;
 
 public:

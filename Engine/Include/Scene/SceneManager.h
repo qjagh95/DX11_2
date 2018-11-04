@@ -18,7 +18,8 @@ public:
 
 	Scene* GetCurScene() const;
 	Scene* GetNextScene() const;
-	void CreateNextScene();
+	void CreateNextScene(bool isChange = true);
+	void SetIsChange(bool isChange);
 	void AddLayer(const string& TagName, int ZOrder, bool isCurrent = true);
 	void ChangeLayerZOrder(const string& TagName, int ZOrder, bool isCurrent = true);
 	Layer* FindLayer(const string& TagName, bool isCurrent = true);
@@ -39,6 +40,7 @@ private:
 private:
 	Scene* m_CurScene;
 	Scene* m_NextScene;
+	bool m_isChange;
 
 public:
 	CLASS_IN_SINGLE(SceneManager)

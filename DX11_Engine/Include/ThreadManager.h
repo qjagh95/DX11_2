@@ -1,5 +1,4 @@
 #pragma once
-
 #include "stdafx.h"
 
 JEONG_BEGIN
@@ -11,7 +10,10 @@ public:
 	bool Init();
 
 	Thread* FindThread(const string& ThreadName);
+	CRITICAL_SECTION* FindCritcal(const string& CritcalName);
+
 	bool DeleteThread(const string& ThreadName);
+	bool CritcalCreate(const string& CritcalName);
 
 	template<typename T>
 	T* ThreadCreate(const string& ThreadName)
@@ -35,6 +37,7 @@ public:
 
 private:
 	unordered_map<string, Thread*> m_ThreadMap;
+	unordered_map<string, CRITICAL_SECTION> m_CriMap;
 
 public:
 	CLASS_IN_SINGLE(ThreadManager)

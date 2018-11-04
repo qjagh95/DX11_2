@@ -24,6 +24,7 @@ CollsionManager::~CollsionManager()
 bool CollsionManager::Init()
 {
 	CreateGroup("Default", Vector3(0.0f, 0.0f, 0.0f), Vector3(5000.f, 5000.f, 0.f), 10, 10, 1, CGT_2D);
+	CreateGroup("BackGround", Vector3(0.0f, 0.0f, 0.0f), Vector3(5000.f, 5000.f, 0.f), 10, 10, 1, CGT_2D);
 	CreateGroup("UI", Vector3(0.0f, 0.0f, 0.0f), Vector3((float)Device::Get()->GetWinSize().Width, (float)Device::Get()->GetWinSize().Width, 0.0f), 4, 4, 1, CGT_2D);
 
 	return true;
@@ -37,14 +38,14 @@ bool CollsionManager::CreateGroup(const string & KeyName, const Vector3 & Min, c
 		return false;   
 
 	newGroup = new CollsionGroup();
-	newGroup->Type = eType;						//2D or 3D
-	newGroup->SpaceCountX = SpaceCountX;					//X축 분할 크기
-	newGroup->SpaceCountY = SpaceCountY;					//Y축 분할 크기
-	newGroup->SpaceCountZ = SpaceCountZ;					//Z축 분할 크기
+	newGroup->Type = eType;											//2D or 3D
+	newGroup->SpaceCountX = SpaceCountX;							//X축 분할 크기
+	newGroup->SpaceCountY = SpaceCountY;							//Y축 분할 크기
+	newGroup->SpaceCountZ = SpaceCountZ;							//Z축 분할 크기
 	newGroup->SpaceCount = SpaceCountX * SpaceCountY * SpaceCountZ; //전체 분할 갯수
-	newGroup->Max = Max;						//공간 전체의 크기
-	newGroup->Min = Min;						//최소값 ex(0 0 0 ~ 1280 720 0)
-	newGroup->Lenth = Max - Min;				//공간의 사이즈
+	newGroup->Max = Max;											//공간 전체의 크기
+	newGroup->Min = Min;											//최소값 ex(0 0 0 ~ 1280 720 0)
+	newGroup->Lenth = Max - Min;									//공간의 사이즈
 	newGroup->SpaceLenth = newGroup->Lenth / Vector3((float)SpaceCountX, (float)SpaceCountY, (float)SpaceCountZ);
 	//공간 하나당 크기. 사이즈 / 분할갯수
 

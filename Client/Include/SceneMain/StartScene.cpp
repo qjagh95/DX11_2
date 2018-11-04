@@ -4,6 +4,9 @@
 #include "LoadingScene.h"
 #include "Device.h"
 
+#include "Thread.h"
+#include "ThreadManager.h"
+
 #include "Scene/Scene.h"
 #include "Scene/Layer.h"
 #include "Scene/SceneManager.h"
@@ -50,7 +53,7 @@ bool StartScene::Init()
 
 	GameObject* newRadio = GameObject::CreateObject("CheckBox", UILayer);
 	RadioButton_Com* RadioCom = newRadio->AddComponent<RadioButton_Com>("CheckBox");
-	RadioCom->CreateRadioGroup("Group1", 30.0f, 10, newRadio->GetTransform()->GetWorldPos());
+	RadioCom->CreateRadioGroup("Group1", 30, 10, newRadio->GetTransform()->GetWorldPos());
 
 	//GameObject* newCheck1 = GameObject::CreateObject("CheckBox", UILayer);
 	//newCheck1->GetTransform()->SetWorldPos(500.0f, 360.0f, 0.0f);
@@ -93,23 +96,27 @@ int StartScene::Update(float DeltaTime)
 
 int StartScene::LateUpdate(float DeltaTime)
 {
+
 	return 0;
 }
 
 void StartScene::Collision(float DeltaTime)
 {
+
 }
 
 void StartScene::CollisionLateUpdate(float DeltaTime)
 {
+
 }
 
 void StartScene::Render(float DeltaTime)
 {
+
 }
 
 void StartScene::StartButtonActive(float DeltaTime)
 {
 	SceneManager::Get()->CreateNextScene();
-	SceneManager::Get()->AddSceneComponent<MainScene>("MainScene", false);
+	SceneManager::Get()->AddSceneComponent<LoadingScene>("LoadingScene", false);
 }

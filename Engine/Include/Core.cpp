@@ -5,6 +5,7 @@
 #include "TimeManager.h"
 #include "KeyInput.h"
 #include "CollsionManager.h"
+#include "ThreadManager.h"
 
 #include "Resource\ResourceManager.h"
 #include "Resource/Mesh.h"
@@ -37,6 +38,7 @@ Core::~Core()
 	TimeManager::Delete();
 	CollsionManager::Delete();
 	KeyInput::Delete();
+	ThreadManager::Delete();
 }
 
 bool Core::Init(HINSTANCE hInst, unsigned int Width, unsigned int Height, const TCHAR * TitleName, const TCHAR * ClassName, int iIconID, int iSmallIconID, bool bWindowMode)
