@@ -181,6 +181,7 @@
     <ClInclude Include="CollsionManager.h" />
     <ClInclude Include="Component\Animation2D_Com.h" />
     <ClInclude Include="Component\Bar_Com.h" />
+    <ClInclude Include="Component\IconSlot_Com.h" />
     <ClInclude Include="Component\UIBar_Com.h" />
     <ClInclude Include="Component\Button_Com.h" />
     <ClInclude Include="Component\Camera_Com.h" />
@@ -198,6 +199,7 @@
     <ClInclude Include="Component\TitleBar_Com.h" />
     <ClInclude Include="Component\Transform_Com.h" />
     <ClInclude Include="Component\UIBase_Com.h" />
+    <ClInclude Include="Component\UICon_Com.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="GameObject.h" />
@@ -234,6 +236,7 @@
     <ClCompile Include="CollsionManager.cpp" />
     <ClCompile Include="Component\Animation2D_Com.cpp" />
     <ClCompile Include="Component\Bar_Com.cpp" />
+    <ClCompile Include="Component\IconSlot_Com.cpp" />
     <ClCompile Include="Component\UIBar_Com.cpp" />
     <ClCompile Include="Component\Button_Com.cpp" />
     <ClCompile Include="Component\Camera_Com.cpp" />
@@ -251,6 +254,7 @@
     <ClCompile Include="Component\TitleBar_Com.cpp" />
     <ClCompile Include="Component\Transform_Com.cpp" />
     <ClCompile Include="Component\UIBase_Com.cpp" />
+    <ClCompile Include="Component\UICon_Com.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="GameObject.cpp" />

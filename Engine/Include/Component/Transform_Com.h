@@ -83,10 +83,21 @@ public:
 	void LookAt(Component_Base* component, AXIS eAxis = AXIS_Z);
 	void LookAt(const Vector3& Vec, AXIS eAxis = AXIS_Z);
 
+	void SetParentFlag(int Flag);
+	void SetAddParentFlag(TRANSFORM_PARENT_FLAG Flag);
+	void DeleteParentFlag(TRANSFORM_PARENT_FLAG Flag);
+	void DeleteParentFlag();
+
+	void ScaleParent();
+	void PosParent();
+
 private:
 	//행렬연산은 연산자체가 무겁기 때문에 연산을 해줄때만 해주겠다.
 	bool m_isStatic;	///가만히 있는놈은 연산할 필요가 없다
 	bool m_isUpdate;	///움직일놈만 업데이트하겠다.
+	int m_ParentFlag;
+	Transform_Com* m_ParentTransform;
+	list<Transform_Com*> m_ChildTransList;		//자식 트랜스폼 리스트를 가지고 있어야함.
 	
 	//Rocal
 	Vector3 m_LocalScale;
@@ -107,6 +118,12 @@ private:
 	Vector3 m_WorldRotation;
 	Vector3 m_WorldPos;
 	Vector3 m_WorldAxis[AXIS_MAX];
+
+	//Child구조에서 자식 Transform에 대하여
+	//상대적인 정보를 잡아주기 위함.
+	Vector3	m_WorldRelativeScale;
+	Vector3	m_WorldRelativeRot;
+	Vector3	m_WorldRelativePos;
 
 	Vector3 m_Pivot;
 

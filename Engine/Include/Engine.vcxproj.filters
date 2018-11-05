@@ -181,9 +181,6 @@
     <Filter Include="Core\08. Object\Component\BaseComponent\BarWorld">
       <UniqueIdentifier>{3bcf4f7a-e15f-4c3e-8ab1-454722289dd2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\08. Object\Component\BaseComponent\Icon">
-      <UniqueIdentifier>{1a4db33f-74c0-4c6a-9ad0-a5928845f683}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\08. Object\Component\BaseComponent\UI\UIcon">
       <UniqueIdentifier>{c40b2fa9-6dc1-4f78-9f08-eee22c82a8eb}</UniqueIdentifier>
     </Filter>
@@ -348,6 +345,12 @@
     <ClInclude Include="Sync.h">
       <Filter>Core\12. Thread\Sync</Filter>
     </ClInclude>
+    <ClInclude Include="Component\IconSlot_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\IconSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\UICon_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\UIcon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Copy.bat">
@@ -489,6 +492,12 @@
     </ClCompile>
     <ClCompile Include="Component\Bar_Com.cpp">
       <Filter>Core\08. Object\Component\BaseComponent\BarWorld</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\IconSlot_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\IconSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\UICon_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\UI\UIcon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

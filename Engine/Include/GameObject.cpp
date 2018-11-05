@@ -13,7 +13,7 @@ JEONG_USING
 unordered_map<Scene*, unordered_map<string, GameObject*>> GameObject::m_ProtoTypeMap;
 
 GameObject::GameObject()
-	:m_Scene(NULLPTR), m_Layer(NULLPTR), m_Transform(NULLPTR), m_MoveDir(MD_UP)
+	:m_Scene(NULLPTR), m_Layer(NULLPTR), m_Transform(NULLPTR), m_Parent(NULLPTR), m_MoveDir(MD_UP)
 {
 	SetTag("GameObject");
 }
@@ -47,14 +47,31 @@ GameObject::GameObject(const GameObject& copyObject)
 	if(getRender != NULLPTR)
 	{
 		getRender->CheckComponent();
-		//
-		//
+
 		SAFE_RELEASE(getRender);
+	}
+
+	m_ChildList.clear();
+
+	list<GameObject*>::iterator StartIter1 = m_ChildList.begin();
+	list<GameObject*>::iterator EndIter1 = m_ChildList.end();
+
+	for (; StartIter1 != EndIter1; StartIter1++)
+	{
+		GameObject* child = (*StartIter1)->Clone();
+		child->m_Parent = this;
+		child->m_Transform->m_ParentTransform = m_Transform;
+		child->m_Transform->SetParentFlag(TPF_POS | TPF_ROT);
+		child->m_Transform->AddRefCount();
+		m_Transform->m_ChildTransList.push_back(child->m_Transform);
+
+		m_ChildList.push_back(child);
 	}
 }
 
 GameObject::~GameObject()
 {
+	Safe_Release_VecList(m_ChildList);
 	SAFE_RELEASE(m_Transform);
 	Safe_Release_VecList(m_FindComList);
 	Safe_Release_VecList(m_ComponentList);
@@ -494,6 +511,21 @@ GameObject * GameObject::FindProtoType(Scene * scene, const string & TagName)
 GameObject * GameObject::FindObject(const string & TagName)
 {
 	return SceneManager::Get()->FindObject(TagName);
+}
+
+void GameObject::AddChild(GameObject * Child)
+{
+	Child->m_Parent = this;
+	Child->m_Transform->m_ParentTransform = m_Transform;
+	Child->m_Transform->AddRefCount();
+
+	m_Transform->m_ChildTransList.push_back(Child->m_Transform);
+
+	Child->m_Transform->SetParentFlag(TPF_ROT | TPF_POS);
+	Child->AddRefCount();
+
+	m_ChildList.push_back(Child);
+	m_Layer->AddObject(Child);
 }
 
 const list<Component_Base*>* GameObject::FindComponentFromTag(const string& TagName)

@@ -8,16 +8,20 @@ Transform_Com::Transform_Com()
 	m_ComType = CT_TRANSFORM;
 	m_isUpdate = true;
 	m_isStatic = false;
+	m_ParentFlag = 0;
+	m_ParentTransform = NULLPTR;
 }
 
 Transform_Com::Transform_Com(const Transform_Com& copyObject)
 	:Component_Base(copyObject)
 {
 	*this = copyObject;
+	m_ParentTransform = NULLPTR;
 }
 
 Transform_Com::~Transform_Com()
 {
+	Safe_Release_VecList(m_ChildTransList);
 }
 
 bool Transform_Com::Init()
@@ -198,20 +202,14 @@ void Transform_Com::SetWorldScale(const Vector3 & vScale)
 {
 	//크기값을 받는다
 	m_WorldScale = vScale;
-	//행렬에 크기값을 곱한다
-	m_MatWorldScale.Scaling(m_WorldScale);
-
-	m_isUpdate = true;
+	ScaleParent();
 }
 
 void Transform_Com::SetWorldScale(float x, float y, float z)
 {
 	//크기값을 받는다
 	m_WorldScale = Vector3(x, y, z);
-	//행렬에 크기값을 곱한다
-	m_MatWorldScale.Scaling(m_WorldScale);
-
-	m_isUpdate = true;
+	ScaleParent();
 }
 
 void Transform_Com::SetWorldRotX(float x)
@@ -403,4 +401,54 @@ float Transform_Com::GetAngle(GameObject * Target)
 float Transform_Com::GetAngle(Transform_Com * Target)
 {
 	return m_WorldPos.GetAngle(Target->GetWorldPos());
+}
+
+void Transform_Com::SetParentFlag(int Flag)
+{
+	m_ParentFlag = Flag;
+}
+
+void Transform_Com::SetAddParentFlag(TRANSFORM_PARENT_FLAG Flag)
+{
+	m_ParentFlag |= Flag;
+}
+
+void Transform_Com::DeleteParentFlag(TRANSFORM_PARENT_FLAG Flag)
+{
+	if (m_ParentFlag & Flag)
+		m_ParentFlag ^= Flag; //xor0일때 1 , 1일때 0
+}
+
+void Transform_Com::DeleteParentFlag()
+{
+	m_ParentFlag = 0;
+}
+
+void Transform_Com::ScaleParent()
+{
+	if (m_ParentTransform == NULLPTR)
+		m_WorldRelativeScale = m_WorldScale;
+	else if (!(m_ParentFlag & TPF_SCALE))
+		m_WorldRelativeScale = m_WorldScale;
+	else
+		m_WorldRelativeScale = m_WorldScale / m_ParentTransform->m_WorldScale;  //비율을 구한다. 부모 100 자식 50 = 0.5
+
+	m_MatWorldScale.Scaling(m_WorldRelativeScale);
+
+	m_isUpdate = true;
+
+	if (m_ChildTransList.empty() == true)
+		return;
+
+	list<Transform_Com*>::iterator StartIter = m_ChildTransList.begin();
+	list<Transform_Com*>::iterator EndIter = m_ChildTransList.end();
+
+	for (; StartIter != EndIter; StartIter++)
+		(*StartIter)->ScaleParent();
+
+}
+
+void Transform_Com::PosParent()
+{
+
 }
