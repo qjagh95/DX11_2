@@ -31,6 +31,11 @@ public:
 	void UpdateMousePos();
 	GameObject* GetMouseObject() const { return m_MouseObject; }
 
+	void SetEquipObject(GameObject* object);
+	GameObject* GetEquipObject() const { return m_EquipObject; }
+	void ResetEquipObject();
+	bool GetisEquipObject() const { return m_isEquip; }
+
 	template <typename T>
 	bool AddKey(const T& value)
 	{
@@ -98,6 +103,8 @@ private:
 	GameObject* m_MouseObject;
 	ColliderPoint_Com* m_MouseWorldPoint;
 	bool m_ShowCursor;
+	GameObject* m_EquipObject;
+	bool m_isEquip;
 
 public:
 	CLASS_IN_SINGLE(KeyInput)

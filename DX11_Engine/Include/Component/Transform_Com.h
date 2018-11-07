@@ -24,6 +24,7 @@ public:
 	Vector3 GetLocalAxis(AXIS eAxis) const { return m_LocalAxis[eAxis]; }
 	const Vector3* GetLocalAxis() const { return m_LocalAxis; }
 	Matrix GetLocalMatrix()	const { return m_MatLocal; }
+	Matrix GetLocalRotMatrix() const { return m_MatWorldRotation; }
 
 	Vector3 GetWorldScale() const { return m_WorldScale; }
 	Vector3 GetWorldRotation() const { return m_WorldRotation; }
@@ -39,6 +40,10 @@ public:
 	Vector3 GetPivot() const { return m_Pivot; }
 	Matrix GetWorldRotMatrix() const { return m_MatWorldRotation; }
 	Matrix GetParentMatrix() const { return m_MatParent; }
+
+	Matrix GetParentMatrixNoScale() const;
+	Matrix GetParentMatrixPos() const;
+	Matrix GetParentMatrixRot() const;
 
 	//안움직이는 놈인가용?
 	void SetIsStatic(bool isStatic) { m_isStatic = isStatic; }
@@ -83,10 +88,26 @@ public:
 	void LookAt(Component_Base* component, AXIS eAxis = AXIS_Z);
 	void LookAt(const Vector3& Vec, AXIS eAxis = AXIS_Z);
 
+	void UpdateTransform();
+
+	void SetParentFlag(int Flag);
+	void AddParentFlag(TRANSFORM_PARENT_FLAG Flag);
+	void DeleteParentFlag(TRANSFORM_PARENT_FLAG Flag);
+	void DeleteParentFlag();
+
+	void SetWorldRelativePos(const Vector3& Pos);
+	void SetWorldRelativePos(float x, float y, float z);
+
+	void ScaleParent();
+	void PosParent();
+
 private:
 	//행렬연산은 연산자체가 무겁기 때문에 연산을 해줄때만 해주겠다.
 	bool m_isStatic;	///가만히 있는놈은 연산할 필요가 없다
 	bool m_isUpdate;	///움직일놈만 업데이트하겠다.
+	int m_ParentFlag;
+	Transform_Com* m_ParentTransform;
+	list<Transform_Com*> m_ChildTransList;		//자식 트랜스폼 리스트를 가지고 있어야함.
 	
 	//Rocal
 	Vector3 m_LocalScale;
@@ -107,6 +128,12 @@ private:
 	Vector3 m_WorldRotation;
 	Vector3 m_WorldPos;
 	Vector3 m_WorldAxis[AXIS_MAX];
+
+	//Child구조에서 자식 Transform에 대하여
+	//상대적인 정보를 잡아주기 위함.
+	Vector3	m_WorldRelativeScale;
+	Vector3	m_WorldRelativeRot;
+	Vector3	m_WorldRelativePos;
 
 	Vector3 m_Pivot;
 

@@ -36,13 +36,12 @@ Bar_Com::~Bar_Com()
 
 bool Bar_Com::Init()
 {
-	//일단 기본셋팅.
 	SetDir(BD_LEFT);
 
 	m_MinValue = 0.0f;
 	m_MaxValue = 100.0f;
 	m_Value = 100.0f;
-	m_BarCBuffer.Percent = 1.0f;
+	m_BarCBuffer.Percent = 0.0f;
 	m_BarCBuffer.Light = Vector4::White;
 
 	Renderer_Com* RenderComponent = m_Object->AddComponent<Renderer_Com>("ButtonRender");
@@ -174,6 +173,9 @@ void Bar_Com::SetValue(float Value)
 
 	else if (m_Value > m_MaxValue)
 		m_Value = m_MaxValue;
+
+	m_ValueLenth = m_MaxValue - m_MinValue;
+	m_BarCBuffer.Percent = (m_Value - m_MinValue) / m_ValueLenth;
 }
 
 void Bar_Com::AddValue(float Value)

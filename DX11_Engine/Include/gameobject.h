@@ -110,6 +110,8 @@ public:
 	static GameObject* FindProtoType(Scene* scene, const string& TagName);
 	static GameObject* FindObject(const string& TagName);
 
+	void AddChild(GameObject* Child);
+
 private:
 	list<Component_Base*> m_ComponentList;
 	Transform_Com* m_Transform;
@@ -120,6 +122,8 @@ private:
 	
 	list<Component_Base*> m_FindComList;
 	static unordered_map<Scene*, unordered_map<string, GameObject*>> m_ProtoTypeMap;
+	GameObject* m_Parent;
+	list<GameObject*> m_ChildList;
 
 private:
 	GameObject();

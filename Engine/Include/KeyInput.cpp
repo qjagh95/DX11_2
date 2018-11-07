@@ -18,7 +18,7 @@ JEONG_USING
 SINGLETON_VAR_INIT(KeyInput)
 
 KeyInput::KeyInput()
-	:m_NewKey(NULLPTR), m_MouseObject(NULLPTR), m_ShowCursor(false)
+	:m_NewKey(NULLPTR), m_MouseObject(NULLPTR), m_ShowCursor(false), m_isEquip(false), m_EquipObject(NULLPTR)
 {
 }
 
@@ -26,6 +26,7 @@ KeyInput::~KeyInput()
 {
 	SAFE_RELEASE(m_MouseWorldPoint);
 	SAFE_RELEASE(m_MouseObject);
+	SAFE_RELEASE(m_EquipObject);
 	Safe_Delete_Map(m_KeyMap);
 }
 
@@ -55,9 +56,11 @@ bool KeyInput::Init()
 
 	ColliderPoint_Com* MouseWindowPoint = m_MouseObject->AddComponent<ColliderPoint_Com>("MouseWindow");
 	MouseWindowPoint->SetCollisionGroup("UI");
+	MouseWindowPoint->SetMyTypeName("MouseWindow");
 	SAFE_RELEASE(MouseWindowPoint);
 
 	m_MouseWorldPoint = m_MouseObject->AddComponent<ColliderPoint_Com>("MouseWorld");
+	m_MouseWorldPoint->SetMyTypeName("MouseWorld");
 
 	ShowCursor(FALSE);
 	return true;
@@ -197,4 +200,18 @@ KeyInfo* KeyInput::FindKey(const string& Name)
 		return NULLPTR;
 	
 	return FindIter->second;
+}
+void KeyInput::SetEquipObject(GameObject * object)
+{
+	m_EquipObject = object;
+	m_isEquip = true;
+}
+
+void KeyInput::ResetEquipObject()
+{
+	if (m_EquipObject != NULLPTR)
+	{
+		m_EquipObject = NULLPTR;
+		m_isEquip = false;
+	}
 }

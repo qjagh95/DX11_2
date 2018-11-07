@@ -19,10 +19,7 @@ public:
 	void SetCheckBoxCallBack(void*(pFunc)(float)) { m_CheckButtonCallBack = bind(pFunc, placeholders::_1); }
 	void SetCheckBoxCallBack(function<void(float)> pFunc) { m_CheckButtonCallBack = pFunc; }
 	template<typename T>
-	void SetCheckBoxCallBack(void(T::*pFunc)(float), T* Object)
-	{		
-		m_CheckButtonCallBack = bind(pFunc, Object, placeholders::_1);
-	}
+	void SetCheckBoxCallBack(void(T::*pFunc)(float), T* Object){ m_CheckButtonCallBack = bind(pFunc, Object, placeholders::_1); }
 
 	void MouseHit(Collider_Com* Src, Collider_Com* Dest, float DeltaTime);
 	void MouseOut(Collider_Com* Src, Collider_Com* Dest, float DeltaTime);

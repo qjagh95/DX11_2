@@ -24,6 +24,7 @@ public:
 	Vector3 GetLocalAxis(AXIS eAxis) const { return m_LocalAxis[eAxis]; }
 	const Vector3* GetLocalAxis() const { return m_LocalAxis; }
 	Matrix GetLocalMatrix()	const { return m_MatLocal; }
+	Matrix GetLocalRotMatrix() const { return m_MatWorldRotation; }
 
 	Vector3 GetWorldScale() const { return m_WorldScale; }
 	Vector3 GetWorldRotation() const { return m_WorldRotation; }
@@ -39,6 +40,10 @@ public:
 	Vector3 GetPivot() const { return m_Pivot; }
 	Matrix GetWorldRotMatrix() const { return m_MatWorldRotation; }
 	Matrix GetParentMatrix() const { return m_MatParent; }
+
+	Matrix GetParentMatrixNoScale() const;
+	Matrix GetParentMatrixPos() const;
+	Matrix GetParentMatrixRot() const;
 
 	//안움직이는 놈인가용?
 	void SetIsStatic(bool isStatic) { m_isStatic = isStatic; }
@@ -83,10 +88,15 @@ public:
 	void LookAt(Component_Base* component, AXIS eAxis = AXIS_Z);
 	void LookAt(const Vector3& Vec, AXIS eAxis = AXIS_Z);
 
+	void UpdateTransform();
+
 	void SetParentFlag(int Flag);
-	void SetAddParentFlag(TRANSFORM_PARENT_FLAG Flag);
+	void AddParentFlag(TRANSFORM_PARENT_FLAG Flag);
 	void DeleteParentFlag(TRANSFORM_PARENT_FLAG Flag);
 	void DeleteParentFlag();
+
+	void SetWorldRelativePos(const Vector3& Pos);
+	void SetWorldRelativePos(float x, float y, float z);
 
 	void ScaleParent();
 	void PosParent();

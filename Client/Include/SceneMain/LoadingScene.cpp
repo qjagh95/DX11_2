@@ -54,6 +54,7 @@ bool LoadingScene::Init()
 
 	m_LoadingBar = pBarObj->AddComponent<Bar_Com>("Bar");
 	m_LoadingBar->SetScale(800.f, 30.0f, 1.0f);
+	m_LoadingBar->SetDir(BD_LEFT);
 	m_LoadingBar->SetValue(0.0f);
 
 	pMaterial = pBarObj->FindComponentFromType<Material_Com>(CT_MATERIAL);

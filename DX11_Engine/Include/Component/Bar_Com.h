@@ -29,6 +29,9 @@ public:
 	void LightOn() { m_BarCBuffer.Light = Vector4::White * 2.0f; }
 	void LightOff() { m_BarCBuffer.Light = Vector4::White; }
 
+	float GetVal() const { return m_Value; }
+	float GetPercent() const { return m_BarCBuffer.Percent; }
+
 	void MouseHit(Collider_Com* Src, Collider_Com* Dest, float DeltaTime);
 
 private:

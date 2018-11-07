@@ -214,7 +214,17 @@ void CollsionManager::Collsion(float DeltaTime)
 				Collider_Com* CollSrc = getSection->ColliderList[i];
 				Collider_Com* CollDest = MouseWindowPoint;
 
-				if (CollDest->Collsion(CollSrc, DeltaTime) == true)
+				bool Pair = false;
+				for (size_t a = 0; a < CollSrc->GetContinueTypeNameSize(); a++)
+				{
+					if (CollDest->GetMyTypeName() == CollSrc->GetContinueTypeName(a))
+					{
+						Pair = true;
+						break;
+					}
+				}
+
+				if (CollDest->Collsion(CollSrc, DeltaTime) == true && Pair == false)
 				{
 					//처음충돌될경우
 					if (CollSrc->CheckPrevCollision(CollDest) == false)
@@ -226,7 +236,6 @@ void CollsionManager::Collsion(float DeltaTime)
 						CollDest->OnCollsionFirst(CollSrc, DeltaTime);
 
 						isUiColl = true;
-						break;
 					}
 					//이전충돌체가 있을경우(충돌중인경우)
 					else
@@ -235,7 +244,6 @@ void CollsionManager::Collsion(float DeltaTime)
 						CollDest->OnCollsionDoing(CollSrc, DeltaTime);
 
 						isUiColl = true;
-						break;
 					}
 				}
 				else
@@ -304,9 +312,19 @@ void CollsionManager::Collsion(float DeltaTime)
 					Collider_Com* CollSrc = getSection->ColliderList[j];
 					Collider_Com* CollDest = MouseWorldPoint;
 
+					bool Pair = false;
+					for (size_t a = 0; a < CollSrc->GetContinueTypeNameSize(); a++)
+					{
+						if (CollDest->GetMyTypeName() == CollSrc->GetContinueTypeName(a))
+						{
+							Pair = true;
+							break;
+						}
+					}
+
 					if (isMouseColl == true)
 					{
-						if (CollSrc->CheckPrevCollision(CollDest) == true)
+						if (CollSrc->CheckPrevCollision(CollDest) == true && Pair == false)
 						{
 							CollSrc->OnCollsionEnd(CollDest, DeltaTime);
 							CollDest->OnCollsionEnd(CollSrc, DeltaTime);
@@ -407,7 +425,10 @@ void CollsionManager::Collsion(float DeltaTime)
 					for (size_t a = 0; a < CollDest->GetContinueTypeNameSize(); a++)
 					{
 						if (CollSrc->GetMyTypeName() == CollDest->GetContinueTypeName(a))
+						{
 							Pair = true;
+							break;
+						}
 					}
 
 					if (CollSrc->Collsion(CollDest, DeltaTime) == true && Pair == false)

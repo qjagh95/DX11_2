@@ -32,7 +32,7 @@ public:
 	const string& GetRadioGroupName() const { return m_GroupName; }
 
 private:
-	vector<RadioSet*> m_vecRadio;
+	vector<RadioSet*>m_vecRadio;
 	string m_GroupName;
 	int SelectIndex;
 	int PrevSelect = INT_MAX;

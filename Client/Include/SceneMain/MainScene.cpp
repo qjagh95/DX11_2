@@ -16,6 +16,8 @@
 #include "Component/ColliderPixel_Com.h"
 #include "Component/Material_Com.h"
 #include "Component/Button_Com.h"
+#include "Component/UICon_Com.h"
+#include "Component/IconSlot_Com.h"
 
 #include "../UserComponent/Player_Com.h"
 #include "../UserComponent/Bullet_Com.h"
@@ -84,11 +86,48 @@ bool MainScene::Init()
 	BarObject->GetTransform()->SetWorldPos(200.0f, 600.0f, 0.0f);
 	UIBar_Com* TestBar = BarObject->AddComponent<UIBar_Com>("HpBar");
 	TestBar->SetDir(BD_LEFT);
+	TestBar->SetValue(0.0f);
 	TestBar->SetScale(200.0f, 30.0f, 0.0f);
 	m_TestBar = TestBar;
 	loadThread->AddLoadingCount();
 
+	GameObject* SlotObject1 = GameObject::CreateObject("Slot1", UILayer);
+	GameObject* SlotObject2 = GameObject::CreateObject("Slot2", UILayer);
+	GameObject* SlotObject3 = GameObject::CreateObject("Slot2", UILayer);
+	SlotObject1->GetTransform()->SetWorldPos(Vector3(1030.0f, 300.0f, 0.0f));
+	SlotObject2->GetTransform()->SetWorldPos(Vector3(1060.0f, 300.0f, 0.0f));
+	SlotObject3->GetTransform()->SetWorldPos(Vector3(1090.0f, 300.0f, 0.0f));
 
+	IconSlot_Com* SlotCom1 = SlotObject1->AddComponent<IconSlot_Com>("Slot1");
+	SlotCom1->SetSlotIndex(0);
+	IconSlot_Com* SlotCom2 = SlotObject2->AddComponent<IconSlot_Com>("Slot2");
+	SlotCom1->SetSlotIndex(1);
+	
+	IconSlot_Com* SlotCom3 = SlotObject3->AddComponent<IconSlot_Com>("Slot3");
+	SlotCom3->SetSlotIndex(2);
+
+	GameObject* IconObject1 = GameObject::CreateObject("Icon1", UILayer);
+	GameObject* IconObject2 = GameObject::CreateObject("Icon2", UILayer);
+	IconObject1->GetTransform()->SetWorldPos(Vector3(400.0f, 100.0f, 0.0f));
+	IconObject2->GetTransform()->SetWorldPos(Vector3(500.0f, 100.0f, 0.0f));
+
+	UICon_Com* IconCom1 = IconObject1->AddComponent<UICon_Com>("Icon1");
+	UICon_Com* IconCom2 = IconObject2->AddComponent<UICon_Com>("Icon2");
+
+	Material_Com* material = IconObject2->FindComponentFromType<Material_Com>(CT_MATERIAL);
+	material->SetDiffuseTexture(0, "Icon2", TEXT("Icon2.png"));
+
+	SAFE_RELEASE(SlotCom3);
+	SAFE_RELEASE(SlotObject3);
+	SAFE_RELEASE(material);
+	SAFE_RELEASE(SlotObject1);
+	SAFE_RELEASE(SlotObject2);
+	SAFE_RELEASE(SlotCom2);
+	SAFE_RELEASE(SlotCom1);
+	SAFE_RELEASE(IconObject1);
+	SAFE_RELEASE(IconObject2);
+	SAFE_RELEASE(IconCom1);
+	SAFE_RELEASE(IconCom2);
 	SAFE_RELEASE(TestBar);
 	SAFE_RELEASE(BarObject);
 	SAFE_RELEASE(PixelRenderer);

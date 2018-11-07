@@ -88,21 +88,13 @@ int RadioButton_Com::Update(float DeltaTime)
 
 	if(PrevSelect != INT_MAX)
 		m_vecRadio[PrevSelect]->CheckCom->SetCheckState(CBS_FALSE);
-
+	
 	if (SelectIndex != INT_MAX)
 	{
 		m_vecRadio[SelectIndex]->CheckCom->SetCheckState(CBS_TRUE);
 		PrevSelect = SelectIndex;
 		SelectIndex = INT_MAX;
 	}
-
-	//설명
-	//true가 발생하면 일단 인덱스를 저장한다.
-	//저장 후 밑에서 선택된 인덱스를 TRUE로 만든다.
-	//거기서 PrevIndex를 저장한다.
-	//다시 위로가서 PrevIndex와 현재인덱스를 비교하여 continue인지 break인지 판단
-	//PrevIndex번째를 FALSE로 만든다.
-	//continue시 ->방향체크 break시 <-방향체크.
 
 	return 0;
 }

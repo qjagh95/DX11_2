@@ -56,17 +56,6 @@ bool Player_Com::Init()
 	TitleBar_Com* TitleCom = m_Object->AddComponent<TitleBar_Com>("TitleBar");
 	SAFE_RELEASE(TitleCom);
 
-	//ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("PlayerCircleBody");
-	//CircleColl->SetInfo(30.0f);
-	//CircleColl->SetMyTypeName("Player");
-	//SAFE_RELEASE(CircleColl);
-
-	//ColliderOBB2D_Com* OBBColl = m_Object->AddComponent<ColliderOBB2D_Com>("PlayerOBBBody");
-	//Vector3 Axis[2] = { Vector3::Axis[0], Vector3::Axis[1] };
-	//float Lenth[2] = { 150.f, 150.f };
-	//OBBColl->SetInfo(Vector3(0.0f, 150.f, 0.0f), Axis, Lenth);
-	//SAFE_RELEASE(OBBColl);
-
 	m_Transform->SetWorldScale(300.0f, 300.0f, 1.0f);
 	m_Transform->SetWorldPivot(0.5f, 0.0f, 0.0f);
 	m_Transform->SetWorldPos(600.0f + 300, 720.0f / 2.0f, 1.0f);
@@ -95,6 +84,76 @@ bool Player_Com::Init()
 	}
 
 	myAnimation->AddClip("Attack", A2D_ATLS, AO_LOOP, 1.0f, vecClipFrame, "Player", L"Player.png");
+
+	///////////////////////////////////////////////////////////////////////////////////////////
+	GameObject*	pChildObj = GameObject::CreateObject("PlayerChild", m_Layer);
+	m_Object->AddChild(pChildObj);
+
+	Renderer_Com* pRenderer = pChildObj->AddComponent<Renderer_Com>("ChildRenderer");
+	pRenderer->SetMesh("TextureRect");
+	pRenderer->SetRenderState(ALPHA_BLEND);
+	SAFE_RELEASE(pRenderer);
+
+	Material_Com* pMaterial = pChildObj->FindComponentFromType<Material_Com>(CT_MATERIAL);
+	pMaterial->SetDiffuseTexture(0, "Nasus", TEXT("Nasus.jpg"));
+	SAFE_RELEASE(pMaterial);
+
+	Transform_Com*	pTransform = pChildObj->GetTransform();
+	pTransform->SetWorldRelativePos(-50.0f, 0.0f, 0.0f);
+	pTransform->SetWorldScale(50.0f, 50.0f, 0.0f);
+	pTransform->SetWorldPivot(0.5f, 0.0f, 0.0f);
+
+	SAFE_RELEASE(pChildObj);
+
+	//// 切縦 持失
+	//pChildObj = GameObject::CreateObject("PlayerChild2");
+	//m_Object->AddChild(pChildObj);
+	//pRenderer = pChildObj->AddComponent<Renderer_Com>("Child2Renderer");
+	//pRenderer->SetMesh("TextureRect");
+	//SAFE_RELEASE(pRenderer);
+	//pMaterial = pChildObj->FindComponentFromType<Material_Com>(CT_MATERIAL);
+	//pMaterial->SetDiffuseTexture(0, "Nasus", TEXT("Nasus.jpg"));
+	//SAFE_RELEASE(pMaterial);
+	//pTransform = pChildObj->GetTransform();
+	//pTransform->SetAddParentFlag(TPF_ROT);
+	//pTransform->SetAddParentFlag(TPF_POS);
+	//pTransform->SetAddParentFlag(TPF_SCALE);
+	//pTransform->SetWorldRelativePos(50.f, 0.f, 0.f);
+	//pTransform->SetWorldScale(50.f, 50.f, 1.f);
+	//pTransform->SetWorldPivot(0.5f, 0.f, 0.f);
+	//// 切縦 持失
+	//GameObject* pChildChildObj = GameObject::CreateObject("pChildChildObj");
+	//pChildObj->AddChild(pChildChildObj);
+	//pRenderer = pChildChildObj->AddComponent<Renderer_Com>("Child3Renderer");
+	//pRenderer->SetMesh("TextureRect");
+	//pRenderer->SetRenderState(ALPHA_BLEND);
+	//SAFE_RELEASE(pRenderer);
+	//pMaterial = pChildChildObj->FindComponentFromType<Material_Com>(CT_MATERIAL);
+	//pMaterial->SetDiffuseTexture(0, "Nasus", TEXT("Nasus.jpg"));
+	//SAFE_RELEASE(pMaterial);
+	//pTransform = pChildChildObj->GetTransform();
+	////pTransform->AddParentFlag(TPF_ROT);
+	////pTransform->AddParentFlag(TPF_POS);
+	////pTransform->AddParentFlag(TPF_SCALE);
+	//pTransform->DeleteParentFlag(TPF_POS);
+	//pTransform->DeleteParentFlag(TPF_ROT);
+	//pTransform->SetWorldRelativePos(100.f, 0.f, 0.f);
+	//pTransform->SetWorldScale(50.f, 50.f, 1.f);
+	//pTransform->SetWorldPivot(0.5f, 0.f, 0.f);
+	//SAFE_RELEASE(pChildChildObj);
+	//SAFE_RELEASE(pChildObj);
+
+	//ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("PlayerCircleBody");
+	//CircleColl->SetInfo(30.0f);
+	//CircleColl->SetMyTypeName("Player");
+	//SAFE_RELEASE(CircleColl);
+
+	//ColliderOBB2D_Com* OBBColl = m_Object->AddComponent<ColliderOBB2D_Com>("PlayerOBBBody");
+	//Vector3 Axis[2] = { Vector3::Axis[0], Vector3::Axis[1] };
+	//float Lenth[2] = { 150.f, 150.f };
+	//OBBColl->SetInfo(Vector3(0.0f, 150.f, 0.0f), Axis, Lenth);
+	//SAFE_RELEASE(OBBColl);
+
 	return true;
 }
 

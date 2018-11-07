@@ -1,7 +1,7 @@
 #include "IconSlot_Com.h"
 #include "Renderer_Com.h"
 #include "Material_Com.h"
-#include "ColliderRect_Com.h"
+#include "ColliderPoint_Com.h"
 #include "Animation2D_Com.h"
 #include "Transform_Com.h"
 #include "UICon_Com.h"
@@ -11,7 +11,7 @@
 
 JEONG_USING
 
-IconSlot::IconSlot()
+IconSlot_Com::IconSlot_Com()
 {
 	m_UIType = UT_ICONSLOT;
 	SetTag("IconSlot");
@@ -19,17 +19,17 @@ IconSlot::IconSlot()
 	m_EquipIcon = NULLPTR;
 }
 
-IconSlot::IconSlot(const IconSlot & CopyData)
+IconSlot_Com::IconSlot_Com(const IconSlot_Com & CopyData)
 	:UIBase_Com(CopyData)
 {
 }
 
-IconSlot::~IconSlot()
+IconSlot_Com::~IconSlot_Com()
 {
 	SAFE_RELEASE(m_EquipIcon);
 }
 
-bool IconSlot::Init()
+bool IconSlot_Com::Init()
 {
 	Renderer_Com* RenderComponent = m_Object->AddComponent<Renderer_Com>("IconSlotRender");
 	RenderComponent->SetMesh("TextureRect");
@@ -40,28 +40,33 @@ bool IconSlot::Init()
 	MaterialComponent->SetDiffuseTexture(0, "IconSlot", TEXT("IconSlot.png"));
 	SAFE_RELEASE(MaterialComponent);
 
-	ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("IconSlotBody");
-	RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(50.0f, 50.0f, 0.0f));
-	RectColl->SetCollsionCallback(CCT_DOING, this, &IconSlot::IconHit);
-	RectColl->SetCollsionCallback(CCT_END, this, &IconSlot::IconOut);
+	ColliderPoint_Com* RectColl = m_Object->AddComponent<ColliderPoint_Com>("IconSlotBody");
+	RectColl->SetInfo(Vector3(0.0f, 15.0f, 0.0f));
+	RectColl->SetCollsionCallback(CCT_DOING, this, &IconSlot_Com::IconHit);
+	RectColl->SetCollsionCallback(CCT_END, this, &IconSlot_Com::IconOut);
 	RectColl->SetCollisionGroup("UI");
+	RectColl->SetMyTypeName("IconSlot");
+	RectColl->PushContinueTypeName("IconSlot");
+	RectColl->PushContinueTypeName("MouseWindow");
+	RectColl->PushContinueTypeName("MouseWorld");
 
 	m_Transform->SetWorldPivot(0.5f, 0.0f, 0.0f);
+	m_Transform->SetWorldScale(30.0f, 30.0f, 0.0f);
 
 	return true;
 }
 
-int IconSlot::Input(float DeltaTime)
+int IconSlot_Com::Input(float DeltaTime)
 {
-	return 0;
-}
-
-int IconSlot::Update(float DeltaTime)
-{
-	if (m_isOver == true && m_EquipIcon != NULLPTR)
+	if (m_isOver == true)
 	{
 		if (KeyInput::Get()->KeyUp("LButton"))
 		{
+			if (m_EquipIcon != NULLPTR)
+			{
+				m_EquipIcon->GetTransform()->SetWorldPos(m_Transform->GetWorldPos());
+				SAFE_RELEASE(m_EquipIcon);
+			}
 
 		}
 	}
@@ -69,41 +74,38 @@ int IconSlot::Update(float DeltaTime)
 	return 0;
 }
 
-int IconSlot::LateUpdate(float DeltaTime)
+int IconSlot_Com::Update(float DeltaTime)
 {
 	return 0;
 }
 
-void IconSlot::Collision(float DeltaTime)
+int IconSlot_Com::LateUpdate(float DeltaTime)
+{
+	return 0;
+}
+
+void IconSlot_Com::Collision(float DeltaTime)
 {
 }
 
-void IconSlot::CollisionLateUpdate(float DeltaTime)
+void IconSlot_Com::CollisionLateUpdate(float DeltaTime)
 {
 }
 
-void IconSlot::Render(float DeltaTime)
+void IconSlot_Com::Render(float DeltaTime)
 {
 }
 
-IconSlot * IconSlot::Clone()
+IconSlot_Com * IconSlot_Com::Clone()
 {
-	return new IconSlot(*this);
+	return new IconSlot_Com(*this);
 }
 
-void IconSlot::AfterClone()
+void IconSlot_Com::AfterClone()
 {
 }
 
-void IconSlot::IconFirst(Collider_Com * Src, Collider_Com * Dest, float DeltaTime)
-{
-	if (Dest->GetTag() == "UIconBody")
-	{
-		m_EquipIcon = (UICon_Com*)Dest->FindComponentFromType<UIBase_Com>(CT_UI);
-	}
-}
-
-void IconSlot::IconHit(Collider_Com * Src, Collider_Com * Dest, float DeltaTime)
+void IconSlot_Com::IconHit(Collider_Com * Src, Collider_Com * Dest, float DeltaTime)
 {
 	if (Dest->GetTag() == "UIconBody")
 	{
@@ -111,11 +113,10 @@ void IconSlot::IconHit(Collider_Com * Src, Collider_Com * Dest, float DeltaTime)
 	}
 }
 
-void IconSlot::IconOut(Collider_Com * Src, Collider_Com * Dest, float DeltaTime)
+void IconSlot_Com::IconOut(Collider_Com * Src, Collider_Com * Dest, float DeltaTime)
 {
 	if (Dest->GetTag() == "UIconBody")
 	{
 		m_isOver = false;
-		SAFE_RELEASE(m_EquipIcon);
 	}
 }
