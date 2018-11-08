@@ -1,3 +1,4 @@
+#include "MathHeader.h"
 #include "Matrix.h"
 #include "Vector3.h"
 

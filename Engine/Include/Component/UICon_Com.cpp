@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "UICon_Com.h"
 #include "Renderer_Com.h"
 #include "Material_Com.h"
@@ -15,21 +16,13 @@ UICon_Com::UICon_Com()
 {
 	m_UIType = UT_ICON;
 	SetTag("Icon");
-	m_isOver = false;
-	m_SlotEquip = false;
-	m_isMove = false;
 	m_mySlot = NULLPTR;
-	m_isSwap = false;
 }
 
 UICon_Com::UICon_Com(const UICon_Com & CopyData)
 	:UIBase_Com(CopyData)
 {
-	m_isOver = false;
-	m_isMove = false;
-	m_SlotEquip = CopyData.m_SlotEquip;
 	m_mySlot = NULLPTR;
-	m_isSwap = false;
 
 }
 
@@ -68,20 +61,6 @@ int UICon_Com::Input(float DeltaTime)
 
 int UICon_Com::Update(float DeltaTime)
 {
-	if (m_isOver == true)
-	{
-		if (KeyInput::Get()->KeyPress("LButton"))
-		{
-			m_Transform->Move(Vector3(KeyInput::Get()->GetMouseGap().x, KeyInput::Get()->GetMouseGap().y, 0.0f), 1.0f);
-			m_isMove = true;
-		}
-		else if (KeyInput::Get()->KeyUp("LButton"))
-		{
-
-		}
-		else
-			m_isMove = false;
-	}
 
 	return 0;
 }
@@ -120,11 +99,7 @@ void UICon_Com::MouseHit(Collider_Com * Src, Collider_Com * Dest, float DeltaTim
 {
 	if (Dest->GetTag() == "MouseWindow")
 	{
-		if (KeyInput::Get()->GetEquipObject() == NULLPTR)
-		{
-			KeyInput::Get()->SetEquipObject(Dest->GetGameObject());
-			m_isOver = true;
-		}
+
 	}
 }
 
@@ -132,7 +107,6 @@ void UICon_Com::MouseOut(Collider_Com * Src, Collider_Com * Dest, float DeltaTim
 {
 	if (Dest->GetTag() == "MouseWindow")
 	{
-		m_isOver = false;
-		KeyInput::Get()->ResetEquipObject();
+
 	}
 }

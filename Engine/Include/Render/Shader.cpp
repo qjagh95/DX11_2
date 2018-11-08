@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Shader.h"
 #include "../PathManager.h"
 #include "../Device.h"

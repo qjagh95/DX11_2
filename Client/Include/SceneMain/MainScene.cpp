@@ -1,3 +1,4 @@
+#include "ClientHeader.h"
 #include "MainScene.h"
 #include "StartScene.h"
 #include "GameObject.h"

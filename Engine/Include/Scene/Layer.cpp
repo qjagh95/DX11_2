@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Layer.h"
 #include "Scene.h"
 #include "../GameObject.h"

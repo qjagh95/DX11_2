@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Collider_Com.h"
 #include "Transform_Com.h"
 

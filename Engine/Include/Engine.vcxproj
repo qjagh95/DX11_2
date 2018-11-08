@@ -102,8 +102,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>JEONG_EXPORT;JEONG_EXPORTJEONG_EXPORTWIN32;_DEBUG;_WINDOWS;_USRDLL;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -119,12 +118,12 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>JEONG_EXPORT;JEONG_EXPORTJEONG_EXPORT_DEBUG;_WINDOWS;_USRDLL;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>.\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -138,8 +137,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -159,12 +157,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>JEONG_EXPORT;JEONG_EXPORTJEONG_EXPORTNDEBUG;_WINDOWS;_USRDLL;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -202,6 +200,7 @@
     <ClInclude Include="Component\UICon_Com.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="Device.h" />
+    <ClInclude Include="FontManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="KeyInput.h" />
     <ClInclude Include="Macro.h" />
@@ -222,6 +221,7 @@
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Scene\SceneComponent.h" />
     <ClInclude Include="Scene\SceneManager.h" />
+    <ClInclude Include="SlotManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Sync.h" />
     <ClInclude Include="Thread.h" />
@@ -257,6 +257,7 @@
     <ClCompile Include="Component\UICon_Com.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Device.cpp" />
+    <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="KeyInput.cpp" />
     <ClCompile Include="PathManager.cpp" />
@@ -275,6 +276,13 @@
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\SceneComponent.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
+    <ClCompile Include="SlotManager.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Thread.cpp" />
     <ClCompile Include="ThreadManager.cpp" />
     <ClCompile Include="TimeManager.cpp" />

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "IconSlot_Com.h"
 #include "Renderer_Com.h"
 #include "Material_Com.h"
@@ -15,7 +16,6 @@ IconSlot_Com::IconSlot_Com()
 {
 	m_UIType = UT_ICONSLOT;
 	SetTag("IconSlot");
-	m_isOver = false;
 	m_EquipIcon = NULLPTR;
 }
 
@@ -58,19 +58,6 @@ bool IconSlot_Com::Init()
 
 int IconSlot_Com::Input(float DeltaTime)
 {
-	if (m_isOver == true)
-	{
-		if (KeyInput::Get()->KeyUp("LButton"))
-		{
-			if (m_EquipIcon != NULLPTR)
-			{
-				m_EquipIcon->GetTransform()->SetWorldPos(m_Transform->GetWorldPos());
-				SAFE_RELEASE(m_EquipIcon);
-			}
-
-		}
-	}
-
 	return 0;
 }
 
@@ -109,7 +96,6 @@ void IconSlot_Com::IconHit(Collider_Com * Src, Collider_Com * Dest, float DeltaT
 {
 	if (Dest->GetTag() == "UIconBody")
 	{
-		m_isOver = true;
 	}
 }
 
@@ -117,6 +103,10 @@ void IconSlot_Com::IconOut(Collider_Com * Src, Collider_Com * Dest, float DeltaT
 {
 	if (Dest->GetTag() == "UIconBody")
 	{
-		m_isOver = false;
 	}
+}
+
+bool IconSlot_Com::CreateSlot(const string & GroupName, size_t RowCount, size_t ColumCount)
+{
+	return true;
 }

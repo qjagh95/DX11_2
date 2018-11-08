@@ -22,8 +22,9 @@ public:
 	void IconOut(Collider_Com* Src, Collider_Com* Dest, float DeltaTime);
 	void SetSlotIndex(int _index) { m_Index = _index; }
 
+	bool CreateSlot(const string& GroupName, size_t RowCount, size_t ColumCount);
+
 private:
-	bool m_isOver;
 	UICon_Com* m_EquipIcon;
 	int m_Index;
 
@@ -35,6 +36,7 @@ protected:
 public:
 	friend class GameObject;
 	friend class UICon_Com;
+	friend class SlotManager;
 };
 
 JEONG_END

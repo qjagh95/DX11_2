@@ -58,6 +58,9 @@
     <ClCompile Include="SceneMain\LoadingThread.cpp">
       <Filter>LoadingScene</Filter>
     </ClCompile>
+    <ClCompile Include="ClientHeader.cpp">
+      <Filter>WinMain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientHeader.h">

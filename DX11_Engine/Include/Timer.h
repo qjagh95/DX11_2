@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx.h"
+
 JEONG_BEGIN
 
 class JEONG_DLL Timer

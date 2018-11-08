@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "UserComponent_Base.h"
 
 JEONG_USING

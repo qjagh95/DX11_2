@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 JEONG_BEGIN
 
 struct JEONG_DLL KeyInfo

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "CollsionManager.h"
 #include "GameObject.h"
 #include "Device.h"

@@ -1,3 +1,4 @@
+#include "ClientHeader.h"
 #include "Core.h"
 #include "resource.h"
 

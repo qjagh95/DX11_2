@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "RenderManager.h"
 #include "ShaderManager.h"
 #include "BlendState.h"

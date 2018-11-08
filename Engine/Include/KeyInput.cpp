@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "KeyInput.h"
 #include "GameObject.h"
 #include "Core.h"

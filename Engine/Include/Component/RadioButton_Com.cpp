@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "RadioButton_Com.h"
 #include "CheckBox_Com.h"
 #include "Transform_Com.h"

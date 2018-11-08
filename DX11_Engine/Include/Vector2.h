@@ -1,5 +1,4 @@
 #pragma once
-#include "MathHeader.h"
 //XMVector를 멤버로 들고있지않음, 바이트정렬필요X
 union MATH_DLL Vector2
 {

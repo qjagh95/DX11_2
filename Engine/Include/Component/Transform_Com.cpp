@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Transform_Com.h"
 #include "../GameObject.h"
 
@@ -529,8 +530,6 @@ void Transform_Com::PosParent()
 			matParent.Identity();
 
 		m_WorldPos = m_WorldRelativePos.TransformCoord(matParent);
-
-		cout << m_WorldPos.x<<" "<< m_WorldPos.y << endl;
 	}
 
 	m_isUpdate = true;

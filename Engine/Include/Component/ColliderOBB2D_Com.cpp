@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "ColliderOBB2D_Com.h"
 #include "ColliderRect_Com.h"
 #include "ColliderPoint_Com.h"
@@ -53,15 +54,15 @@ int ColliderOBB2D_Com::Update(float DeltaTime)
 
 int ColliderOBB2D_Com::LateUpdate(float DeltaTime)
 {
-	//내 오브젝트의 회전행렬을 가져온다.
-	Matrix RotMat = m_Transform->GetWorldRotMatrix();
+	//내 오브젝트의 회전행렬을 가져온다. (Child구조 수정, 부모의 회전행렬을 가져온다)
+	Matrix RotMat = m_Transform->GetParentMatrixRot();
 	//내 오브젝트의 WorldPos를 삽입한다.
 	memcpy(&RotMat[3][0], &m_Transform->GetWorldPos(), sizeof(Vector3));
 
 	//벡터 행렬곱(Pos를 중심으로 + Virtual Pos가 된 위치) 따라와야되니 Coord (w값1))
 	m_WorldInfo.CenterPos = m_Virtual.CenterPos.TransformCoord(RotMat);
 
-	Vector3 TempAxis[2]; 
+	Vector3 TempAxis[2];
 	for (int i = 0; i < 2; i++)
 	{
 		//Axis는 방향만 알면되니 Nomal(w값 0)

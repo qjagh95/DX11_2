@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Button_Com.h"
 #include "Renderer_Com.h"
 #include "Material_Com.h"

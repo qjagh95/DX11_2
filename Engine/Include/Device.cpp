@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Device.h"
 
 JEONG_USING
@@ -5,7 +6,7 @@ JEONG_USING
 SINGLETON_VAR_INIT(Device);
 
 Device::Device()
-	:m_Device(NULLPTR), m_Context(NULLPTR), m_SwapChain(NULLPTR), m_TargerView(NULLPTR), m_DepthView(NULLPTR), m_Hwnd(NULLPTR)
+	:m_Device(NULLPTR), m_Context(NULLPTR), m_SwapChain(NULLPTR), m_TargerView(NULLPTR), m_DepthView(NULLPTR), m_Hwnd(NULLPTR), m_2DFactory(NULLPTR), m_2DTarget(NULLPTR)
 {
 }
 
@@ -20,6 +21,9 @@ Device::~Device()
 
 	SAFE_RELEASE(m_Context);
 	SAFE_RELEASE(m_Device);
+
+	SAFE_RELEASE(m_2DFactory);
+	SAFE_RELEASE(m_2DTarget);
 
 #ifdef _DEBUG
 	//dxgi_debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_DETAIL);
@@ -139,6 +143,26 @@ bool Device::Init(HWND hWnd, unsigned int Width, unsigned int Height, bool isWin
 	//컨텍스트에 뷰포트를 셋팅한다.  (갯수, 포인터배열) 
 	m_Context->RSSetViewports(1, &ViewPort);
 	//레스터라이저가 Depth판단까지 겸해서 한다.
+
+	//DWrite사용을 위한 초기화
+	//D2DFactory를 초기화한다.
+	D2D1_FACTORY_OPTIONS tOption = {};
+	tOption.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
+
+	if (FAILED(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, tOption, &m_2DFactory)))
+		return false;
+
+	// DirectX11 BackBuffer 타겟을 이용하여 2D 렌더링 타겟을 설정해준다.
+	IDXGISurface* pBackSurface = NULLPTR;
+	m_SwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackSurface));
+
+	// 2D 렌더타겟을 생성하기 위한 옵션 설정
+	D2D1_RENDER_TARGET_PROPERTIES props = D2D1::RenderTargetProperties(D2D1_RENDER_TARGET_TYPE_HARDWARE, D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED));
+
+	if (FAILED(m_2DFactory->CreateDxgiSurfaceRenderTarget(pBackSurface, props,	&m_2DTarget)))
+		return false;
+
+	SAFE_RELEASE(pBackSurface);
 	return true;
 }
 

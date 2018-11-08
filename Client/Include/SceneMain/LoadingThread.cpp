@@ -1,3 +1,4 @@
+#include "ClientHeader.h"
 #include "LoadingThread.h"
 #include "MainScene.h"
 #include "ThreadManager.h"

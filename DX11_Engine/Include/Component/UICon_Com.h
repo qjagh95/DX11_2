@@ -19,17 +19,11 @@ public:
 	void AfterClone() override;
 
 	void Active();
-	void SetSlotEquip(bool Value) { m_SlotEquip = Value; }
-	bool GetSlotEquip() const { return m_SlotEquip; }
 	
 	void MouseHit(Collider_Com* Src, Collider_Com* Dest, float DeltaTime);
 	void MouseOut(Collider_Com* Src, Collider_Com* Dest, float DeltaTime);
 
 private:
-	bool m_isOver;
-	bool m_isMove;
-	bool m_SlotEquip;
-	bool m_isSwap;
 	IconSlot_Com* m_mySlot;
 
 protected:
@@ -39,6 +33,8 @@ protected:
 
 public:
 	friend class GameObject;
+	friend class IconSlot_Com;
+	friend class SlotManager;
 };
 
 JEONG_END

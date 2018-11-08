@@ -1,5 +1,5 @@
 #pragma once
-#include "Macro.h"
+#include "stdafx.h"
 
 JEONG_BEGIN
 

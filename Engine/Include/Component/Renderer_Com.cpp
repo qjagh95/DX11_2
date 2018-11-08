@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Renderer_Com.h"
 #include "Transform_Com.h"
 #include "Camera_Com.h"

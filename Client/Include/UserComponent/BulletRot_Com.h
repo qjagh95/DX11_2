@@ -1,6 +1,5 @@
 #pragma once
 #include "UserComponent/UserComponent_Base.h"
-#include "../ClientHeader.h"
 JEONG_BEGIN
 
 class BulletRot_Com : public UserComponent_Base

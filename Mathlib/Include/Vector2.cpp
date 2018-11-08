@@ -1,3 +1,4 @@
+#include "MathHeader.h"
 #include "Vector2.h"
 
 Vector2	Vector2::Axis[2] = { Vector2(1.f, 0.f), Vector2(0.f, 1.f) };

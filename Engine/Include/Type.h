@@ -1,12 +1,4 @@
 #pragma once
-#include "Macro.h"
-
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Vector2.h"
-#include "Matrix.h"
-
-#include "Flag.h"
 
 JEONG_BEGIN
 

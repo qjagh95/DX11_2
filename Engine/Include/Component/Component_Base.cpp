@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Component_Base.h"
 
 #include "../Scene/Scene.h"

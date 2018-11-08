@@ -1,4 +1,6 @@
+#include "stdafx.h"
 #include "Texture.h"
+
 #include "../PathManager.h"
 #include "../Device.h"
 

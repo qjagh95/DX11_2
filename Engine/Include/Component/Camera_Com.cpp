@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Camera_Com.h"
 #include "../GameObject.h"
 #include "Transform_Com.h"

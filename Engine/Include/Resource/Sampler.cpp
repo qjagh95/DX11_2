@@ -1,4 +1,7 @@
+#include "stdafx.h"
+
 #include "Sampler.h"
+
 #include "../Device.h"
 
 JEONG_USING

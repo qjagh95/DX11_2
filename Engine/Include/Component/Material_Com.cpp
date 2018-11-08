@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Material_Com.h"
 #include "Animation2D_Com.h"
 

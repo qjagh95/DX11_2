@@ -1,3 +1,4 @@
+#include "MathHeader.h"
 #include "Vector4.h"
 
 Vector4	Vector4::Axis[4] = { Vector4(1.0f, 0.0f, 0.0f, 0.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f), Vector4(0.0f, 0.0f, 1.0f, 0.0f) , Vector4(0.0f, 0.0f, 0.0f, 1.0f) };

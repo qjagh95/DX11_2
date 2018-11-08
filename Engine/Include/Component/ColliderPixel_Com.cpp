@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "ColliderPixel_Com.h"
 #include "ColliderRect_Com.h"
 #include "ColliderPoint_Com.h"

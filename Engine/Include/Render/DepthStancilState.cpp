@@ -1,4 +1,6 @@
+#include "stdafx.h"
 #include "DepthStancilState.h"
+
 #include "../Device.h"
 
 JEONG_USING

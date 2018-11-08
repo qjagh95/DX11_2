@@ -1,6 +1,4 @@
 #pragma once
-#include "stdafx.h"
-
 JEONG_BEGIN
 
 class JEONG_DLL Device
@@ -14,6 +12,7 @@ public:
 	IDXGISwapChain* GetSwapChain() const { return m_SwapChain; }
 	WinSize GetWinSize() const { return m_WinSize; }
 	Vector2 GetWindowToDeviceRatio() const;
+	ID2D1RenderTarget* Get2DRenderTarget() const { return m_2DTarget; }
 
 private:
 	//Com - Component Object의 약자 - 전부 RefCount방식으로 돌아간다.
@@ -51,6 +50,10 @@ private:
 	//IDXGIDebug* dxgi_debug;
 	//HMODULE asd;
 #endif
+
+	//2D Interface
+	ID2D1RenderTarget* m_2DTarget;
+	ID2D1Factory* m_2DFactory;
 
 public:
 	CLASS_IN_SINGLE(Device)
