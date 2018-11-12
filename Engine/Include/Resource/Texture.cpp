@@ -109,7 +109,7 @@ bool Texture::LoadTextureFromFullPath(const string & TextureName, const TCHAR * 
 		if (FAILED(LoadFromDDSFile(FullPath, DDS_FLAGS_NONE, NULLPTR, *newImage)))
 			return false;
 	}
-	if (strcmp(mSep, ".TGA") == 0)
+	else if (strcmp(mSep, ".TGA") == 0)
 	{
 		if (FAILED(LoadFromTGAFile(FullPath, NULLPTR, *newImage)))
 			return false;

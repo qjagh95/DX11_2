@@ -31,6 +31,8 @@
 #include <d2d1.h>
 #include <dwrite.h>
 
+#include <Audio.h>
+
 #pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "d3d11")
 #pragma comment(lib, "d3dcompiler")
@@ -45,3 +47,31 @@
 
 #define TrueAssert(Var) assert(!(Var))
 #define new new(_CLIENT_BLOCK,__FILE__,__LINE__)
+#define JEONG_USING using namespace JEONG;
+
+#include "FontManager.h"
+#include "ThreadManager.h"
+#include "Device.h"
+#include "PathManager.h"
+#include "TimeManager.h"
+#include "CollsionManager.h"
+#include "KeyInput.h"
+#include "SlotManager.h"
+#include "GameObject.h"
+#include "SoundManager.h"
+
+#include "Scene/SceneManager.h"
+#include "Scene/Scene.h"
+#include "Scene/Layer.h"
+
+#include "Component/Material_Com.h"
+#include "Component/Renderer_Com.h"
+#include "Component/Transform_Com.h"
+#include "Component/Camera_Com.h"
+#include "Component/Collider_Com.h"
+#include "Component/Bar_Com.h"
+
+#include "UserComponent/UserComponent_Base.h"
+
+#include "Resource/ResourceManager.h"
+#include "Render/RenderManager.h"

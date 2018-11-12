@@ -53,6 +53,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -107,7 +108,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>JEONG_IMPORTWIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;$(SolutionDir)DirectXTK\Inc;</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>ClientHeader.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -123,7 +124,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>JEONG_IMPORT_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>ClientHeader.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>.\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;$(SolutionDir)DirectXTK\Inc;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,7 +141,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>JEONG_IMPORTWIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;$(SolutionDir)DirectXTK\Inc;</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>ClientHeader.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -160,7 +161,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>JEONG_IMPORTNDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>ClientHeader.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>.\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;$(SolutionDir)DirectXTK\Inc;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -203,6 +204,7 @@
     <ClInclude Include="UserComponent\Player_Com.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DirectXTK\DirectXTK_Desktop_2017_Win10.vcxproj" />
     <ProjectReference Include="..\..\Engine\Include\Engine.vcxproj">
       <Project>{1fa17dc5-4719-4556-8bdb-3c4fb442d283}</Project>
     </ProjectReference>
@@ -212,5 +214,6 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />
   </ImportGroup>
 </Project>

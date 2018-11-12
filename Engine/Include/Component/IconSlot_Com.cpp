@@ -16,7 +16,6 @@ IconSlot_Com::IconSlot_Com()
 {
 	m_UIType = UT_ICONSLOT;
 	SetTag("IconSlot");
-	m_EquipIcon = NULLPTR;
 }
 
 IconSlot_Com::IconSlot_Com(const IconSlot_Com & CopyData)
@@ -26,7 +25,6 @@ IconSlot_Com::IconSlot_Com(const IconSlot_Com & CopyData)
 
 IconSlot_Com::~IconSlot_Com()
 {
-	SAFE_RELEASE(m_EquipIcon);
 }
 
 bool IconSlot_Com::Init()
@@ -49,6 +47,7 @@ bool IconSlot_Com::Init()
 	RectColl->PushContinueTypeName("IconSlot");
 	RectColl->PushContinueTypeName("MouseWindow");
 	RectColl->PushContinueTypeName("MouseWorld");
+	SAFE_RELEASE(RectColl);
 
 	m_Transform->SetWorldPivot(0.5f, 0.0f, 0.0f);
 	m_Transform->SetWorldScale(30.0f, 30.0f, 0.0f);

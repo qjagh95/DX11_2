@@ -20,7 +20,7 @@ Material_Com::Material_Com()
 Material_Com::Material_Com(const Material_Com& copyData)
 	:Component_Base(copyData)
 {
- 	m_vecMaterial.clear();
+	m_vecMaterial.clear();
 
 	for (size_t i = 0; i < copyData.m_vecMaterial.size(); i++)
 	{
@@ -171,7 +171,7 @@ void Material_Com::SetDiffuseTexture(int RegisterNumber, Texture * pTexture, int
 
 	SubsetMaterial*	getMaterial = m_vecMaterial[Container][Subset];
 	pTexture->AddRefCount();
-	
+
 	getMaterial->DiffuseTexture = pTexture;
 	getMaterial->TextureRegister = RegisterNumber;
 }
@@ -229,7 +229,7 @@ void Material_Com::SetShader(int Container, int Subset)
 
 	GET_SINGLE(ShaderManager)->UpdateCBuffer("Material", &getMaterial->MatrialInfo);
 
-	if (getMaterial->DiffuseTexture != NULLPTR) 
+	if (getMaterial->DiffuseTexture != NULLPTR)
 		getMaterial->DiffuseTexture->SetShaderResource(getMaterial->TextureRegister); //PSSetResourceView
 
 	if (getMaterial->DiffuseSampler != NULLPTR)

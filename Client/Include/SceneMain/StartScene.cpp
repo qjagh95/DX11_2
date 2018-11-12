@@ -56,22 +56,6 @@ bool StartScene::Init()
 	RadioButton_Com* RadioCom = newRadio->AddComponent<RadioButton_Com>("CheckBox");
 	RadioCom->CreateRadioGroup("Group1", 30, 10, newRadio->GetTransform()->GetWorldPos());
 
-	//GameObject* newCheck1 = GameObject::CreateObject("CheckBox", UILayer);
-	//newCheck1->GetTransform()->SetWorldPos(500.0f, 360.0f, 0.0f);
-	//CheckBox_Com* newCheck1Com = newCheck1->AddComponent<CheckBox_Com>("CheckBox");
-
-	//CheckCom->SetCallBack([p1 = CheckCom, p2 = newCheck1Com](float DeltaTime)
-	//{
-	//	p1->SetCheckState(CBS_TRUE);
-	//	p2->SetCheckState(CBS_FALSE);
-	//});
-
-	//newCheck1Com->SetCallBack([p1 = CheckCom, p2 = newCheck1Com](float DeltaTime)
-	//{
-	//	p1->SetCheckState(CBS_FALSE);
-	//	p2->SetCheckState(CBS_TRUE);
-	//});
-
 	SAFE_RELEASE(newRadio);
 	SAFE_RELEASE(RadioCom);
 	SAFE_RELEASE(Default);
@@ -97,7 +81,6 @@ int StartScene::Update(float DeltaTime)
 
 int StartScene::LateUpdate(float DeltaTime)
 {
-
 	return 0;
 }
 

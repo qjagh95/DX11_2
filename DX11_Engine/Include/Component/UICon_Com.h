@@ -24,7 +24,6 @@ public:
 	void MouseOut(Collider_Com* Src, Collider_Com* Dest, float DeltaTime);
 
 private:
-	IconSlot_Com* m_mySlot;
 
 protected:
 	UICon_Com();

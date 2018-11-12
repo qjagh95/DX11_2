@@ -29,6 +29,7 @@ LoadingScene::LoadingScene()
 
 LoadingScene::~LoadingScene()
 {
+	SAFE_RELEASE(m_LoadingBar);
 }
 
 bool LoadingScene::Init()

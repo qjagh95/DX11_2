@@ -63,7 +63,6 @@ GameObject::GameObject(const GameObject& copyObject)
 		child->m_Parent = this;
 		child->m_Transform->m_ParentTransform = m_Transform;
 		child->m_Transform->SetParentFlag(TPF_POS | TPF_ROT);
-		child->m_Transform->AddRefCount();
 		m_Transform->m_ChildTransList.push_back(child->m_Transform);
 
 		m_ChildList.push_back(child);
@@ -518,7 +517,6 @@ void GameObject::AddChild(GameObject * Child)
 {
 	Child->m_Parent = this;
 	Child->m_Transform->m_ParentTransform = m_Transform;
-	Child->m_Transform->AddRefCount();
 
 	m_Transform->m_ChildTransList.push_back(Child->m_Transform);
 

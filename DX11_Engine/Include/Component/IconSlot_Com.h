@@ -25,7 +25,6 @@ public:
 	bool CreateSlot(const string& GroupName, size_t RowCount, size_t ColumCount);
 
 private:
-	UICon_Com* m_EquipIcon;
 	int m_Index;
 
 protected:

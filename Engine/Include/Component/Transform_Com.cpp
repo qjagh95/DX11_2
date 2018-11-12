@@ -24,6 +24,7 @@ Transform_Com::Transform_Com(const Transform_Com& copyObject)
 Transform_Com::~Transform_Com()
 {
 	Safe_Release_VecList(m_ChildTransList);
+	SAFE_RELEASE(m_ParentTransform);
 }
 
 bool Transform_Com::Init()

@@ -6,10 +6,12 @@ class JEONG_DLL FontManager
 {
 public:
 	bool Init();
-	IDWriteTextFormat* FontCreate(const string& KeyName, const TCHAR* FontName, int iWeight, int iStyle, int iStretch, float fSize, const TCHAR* LocalName);
+	IDWriteTextFormat* FontCreate(const TCHAR* FontName, int Weight, int Style, int Stretch, float Size, const TCHAR* LocalName);
 	ID2D1SolidColorBrush* CreateBrush(float r, float g, float b, float a);
 	ID2D1SolidColorBrush* CreateBrush(unsigned char r, unsigned char g,	unsigned char b, unsigned char a);
 	ID2D1SolidColorBrush* CreateBrush(const Vector4& vColor);
+	IDWriteTextLayout* CreateTextLayout(const TCHAR* Text,	IDWriteTextFormat* Format, float Width, float Height);
+	IDWriteTextLayout* CreateTextLayout(const TCHAR* Text,	const string&FontKey, float Width, float Height);
 
 	IDWriteTextFormat* FindFont(const string& KeyName);
 	ID2D1SolidColorBrush* FindBrush(float r, float g, float b, float a);
@@ -21,7 +23,7 @@ public:
 
 private:
 	IDWriteFactory*	m_WriteFactory;
-	unordered_map<string, IDWriteTextFormat*>	m_FontMap;
+	unordered_map<string, IDWriteTextFormat*> m_FontMap;
 	unordered_map<unsigned int, ID2D1SolidColorBrush*>	m_BrushMap;
 
 public:

@@ -22,12 +22,29 @@ bool FontManager::Init()
 	if (FAILED(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(m_WriteFactory), (IUnknown**)&m_WriteFactory)))
 		return false;
 
+	FontCreate(TEXT("궁서체"), DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_ULTRA_EXPANDED, 20.0f, TEXT("ko"));
+
+	CreateBrush(0.0f, 0.0f, 0.0f, 1.0f);
+	CreateBrush(1.0f, 0.0f, 0.0f, 1.0f);
+	CreateBrush(0.0f, 1.0f, 0.0f, 1.0f);
+	CreateBrush(0.0f, 0.0f, 1.0f, 1.0f);
+	CreateBrush(1.0f, 0.8431f, 0.0f, 1.0f);
+
 	return true;
 }
 
-IDWriteTextFormat * FontManager::FontCreate(const string & KeyName, const TCHAR * FontName, int iWeight, int iStyle, int iStretch, float fSize, const TCHAR * LocalName)
+IDWriteTextFormat * FontManager::FontCreate(const TCHAR* FontName, int Weight, int Style, int Stretch, float Size, const TCHAR * LocalName)
 {
-	IDWriteTextFormat* newFormat = FindFont(KeyName);
+	char cKey[MAX_PATH] = {};
+
+#ifdef UNICODE
+	WideCharToMultiByte(CP_ACP, 0, FontName, -1, cKey, lstrlen(FontName) * 2, 0, 0);
+#else
+	strcpy_s(strKey, pFontName);
+#endif // UNICODE
+	sprintf_s(cKey, "%s%d", cKey, (int)Size);
+
+	IDWriteTextFormat* newFormat = FindFont(cKey);
 
 	if (newFormat != NULLPTR)
 		return newFormat;
@@ -39,10 +56,10 @@ IDWriteTextFormat * FontManager::FontCreate(const string & KeyName, const TCHAR 
 	// 5번인자 : 자간 6번인자 : 폰트 크기
 	// 7번인자 : 언어 지역 이름을 설정한다. 한국은 ko - KR 미국은 en - us 
 	// 8번인자 : 텍스트 인터페이스
-	if (FAILED(m_WriteFactory->CreateTextFormat(FontName, NULLPTR, (DWRITE_FONT_WEIGHT)iWeight,(DWRITE_FONT_STYLE)iStyle,	(DWRITE_FONT_STRETCH)iStretch, fSize, LocalName, &newFormat)))
+	if (FAILED(m_WriteFactory->CreateTextFormat(FontName, NULLPTR, (DWRITE_FONT_WEIGHT)Weight,(DWRITE_FONT_STYLE)Style,	(DWRITE_FONT_STRETCH)Stretch, Size, LocalName, &newFormat)))
 		return NULLPTR;
 
-	m_FontMap.insert(make_pair(KeyName, newFormat));
+	m_FontMap.insert(make_pair(cKey, newFormat));
 
 	return newFormat;
 }
@@ -102,6 +119,28 @@ ID2D1SolidColorBrush * FontManager::CreateBrush(const Vector4 & vColor)
 	m_BrushMap.insert(make_pair(iKey, newBrush));
 
 	return newBrush;
+}
+
+IDWriteTextLayout * FontManager::CreateTextLayout(const TCHAR * Text, IDWriteTextFormat * Format, float Width, float Height)
+{
+	IDWriteTextLayout* pLayout = NULLPTR;
+
+	if (FAILED(m_WriteFactory->CreateTextLayout(Text, lstrlen(Text), Format, Width, Height, &pLayout)))
+		return NULLPTR;
+
+	return pLayout;
+}
+
+IDWriteTextLayout * FontManager::CreateTextLayout(const TCHAR * Text, const string & FontKey, float Width, float Height)
+{
+	IDWriteTextLayout* pLayout = NULLPTR;
+	IDWriteTextFormat* pFormat = FindFont(FontKey);
+
+	if (FAILED(m_WriteFactory->CreateTextLayout(Text, lstrlen(Text), pFormat, Width, Height, &pLayout)))
+		return NULLPTR;
+
+	return pLayout;
+
 }
 
 unsigned int FontManager::CreateColorKey(float r, float g, float b, float a)

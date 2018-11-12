@@ -2,7 +2,6 @@
 
 #define JEONG_BEGIN namespace JEONG {
 #define JEONG_END }
-#define JEONG_USING using namespace JEONG;
 #define NULLPTR nullptr
 
 //클라이언트 프로젝트냐 엔진프로젝트냐에 다라서 자동으로 DLL의 import export가 정해진다.
@@ -25,6 +24,7 @@
 #define ROOT_PATH "RootPath"
 #define TEXTURE_PATH "TexturPath"
 #define SHADER_PATH "ShaderPath"
+#define SOUND_PATH "SoundPath"
 
 #define KEYPRESS(Key) KeyInput::Get()->KeyPress(key)
 #define KEYUP(Key) KeyInput::Get()->KeyUp(key)

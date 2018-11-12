@@ -19,7 +19,6 @@ cbuffer Animation2D : register(b8)
 VS_OUTPUT_UV BarVS(VS_INPUT_UV input)
 {
     VS_OUTPUT_UV output = (VS_OUTPUT_UV)0;
-
     float3 vPos = input.vPos - g_Pivot * g_Length;
 
     output.vPos = mul(float4(vPos, 1.0f), g_WVP);

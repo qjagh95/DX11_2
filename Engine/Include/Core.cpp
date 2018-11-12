@@ -7,6 +7,8 @@
 #include "KeyInput.h"
 #include "CollsionManager.h"
 #include "ThreadManager.h"
+#include "FontManager.h"
+#include "SoundManager.h"
 
 #include "Resource\ResourceManager.h"
 #include "Resource/Mesh.h"
@@ -24,7 +26,7 @@ bool Core::m_isLoop = true;
 Core::Core()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	//_CrtSetBreakAlloc(12625);
+	//_CrtSetBreakAlloc(18100);
 	ZeroMemory(ClearColor, sizeof(float) * 4);
 }
 
@@ -40,6 +42,9 @@ Core::~Core()
 	CollsionManager::Delete();
 	KeyInput::Delete();
 	ThreadManager::Delete();
+	FontManager::Delete();
+	SoundManager::Delete();
+	CoUninitialize();
 }
 
 bool Core::Init(HINSTANCE hInst, unsigned int Width, unsigned int Height, const TCHAR * TitleName, const TCHAR * ClassName, int iIconID, int iSmallIconID, bool bWindowMode)
@@ -61,6 +66,8 @@ bool Core::Init(HINSTANCE hInst, HWND hWnd, unsigned int Width, unsigned int Hei
 	m_WinSize.Width = Width;
 	m_WinSize.Height = Height;
 
+	CoInitializeEx(NULLPTR, COINIT_MULTITHREADED);
+
 	//DirectX11 DeviceÃÊ±âÈ­
 	if (Device::Get()->Init(hWnd, Width, Height, bWindowMode) == false)
 	{
@@ -69,6 +76,12 @@ bool Core::Init(HINSTANCE hInst, HWND hWnd, unsigned int Width, unsigned int Hei
 	}
 
 	if (PathManager::Get()->Init() == false)
+	{
+		TrueAssert(true);
+		return false;
+	}
+
+	if (SoundManager::Get()->Init() == false)
 	{
 		TrueAssert(true);
 		return false;
@@ -105,6 +118,12 @@ bool Core::Init(HINSTANCE hInst, HWND hWnd, unsigned int Width, unsigned int Hei
 	}
 
 	if (CollsionManager::Get()->Init() == false)
+	{
+		TrueAssert(true);
+		return false;
+	}
+
+	if (FontManager::Get()->Init() == false)
 	{
 		TrueAssert(true);
 		return false;
@@ -221,6 +240,7 @@ int Core::Input(float DeltaTime)
 int Core::Update(float DeltaTime)
 {
 	SceneManager::Get()->Update(DeltaTime);
+	//SoundManager::Get()->Update();
 
 	if (KeyInput::Get()->KeyDown("SystemPause"))
 		system("pause");

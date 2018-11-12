@@ -110,7 +110,7 @@ bool Player_Com::Init()
 	pMaterial->SetDiffuseTexture(0, "Nasus", TEXT("Nasus.jpg"));
 	SAFE_RELEASE(pMaterial);
 
-	Transform_Com*	pTransform = pChildObj->GetTransform();
+	Transform_Com* pTransform = pChildObj->GetTransform();
 	pTransform->SetWorldRelativePos(50.0f, 0.0f, 0.0f);
 	pTransform->SetWorldScale(50.0f, 50.0f, 0.0f);
 	pTransform->SetWorldPivot(0.5f, 0.0f, 0.0f);
@@ -143,6 +143,7 @@ bool Player_Com::Init()
 	Lenth[1] = 25.0f;
 	OBBColl->SetInfo(Vector3(0.0f, 25.0f, 0.0f), Axis, Lenth);
 	SAFE_RELEASE(OBBColl);
+	SAFE_RELEASE(pChildObj);
 
 	return true;
 }

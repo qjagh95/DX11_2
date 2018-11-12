@@ -14,6 +14,16 @@ SlotManager::SlotManager()
 
 SlotManager::~SlotManager()
 {
+	unordered_map<string, vector<IconSlot_Com*>>::iterator StartIter = m_SlotMap.begin();
+	unordered_map<string, vector<IconSlot_Com*>>::iterator EndIter = m_SlotMap.end();
+
+	for (; StartIter != EndIter; StartIter++)
+	{
+		for (size_t i = 0; i < StartIter->second.size(); i++)
+		{
+			SAFE_RELEASE(StartIter->second[i]);
+		}
+	}
 }
 
 bool SlotManager::Init()

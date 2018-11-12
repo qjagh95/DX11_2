@@ -25,6 +25,7 @@
 #define ROOT_PATH "RootPath"
 #define TEXTURE_PATH "TexturPath"
 #define SHADER_PATH "ShaderPath"
+#define SOUND_PATH "SoundPath"
 
 #define KEYPRESS(Key) KeyInput::Get()->KeyPress(key)
 #define KEYUP(Key) KeyInput::Get()->KeyUp(key)

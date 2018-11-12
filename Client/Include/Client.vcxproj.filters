@@ -55,11 +55,11 @@
     <ClCompile Include="SceneMain\LoadingScene.cpp">
       <Filter>LoadingScene</Filter>
     </ClCompile>
-    <ClCompile Include="SceneMain\LoadingThread.cpp">
-      <Filter>LoadingScene</Filter>
-    </ClCompile>
     <ClCompile Include="ClientHeader.cpp">
       <Filter>WinMain</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneMain\LoadingThread.cpp">
+      <Filter>LoadingScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

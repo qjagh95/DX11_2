@@ -16,26 +16,19 @@ UICon_Com::UICon_Com()
 {
 	m_UIType = UT_ICON;
 	SetTag("Icon");
-	m_mySlot = NULLPTR;
 }
 
 UICon_Com::UICon_Com(const UICon_Com & CopyData)
 	:UIBase_Com(CopyData)
 {
-	m_mySlot = NULLPTR;
-
 }
 
 UICon_Com::~UICon_Com()
 {
-	SAFE_RELEASE(m_mySlot);
 }
 
 bool UICon_Com::Init()
 {
-	m_Transform->SetWorldPivot(0.5f, 0.0f, 0.0f);
-	m_Transform->SetWorldScale(30.0f, 30.0f, 0.0f);
-
 	Renderer_Com* RenderComponent = m_Object->AddComponent<Renderer_Com>("UIconRender");
 	RenderComponent->SetMesh("TextureRect");
 	RenderComponent->SetRenderState(ALPHA_BLEND);
@@ -50,6 +43,10 @@ bool UICon_Com::Init()
 	RectColl->SetCollisionGroup("UI");
 	RectColl->SetCollsionCallback(CCT_DOING, this, &UICon_Com::MouseHit);
 	RectColl->SetCollsionCallback(CCT_END, this, &UICon_Com::MouseOut);
+	SAFE_RELEASE(RectColl);
+
+	m_Transform->SetWorldPivot(0.5f, 0.0f, 0.0f);
+	m_Transform->SetWorldScale(30.0f, 30.0f, 0.0f);
 
 	return true;
 }
@@ -61,7 +58,6 @@ int UICon_Com::Input(float DeltaTime)
 
 int UICon_Com::Update(float DeltaTime)
 {
-
 	return 0;
 }
 

@@ -32,6 +32,7 @@ bool PathManager::Init()
 
 	AddPath(TEXTURE_PATH, TEXT("Texture\\"));
 	AddPath(SHADER_PATH, TEXT("Shader\\"));
+	AddPath(SOUND_PATH, TEXT("Sound\\"));
 
 	return true;
 }

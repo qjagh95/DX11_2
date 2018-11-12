@@ -35,6 +35,7 @@ MainScene::MainScene()
 MainScene::~MainScene()
 {
 	SAFE_RELEASE(m_TestBar);
+	SAFE_RELEASE(m_TestText);
 }
 
 bool MainScene::Init()
@@ -51,9 +52,10 @@ bool MainScene::Init()
 	GameObject* MonsterObject = GameObject::CreateObject("Monster", Default);
 	Monster_Com* monster_Com = MonsterObject->AddComponent<Monster_Com>("Monster_Com");
 	loadThread->AddLoadingCount();
-
 	GameObject* PlayerObject = GameObject::CreateObject("Player", Default);
 	Player_Com* player_Com = PlayerObject->AddComponent<Player_Com>("Player_Com");
+	loadThread->AddLoadingCount();
+	loadThread->AddLoadingCount();
 	loadThread->AddLoadingCount();
 
 	GameObject* BulletObject = GameObject::CreateProtoType("Bullet_Clone", false);
@@ -71,7 +73,6 @@ bool MainScene::Init()
 	GameObject*	TestPixelColl = GameObject::CreateObject("PixelColl", Default);
 	Renderer_Com* PixelRenderer = TestPixelColl->AddComponent<Renderer_Com>("PixelCollRenderer");
 	PixelRenderer->SetMesh("TextureRect");
-	loadThread->AddLoadingCount();
 
 	Material_Com* pixelMaterial = TestPixelColl->FindComponentFromType<Material_Com>(CT_MATERIAL);
 	pixelMaterial->SetDiffuseTexture(0, "TestPixelColl", TEXT("PixelCollider.bmp"));
@@ -85,11 +86,10 @@ bool MainScene::Init()
 
 	GameObject* BarObject = GameObject::CreateObject("TestBar", UILayer);
 	BarObject->GetTransform()->SetWorldPos(200.0f, 600.0f, 0.0f);
-	UIBar_Com* TestBar = BarObject->AddComponent<UIBar_Com>("HpBar");
-	TestBar->SetDir(BD_LEFT);
-	TestBar->SetValue(0.0f);
-	TestBar->SetScale(200.0f, 30.0f, 0.0f);
-	m_TestBar = TestBar;
+	m_TestBar = BarObject->AddComponent<UIBar_Com>("HpBar");
+	m_TestBar->SetDir(BD_LEFT);
+	m_TestBar->SetValue(0.0f);
+	m_TestBar->SetScale(200.0f, 30.0f, 0.0f);
 	loadThread->AddLoadingCount();
 
 	GameObject* SlotObject1 = GameObject::CreateObject("Slot1", UILayer);
@@ -102,8 +102,7 @@ bool MainScene::Init()
 	IconSlot_Com* SlotCom1 = SlotObject1->AddComponent<IconSlot_Com>("Slot1");
 	SlotCom1->SetSlotIndex(0);
 	IconSlot_Com* SlotCom2 = SlotObject2->AddComponent<IconSlot_Com>("Slot2");
-	SlotCom1->SetSlotIndex(1);
-	
+	SlotCom2->SetSlotIndex(1);
 	IconSlot_Com* SlotCom3 = SlotObject3->AddComponent<IconSlot_Com>("Slot3");
 	SlotCom3->SetSlotIndex(2);
 
@@ -118,18 +117,29 @@ bool MainScene::Init()
 	Material_Com* material = IconObject2->FindComponentFromType<Material_Com>(CT_MATERIAL);
 	material->SetDiffuseTexture(0, "Icon2", TEXT("Icon2.png"));
 
-	SAFE_RELEASE(SlotCom3);
-	SAFE_RELEASE(SlotObject3);
+	GameObject* TextObject1 = GameObject::CreateObject("Text1", UILayer);
+	m_TestText = TextObject1->AddComponent<Text_Com>("Text1");
+
+	m_TestText->SetText(L"ㅇㅅㅇ?");
+	m_TestText->SetTextType(TRT_UI);
+	m_TestText->SetFont(L"궁서체", 20.0f);
+	m_TestText->SetColor(Vector4::LightPink);
+	m_TestText->SetRenderArea(0, 0, 200, 200);
+	m_TestText->SetIsShow(true);
+	TextObject1->GetTransform()->SetWorldPos(Vector3(300.0f, 300.0f, 0));
+
+	SAFE_RELEASE(TextObject1);
 	SAFE_RELEASE(material);
 	SAFE_RELEASE(SlotObject1);
 	SAFE_RELEASE(SlotObject2);
-	SAFE_RELEASE(SlotCom2);
+	SAFE_RELEASE(SlotObject3);
 	SAFE_RELEASE(SlotCom1);
+	SAFE_RELEASE(SlotCom2);
+	SAFE_RELEASE(SlotCom3);
 	SAFE_RELEASE(IconObject1);
 	SAFE_RELEASE(IconObject2);
 	SAFE_RELEASE(IconCom1);
 	SAFE_RELEASE(IconCom2);
-	SAFE_RELEASE(TestBar);
 	SAFE_RELEASE(BarObject);
 	SAFE_RELEASE(PixelRenderer);
 	SAFE_RELEASE(pixelMaterial);
@@ -154,15 +164,36 @@ bool MainScene::Init()
 
 int MainScene::Input(float DeltaTime)
 {
-	if (GetAsyncKeyState(VK_F7) & 0x8000)
-		m_TestBar->AddValue(-40.0f * DeltaTime);
-	if (GetAsyncKeyState(VK_F8) & 0x8000)
-		m_TestBar->AddValue(40.0f * DeltaTime);
+	//if (GetAsyncKeyState(VK_F7) & 0x8000)
+	//	m_TestBar->AddValue(-40.0f * DeltaTime);
+	//if (GetAsyncKeyState(VK_F8) & 0x8000)
+	//	m_TestBar->AddValue(40.0f * DeltaTime);
 
-	if (GetAsyncKeyState(VK_F5) & 0x8000)
-		m_TestBar->LightOff();
-	if (GetAsyncKeyState(VK_F6) & 0x8000)
-		m_TestBar->LightOn();
+	//if (GetAsyncKeyState(VK_F5) & 0x8000)
+	//	m_TestBar->LightOff();
+	//if (GetAsyncKeyState(VK_F6) & 0x8000)
+	//	m_TestBar->LightOn();
+
+	////루프
+	//if (GetAsyncKeyState(VK_NUMPAD1) & 0x8000)
+	//{
+	//	auto sound_effect_instance = SoundManager::Get()->FindSoundEffect("BGM")->CreateInstance();
+	//	sound_effect_instance->Play(true);
+	//	SoundManager::Get()->CreateBGMList("BGM", move(sound_effect_instance));
+	//}
+
+	////단발
+	//if (GetAsyncKeyState(VK_NUMPAD0) & 0x8000)
+	//	SoundManager::Get()->FindSoundEffect("Effect")->Play();
+
+	//if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+	//	m_TestText->GetTransform()->Move(Vector3(1.0f, 0.0f, 0.0f), 300.0f, DeltaTime);
+	//if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+	//	m_TestText->GetTransform()->Move(Vector3(-1.0f, 0.0f, 0.0f), 300.0f, DeltaTime);
+	//if (GetAsyncKeyState(VK_UP) & 0x8000)
+	//	m_TestText->GetTransform()->Move(Vector3(0.0f, 1.0f, 0.0f), 300.0f, DeltaTime);
+	//if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+	//	m_TestText->GetTransform()->Move(Vector3(0.0f, -1.0f, 0.0f), 300.0f, DeltaTime);
 
 	return 0;
 }
