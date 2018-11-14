@@ -45,6 +45,9 @@
 #include "Flag.h"
 #include "Type.h"
 
+#define JEONG_BEGIN namespace JEONG {
+#define JEONG_END }
+
 #define TrueAssert(Var) assert(!(Var))
 #define new new(_CLIENT_BLOCK,__FILE__,__LINE__)
 #define JEONG_USING using namespace JEONG;

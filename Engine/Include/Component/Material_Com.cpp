@@ -10,6 +10,15 @@
 
 #include "../Render/ShaderManager.h"
 
+JEONG::SubsetMaterial::SubsetMaterial()
+{
+
+}
+JEONG::SubsetMaterial::~SubsetMaterial()
+{
+	
+}
+
 JEONG::Material_Com::Material_Com()
 {
 	m_ComType = CT_MATERIAL;
@@ -18,43 +27,36 @@ JEONG::Material_Com::Material_Com()
 JEONG::Material_Com::Material_Com(const Material_Com& copyData)
 	:Component_Base(copyData)
 {
-	*this = copyData;
+	m_vecMaterial.clear();
 
-	//m_vecMaterial.clear();
+	for (size_t i = 0; i < copyData.m_vecMaterial.size(); i++)
+	{
+		vector<JEONG::SubsetMaterial*> TempVec;
+		m_vecMaterial.push_back(TempVec);
 
-	//for (size_t i = 0; i < copyData.m_vecMaterial.size(); i++)
-	//{
-	//	vector<JEONG::SubsetMaterial*> TempVec;
-	//	m_vecMaterial.push_back(TempVec);
+		for (size_t j = 0; j < copyData.m_vecMaterial[i].size(); j++)
+		{
+			JEONG::SubsetMaterial* newMaterial = new JEONG::SubsetMaterial();
+			newMaterial->MatrialInfo = copyData.m_vecMaterial[i][j]->MatrialInfo;
 
-	//	for (size_t j = 0; j < copyData.m_vecMaterial[i].size(); j++)
-	//	{
-	//		JEONG::SubsetMaterial* newMaterial = new JEONG::SubsetMaterial();
-	//		newMaterial->MatrialInfo = copyData.m_vecMaterial[i][j]->MatrialInfo;
+			for (size_t a = 0; a < copyData.m_vecMaterial[i][j]->vecDiffuseSampler.size(); a++)
+			{
+				newMaterial->vecDiffuseSampler[a] = copyData.m_vecMaterial[i][j]->vecDiffuseSampler[a];
 
-	//		for (size_t i = 0; i < length; i++)
-	//		{
-	//			newMaterial->DiffuseTexture = copyData.m_vecMaterial[i][j]->DiffuseTexture;
+				if (newMaterial->vecDiffuseSampler[a] != NULLPTR)
+					newMaterial->vecDiffuseSampler[a]->AddRefCount();
+			}
+			for (size_t b = 0; b < copyData.m_vecMaterial[i][j]->vecDiffuseTexture.size(); b++)
+			{
+				newMaterial->vecDiffuseTexture[b] = copyData.m_vecMaterial[i][j]->vecDiffuseTexture[b];
 
-	//			if (newMaterial->DiffuseTexture != NULLPTR)
-	//				newMaterial->DiffuseTexture->AddRefCount();
-	//		}
-	//		for (size_t i = 0; i < length; i++)
-	//		{
+				if (newMaterial->vecDiffuseTexture[b]!= NULLPTR)
+					newMaterial->vecDiffuseTexture[b]->AddRefCount();
+			}
 
-	//		}
-
-	//		newMaterial->DiffuseSampler = copyData.m_vecMaterial[i][j]->DiffuseSampler;
-
-	//		if (newMaterial->DiffuseTexture != NULLPTR)
-	//			newMaterial->DiffuseTexture->AddRefCount();
-
-	//		if (newMaterial->DiffuseSampler != NULLPTR)
-	//			newMaterial->DiffuseSampler->AddRefCount();
-
-	//		m_vecMaterial[i].push_back(newMaterial);
-	//	}
-	//}
+			m_vecMaterial[i].push_back(newMaterial);
+		}
+	}
 }
 
 JEONG::Material_Com::~Material_Com()
@@ -141,6 +143,7 @@ void JEONG::Material_Com::SetDiffuseTexture(int RegisterNumber, const string & K
 
 	//텍스쳐 셋팅준비
 	JEONG::SubsetMaterial* getMaterial = m_vecMaterial[Container][Subset];
+	Safe_Release_VecList(getMaterial->vecDiffuseTexture);
 
 	if (getMaterial->vecDiffuseTexture.capacity() <= RegisterNumber)
 		getMaterial->vecDiffuseTexture.resize(RegisterNumber + 1);
@@ -159,16 +162,19 @@ void JEONG::Material_Com::SetDiffuseTexture(int RegisterNumber, const string & K
 	if (Subset >= m_vecMaterial[Container].size())
 		m_vecMaterial[Container].push_back(CreateSubSet());
 
-	JEONG::SubsetMaterial*	getMaterial = m_vecMaterial[Container][Subset];
-	//SAFE_RELEASE(getMaterial->DiffuseTexture);
-
-	//텍스쳐가 없다면 맵에 추가한 후
-	//가져다 쓴다.
-	ResourceManager::Get()->CreateTexture(KeyName, FileName, PathKey);
+	JEONG::SubsetMaterial* getMaterial = m_vecMaterial[Container][Subset];
 
 	if (getMaterial->vecDiffuseTexture.capacity() <= RegisterNumber)
 		getMaterial->vecDiffuseTexture.resize(RegisterNumber + 1);
 
+	SAFE_RELEASE(getMaterial->vecDiffuseTexture[0]);
+
+	if (RegisterNumber > 0)
+		SAFE_RELEASE(getMaterial->vecDiffuseTexture[RegisterNumber]);
+
+	//텍스쳐가 없다면 맵에 추가한 후
+	//가져다 쓴다.
+	ResourceManager::Get()->CreateTexture(KeyName, FileName, PathKey);
 	getMaterial->vecDiffuseTexture[RegisterNumber] = ResourceManager::Get()->FindTexture(KeyName);
 }
 
@@ -184,7 +190,6 @@ void JEONG::Material_Com::SetDiffuseTexture(int RegisterNumber, Texture * pTextu
 		m_vecMaterial[Container].push_back(CreateSubSet());
 
 	JEONG::SubsetMaterial* getMaterial = m_vecMaterial[Container][Subset];
-	pTexture->AddRefCount();
 
 	if (getMaterial->vecDiffuseTexture.capacity() <= RegisterNumber)
 		getMaterial->vecDiffuseTexture.resize(RegisterNumber + 1);
@@ -207,8 +212,11 @@ void JEONG::Material_Com::SetDiffuseTextureFromFullPath(int RegisterNumber, cons
 	}
 
 	JEONG::SubsetMaterial *getMaterial = m_vecMaterial[Container][Subset];
-
 	ResourceManager::Get()->CreateTextureFromFullPath(KeyName, FullPath);
+
+	if (getMaterial->vecDiffuseTexture.capacity() <= RegisterNumber)
+		getMaterial->vecDiffuseTexture.resize(RegisterNumber + 1);
+
 	getMaterial->vecDiffuseTexture[RegisterNumber] = ResourceManager::Get()->FindTexture(KeyName);
 }
 
@@ -264,126 +272,3 @@ JEONG::SubsetMaterial* JEONG::Material_Com::CreateSubSet()
 
 	return newSubset;
 }
-
-//#include "material.h"
-//
-//#include "Resource/resource_manager.h"
-//#include "Resource/texture.h"
-//#include "Resource/sampler.h"
-//#include "Rendering/rendering_manager.h"
-//
-//using namespace DG;
-//
-//void Material::Initialize()
-//{
-//	type_ = COMPONENT_TYPE::MATERIAL;
-//}
-//
-//void Material::SetToShader(int _container_idx, int _subset_idx)
-//{
-//	auto const& subset_material = material_container_vector_.at(_container_idx).at(_subset_idx);
-//
-//	for (int i = 0; i < subset_material->texture_vector.size(); ++i)
-//	{
-//		auto const& texture = subset_material->texture_vector.at(i);
-//
-//		if (texture)
-//			texture->SetToShader(i);
-//	}
-//
-//	for (int i = 0; i < subset_material->sampler_vector.size(); ++i)
-//	{
-//		auto const& sampler = subset_material->sampler_vector.at(i);
-//
-//		if (sampler)
-//			sampler->SetToShader(i);
-//	}
-//
-//	RenderingManager::singleton()->UpdateConstantBuffer("Material", &subset_material->material_constant_buffer);
-//}
-//
-//void Material::SetTexture(std::string const& _tag, int _slot, int _container_idx, int _subset_idx)
-//{
-//	if (_container_idx >= material_container_vector_.size())
-//		material_container_vector_.resize(_container_idx + 1);
-//
-//	if (_subset_idx >= material_container_vector_.at(_container_idx).size())
-//		material_container_vector_.at(_container_idx).resize(_subset_idx + 1);
-//
-//	if (!material_container_vector_.at(_container_idx).at(_subset_idx))
-//	{
-//		material_container_vector_.at(_container_idx).at(_subset_idx) = std::shared_ptr<SubsetMaterial>{ new SubsetMaterial, [](SubsetMaterial* _p) {
-//		   delete _p;
-//		} };
-//	}
-//
-//	auto const& subset_material = material_container_vector_.at(_container_idx).at(_subset_idx);
-//
-//	if (subset_material->texture_vector.capacity() <= _slot)
-//		subset_material->texture_vector.resize(_slot + 1);
-//
-//	subset_material->texture_vector.at(_slot) = ResourceManager::singleton()->FindTexture(_tag);
-//}
-//
-//void Material::SetSampler(std::string const& _tag, int _slot, int _container_idx, int _subset_idx)
-//{
-//	if (_container_idx >= material_container_vector_.size())
-//		material_container_vector_.resize(_container_idx + 1);
-//
-//	if (_subset_idx >= material_container_vector_.at(_container_idx).size())
-//		material_container_vector_.at(_container_idx).resize(_subset_idx + 1);
-//
-//	if (!material_container_vector_.at(_container_idx).at(_subset_idx))
-//	{
-//		material_container_vector_.at(_container_idx).at(_subset_idx) = std::shared_ptr<SubsetMaterial>{ new SubsetMaterial, [](SubsetMaterial* _p) {
-//		   delete _p;
-//		} };
-//	}
-//
-//	auto const& subset_material = material_container_vector_.at(_container_idx).at(_subset_idx);
-//
-//	if (subset_material->sampler_vector.capacity() <= _slot)
-//		subset_material->sampler_vector.resize(_slot + 1);
-//
-//	subset_material->sampler_vector.at(_slot) = ResourceManager::singleton()->FindSampler(_tag);
-//}
-//
-//void Material::SetMaterialConstantBuffer(MaterialConstantBuffer const& _material_constant_buffer, int _container_idx, int _subset_idx)
-//{
-//	if (_container_idx >= material_container_vector_.size())
-//		material_container_vector_.resize(_container_idx + 1);
-//
-//	if (_subset_idx >= material_container_vector_.at(_container_idx).size())
-//		material_container_vector_.at(_container_idx).resize(_subset_idx + 1);
-//
-//	if (!material_container_vector_.at(_container_idx).at(_subset_idx))
-//	{
-//		material_container_vector_.at(_container_idx).at(_subset_idx) = std::shared_ptr<SubsetMaterial>{ new SubsetMaterial, [](SubsetMaterial* _p) {
-//		   delete _p;
-//		} };
-//	}
-//
-//	material_container_vector_.at(_container_idx).at(_subset_idx)->material_constant_buffer = _material_constant_buffer;
-//}
-//
-//Material::Material(Material const& _other) : Component(_other)
-//{
-//	material_container_vector_ = _other.material_container_vector_;
-//}
-//
-//Material::Material(Material&& _other) noexcept : Component(std::move(_other))
-//{
-//	material_container_vector_ = std::move(_other.material_container_vector_);
-//}
-//
-//void Material::_Release()
-//{
-//}
-//
-//std::unique_ptr<Component, std::function<void(Component*)>> Material::_Clone() const
-//{
-//	return std::unique_ptr<Component, std::function<void(Component*)>>{ new Material{ *this }, [](Component* _p) {
-//		dynamic_cast<Material*>(_p)->_Release();
-//		delete dynamic_cast<Material*>(_p);
-//	} };
-//}

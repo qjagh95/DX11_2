@@ -11,6 +11,7 @@ public:
 	void SetTag(const string& TagName) { m_TagName = TagName; }
 	int AddRefCount() { ReferanceCount++; return ReferanceCount; }
 	int Release();
+	int GetRefCount() const { return ReferanceCount; }
 
 	bool GetIsActive() const { return isActive; }
 	bool GetIsShow() const { return isShow; }

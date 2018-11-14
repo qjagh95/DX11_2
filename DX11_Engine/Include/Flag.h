@@ -1,6 +1,9 @@
 #pragma once
 #include "stdafx.h"
 
+#define JEONG_BEGIN namespace JEONG {
+#define JEONG_END }
+
 JEONG_BEGIN
 
 enum GAME_MODE

@@ -12,6 +12,9 @@ struct JEONG_DLL SubsetMaterial
 
 	vector<JEONG::Texture*> vecDiffuseTexture;
 	vector<JEONG::Sampler*> vecDiffuseSampler;
+
+	SubsetMaterial();
+	~SubsetMaterial();
 };
 
 class Texture;
