@@ -11,15 +11,15 @@
 
 JEONG_USING
 
-unordered_map<Scene*, unordered_map<string, GameObject*>> GameObject::m_ProtoTypeMap;
+unordered_map<JEONG::Scene*, unordered_map<string, JEONG::GameObject*>> JEONG::GameObject::m_ProtoTypeMap;
 
-GameObject::GameObject()
+JEONG::GameObject::GameObject()
 	:m_Scene(NULLPTR), m_Layer(NULLPTR), m_Transform(NULLPTR), m_Parent(NULLPTR), m_MoveDir(MD_UP)
 {
 	SetTag("GameObject");
 }
 
-GameObject::GameObject(const GameObject& copyObject)
+JEONG::GameObject::GameObject(const JEONG::GameObject& copyObject)
 {
 	*this = copyObject;
 
@@ -31,19 +31,19 @@ GameObject::GameObject(const GameObject& copyObject)
 	m_ComponentList.clear();
 	m_FindComList.clear();
 
-	list<Component_Base*>::const_iterator StartIter = copyObject.m_ComponentList.begin();
-	list<Component_Base*>::const_iterator EndIter = copyObject.m_ComponentList.end();
+	list<JEONG::Component_Base*>::const_iterator StartIter = copyObject.m_ComponentList.begin();
+	list<JEONG::Component_Base*>::const_iterator EndIter = copyObject.m_ComponentList.end();
 
 	for (; StartIter != EndIter ; StartIter++)
 	{
-		Component_Base* newComponent = (*StartIter)->Clone();
+		JEONG::Component_Base* newComponent = (*StartIter)->Clone();
 		newComponent->m_Object = this;
 		newComponent->m_Transform = m_Transform;
 
 		m_ComponentList.push_back(newComponent);
 	}
 
-	Renderer_Com* getRender = FindComponentFromType<Renderer_Com>(CT_RENDER);
+	JEONG::Renderer_Com* getRender = FindComponentFromType<JEONG::Renderer_Com>(CT_RENDER);
 
 	if(getRender != NULLPTR)
 	{
@@ -54,22 +54,20 @@ GameObject::GameObject(const GameObject& copyObject)
 
 	m_ChildList.clear();
 
-	list<GameObject*>::iterator StartIter1 = m_ChildList.begin();
-	list<GameObject*>::iterator EndIter1 = m_ChildList.end();
+	list<JEONG::GameObject*>::iterator StartIter1 = m_ChildList.begin();
+	list<JEONG::GameObject*>::iterator EndIter1 = m_ChildList.end();
 
 	for (; StartIter1 != EndIter1; StartIter1++)
 	{
 		GameObject* child = (*StartIter1)->Clone();
 		child->m_Parent = this;
-		child->m_Transform->m_ParentTransform = m_Transform;
 		child->m_Transform->SetParentFlag(TPF_POS | TPF_ROT);
-		m_Transform->m_ChildTransList.push_back(child->m_Transform);
 
 		m_ChildList.push_back(child);
 	}
 }
 
-GameObject::~GameObject()
+JEONG::GameObject::~GameObject()
 {
 	Safe_Release_VecList(m_ChildList);
 	SAFE_RELEASE(m_Transform);
@@ -77,9 +75,9 @@ GameObject::~GameObject()
 	Safe_Release_VecList(m_ComponentList);
 }
 
-bool GameObject::Init()
+bool JEONG::GameObject::Init()
 {
-	m_Transform = new Transform_Com();
+	m_Transform = new JEONG::Transform_Com();
 	m_Transform->Init();
 
 	m_Transform->m_Transform = m_Transform;
@@ -87,10 +85,10 @@ bool GameObject::Init()
 	return true;
 }
 
-int GameObject::Input(float DeltaTime)
+int JEONG::GameObject::Input(float DeltaTime)
 {
-	list<Component_Base*>::iterator StartIter = m_ComponentList.begin();
-	list<Component_Base*>::iterator EndIter = m_ComponentList.end();
+	list<JEONG::Component_Base*>::iterator StartIter = m_ComponentList.begin();
+	list<JEONG::Component_Base*>::iterator EndIter = m_ComponentList.end();
 
 	for (; StartIter != EndIter;)
 	{
@@ -119,16 +117,16 @@ int GameObject::Input(float DeltaTime)
 	return 0;
 }
 
-int GameObject::Update(float DeltaTime)
+int JEONG::GameObject::Update(float DeltaTime)
 {
-	list<Component_Base*>::iterator StartIter = m_ComponentList.begin();
-	list<Component_Base*>::iterator EndIter = m_ComponentList.end();
+	list<JEONG::Component_Base*>::iterator StartIter = m_ComponentList.begin();
+	list<JEONG::Component_Base*>::iterator EndIter = m_ComponentList.end();
 
 	for (; StartIter != EndIter;)
 	{
 		if ((*StartIter)->GetIsActive() == false)
 		{
-			Renderer_Com* pRenderer = FindComponentFromType<Renderer_Com>(CT_RENDER);
+			JEONG::Renderer_Com* pRenderer = FindComponentFromType<JEONG::Renderer_Com>(CT_RENDER);
 			if (pRenderer != NULLPTR)
 			{
 				pRenderer->DeleteComponentCBuffer(*StartIter);
@@ -150,10 +148,25 @@ int GameObject::Update(float DeltaTime)
 
 	m_Transform->Update(DeltaTime);
 
+	list<GameObject*>::iterator StartIter1 = m_ChildList.begin();
+	list<GameObject*>::iterator EndIter1 = m_ChildList.end();
+
+	Matrix S = m_Transform->GetWorldScaleMatrix() * m_Transform->GetParentScale();
+	Matrix R = m_Transform->GetWorldRotMatrix() * m_Transform->GetParentRot();
+	Matrix T = m_Transform->GetWorldPosMatrix() * m_Transform->GetParentPos();
+
+	for (; StartIter1 != EndIter1; StartIter1++)
+	{
+		(*StartIter1)->GetTransform()->SetParentScale(S);
+		(*StartIter1)->GetTransform()->SetParentRot(R);
+		(*StartIter1)->GetTransform()->SetParentPos(T);
+		(*StartIter1)->GetTransform()->SetIsUpdate(true);
+	}
+
 	return 0;
 }
 
-int GameObject::LateUpdate(float DeltaTime)
+int JEONG::GameObject::LateUpdate(float DeltaTime)
 {
 	list<Component_Base*>::iterator StartIter = m_ComponentList.begin();
 	list<Component_Base*>::iterator EndIter = m_ComponentList.end();
@@ -181,7 +194,23 @@ int GameObject::LateUpdate(float DeltaTime)
 		(*StartIter)->LateUpdate(DeltaTime);
 		StartIter++;
 	}
+
 	m_Transform->LateUpdate(DeltaTime);
+
+	list<GameObject*>::iterator StartIter1 = m_ChildList.begin();
+	list<GameObject*>::iterator EndIter1 = m_ChildList.end();
+
+	Matrix S = m_Transform->GetWorldScaleMatrix() * m_Transform->GetParentScale();
+	Matrix R = m_Transform->GetWorldRotMatrix() * m_Transform->GetParentRot();
+	Matrix T = m_Transform->GetWorldPosMatrix() * m_Transform->GetParentPos();
+
+	for (; StartIter1 != EndIter1; StartIter1++)
+	{
+		(*StartIter1)->GetTransform()->SetParentScale(S);
+		(*StartIter1)->GetTransform()->SetParentRot(R);
+		(*StartIter1)->GetTransform()->SetParentPos(T);
+		(*StartIter1)->GetTransform()->SetIsUpdate(true);
+	}
 
 	return 0;
 }
@@ -516,9 +545,6 @@ GameObject * GameObject::FindObject(const string & TagName)
 void GameObject::AddChild(GameObject * Child)
 {
 	Child->m_Parent = this;
-	Child->m_Transform->m_ParentTransform = m_Transform;
-
-	m_Transform->m_ChildTransList.push_back(Child->m_Transform);
 
 	Child->m_Transform->SetParentFlag(TPF_ROT | TPF_POS);
 	Child->AddRefCount();

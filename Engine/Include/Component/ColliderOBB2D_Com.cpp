@@ -7,13 +7,9 @@
 #include "Transform_Com.h"
 #include "Camera_Com.h"
 
-#include "../Render/RenderManager.h"
-#include "../Render/ShaderManager.h"
-
-#include "../Resource/ResourceManager.h"
 #include "../Resource/Mesh.h"
-
 #include "../Scene/Scene.h"
+#include "../Render/ShaderManager.h"
 
 JEONG_USING
 
@@ -49,15 +45,18 @@ int ColliderOBB2D_Com::Input(float DeltaTime)
 
 int ColliderOBB2D_Com::Update(float DeltaTime)
 {
+
 	return 0;
 }
 
 int ColliderOBB2D_Com::LateUpdate(float DeltaTime)
 {
-	//내 오브젝트의 회전행렬을 가져온다. (Child구조 수정, 부모의 회전행렬을 가져온다)
-	Matrix RotMat = m_Transform->GetParentMatrixRot();
+	//내 오브젝트의 회전행렬을 가져온다.
+	Matrix RotMat = m_Transform->GetRotDelta();
+
+	Vector3 T = Vector3(m_Transform->GetWorldMatrix()._41, m_Transform->GetWorldMatrix()._42, m_Transform->GetWorldMatrix()._43);
 	//내 오브젝트의 WorldPos를 삽입한다.
-	memcpy(&RotMat[3][0], &m_Transform->GetWorldPos(), sizeof(Vector3));
+	memcpy(&RotMat[3][0], &T, sizeof(Vector3));
 
 	//벡터 행렬곱(Pos를 중심으로 + Virtual Pos가 된 위치) 따라와야되니 Coord (w값1))
 	m_WorldInfo.CenterPos = m_Virtual.CenterPos.TransformCoord(RotMat);
@@ -119,7 +118,7 @@ void ColliderOBB2D_Com::Render(float DeltaTime)
 	if (m_CollisionGroupName != "UI")
 		matView = m_Scene->GetMainCamera()->GetViewMatrix();
 
-	Camera_Com*	getCamera = m_Scene->GetMainCamera();
+	JEONG::Camera_Com* getCamera = m_Scene->GetMainCamera();
 	TransformCBuffer TransCBuffer = {};
 
 	TransCBuffer.World = matScale * matRot * matPos;
@@ -137,7 +136,7 @@ void ColliderOBB2D_Com::Render(float DeltaTime)
 	TransCBuffer.WV.Transpose();
 	TransCBuffer.WVP.Transpose();
 
-	ShaderManager::Get()->UpdateCBuffer("Transform", &TransCBuffer);
+	JEONG::ShaderManager::Get()->UpdateCBuffer("Transform", &TransCBuffer);
 
 	Collider_Com::Render(DeltaTime);
 #endif // _DEBUG

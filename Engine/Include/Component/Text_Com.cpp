@@ -75,8 +75,6 @@ void JEONG::Text_Com::Render(float DeltaTime)
 {
 	Vector3	vPos = m_Transform->GetWorldPos();
 
-	cout << vPos.x << " " << vPos.y << endl;
-
 	m_2DTarget->BeginDraw();
 	{
 		m_TextFormat->SetTextAlignment(m_Align);

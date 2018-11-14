@@ -164,10 +164,10 @@ bool MainScene::Init()
 
 int MainScene::Input(float DeltaTime)
 {
-	//if (GetAsyncKeyState(VK_F7) & 0x8000)
-	//	m_TestBar->AddValue(-40.0f * DeltaTime);
-	//if (GetAsyncKeyState(VK_F8) & 0x8000)
-	//	m_TestBar->AddValue(40.0f * DeltaTime);
+	if (GetAsyncKeyState(VK_F7) & 0x8000)
+		m_TestBar->AddValue(-40.0f * DeltaTime);
+	if (GetAsyncKeyState(VK_F8) & 0x8000)
+		m_TestBar->AddValue(40.0f * DeltaTime);
 
 	//if (GetAsyncKeyState(VK_F5) & 0x8000)
 	//	m_TestBar->LightOff();

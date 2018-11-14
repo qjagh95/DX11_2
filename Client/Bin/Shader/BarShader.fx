@@ -16,6 +16,8 @@ cbuffer Animation2D : register(b8)
     float3 g_Empty3;
 }
 
+Texture2D LightDiffuse : register(t1);
+
 VS_OUTPUT_UV BarVS(VS_INPUT_UV input)
 {
     VS_OUTPUT_UV output = (VS_OUTPUT_UV)0;
@@ -45,7 +47,10 @@ PS_OUTPUT_SINGLE BarPS(VS_OUTPUT_UV input)
 {
     PS_OUTPUT_SINGLE output = (PS_OUTPUT_SINGLE) 0;
 
-    output.vTarget0 = Diffuse.Sample(DiffuseSampler, input.vUV) * g_BarLight;
+    //output.vTarget0 = Diffuse.Sample(DiffuseSampler, input.vUV) * g_BarLight;
+    float4 LightColor = LightDiffuse.Sample(DiffuseSampler, input.vUV);
+
+    output.vTarget0 = Diffuse.Sample(DiffuseSampler, input.vUV) * g_BarLight * LightColor;
 
     return output;
 }

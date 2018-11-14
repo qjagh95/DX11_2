@@ -7,7 +7,7 @@ JEONG_BEGIN
 class GameObject;
 class Component_Base;
 class JEONG_DLL __declspec(align(16)) Transform_Com : public Component_Base
-{  
+{
 public:
 	bool Init() override;
 	int Input(float DeltaTime) override;
@@ -34,19 +34,18 @@ public:
 	Vector3 GetWorldPos() const { return m_WorldPos; }
 	Vector3 GetWorldAxis(AXIS eAxis) const { return m_WorldAxis[eAxis]; }
 	const Vector3* GetWorldAxis() const { return m_WorldAxis; }
-	Matrix GetWorldMatrix()	const { return m_MatWorld; }
 	float GetAngle(GameObject* Target);
 	float GetAngle(Transform_Com* Target);
 	Vector3 GetPivot() const { return m_Pivot; }
-	Matrix GetWorldRotMatrix() const { return m_MatWorldRotation; }
+	Matrix GetWorldMatrix()	const { return m_MatWorld; }
 	Matrix GetParentMatrix() const { return m_MatParent; }
-
-	Matrix GetParentMatrixNoScale() const;
-	Matrix GetParentMatrixPos() const;
-	Matrix GetParentMatrixRot() const;
+	Matrix GetWorldPosMatrix() const { return m_MatWorldPos; }
+	Matrix GetWorldRotMatrix() const { return m_MatWorldRotation; }
+	Matrix GetWorldScaleMatrix() const { return m_MatWorldScale; }
 
 	//안움직이는 놈인가용?
 	void SetIsStatic(bool isStatic) { m_isStatic = isStatic; }
+	void SetIsUpdate(bool value) { m_isUpdate = value; }
 
 	void SetLocalScale(const Vector3& vScale);
 	void SetLocalScale(float x, float y, float z);
@@ -88,26 +87,31 @@ public:
 	void LookAt(Component_Base* component, AXIS eAxis = AXIS_Z);
 	void LookAt(const Vector3& Vec, AXIS eAxis = AXIS_Z);
 
-	void UpdateTransform();
-
 	void SetParentFlag(int Flag);
 	void AddParentFlag(TRANSFORM_PARENT_FLAG Flag);
 	void DeleteParentFlag(TRANSFORM_PARENT_FLAG Flag);
 	void DeleteParentFlag();
 
-	void SetWorldRelativePos(const Vector3& Pos);
-	void SetWorldRelativePos(float x, float y, float z);
-
 	void ScaleParent();
 	void PosParent();
+
+	void SetParentPos(const Matrix& parentPos);
+	void SetParentRot(const Matrix& parentRot);
+	void SetParentScale(const Matrix& parentScale);
+
+	Matrix GetParentPos() const;
+	Matrix GetParentRot() const;
+	Matrix GetParentScale() const;
+
+	Matrix GetScaleDelta() const { return m_DeltaScale; }
+	Matrix GetPosDelta() const { return m_DeltaPos; }
+	Matrix GetRotDelta() const { return m_DeltaRot; }
 
 private:
 	//행렬연산은 연산자체가 무겁기 때문에 연산을 해줄때만 해주겠다.
 	bool m_isStatic;	///가만히 있는놈은 연산할 필요가 없다
 	bool m_isUpdate;	///움직일놈만 업데이트하겠다.
 	int m_ParentFlag;
-	Transform_Com* m_ParentTransform;
-	list<Transform_Com*> m_ChildTransList;		//자식 트랜스폼 리스트를 가지고 있어야함.
 	
 	//Rocal
 	Vector3 m_LocalScale;
@@ -145,6 +149,14 @@ private:
 	Matrix m_MatWorldRotationZ;
 	Matrix m_MatWorld;
 	Matrix m_MatParent;
+
+	Matrix m_ParentScale;
+	Matrix m_ParentPos;
+	Matrix m_ParentRot;
+
+	Matrix m_DeltaScale;
+	Matrix m_DeltaRot;
+	Matrix m_DeltaPos;
 
 private:
 	Transform_Com();

@@ -2,32 +2,28 @@
 #include "Transform_Com.h"
 #include "../GameObject.h"
 
-JEONG_USING
-
-Transform_Com::Transform_Com()
+JEONG::Transform_Com::Transform_Com()
 {
 	m_ComType = CT_TRANSFORM;
 	m_isUpdate = true;
 	m_isStatic = false;
-	m_ParentFlag = 0;
-	m_ParentTransform = NULLPTR;
+
+	m_DeltaScale.Identity();
+	m_DeltaRot.Identity();
+	m_DeltaPos.Identity();
 }
 
-Transform_Com::Transform_Com(const Transform_Com& copyObject)
+JEONG::Transform_Com::Transform_Com(const JEONG::Transform_Com& copyObject)
 	:Component_Base(copyObject)
 {
 	*this = copyObject;
-	m_ParentTransform = NULLPTR;
-	m_isUpdate = true;
 }
 
-Transform_Com::~Transform_Com()
+JEONG::Transform_Com::~Transform_Com()
 {
-	Safe_Release_VecList(m_ChildTransList);
-	SAFE_RELEASE(m_ParentTransform);
 }
 
-bool Transform_Com::Init()
+bool JEONG::Transform_Com::Init()
 {
 	for (int i = 0; i < 3; i++)
 	{
@@ -38,88 +34,116 @@ bool Transform_Com::Init()
 	return true;
 }
 
-int Transform_Com::Input(float DeltaTime)
+int JEONG::Transform_Com::Input(float DeltaTime)
 {
 	return 0;
 }
 //여기선 어차피 오브젝트가 계속 돌린다.
 //오브젝트가 따로 Transform을 가지고있다.
-int Transform_Com::Update(float DeltaTime)
+int JEONG::Transform_Com::Update(float DeltaTime)
 {
 	if (m_isStatic == true)
 		return 0;
 	else if (m_isUpdate == false)
 		return 0;
 
-	m_MatLocal = m_MatLocalScale * m_MatLocalRotation * m_MatLocalPos;
+	m_MatLocal = m_MatLocalScale * m_MatLocalRotation * m_MatWorldPos;
 
-	if (m_ParentTransform != NULLPTR)
+	Matrix Parent;
+	Parent.Identity();
+	
+	m_DeltaScale = m_MatWorldScale;
+	m_DeltaRot = m_MatWorldRotation;
+	m_DeltaPos = m_MatWorldPos;
+
+	if (m_ParentFlag & TPF_SCALE)
 	{
-		if ((m_ParentFlag & TPF_POS ) && (m_ParentFlag & TPF_ROT))
-			m_MatParent = m_ParentTransform->GetParentMatrixNoScale();
-		else if (m_ParentFlag & TPF_POS)
-			m_MatParent = m_ParentTransform->GetParentMatrixPos();
-		else if (m_ParentFlag & TPF_ROT)
-			m_MatParent = m_ParentTransform->GetParentMatrixRot();
-		else
-			m_MatParent.Identity();
+		m_DeltaScale *= m_ParentScale;
+		Parent *= m_ParentScale;
 	}
 
+	if (m_ParentFlag & TPF_ROT)
+	{
+		m_DeltaRot *= m_ParentRot;
+		Parent *= m_ParentRot;
+	}
+
+	if (m_ParentFlag & TPF_POS)
+	{
+		m_DeltaPos *= m_ParentPos;
+		Parent *= m_ParentPos;
+	}
+
+	// WORLD = 자기꺼 * 부모꺼다.
+	m_MatWorld = m_MatWorldScale * m_MatWorldRotation * m_MatWorldPos;
+	m_MatWorld *= Parent;
 	//World = S R T결합.
-	m_MatWorld = m_MatWorldScale * m_MatWorldRotation * m_MatWorldPos * m_MatParent;
 
 	m_isUpdate = false;
 
 	return 0;
 }
 
-int Transform_Com::LateUpdate(float DeltaTime)
+int JEONG::Transform_Com::LateUpdate(float DeltaTime)
 {
 	if (m_isStatic == true)
 		return 0;
 	else if (m_isUpdate == false)
 		return 0;
 
-	m_MatLocal = m_MatLocalScale * m_MatLocalRotation * m_MatLocalPos;
+	m_MatLocal = m_MatLocalScale * m_MatLocalRotation * m_MatWorldPos;
 
-	if (m_ParentTransform != NULLPTR)
+	m_DeltaScale = m_MatWorldScale;
+	m_DeltaRot = m_MatWorldRotation;
+	m_DeltaPos = m_MatWorldPos;
+
+	Matrix Parent;
+	Parent.Identity();
+
+	if (m_ParentFlag & TPF_SCALE)
 	{
-		if ((m_ParentFlag & TPF_POS) && (m_ParentFlag & TPF_ROT))
-			m_MatParent = m_ParentTransform->GetParentMatrixNoScale();
-		else if (m_ParentFlag & TPF_POS)
-			m_MatParent = m_ParentTransform->GetParentMatrixPos();
-		else if (m_ParentFlag & TPF_ROT)
-			m_MatParent = m_ParentTransform->GetParentMatrixRot();
-		else
-			m_MatParent.Identity();
+		m_DeltaScale *= m_ParentScale;
+		Parent *= m_ParentScale;
 	}
 
-	//World = S R T결합.
-	m_MatWorld = m_MatWorldScale * m_MatWorldRotation * m_MatWorldPos * m_MatParent;
+	if (m_ParentFlag & TPF_ROT)
+	{
+		m_DeltaRot *= m_ParentRot;
+		Parent *= m_ParentRot;
+	}
 
-	m_isUpdate = false;
+	if (m_ParentFlag & TPF_POS)
+	{
+		m_DeltaPos *= m_ParentPos;
+		Parent *= m_ParentPos;
+	}
+
+	// WORLD = 자기꺼 * 부모꺼다.
+	m_MatWorld = m_MatWorldScale * m_MatWorldRotation * m_MatWorldPos;
+	m_MatWorld *= Parent;
+	//World = S R T결합.
 
 	return 0;
 }
 
-void Transform_Com::Collision(float DeltaTime)
+void JEONG::Transform_Com::Collision(float DeltaTime)
 {
 }
 
-void Transform_Com::CollisionLateUpdate(float DeltaTime)
+void JEONG::Transform_Com::CollisionLateUpdate(float DeltaTime)
 {
 }
 
-void Transform_Com::Render(float DeltaTime)
+void JEONG::Transform_Com::Render(float DeltaTime)
 {
 }
 
-Transform_Com * Transform_Com::Clone()
+JEONG::Transform_Com * JEONG::Transform_Com::Clone()
 {
-	return new Transform_Com(*this);
+	return new JEONG::Transform_Com(*this);
 }
 
-void Transform_Com::SetLocalScale(const Vector3 & vScale)
+void JEONG::Transform_Com::SetLocalScale(const Vector3 & vScale)
 {
 	//크기값을 받는다
 	m_LocalScale = vScale;
@@ -129,7 +153,7 @@ void Transform_Com::SetLocalScale(const Vector3 & vScale)
 	m_isUpdate = true;
 }
 
-void Transform_Com::SetLocalScale(float x, float y, float z)
+void JEONG::Transform_Com::SetLocalScale(float x, float y, float z)
 {
 	//크기값을 받는다
 	m_LocalScale = Vector3(x, y, z);
@@ -139,67 +163,67 @@ void Transform_Com::SetLocalScale(float x, float y, float z)
 	m_isUpdate = true;
 }
 
-void Transform_Com::SetLocalRotation(const Vector3 & vRot)
+void JEONG::Transform_Com::SetLocalRotation(const Vector3 & vRot)
 {
 	//회전값을 받는다
 	m_LocalRotation = vRot;
 	//회전행렬에 곱해준다
 	m_MatLocalRotation.Rotation(m_LocalRotation);
 
-	m_isUpdate = true;
-
 	ComputeLocalAxis();
+
+	m_isUpdate = true;
 }
 
-void Transform_Com::SetLocalRotation(float x, float y, float z)
+void JEONG::Transform_Com::SetLocalRotation(float x, float y, float z)
 {
 	//회전값을 받는다
 	m_LocalRotation = Vector3(x, y, z);
 	//회전행렬에 곱해준다
 	m_MatLocalRotation.Rotation(m_LocalRotation);
 
-	m_isUpdate = true;
-
 	ComputeLocalAxis();
+
+	m_isUpdate = true;
 }
 
-void Transform_Com::SetLocalRotX(float x)
+void JEONG::Transform_Com::SetLocalRotX(float x)
 {
 	//회전값을 받는다
 	m_LocalRotation.x = x;
 	//회전행렬에 곱해준다
 	m_MatLocalRotation.Rotation(m_LocalRotation);
 
-	m_isUpdate = true;
-
 	ComputeLocalAxis();
+
+	m_isUpdate = true;
 }
 
-void Transform_Com::SetLocalRotY(float y)
+void JEONG::Transform_Com::SetLocalRotY(float y)
 {
 	//회전값을 받는다
 	m_LocalRotation.y = y;
 	//회전행렬에 곱해준다
 	m_MatLocalRotation.Rotation(m_LocalRotation);
 
-	m_isUpdate = true;
-
 	ComputeLocalAxis();
+
+	m_isUpdate = true;
 }
 
-void Transform_Com::SetLocalRotZ(float z)
+void JEONG::Transform_Com::SetLocalRotZ(float z)
 {
 	//회전값을 받는다
 	m_LocalRotation.z = z;
 	//회전행렬에 곱해준다
 	m_MatLocalRotation.Rotation(m_LocalRotation);
 
-	m_isUpdate = true;
-
 	ComputeLocalAxis();
+
+	m_isUpdate = true;
 }
 
-void Transform_Com::SetLocalPos(const Vector3 & vPos)
+void JEONG::Transform_Com::SetLocalPos(const Vector3 & vPos)
 {
 	m_LocalPos = vPos;
 
@@ -208,7 +232,7 @@ void Transform_Com::SetLocalPos(const Vector3 & vPos)
 	m_isUpdate = true;
 }
 
-void Transform_Com::SetLocalPos(float x, float y, float z)
+void JEONG::Transform_Com::SetLocalPos(float x, float y, float z)
 {
 	m_LocalPos = Vector3(x, y, z);
 
@@ -218,221 +242,197 @@ void Transform_Com::SetLocalPos(float x, float y, float z)
 }
 
 //각 축의 방향을 알아온다.
-void Transform_Com::ComputeLocalAxis()
+void JEONG::Transform_Com::ComputeLocalAxis()
 {
-	Matrix matRot = m_MatLocalRotation;
-
-	if (m_ParentTransform != NULLPTR)
-		matRot *= m_ParentTransform->GetLocalRotMatrix();
-
 	for (int i = 0; i < 3; ++i)
 	{
 		//행렬 곱함수.
-		m_LocalAxis[i] = Vector3::Axis[i].TransformNormal(matRot);
+		m_LocalAxis[i] = Vector3::Axis[i].TransformNormal(m_MatLocalRotation);
 		//크기1벡터로 만들어서 방향값을 얻어오기 위함.
 		m_LocalAxis[i].Nomallize();
 	}
 }
 
-void Transform_Com::SetWorldScale(const Vector3 & vScale)
+void JEONG::Transform_Com::SetWorldScale(const Vector3 & vScale)
 {
 	//크기값을 받는다
 	m_WorldScale = vScale;
-	ScaleParent();
+	//행렬에 크기값을 곱한다
+	m_MatWorldScale.Scaling(m_WorldScale);
+
+	m_isUpdate = true;
 }
 
-void Transform_Com::SetWorldScale(float x, float y, float z)
+void JEONG::Transform_Com::SetWorldScale(float x, float y, float z)
 {
 	//크기값을 받는다
 	m_WorldScale = Vector3(x, y, z);
-	ScaleParent();
+	//행렬에 크기값을 곱한다
+	m_MatWorldScale.Scaling(m_WorldScale);
+
+	m_isUpdate = true;
 }
 
-void Transform_Com::SetWorldRotX(float x)
+void JEONG::Transform_Com::SetWorldRotX(float x)
 {
 	//회전값을 받는다
 	m_WorldRotation.x = x;
 	//회전행렬에 곱해준다
 	m_MatWorldRotation.Rotation(m_WorldRotation);
 
-	m_isUpdate = true;
-
 	ComputeWorldAxis();
-	PosParent();
+
+	m_isUpdate = true;
 }
 
-void Transform_Com::SetWorldRotY(float y)
+void JEONG::Transform_Com::SetWorldRotY(float y)
 {
 	//회전값을 받는다
 	m_WorldRotation.y = y;
 	//회전행렬에 곱해준다
 	m_MatWorldRotation.Rotation(m_WorldRotation);
 
-	m_isUpdate = true;
-
 	ComputeWorldAxis();
-	PosParent();
+
+	m_isUpdate = true;
 }
 
-void Transform_Com::SetWorldRotZ(float z)
+void JEONG::Transform_Com::SetWorldRotZ(float z)
 {
 	//회전값을 받는다
 	m_WorldRotation.z = z;
 	//회전행렬에 곱해준다
 	m_MatWorldRotation.Rotation(m_WorldRotation);
 
-	m_isUpdate = true;
-
 	ComputeWorldAxis();
-	PosParent();
+
+	m_isUpdate = true;
 }
 
-void Transform_Com::SetWorldPos(const Vector3 & vPos)
+void JEONG::Transform_Com::SetWorldPos(const Vector3 & vPos)
 {
-	Vector3 TempPos = vPos - m_WorldPos;	
-	m_WorldRelativePos += TempPos;
-
 	m_WorldPos = vPos;
 
-	PosParent();
+	m_MatWorldPos.Translation(m_WorldPos);
+
+	m_isUpdate = true;
 }
 
-void Transform_Com::SetWorldPos(float x, float y, float z)
+void JEONG::Transform_Com::SetWorldPos(float x, float y, float z)
 {
-	Vector3	vPos(x, y, z);
-	Vector3	vMove = vPos - m_WorldPos;
+	m_WorldPos = Vector3(x, y, z);
 
-	m_WorldRelativePos += vMove;
-	m_WorldPos = vPos;
+	m_MatWorldPos.Translation(m_WorldPos);
 
-	PosParent();
-}
-void Transform_Com::SetWorldRelativePos(const Vector3& Pos)
-{
-	m_WorldRelativePos = Pos;
-	PosParent();
+	m_isUpdate = true;
 }
 
-void Transform_Com::SetWorldRelativePos(float x, float y, float z)
-{
-	m_WorldRelativePos = Vector3(x, y, z);
-	PosParent();
-}
-
-void Transform_Com::SetWorldPivot(const Vector3& vPos)
+void JEONG::Transform_Com::SetWorldPivot(const Vector3& vPos)
 {
 	m_Pivot = vPos;
 }
-
-void Transform_Com::SetWorldPivot(float x, float y, float z)
+void JEONG::Transform_Com::SetWorldPivot(float x, float y, float z)
 {
 	m_Pivot = Vector3(x, y, z);
 }
 
-void Transform_Com::Move(AXIS eAxis, float Speed)
+void JEONG::Transform_Com::Move(AXIS eAxis, float Speed)
 {
 	Move(m_WorldAxis[eAxis] * Speed);
 }
 
-void Transform_Com::Move(AXIS eAxis, float Speed, float DeltaTime)
+void JEONG::Transform_Com::Move(AXIS eAxis, float Speed, float DeltaTime)
 {
 	Move(m_WorldAxis[eAxis] * Speed * DeltaTime);
 }
 
-void Transform_Com::Move(const Vector3 & vDir, float Speed)
+void JEONG::Transform_Com::Move(const Vector3 & vDir, float Speed)
 {
 	Move(vDir * Speed);
 }
 
-void Transform_Com::Move(const Vector3 & vDir, float Speed, float DeltaTime)
+void JEONG::Transform_Com::Move(const Vector3 & vDir, float Speed, float DeltaTime)
 {
 	Move(vDir * Speed * DeltaTime);
 }
 
-void Transform_Com::Move(const Vector3 & vMove)
+void JEONG::Transform_Com::Move(const Vector3 & vMove)
 {
-	m_WorldRelativePos += vMove;
 	m_WorldPos += vMove;
 
-	PosParent();
+	m_MatWorldPos.Translation(m_WorldPos);
+
+	m_isUpdate = true;
 }
 
-void Transform_Com::RotationX(float x)
-{	
+void JEONG::Transform_Com::RotationX(float x)
+{
 	Rotation(Vector3(x, 0.0f, 0.0f));
 }
 
-void Transform_Com::RotationX(float x, float DeltaTime)
+void JEONG::Transform_Com::RotationX(float x, float DeltaTime)
 {
 	Rotation(Vector3(x * DeltaTime, 0.0f, 0.0f));
 }
 
-void Transform_Com::RotationY(float y)
+void JEONG::Transform_Com::RotationY(float y)
 {
 	Rotation(Vector3(0.0f, y, 0.0f));
 }
 
-void Transform_Com::RotationY(float y, float DeltaTime)
+void JEONG::Transform_Com::RotationY(float y, float DeltaTime)
 {
-	Rotation(Vector3(0.0f, y * DeltaTime , 0.0f));
+	Rotation(Vector3(0.0f, y * DeltaTime, 0.0f));
 }
 
-void Transform_Com::RotationZ(float z)
+void JEONG::Transform_Com::RotationZ(float z)
 {
 	Rotation(Vector3(0.0f, 0.0f, z));
 }
 
-void Transform_Com::RotationZ(float z, float DeltaTime)
+void JEONG::Transform_Com::RotationZ(float z, float DeltaTime)
 {
 	//로테이션함수에서 += 해준다.
 	Rotation(Vector3(0.0f, 0.0f, z * DeltaTime));
 }
 
-void Transform_Com::Rotation(const Vector3 & vRot, float DeltaTime)
+void JEONG::Transform_Com::Rotation(const Vector3 & vRot, float DeltaTime)
 {
 	Rotation(vRot * DeltaTime);
 }
 
-void Transform_Com::Rotation(const Vector3 & vRot)
+void JEONG::Transform_Com::Rotation(const Vector3 & vRot)
 {
 	m_WorldRotation += vRot;
 	m_MatWorldRotation.Rotation(m_WorldRotation);
 	//회전행렬값에따라서 내 WorldAxis값을 변환한다.
 	ComputeWorldAxis();
 	m_isUpdate = true;
-
-	PosParent();
-	UpdateTransform();
 }
 
 //각 축의 방향을 알아온다.
-void Transform_Com::ComputeWorldAxis()
+void JEONG::Transform_Com::ComputeWorldAxis()
 {
-	Matrix matRot = m_MatWorldRotation;
-
-	if (m_ParentTransform != NULLPTR)
-		matRot *= m_ParentTransform->GetWorldRotMatrix();
-
 	for (int i = 0; i < 3; ++i)
 	{
 		//지정된 매트릭스(회전행렬)에 따라 벡터를 반환한다.
-		m_WorldAxis[i] = Vector3::Axis[i].TransformNormal(matRot);
+		m_WorldAxis[i] = Vector3::Axis[i].TransformNormal(m_MatWorldRotation);
 		//크기1벡터로 만들어서 방향값을 얻어오기 위함.
 		m_WorldAxis[i].Nomallize();
 	}
 }
 
-void Transform_Com::LookAt(GameObject * object, AXIS eAxis)
+void JEONG::Transform_Com::LookAt(JEONG::GameObject * object, AXIS eAxis)
 {
 	LookAt(object->GetTransform()->GetWorldPos(), eAxis);
 }
 
-void Transform_Com::LookAt(Component_Base * component, AXIS eAxis)
+void JEONG::Transform_Com::LookAt(Component_Base * component, AXIS eAxis)
 {
 	LookAt(component->GetTransform()->GetWorldPos(), eAxis);
 }
 
-void Transform_Com::LookAt(const Vector3 & Vec, AXIS eAxis)
+void JEONG::Transform_Com::LookAt(const Vector3 & Vec, AXIS eAxis)
 {
 	//바라보려는 방향을 구한다. (벡터뺄셈 = 바라보는방향) 
 	Vector3 View = Vec - m_WorldPos;
@@ -451,135 +451,65 @@ void Transform_Com::LookAt(const Vector3 & Vec, AXIS eAxis)
 	m_MatWorldRotation.RotationAxis(Angle, vRotAxis);
 	ComputeWorldAxis();
 
-	UpdateTransform();
+	m_isUpdate = true;
 }
 
-float Transform_Com::GetAngle(GameObject * Target)
+float JEONG::Transform_Com::GetAngle(JEONG::GameObject * Target)
 {
 	return GetAngle(Target->GetTransform());
 }
 
-float Transform_Com::GetAngle(Transform_Com * Target)
+float JEONG::Transform_Com::GetAngle(Transform_Com * Target)
 {
 	return m_WorldPos.GetAngle(Target->GetWorldPos());
 }
 
-void Transform_Com::SetParentFlag(int Flag)
+void JEONG::Transform_Com::SetParentFlag(int Flag)
 {
 	m_ParentFlag = Flag;
 }
 
-void Transform_Com::AddParentFlag(TRANSFORM_PARENT_FLAG Flag)
+void JEONG::Transform_Com::AddParentFlag(TRANSFORM_PARENT_FLAG Flag)
 {
 	m_ParentFlag |= Flag;
 }
 
-void Transform_Com::DeleteParentFlag(TRANSFORM_PARENT_FLAG Flag)
+void JEONG::Transform_Com::DeleteParentFlag(TRANSFORM_PARENT_FLAG Flag)
 {
 	if (m_ParentFlag & Flag)
 		m_ParentFlag ^= Flag; //xor0일때 1 , 1일때 0
 }
 
-void Transform_Com::DeleteParentFlag()
+void JEONG::Transform_Com::DeleteParentFlag()
 {
 	m_ParentFlag = 0;
 }
 
-void Transform_Com::ScaleParent()
+void JEONG::Transform_Com::SetParentPos(const Matrix& parentPos)
 {
-	if (m_ParentTransform == NULLPTR)
-		m_WorldRelativeScale = m_WorldScale;
-	else if (!(m_ParentFlag & TPF_SCALE))
-		m_WorldRelativeScale = m_WorldScale;
-	else
-		m_WorldRelativeScale = m_WorldScale / m_ParentTransform->m_WorldScale;  //비율을 구한다. 부모 100 자식 50 = 0.5
-
-	m_MatWorldScale.Scaling(m_WorldRelativeScale);
-
-	m_isUpdate = true;
-
-	if (m_ChildTransList.empty() == true)
-		return;
-
-	list<Transform_Com*>::iterator StartIter = m_ChildTransList.begin();
-	list<Transform_Com*>::iterator EndIter = m_ChildTransList.end();
-
-	for (; StartIter != EndIter; StartIter++)
-		(*StartIter)->ScaleParent();
+	m_ParentPos = parentPos;
+}
+void JEONG::Transform_Com::SetParentRot(const Matrix& parentRot)
+{
+	m_ParentRot = parentRot;
 }
 
-void Transform_Com::PosParent()
+void JEONG::Transform_Com::SetParentScale(const Matrix& parentScale)
 {
-	if (m_ParentTransform == NULLPTR)
-		m_WorldRelativePos = m_WorldPos;
-	else if (!(m_ParentFlag & TPF_POS))
-		m_WorldRelativePos = m_WorldPos;
-
-	m_MatWorldPos.Translation(m_WorldRelativePos);
-
-	if (m_ParentTransform != NULLPTR)
-	{
-		Matrix matParent;
-		
-		if ((m_ParentFlag & TPF_POS) && (m_ParentFlag & TPF_ROT))
-			matParent = m_ParentTransform->GetParentMatrixNoScale();
-		else if (m_ParentFlag & TPF_POS)
-			matParent = m_ParentTransform->GetParentMatrixPos();
-		else if (m_ParentFlag & TPF_ROT)
-			matParent = m_ParentTransform->GetParentMatrixRot();
-		else
-			matParent.Identity();
-
-		m_WorldPos = m_WorldRelativePos.TransformCoord(matParent);
-	}
-
-	m_isUpdate = true;
-
-	if (m_ChildTransList.empty() == true)
-		return;
-
-	list<Transform_Com*>::iterator StartIter = m_ChildTransList.begin();
-	list<Transform_Com*>::iterator EndIter = m_ChildTransList.end();
-
-	for (; StartIter != EndIter ; StartIter++)
-		(*StartIter)->PosParent();
+	m_ParentScale = parentScale;
 }
 
-Matrix Transform_Com::GetParentMatrixNoScale() const
+Matrix JEONG::Transform_Com::GetParentPos() const
 {
-	if (m_ParentTransform == NULLPTR)
-		return m_MatWorldRotation * m_MatWorldPos;
-
-	//재귀적으로 계속 타고 들어감.
-	return m_MatWorldRotation * m_MatWorldPos * m_ParentTransform->GetParentMatrixNoScale();
+	return m_ParentPos;
 }
 
-Matrix Transform_Com::GetParentMatrixRot() const
+Matrix JEONG::Transform_Com::GetParentRot() const
 {
-	if (m_ParentTransform == NULLPTR)
-		return m_MatWorldRotation;
-
-	return m_MatWorldRotation * m_ParentTransform->GetParentMatrixRot();
+	return m_ParentRot;
 }
 
-Matrix Transform_Com::GetParentMatrixPos() const	
+Matrix JEONG::Transform_Com::GetParentScale() const
 {
-	if (m_ParentTransform == NULLPTR)
-		return m_MatWorldPos;
-
-	return m_MatWorldPos * m_ParentTransform->GetParentMatrixPos();
-}
-
-void Transform_Com::UpdateTransform()
-{
-	m_isUpdate = true;
-
-	if (m_ChildTransList.empty() == false)
-		return;
-
-	list<Transform_Com*>::iterator	StartIter = m_ChildTransList.begin();
-	list<Transform_Com*>::iterator	EndIter = m_ChildTransList.end();
-
-	for (; StartIter != EndIter; ++StartIter)
-		(*StartIter)->UpdateTransform();
+	return m_ParentScale;
 }

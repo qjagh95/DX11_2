@@ -45,9 +45,6 @@ public:
 	void SetColor(const Vector4& vColor);
 
 private:
-	//void CreateLayout();
-
-private:
 	IDWriteTextFormat* m_TextFormat;
 	IDWriteTextLayout* m_TextLayout;
 	ID2D1SolidColorBrush* m_Brush;

@@ -11,13 +11,13 @@
 
 JEONG_USING
 
-Bar_Com::Bar_Com()
+JEONG::Bar_Com::Bar_Com()
 	:m_RectCollider(NULLPTR)
 {
 	SetTag("Bar");
 }
 
-Bar_Com::Bar_Com(const Bar_Com & CopyData)
+JEONG::Bar_Com::Bar_Com(const Bar_Com & CopyData)
 	:Component_Base(CopyData)
 {
 	m_Dir = CopyData.m_Dir;
@@ -30,12 +30,12 @@ Bar_Com::Bar_Com(const Bar_Com & CopyData)
 	m_ValueLenth = CopyData.m_ValueLenth;
 }
 
-Bar_Com::~Bar_Com()
+JEONG::Bar_Com::~Bar_Com()
 {
 	SAFE_RELEASE(m_RectCollider);
 }
 
-bool Bar_Com::Init()
+bool JEONG::Bar_Com::Init()
 {
 	SetDir(BD_LEFT);
 
@@ -54,6 +54,7 @@ bool Bar_Com::Init()
 
 	Material_Com* MaterialComponent = m_Object->FindComponentFromType<Material_Com>(CT_MATERIAL);
 	MaterialComponent->SetDiffuseTexture(0, "Bar", TEXT("Bar.png"));
+	MaterialComponent->SetDiffuseTexture(1, "LightTest", TEXT("Light.png"));
 	SAFE_RELEASE(MaterialComponent);
 
 	m_RectCollider = m_Object->AddComponent<ColliderRect_Com>("BarBody");
@@ -64,12 +65,12 @@ bool Bar_Com::Init()
 	return true;
 }
 
-int Bar_Com::Input(float DeltaTime)
+int JEONG::Bar_Com::Input(float DeltaTime)
 {
 	return 0;
 }
 
-int Bar_Com::Update(float DeltaTime)
+int JEONG::Bar_Com::Update(float DeltaTime)
 {
 	Vector3 tempScale = m_Scale;
 	Vector3 TempVar;
@@ -112,37 +113,37 @@ int Bar_Com::Update(float DeltaTime)
 	return 0;
 }
 
-int Bar_Com::LateUpdate(float DeltaTime)
+int JEONG::Bar_Com::LateUpdate(float DeltaTime)
 {
 	return 0;
 }
 
-void Bar_Com::Collision(float DeltaTime)
+void JEONG::Bar_Com::Collision(float DeltaTime)
 {
 }
 
-void Bar_Com::CollisionLateUpdate(float DeltaTime)
+void JEONG::Bar_Com::CollisionLateUpdate(float DeltaTime)
 {
 }
 
-void Bar_Com::Render(float DeltaTime)
+void JEONG::Bar_Com::Render(float DeltaTime)
 {
 	Renderer_Com* getRender = FindComponentFromType<Renderer_Com>(CT_RENDER);
 	getRender->UpdateRendererCBuffer("BarCBuffer", &m_BarCBuffer, sizeof(BarCBuffer));
 	SAFE_RELEASE(getRender);
 }
 
-Bar_Com * Bar_Com::Clone()
+JEONG::Bar_Com * JEONG::Bar_Com::Clone()
 {
-	return new Bar_Com(*this);
+	return new JEONG::Bar_Com(*this);
 }
 
-void Bar_Com::AfterClone()
+void JEONG::Bar_Com::AfterClone()
 {
 	m_RectCollider = (ColliderRect_Com*)FindComponentFromType<ColliderRect_Com>(CT_COLLIDER);
 }
 
-void Bar_Com::SetDir(BAR_DIR dir)
+void JEONG::Bar_Com::SetDir(BAR_DIR dir)
 {
 	m_Dir = dir;
 	m_BarCBuffer.MoveDir = dir;
@@ -165,7 +166,7 @@ void Bar_Com::SetDir(BAR_DIR dir)
 	}
 }
 
-void Bar_Com::SetValue(float Value)
+void JEONG::Bar_Com::SetValue(float Value)
 {
 	m_Value = Value;
 
@@ -179,7 +180,7 @@ void Bar_Com::SetValue(float Value)
 	m_BarCBuffer.Percent = (m_Value - m_MinValue) / m_ValueLenth;
 }
 
-void Bar_Com::AddValue(float Value)
+void JEONG::Bar_Com::AddValue(float Value)
 {
 	m_Value += Value;
 
@@ -195,7 +196,7 @@ void Bar_Com::AddValue(float Value)
 	m_BarCBuffer.Percent = (m_Value - m_MinValue) / m_ValueLenth;
 }
 
-void Bar_Com::SetMinMaxValue(float minValue, float maxValue)
+void JEONG::Bar_Com::SetMinMaxValue(float minValue, float maxValue)
 {
 	m_MinValue = minValue;
 	m_MaxValue = maxValue;
@@ -210,13 +211,13 @@ void Bar_Com::SetMinMaxValue(float minValue, float maxValue)
 	m_BarCBuffer.Percent = (m_Value - m_MinValue) / m_ValueLenth;
 }
 
-void Bar_Com::SetScale(const Vector3 & Scale)
+void JEONG::Bar_Com::SetScale(const Vector3 & Scale)
 {
 	m_Scale = Scale;
 	m_Transform->SetWorldScale(m_Scale);
 }
 
-void Bar_Com::SetScale(float x, float y, float z)
+void JEONG::Bar_Com::SetScale(float x, float y, float z)
 {
 	m_Scale = Vector3(x, y, z);
 	m_Transform->SetWorldScale(Vector3(x, y, z));

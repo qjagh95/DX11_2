@@ -10,15 +10,8 @@ struct JEONG_DLL SubsetMaterial
 {
 	Material MatrialInfo;
 
-	Texture* DiffuseTexture;
-	Sampler* DiffuseSampler;
-	int TextureRegister;
-	int SamplerRegister;
-
-	//vector<Texture*> vecDiffuseTexture;
-	//vector<Sampler*> vecDiffuseSampler;
-
-	SubsetMaterial(): DiffuseTexture(NULLPTR), DiffuseSampler(NULLPTR), TextureRegister(-1), SamplerRegister(0) {}  
+	vector<JEONG::Texture*> vecDiffuseTexture;
+	vector<JEONG::Sampler*> vecDiffuseSampler;
 };
 
 class Texture;

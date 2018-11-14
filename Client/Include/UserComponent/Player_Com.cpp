@@ -48,22 +48,22 @@ bool Player_Com::Init()
 	MaterialComponent->SetDiffuseTexture(0, "Player", TEXT("Player.png"));
 	SAFE_RELEASE(MaterialComponent);
 
-	ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("PlayerBody");
-	RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(100.0f, 100.0f, 0.0f));
-	RectColl->SetMyTypeName("Player");
-	RectColl->SetCollsionCallback(CCT_DOING, this, &Player_Com::PixelHit);
-	SAFE_RELEASE(RectColl);
+	//ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("PlayerBody");
+	//RectColl->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(100.0f, 100.0f, 0.0f));
+	//RectColl->SetMyTypeName("Player");
+	//RectColl->SetCollsionCallback(CCT_DOING, this, &Player_Com::PixelHit);
+	//SAFE_RELEASE(RectColl);
 
 	//ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("PlayerCircleBody");
 	//CircleColl->SetInfo(30.0f);
 	//CircleColl->SetMyTypeName("Player");
 	//SAFE_RELEASE(CircleColl);
 
-	//ColliderOBB2D_Com* OBBColl = m_Object->AddComponent<ColliderOBB2D_Com>("PlayerOBBBody");
-	//Vector3 Axis[2] = { Vector3::Axis[0], Vector3::Axis[1] };
-	//float Lenth[2] = { 150.f, 150.f };
-	//OBBColl->SetInfo(Vector3(0.0f, 150.f, 0.0f), Axis, Lenth);
-	//SAFE_RELEASE(OBBColl);
+	ColliderOBB2D_Com* OBBColl = m_Object->AddComponent<ColliderOBB2D_Com>("PlayerOBBBody");
+	Vector3 Axis[2] = { Vector3::Axis[0], Vector3::Axis[1] };
+	float Lenth[2] = { 150.f, 150.f };
+	OBBColl->SetInfo(Vector3(0.0f, 150.f, 0.0f), Axis, Lenth);
+	SAFE_RELEASE(OBBColl);
 	
 	TitleBar_Com* TitleCom = m_Object->AddComponent<TitleBar_Com>("TitleBar");
 	SAFE_RELEASE(TitleCom);
@@ -111,15 +111,16 @@ bool Player_Com::Init()
 	SAFE_RELEASE(pMaterial);
 
 	Transform_Com* pTransform = pChildObj->GetTransform();
-	pTransform->SetWorldRelativePos(50.0f, 0.0f, 0.0f);
+	pTransform->SetWorldPos(50.0f, 0.0f, 0.0f);
 	pTransform->SetWorldScale(50.0f, 50.0f, 0.0f);
 	pTransform->SetWorldPivot(0.5f, 0.0f, 0.0f);
 
-	ColliderOBB2D_Com* OBBColl = pChildObj->AddComponent<ColliderOBB2D_Com>("ChildOBBBody");
-	Vector3 Axis[2] = { Vector3::Axis[0], Vector3::Axis[1] };
-	float Lenth[2] = { 25.0f, 25.0f };
-	OBBColl->SetInfo(Vector3(0.0f, 25.0f, 0.0f), Axis, Lenth);
-	SAFE_RELEASE(OBBColl);
+	ColliderOBB2D_Com* OBBColl2 = pChildObj->AddComponent<ColliderOBB2D_Com>("ChildOBBBody");
+	Vector3 Axis2[2] = { Vector3::Axis[0], Vector3::Axis[1] };
+	float Lenth2[2] = { 25.0f, 25.0f };
+	OBBColl2->SetInfo(Vector3(0.0f, 25.0f, 0.0f), Axis2, Lenth2);
+	OBBColl2->SetCollsionCallback(CCT_DOING, this, &Player_Com::PixelHit);
+	SAFE_RELEASE(OBBColl2);
 	SAFE_RELEASE(pChildObj);
 
 	//// 자식 생성
@@ -132,7 +133,7 @@ bool Player_Com::Init()
 	pMaterial->SetDiffuseTexture(0, "Nasus", TEXT("Nasus.jpg"));
 	SAFE_RELEASE(pMaterial);
 	pTransform = pChildObj->GetTransform();
-	pTransform->SetWorldRelativePos(-50.0f, 0.0f, 0.0f);
+	pTransform->SetWorldPos(-50.0f, 0.0f, 0.0f);
 	pTransform->SetWorldScale(50.0f, 50.0f, 1.0f);
 	pTransform->SetWorldPivot(0.5f, 0.0f, 0.0f);
 
@@ -142,6 +143,7 @@ bool Player_Com::Init()
 	Lenth[0] = 25.0f;
 	Lenth[1] = 25.0f;
 	OBBColl->SetInfo(Vector3(0.0f, 25.0f, 0.0f), Axis, Lenth);
+	OBBColl->SetCollsionCallback(CCT_DOING, this, &Player_Com::PixelHit);
 	SAFE_RELEASE(OBBColl);
 	SAFE_RELEASE(pChildObj);
 
@@ -298,5 +300,10 @@ void Player_Com::PixelHit(Collider_Com * Src, Collider_Com * Dest, float DeltaTi
 {
 	if (Dest->GetTag() == "TestPixel")
 	{
+	}
+
+	if (Dest->GetTag() == "MCircleBody")
+	{
+		int a = 0;
 	}
 }

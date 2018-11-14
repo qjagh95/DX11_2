@@ -47,6 +47,7 @@
 
 #define TrueAssert(Var) assert(!(Var))
 #define new new(_CLIENT_BLOCK,__FILE__,__LINE__)
+#define JEONG_USING using namespace JEONG;
 
 #include "FontManager.h"
 #include "ThreadManager.h"
@@ -74,3 +75,4 @@
 
 #include "Resource/ResourceManager.h"
 #include "Render/RenderManager.h"
+#include "Render/ShaderManager.h"
