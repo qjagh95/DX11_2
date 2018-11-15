@@ -6,7 +6,7 @@ JEONG_BEGIN
 class GameObject;
 class Transform_Com;
 class Tile2D_Com;
-class Stage2D_Com : public Component_Base
+class JEONG_DLL Stage2D_Com : public Component_Base
 {
 public:
 	bool Init() override;
@@ -26,11 +26,13 @@ public:
 	int GetTileIndex(const Vector3& Pos);
 	int GetRectTileIndex(const Vector3& Pos);
 	int GetIsoTileIndex(const Vector3& Pos);
-	void CreateTileMap(int NumX, int NumY, const Vector3& StartPos, const Vector3& TileScale, STAGE2D_TILE_TYPE tileType);
+	void SetLineOn(bool Value);
+
+	void CreateTileMap(int TileCountX, int TileCountY, const Vector3& StartPos, const Vector3& TileScale, STAGE2D_TILE_TYPE tileType, const string& KeyName = "", const TCHAR* FileName = NULLPTR, const string& PathKey = TEXTURE_PATH);
 
 private:
-	void CreateTile(const Vector3& StartPos, const Vector3& TileScale);
-	void CreateIsoTile(const Vector3& StartPos, const Vector3& TileScale);
+	void CreateTile(const Vector3& StartPos, const Vector3& TileScale, const string& KeyName = "", const TCHAR* FileName = NULLPTR,	const string& PathKey = TEXTURE_PATH);
+	void CreateIsoTile(const Vector3& StartPos, const Vector3& TileScale, const string& KeyName = "", const TCHAR* FileName = NULLPTR, const string& PathKey = TEXTURE_PATH);
 
 private:
 	GameObject** m_vecTileObject;
@@ -44,13 +46,19 @@ private:
 	int m_Tile2DComCapacity;
 	int m_Tile2DComSize;
 
-	int m_NumX;
-	int m_NumY;
+	int m_TileCountX;
+	int m_TileCountY;
 
 	STAGE2D_TILE_TYPE m_TileType;
 
 	Vector3 m_TileScale;
 	Vector3 m_StartPos;
+
+	bool m_isLineOn;
+	int	m_StartX;
+	int	m_StartY;
+	int	m_EndX;
+	int	m_EndY;
 
 protected:
 	Stage2D_Com();

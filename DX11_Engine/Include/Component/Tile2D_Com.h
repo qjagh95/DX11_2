@@ -9,7 +9,9 @@ enum TILE2D_OPTION
 	T2D_NOMOVE,
 };
 
-class Tile2D_Com : public Component_Base
+class Shader;
+class Mesh;
+class JEONG_DLL Tile2D_Com : public Component_Base
 {
 public:
 	bool Init() override;
@@ -24,9 +26,16 @@ public:
 
 	TILE2D_OPTION GetTileOption() const { return m_TileOption; }
 	void SetTileOption(TILE2D_OPTION option) { m_TileOption = option; }
+	void SetLineOn(bool Value) { m_isLine = Value; }
+	void SetTileType(STAGE2D_TILE_TYPE type);
 
 private:
 	TILE2D_OPTION m_TileOption;
+	STAGE2D_TILE_TYPE m_TileType;
+	Shader*	m_Shader;
+	Mesh* m_Mesh;
+	ID3D11InputLayout* m_Layout;
+	bool  m_isLine;
 
 protected:
 	Tile2D_Com();

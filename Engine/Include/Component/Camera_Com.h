@@ -3,6 +3,7 @@
 
 JEONG_BEGIN
 
+class Transform_Com;
 class JEONG_DLL __declspec(align(16)) Camera_Com : public Component_Base
 {
 public:
@@ -26,6 +27,9 @@ public:
 	Matrix GetViewMatrix() const;
 	Matrix GetProjection() const;
 
+	void SetTarget(class GameObject* pTarget);
+	void SetTarget(class Component_Base* pTarget);
+
 private:
 	Matrix m_View;
 	Matrix m_Projection;
@@ -35,6 +39,8 @@ private:
 	float m_ViewAngle;
 	float m_Near;
 	float m_Far;
+
+	Transform_Com* m_Target;
 
 protected:
 	Camera_Com();

@@ -93,7 +93,7 @@ bool JEONG::ResourceManager::Init()
 
 bool JEONG::ResourceManager::CreateMesh(const string & KeyName, const string & ShaderKeyName, const string & LayOutKeyName, void * vertexInfo, int vertexCount, int vertexSize, D3D11_USAGE vertexUsage, D3D11_PRIMITIVE_TOPOLOGY primitiveType, void * indexInfo, int indexCount, int indexSize, D3D11_USAGE indexUsage, DXGI_FORMAT indexFormat)
 {
-	Mesh* newMesh = FindMesh(KeyName);
+	JEONG::Mesh* newMesh = FindMesh(KeyName);
 
 	if (newMesh != NULLPTR)
 	{
