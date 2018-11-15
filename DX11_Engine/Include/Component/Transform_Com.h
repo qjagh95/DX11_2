@@ -25,6 +25,7 @@ public:
 	const Vector3* GetLocalAxis() const { return m_LocalAxis; }
 	Matrix GetLocalMatrix()	const { return m_MatLocal; }
 	Matrix GetLocalRotMatrix() const { return m_MatWorldRotation; }
+	Vector3 GetDeltaMove() const { return m_DeltaMove; }
 
 	Vector3 GetWorldScale() const { return m_WorldScale; }
 	Vector3 GetWorldRotation() const { return m_WorldRotation; }
@@ -140,6 +141,7 @@ private:
 	Vector3	m_WorldRelativePos;
 
 	Vector3 m_Pivot;
+	Vector3 m_DeltaMove;
 
 	Matrix m_MatWorldScale;
 	Matrix m_MatWorldPos;

@@ -208,6 +208,12 @@
     <Filter Include="Core\13. Sound">
       <UniqueIdentifier>{1595afb2-e9cd-40ef-8b3c-a9fdb4abcbee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\11. Stage2D">
+      <UniqueIdentifier>{babe6804-e133-47b2-8532-808354b484c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\12. Tile2D">
+      <UniqueIdentifier>{3ac0f478-cef7-460a-824b-baa04615644e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -381,6 +387,12 @@
     <ClInclude Include="SoundManager.h">
       <Filter>Core\13. Sound</Filter>
     </ClInclude>
+    <ClInclude Include="Component\Stage2D_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\11. Stage2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Tile2D_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\12. Tile2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Copy.bat">
@@ -543,6 +555,12 @@
     </ClCompile>
     <ClCompile Include="SoundManager.cpp">
       <Filter>Core\13. Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Stage2D_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\11. Stage2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Tile2D_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\12. Tile2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

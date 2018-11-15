@@ -7,18 +7,18 @@
 JEONG_USING
 SINGLETON_VAR_INIT(ResourceManager)
 
-ResourceManager::ResourceManager()
+JEONG::ResourceManager::ResourceManager()
 {
 }
 
-ResourceManager::~ResourceManager()
+JEONG::ResourceManager::~ResourceManager()
 {
 	Safe_Release_Map(m_MeshMap);
 	Safe_Release_Map(m_TextureMap);
 	Safe_Release_Map(m_SamplerMap);
 }
 
-bool ResourceManager::Init()
+bool JEONG::ResourceManager::Init()
 {
 	VertexColor ColorTri[3] =
 	{
@@ -80,10 +80,18 @@ bool ResourceManager::Init()
 	CreateMesh("ColliderCircle", COLLIDER_SHADER, POS_LAYOUT, DebugColliderCirclePos, 37, sizeof(Vector3), D3D11_USAGE_DEFAULT, D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 #endif
 
+	Vector3	IsoTile[5] = {};
+	IsoTile[0] = Vector3(0.5f, 1.0f, 0.0f);
+	IsoTile[1] = Vector3(1.0f, 0.5f, 0.0f);
+	IsoTile[2] = Vector3(0.5f, 0.0f, 0.0f);
+	IsoTile[3] = Vector3(0.0f, 0.5f, 0.0f);
+	IsoTile[4] = Vector3(0.5f, 1.0f, 0.0f);
+
+	CreateMesh("IsoTile", COLLIDER_SHADER, POS_LAYOUT, IsoTile, 5, sizeof(Vector3), D3D11_USAGE_DEFAULT, D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 	return true;
 }
 
-bool ResourceManager::CreateMesh(const string & KeyName, const string & ShaderKeyName, const string & LayOutKeyName, void * vertexInfo, int vertexCount, int vertexSize, D3D11_USAGE vertexUsage, D3D11_PRIMITIVE_TOPOLOGY primitiveType, void * indexInfo, int indexCount, int indexSize, D3D11_USAGE indexUsage, DXGI_FORMAT indexFormat)
+bool JEONG::ResourceManager::CreateMesh(const string & KeyName, const string & ShaderKeyName, const string & LayOutKeyName, void * vertexInfo, int vertexCount, int vertexSize, D3D11_USAGE vertexUsage, D3D11_PRIMITIVE_TOPOLOGY primitiveType, void * indexInfo, int indexCount, int indexSize, D3D11_USAGE indexUsage, DXGI_FORMAT indexFormat)
 {
 	Mesh* newMesh = FindMesh(KeyName);
 
@@ -106,7 +114,7 @@ bool ResourceManager::CreateMesh(const string & KeyName, const string & ShaderKe
 	return true;
 }
 
-bool ResourceManager::CreateTexture(const string & KeyName, const TCHAR * FileName, const string & PathKey)
+bool JEONG::ResourceManager::CreateTexture(const string & KeyName, const TCHAR * FileName, const string & PathKey)
 {
 	Texture* newTexture = FindTexture(KeyName);
 
@@ -128,7 +136,7 @@ bool ResourceManager::CreateTexture(const string & KeyName, const TCHAR * FileNa
 	return true;
 }
 
-bool ResourceManager::CreateTextureFromFullPath(const string & KeyName, const TCHAR * FullPath)
+bool JEONG::ResourceManager::CreateTextureFromFullPath(const string & KeyName, const TCHAR * FullPath)
 {
 	Texture* newTexture = FindTexture(KeyName);
 
@@ -151,7 +159,7 @@ bool ResourceManager::CreateTextureFromFullPath(const string & KeyName, const TC
 	return true;
 }
 
-bool ResourceManager::CreateSampler(const string & KeyName, D3D11_FILTER eFilter, D3D11_TEXTURE_ADDRESS_MODE eU, D3D11_TEXTURE_ADDRESS_MODE eV, D3D11_TEXTURE_ADDRESS_MODE eW)
+bool JEONG::ResourceManager::CreateSampler(const string & KeyName, D3D11_FILTER eFilter, D3D11_TEXTURE_ADDRESS_MODE eU, D3D11_TEXTURE_ADDRESS_MODE eV, D3D11_TEXTURE_ADDRESS_MODE eW)
 {
 	Sampler* newSampler = FindSampler(KeyName);
 
@@ -174,7 +182,7 @@ bool ResourceManager::CreateSampler(const string & KeyName, D3D11_FILTER eFilter
 	return true;
 }
 
-Mesh * ResourceManager::FindMesh(const string & TagName)
+Mesh* JEONG::ResourceManager::FindMesh(const string & TagName)
 {
 	unordered_map<string, Mesh*>::iterator FindIter = m_MeshMap.find(TagName);
 
@@ -186,9 +194,9 @@ Mesh * ResourceManager::FindMesh(const string & TagName)
 	return FindIter->second;
 }
 
-Texture * ResourceManager::FindTexture(const string & KeyName)
+Texture * JEONG::ResourceManager::FindTexture(const string & KeyName)
 {
-	unordered_map<string, Texture*>::iterator FindIter = m_TextureMap.find(KeyName);
+	unordered_map<string, JEONG::Texture*>::iterator FindIter = m_TextureMap.find(KeyName);
 
 	if (FindIter == m_TextureMap.end())
 		return NULLPTR;
@@ -198,9 +206,9 @@ Texture * ResourceManager::FindTexture(const string & KeyName)
 	return FindIter->second;
 }
 
-Sampler * ResourceManager::FindSampler(const string & KeyName)
+Sampler * JEONG::ResourceManager::FindSampler(const string & KeyName)
 {
-	unordered_map<string, Sampler*>::iterator FindIter = m_SamplerMap.find(KeyName);
+	unordered_map<string, JEONG::Sampler*>::iterator FindIter = m_SamplerMap.find(KeyName);
 
 	if (FindIter == m_SamplerMap.end())
 		return NULLPTR;

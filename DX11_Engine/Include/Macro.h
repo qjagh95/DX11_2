@@ -1,6 +1,4 @@
 #pragma once
-#define NULLPTR nullptr
-
 //클라이언트 프로젝트냐 엔진프로젝트냐에 다라서 자동으로 DLL의 import export가 정해진다.
 //프로젝트속성-> 전처리기 -> 클라이언트(JEONG_IMPORT;) , 엔진(JEONG_EXPORT)
 #ifdef JEONG_EXPORT

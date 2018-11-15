@@ -146,8 +146,11 @@ int JEONG::GameObject::Update(float DeltaTime)
 		StartIter++;
 	}
 
+	//내꺼 Transform업데이트를 한다
 	m_Transform->Update(DeltaTime);
 
+	//자식이 있다면 자식트랜스폼에 부모의 정보가 저장된 행렬과 자식의 Transform정보를 곱하여
+	//자식의 Parent행렬에 넣어준다.
 	list<GameObject*>::iterator StartIter1 = m_ChildList.begin();
 	list<GameObject*>::iterator EndIter1 = m_ChildList.end();
 

@@ -49,9 +49,11 @@ int JEONG::Transform_Com::Update(float DeltaTime)
 
 	m_MatLocal = m_MatLocalScale * m_MatLocalRotation * m_MatWorldPos;
 
+	//최종World에 곱해질 Parent행렬 선언.
 	Matrix Parent;
 	Parent.Identity();
 	
+	//자기자신의 행렬정보를 변화량 변수에 넣어준 후 플래그에 따라서 곱한다.
 	m_DeltaScale = m_MatWorldScale;
 	m_DeltaRot = m_MatWorldRotation;
 	m_DeltaPos = m_MatWorldPos;
@@ -76,8 +78,13 @@ int JEONG::Transform_Com::Update(float DeltaTime)
 
 	// WORLD = 자기꺼 * 부모꺼다.
 	m_MatWorld = m_MatWorldScale * m_MatWorldRotation * m_MatWorldPos;
-	m_MatWorld *= Parent;
-	//World = S R T결합.
+	m_MatWorld *= Parent;	//최종적으로 위 부모행렬과 곱한다. 만약 자식이 없거나 내가 부모, 플래그가 없다면
+	//World = S R T결합.	//Identity 단위행렬로 들어가서 곱해봤자 자기자신이다.
+
+	//Move변화량 체크.
+	Vector3 tPos;
+	tPos = m_DeltaMove.TransformCoord(m_MatWorld);
+	m_DeltaMove = tPos - m_WorldPos;
 
 	m_isUpdate = false;
 
@@ -136,6 +143,7 @@ void JEONG::Transform_Com::CollisionLateUpdate(float DeltaTime)
 
 void JEONG::Transform_Com::Render(float DeltaTime)
 {
+	m_DeltaMove = Vector3::Zero;
 }
 
 JEONG::Transform_Com * JEONG::Transform_Com::Clone()
