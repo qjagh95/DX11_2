@@ -82,14 +82,14 @@ void ColliderRect_Com::Render(float DeltaTime)
 	//사이즈만큼 커져랏
 	matScale.Scaling(m_WorldInfo.Lenth);
 
-	if (m_CollisionGroupName != "UI")
-		matView = m_Scene->GetMainCamera()->GetViewMatrix();
-
 	Camera_Com*	getCamera = m_Scene->GetMainCamera();
 	TransformCBuffer TransCBuffer = {};
 
+	if (m_CollisionGroupName != "UI")
+		matView = getCamera->GetViewMatrix();
+
 	TransCBuffer.World = matScale * matPos;
-	TransCBuffer.View = getCamera->GetViewMatrix();
+	TransCBuffer.View = matView;
 	TransCBuffer.Projection = getCamera->GetProjection();
 	TransCBuffer.Pivot = m_Pivot;
 	TransCBuffer.Lenth = m_Mesh->GetLenth();

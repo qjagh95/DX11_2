@@ -49,9 +49,6 @@
     <Filter Include="Core\10. Resource">
       <UniqueIdentifier>{41fef778-ee65-4fbd-bc0e-f7820b4aeacc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\05. PathManager">
-      <UniqueIdentifier>{48f6e9a7-548c-4725-8616-1a4015796c91}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\11. Scene">
       <UniqueIdentifier>{36a4fa68-3853-462f-912a-44e10923d50d}</UniqueIdentifier>
     </Filter>
@@ -213,6 +210,9 @@
     </Filter>
     <Filter Include="Core\08. Object\Component\BaseComponent\12. Tile2D">
       <UniqueIdentifier>{3ac0f478-cef7-460a-824b-baa04615644e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\05. PathManager">
+      <UniqueIdentifier>{48f6e9a7-548c-4725-8616-1a4015796c91}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -590,6 +590,9 @@
       <Filter>Core\09. Render\05. HLSLSorce</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\Shader\CheckBoxShader.fx">
+      <Filter>Core\09. Render\05. HLSLSorce</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\Shader\TileShader.fx">
       <Filter>Core\09. Render\05. HLSLSorce</Filter>
     </FxCompile>
   </ItemGroup>

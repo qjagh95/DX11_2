@@ -101,9 +101,11 @@ private:
 	Vector2 m_MouseGap;			//화면상 좌표와 화면 내의 좌표의 차이
 	GameObject* m_MouseObject;
 	ColliderPoint_Com* m_MouseWorldPoint;
+	ColliderPoint_Com* m_MouseWindowPoint;
 	bool m_ShowCursor;
 	GameObject* m_EquipObject;
 	bool m_isEquip;
+	Vector3 m_ResultPos;
 
 public:
 	CLASS_IN_SINGLE(KeyInput)

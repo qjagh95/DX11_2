@@ -5,81 +5,81 @@
 #include "../KeyInput.h"
 
 JEONG_USING
-SINGLETON_VAR_INIT(SceneManager)
+SINGLETON_VAR_INIT(JEONG::SceneManager)
 
-SceneManager::SceneManager()
+JEONG::SceneManager::SceneManager()
 	:m_CurScene(NULLPTR), m_NextScene(NULLPTR), m_isChange(false)
 {
 }
 
-SceneManager::~SceneManager()
+JEONG::SceneManager::~SceneManager()
 {
 	SAFE_RELEASE(m_CurScene);
 	SAFE_RELEASE(m_NextScene);
 }
 
-bool SceneManager::Init()
+bool JEONG::SceneManager::Init()
 {
-	m_CurScene = new Scene();
+	m_CurScene = new JEONG::Scene();
 
 	if (m_CurScene->Init() == false)
 		return false;
 
-	KeyInput::Get()->ChangeMouseScene(m_CurScene);
+	JEONG::KeyInput::Get()->ChangeMouseScene(m_CurScene);
 
 	return true;
 }
 
-int SceneManager::Input(float DeltaTime)
+int JEONG::SceneManager::Input(float DeltaTime)
 {
 	m_CurScene->Input(DeltaTime);
 	return ChangeScene();
 }
 
-int SceneManager::Update(float DeltaTime)
+int JEONG::SceneManager::Update(float DeltaTime)
 {
 	m_CurScene->Update(DeltaTime);
 	return ChangeScene();
 }
 
-int SceneManager::LateUpdate(float DeltaTime)
+int JEONG::SceneManager::LateUpdate(float DeltaTime)
 {
 	m_CurScene->LateUpdate(DeltaTime);
 	return ChangeScene();
 }
 
-int SceneManager::Collision(float DeltaTime)
+int JEONG::SceneManager::Collision(float DeltaTime)
 {
 	m_CurScene->Collision(DeltaTime);
 	return ChangeScene();
 }
 
-int SceneManager::CollsionLateUpdate(float DeltaTime)
+int JEONG::SceneManager::CollsionLateUpdate(float DeltaTime)
 {
 	m_CurScene->CollisionLateUpdate(DeltaTime);
 	return ChangeScene();
 }
 
-void SceneManager::Render(float DeltaTime)
+void JEONG::SceneManager::Render(float DeltaTime)
 {
 	m_CurScene->Render(DeltaTime);
 }
 
-Scene * SceneManager::GetCurScene() const
+JEONG::Scene * JEONG::SceneManager::GetCurScene() const
 {
 	m_CurScene->AddRefCount();
 
 	return m_CurScene;
 }
 
-Scene * SceneManager::GetNextScene() const
+JEONG::Scene * JEONG::SceneManager::GetNextScene() const
 {
 	m_NextScene->AddRefCount();
 
 	return m_NextScene;
 }
 
-void SceneManager::AddLayer(const string & TagName, int ZOrder, bool isCurrent)
+void JEONG::SceneManager::AddLayer(const string & TagName, int ZOrder, bool isCurrent)
 {
 	if (isCurrent == true)
 		m_CurScene->AddLayer(TagName, ZOrder);
@@ -87,7 +87,7 @@ void SceneManager::AddLayer(const string & TagName, int ZOrder, bool isCurrent)
 		m_NextScene->AddLayer(TagName, ZOrder);
 }
 
-void SceneManager::ChangeLayerZOrder(const string & TagName, int ZOrder, bool isCurrent)
+void JEONG::SceneManager::ChangeLayerZOrder(const string & TagName, int ZOrder, bool isCurrent)
 {
 	if (isCurrent == true)
 		m_CurScene->ChangeLayerZOrder(TagName, ZOrder);
@@ -95,7 +95,7 @@ void SceneManager::ChangeLayerZOrder(const string & TagName, int ZOrder, bool is
 		m_NextScene->ChangeLayerZOrder(TagName, ZOrder);
 }
 
-Layer * SceneManager::FindLayer(const string & TagName, bool isCurrent)
+Layer * JEONG::SceneManager::FindLayer(const string & TagName, bool isCurrent)
 {
 	if (isCurrent == true)
 		return m_CurScene->FindLayer(TagName);
@@ -103,7 +103,7 @@ Layer * SceneManager::FindLayer(const string & TagName, bool isCurrent)
 		return m_NextScene->FindLayer(TagName);
 }
 
-GameObject * SceneManager::FindObject(const string & TagName)
+GameObject * JEONG::SceneManager::FindObject(const string & TagName)
 {
 	GameObject* getObject = m_CurScene->FindObject(TagName);
 	
@@ -115,21 +115,21 @@ GameObject * SceneManager::FindObject(const string & TagName)
 	return m_NextScene->FindObject(TagName);
 }
 
-void SceneManager::CreateNextScene(bool isChange)
+void JEONG::SceneManager::CreateNextScene(bool isChange)
 {
 	SAFE_RELEASE(m_NextScene);
 
-	m_NextScene = new Scene();
+	m_NextScene = new JEONG::Scene();
 	m_NextScene->Init();
 	m_isChange = isChange;
 }
 
-void SceneManager::SetIsChange(bool isChange)
+void JEONG::SceneManager::SetIsChange(bool isChange)
 {
 	m_isChange = isChange;
 }
 
-int SceneManager::ChangeScene()
+int JEONG::SceneManager::ChangeScene()
 {
 	if (m_NextScene != NULLPTR && m_isChange == true)
 	{
@@ -138,7 +138,7 @@ int SceneManager::ChangeScene()
 		m_NextScene = NULLPTR;
 		m_isChange = false;
 
-		KeyInput::Get()->ChangeMouseScene(m_CurScene);
+		JEONG::KeyInput::Get()->ChangeMouseScene(m_CurScene);
 		return 1;
 	}
 

@@ -9,13 +9,20 @@ Thread::Thread()
 
 Thread::~Thread()
 {
-	m_Thread.join();
+	if (m_Thread)
+	{
+		WaitForSingleObject(m_Thread, INFINITE);
+		CloseHandle(m_Thread);
+	}
+
+	//m_thread.join();
 }
 
 bool Thread::Init()
 {
 	m_Start = CreateEvent(NULLPTR, FALSE, FALSE, NULLPTR);
-	m_Thread = thread(&Thread::ThreadFunc, this);
+	m_Thread = (HANDLE)_beginthreadex(nullptr, 0, Thread::ThreadFunc, this, 0, NULLPTR);
+	//m_thread = thread(&Thread::ThreadFunc, this);
 
 	return true;
 }
@@ -31,11 +38,16 @@ void Thread::Awake()
 	SetEvent(m_Start);
 }
 
+void Thread::Join()
+{
+	m_thread.join();
+}
+
 unsigned int Thread::ThreadFunc(void * Arg)
 {
 	Thread* getThread = (Thread*)Arg;
 	getThread->Wait();
 	getThread->Run();
-
+	
 	return 0;
 }

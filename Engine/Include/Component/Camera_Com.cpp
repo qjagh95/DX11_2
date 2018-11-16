@@ -13,7 +13,6 @@ JEONG::Camera_Com::Camera_Com()
 
 JEONG::Camera_Com::~Camera_Com()
 {
-	SAFE_RELEASE(m_Target);
 }
 
 JEONG::Camera_Com::Camera_Com(const Camera_Com & camera)
@@ -38,7 +37,15 @@ int JEONG::Camera_Com::Input(float DeltaTime)
 
 int JEONG::Camera_Com::Update(float DeltaTime)
 {
-	//m_View.Identity();
+	m_View.Identity();
+
+	if (m_Target != NULLPTR)
+	{
+		Vector3	Move = m_Target->GetDeltaMove();
+
+		if (Move != Vector3::Zero)
+			m_Transform->Move(Move);
+	}
 
 	//memcpy 41 ~ 43위치 == Pos위치임.
 	Vector3 TempPos = m_Transform->GetWorldPos();

@@ -8,14 +8,15 @@ public:
 	bool Init();
 	void Wait();
 	void Awake();
+	void Join();
 	virtual void Run() = 0;
 
-	static unsigned int ThreadFunc(void* Arg);
+	static unsigned int __stdcall ThreadFunc(void* Arg);
 
 private:
-	//stl쓰레드로 바꿈.
-	thread m_Thread;
+	HANDLE m_Thread;
 	HANDLE m_Start;
+	thread m_thread;
 
 protected:
 	Thread();

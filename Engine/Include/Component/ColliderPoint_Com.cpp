@@ -55,11 +55,17 @@ int ColliderPoint_Com::Update(float DeltaTime)
 
 int ColliderPoint_Com::LateUpdate(float DeltaTime)
 {
+	JEONG::Scene* curScene = SceneManager::Get()->GetCurScene();
 	Vector3 tempPos = m_Transform->GetWorldPos();
 	m_WorldInfo = tempPos + m_Virtual;
 
+	if (m_CollisionGroupName == "UI")
+		m_WorldInfo -= curScene->GetMainCameraTransform()->GetWorldPos();
+
 	m_SectionMin = m_WorldInfo;
 	m_SectionMax = m_WorldInfo;
+
+	SAFE_RELEASE(curScene);
 
 	return 0;
 }
@@ -85,9 +91,8 @@ void ColliderPoint_Com::Render(float DeltaTime)
 		matView = getCamera->GetViewMatrix();
 
 	TransformCBuffer TransCBuffer = {};
-
 	TransCBuffer.World = matScale * matPos;
-	TransCBuffer.View = getCamera->GetViewMatrix();
+	TransCBuffer.View = matView;
 	TransCBuffer.Projection = getCamera->GetProjection();
 	TransCBuffer.Pivot = Vector3{ 0.0f, 0.0f, 0.0f };
 	TransCBuffer.Lenth = m_Mesh->GetLenth();
@@ -121,9 +126,6 @@ bool ColliderPoint_Com::Collsion(Collider_Com * Dest, float DeltaTime)
 			break;
 		case CT_OBB2D:
 			return CollsionOBB2DToPoint(((ColliderOBB2D_Com*)Dest)->GetInfo(), m_WorldInfo);
-			break;
-		case CT_PIXEL:
-			return false;
 			break;
 	}
 	return false;

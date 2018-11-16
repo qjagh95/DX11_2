@@ -31,5 +31,11 @@ PS_OUTPUT_SINGLE CheckBoxPS(VS_OUTPUT_UV input)
             output.vTarget0 = float4(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
+    //x«•Ω√
+    //if (input.vUV.x == input.vUV.y)
+    //    output.vTarget0 = float4(1.0f, 0.0f, 0.0f, 1.0f);
+    //if (input.vUV.y == 1.0f - input.vUV.x)
+    //    output.vTarget0 = float4(1.0f, 0.0f, 0.0f, 1.0f);
+
     return output;
 }

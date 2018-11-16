@@ -14,7 +14,7 @@
 
 JEONG_USING
 
-Collider_Com::Collider_Com()
+JEONG::Collider_Com::Collider_Com()
 {
 	m_ComType = CT_COLLIDER;
 	m_CollType = CT_RECT;
@@ -30,7 +30,7 @@ Collider_Com::Collider_Com()
 #endif // _DEBUG
 }
 
-Collider_Com::Collider_Com(const Collider_Com & CopyCollider)
+JEONG::Collider_Com::Collider_Com(const Collider_Com & CopyCollider)
 	:Component_Base(CopyCollider)
 {
 	*this = CopyCollider;
@@ -54,7 +54,7 @@ Collider_Com::Collider_Com(const Collider_Com & CopyCollider)
 
 }
 
-Collider_Com::~Collider_Com()
+JEONG::Collider_Com::~Collider_Com()
 {
 #ifdef _DEBUG
 	SAFE_RELEASE(m_DepthDisable);
@@ -73,35 +73,35 @@ Collider_Com::~Collider_Com()
 	}
 }
 
-bool Collider_Com::Init()
+bool JEONG::Collider_Com::Init()
 {
 	return true;
 }
 
-int Collider_Com::Input(float DeltaTime)
+int JEONG::Collider_Com::Input(float DeltaTime)
 {  
 	return 0;
 }
 
-int Collider_Com::Update(float DeltaTime)
+int JEONG::Collider_Com::Update(float DeltaTime)
 {
 	return 0;
 }
 
-int Collider_Com::LateUpdate(float DeltaTime)
+int JEONG::Collider_Com::LateUpdate(float DeltaTime)
 {
 	return 0;
 }
 
-void Collider_Com::Collision(float DeltaTime)
+void JEONG::Collider_Com::Collision(float DeltaTime)
 {
 }
 
-void Collider_Com::CollisionLateUpdate(float DeltaTime)
+void JEONG::Collider_Com::CollisionLateUpdate(float DeltaTime)
 {
 }
 
-void Collider_Com::Render(float DeltaTime)
+void JEONG::Collider_Com::Render(float DeltaTime)
 {
 #ifdef _DEBUG
 	if (m_PrevCollision.empty() == true)
@@ -124,7 +124,7 @@ void Collider_Com::Render(float DeltaTime)
 #endif
 }
 
-bool Collider_Com::CheckPrevCollision(Collider_Com * Dest)
+bool JEONG::Collider_Com::CheckPrevCollision(Collider_Com * Dest)
 {
 	list<Collider_Com*>::iterator StartIter = m_PrevCollision.begin();
 	list<Collider_Com*>::iterator EndIter = m_PrevCollision.end();
@@ -138,10 +138,10 @@ bool Collider_Com::CheckPrevCollision(Collider_Com * Dest)
 	return false;
 }
 
-void Collider_Com::ErasePrevCollision(Collider_Com * Dest)
+void JEONG::Collider_Com::ErasePrevCollision(Collider_Com * Dest)
 {
-	list<Collider_Com*>::iterator StartIter = m_PrevCollision.begin();
-	list<Collider_Com*>::iterator EndIter = m_PrevCollision.end();
+	list<JEONG::Collider_Com*>::iterator StartIter = m_PrevCollision.begin();
+	list<JEONG::Collider_Com*>::iterator EndIter = m_PrevCollision.end();
 
 	for (; StartIter != EndIter; StartIter++)
 	{
@@ -153,10 +153,10 @@ void Collider_Com::ErasePrevCollision(Collider_Com * Dest)
 	}
 }
 
-void Collider_Com::CheckPrevCollisionInSection(float DeltaTime)
+void JEONG::Collider_Com::CheckPrevCollisionInSection(float DeltaTime)
 {
-	list<Collider_Com*>::iterator StartIter = m_PrevCollision.begin();
-	list<Collider_Com*>::iterator EndIter = m_PrevCollision.end();
+	list<JEONG::Collider_Com*>::iterator StartIter = m_PrevCollision.begin();
+	list<JEONG::Collider_Com*>::iterator EndIter = m_PrevCollision.end();
 
 	for (; StartIter != EndIter; )
 	{
@@ -217,7 +217,7 @@ void Collider_Com::CheckPrevCollisionInSection(float DeltaTime)
 	}
 }
 
-void Collider_Com::OnCollsionFirst(Collider_Com * Dest, float DeltaTime)
+void JEONG::Collider_Com::OnCollsionFirst(Collider_Com * Dest, float DeltaTime)
 {
 	list<function<void(Collider_Com*, Collider_Com*, float)>>::iterator	StartIter = m_CollisionFunc[CCT_FIRST].begin();
 	list<function<void(Collider_Com*, Collider_Com*, float)>>::iterator	EndIter = m_CollisionFunc[CCT_FIRST].end();
@@ -227,7 +227,7 @@ void Collider_Com::OnCollsionFirst(Collider_Com * Dest, float DeltaTime)
 		(*StartIter)(this, Dest, DeltaTime);
 }
 
-void Collider_Com::OnCollsionDoing(Collider_Com * Dest, float DeltaTime)
+void JEONG::Collider_Com::OnCollsionDoing(Collider_Com * Dest, float DeltaTime)
 {
 	list<function<void(Collider_Com*, Collider_Com*, float)>>::iterator	StartIter = m_CollisionFunc[CCT_DOING].begin();
 	list<function<void(Collider_Com*, Collider_Com*, float)>>::iterator	EndIter = m_CollisionFunc[CCT_DOING].end();
@@ -237,7 +237,7 @@ void Collider_Com::OnCollsionDoing(Collider_Com * Dest, float DeltaTime)
 		(*StartIter)(this, Dest, DeltaTime);
 }
 
-void Collider_Com::OnCollsionEnd(Collider_Com * Dest, float DeltaTime)
+void JEONG::Collider_Com::OnCollsionEnd(Collider_Com * Dest, float DeltaTime)
 {
 	list<function<void(Collider_Com*, Collider_Com*, float)>>::iterator	StartIter = m_CollisionFunc[CCT_END].begin();
 	list<function<void(Collider_Com*, Collider_Com*, float)>>::iterator	EndIter = m_CollisionFunc[CCT_END].end();
@@ -247,12 +247,12 @@ void Collider_Com::OnCollsionEnd(Collider_Com * Dest, float DeltaTime)
 		(*StartIter)(this, Dest, DeltaTime);
 }
 
-void Collider_Com::SetCallback(function<void(Collider_Com*, Collider_Com*, float)> const & _function, COLLSION_CALLBACK_TYPE _type)
+void JEONG::Collider_Com::SetCallback(function<void(Collider_Com*, Collider_Com*, float)> const & _function, COLLSION_CALLBACK_TYPE _type)
 {
 	m_CollisionFunc[_type].push_back(_function);
 }
 
-void Collider_Com::SetCollsionCallback(COLLSION_CALLBACK_TYPE eType, void(*pFunc)(Collider_Com *, Collider_Com *, float))
+void JEONG::Collider_Com::SetCollsionCallback(COLLSION_CALLBACK_TYPE eType, void(*pFunc)(Collider_Com *, Collider_Com *, float))
 {
 	function<void(Collider_Com *, Collider_Com *, float)> newFunc;
 
@@ -260,7 +260,7 @@ void Collider_Com::SetCollsionCallback(COLLSION_CALLBACK_TYPE eType, void(*pFunc
 	m_CollisionFunc[eType].push_back(newFunc);
 }
 
-bool Collider_Com::CollsionRectToRect(const BoxInfo & Src, const BoxInfo & Dest)
+bool JEONG::Collider_Com::CollsionRectToRect(const BoxInfo & Src, const BoxInfo & Dest)
 {
 	if (Src.Min.x > Dest.Max.x)
 		return false;
@@ -277,7 +277,7 @@ bool Collider_Com::CollsionRectToRect(const BoxInfo & Src, const BoxInfo & Dest)
 	return true;
 }
 
-bool Collider_Com::CollsionRectToPoint(const BoxInfo & Src, const Vector3 & Dest)
+bool JEONG::Collider_Com::CollsionRectToPoint(const BoxInfo & Src, const Vector3 & Dest)
 {
 	if (Src.Min.x > Dest.x)
 		return false;
@@ -294,7 +294,7 @@ bool Collider_Com::CollsionRectToPoint(const BoxInfo & Src, const Vector3 & Dest
 	return true;
 }
 
-bool Collider_Com::CollsionRectToCircle(const BoxInfo & Src, const CircleInfo & Dest)
+bool JEONG::Collider_Com::CollsionRectToCircle(const BoxInfo & Src, const CircleInfo & Dest)
 {
 	BoxInfo CircleRect;
 	Vector3 CenterPos = Dest.CenterPos;
@@ -331,17 +331,17 @@ bool Collider_Com::CollsionRectToCircle(const BoxInfo & Src, const CircleInfo & 
 	return false;
 }
 
-bool Collider_Com::CollsionCircleToCircle(CircleInfo & Src, const CircleInfo & Dest)
+bool JEONG::Collider_Com::CollsionCircleToCircle(CircleInfo & Src, const CircleInfo & Dest)
 {
 	return Src.CenterPos.GetDistance(Dest.CenterPos) <= Src.Radius + Dest.Radius;
 }
 
-bool Collider_Com::CollsionCircleToPoint(CircleInfo & Src, Vector3 & Dest)
+bool JEONG::Collider_Com::CollsionCircleToPoint(CircleInfo & Src, Vector3 & Dest)
 {
 	return Src.CenterPos.GetDistance(Dest) <= Src.Radius;
 }
 
-bool Collider_Com::CollsionOBB2DToRect(const OBB2DInfo & Src, const BoxInfo & Dest)
+bool JEONG::Collider_Com::CollsionOBB2DToRect(const OBB2DInfo & Src, const BoxInfo & Dest)
 {
 	OBB2DInfo BoxToObb;
 	BoxToObb.CenterPos = (Dest.Min + Dest.Max) * 0.5f;
@@ -353,7 +353,7 @@ bool Collider_Com::CollsionOBB2DToRect(const OBB2DInfo & Src, const BoxInfo & De
 	return CollsionOBB2DToOBB2D(Src, BoxToObb);
 }
 
-bool Collider_Com::CollsionOBB2DToPoint(const OBB2DInfo & Src, const Vector3 & Dest)
+bool JEONG::Collider_Com::CollsionOBB2DToPoint(const OBB2DInfo & Src, const Vector3 & Dest)
 {
 	// OBB 상자가 Z축으로 회전한 만큼 반대로 점을 OBB상자의 중점을 기준으로
 	// 회전시킨 좌표를 구한다. 이렇게 할 경우 이 점을 OBB상자를 월드축에 정렬된
@@ -380,8 +380,15 @@ bool Collider_Com::CollsionOBB2DToPoint(const OBB2DInfo & Src, const Vector3 & D
 	return CollsionRectToPoint(Info, tempPos);
 }
 
-bool Collider_Com::CollsionOBB2DToCircle(const OBB2DInfo & Src, const CircleInfo & Dest)
+bool JEONG::Collider_Com::CollsionOBB2DToCircle(const OBB2DInfo & Src, const CircleInfo & Dest)
 {
+	//문제있음
+	
+	//1. 회전된 각도를 구한다.
+	//2. 사각형변수를 선언한다.
+	//3. 회전된 사각형을 역 으로 회전시킨다.
+	//4. CollsionToRectToCircle();
+
 	Vector3 Distance = Dest.CenterPos - Src.CenterPos;
 	Vector3 DistanceNormal = Vector3::Nomallize(Distance);
 
@@ -405,7 +412,7 @@ bool Collider_Com::CollsionOBB2DToCircle(const OBB2DInfo & Src, const CircleInfo
 	return true;
 }
 
-bool Collider_Com::CollsionOBB2DToOBB2D(const OBB2DInfo & Src, const OBB2DInfo & Dest)
+bool JEONG::Collider_Com::CollsionOBB2DToOBB2D(const OBB2DInfo & Src, const OBB2DInfo & Dest)
 {
 	//두 점 사이의 거리를 구한다.
 	Vector3 Distance = Dest.CenterPos - Src.CenterPos;
@@ -453,7 +460,7 @@ bool Collider_Com::CollsionOBB2DToOBB2D(const OBB2DInfo & Src, const OBB2DInfo &
 	return true;
 }
 
-bool Collider_Com::CollsionRectToPixel(BoxInfo Src, const PixelInfo& Dest)
+bool JEONG::Collider_Com::CollsionRectToPixel(BoxInfo Src, const PixelInfo& Dest)
 {
 	if (CollsionRectToRect(Dest.ImageRect, Src) == false)
 		return false;

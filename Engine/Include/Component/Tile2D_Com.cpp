@@ -26,9 +26,9 @@ Tile2D_Com::~Tile2D_Com()
 
 bool Tile2D_Com::Init()
 {
-	m_Mesh = ResourceManager::Get()->FindMesh("IsoTile");
-	m_Shader = ShaderManager::Get()->FindShader(COLLIDER_SHADER);
-
+	m_TileOption = T2D_NORMAL;
+	m_Mesh = ResourceManager::Get()->FindMesh("IsoTileNomal");
+	m_Shader = ShaderManager::Get()->FindShader(TILE_SHADER);
 
 	return true;
 }
@@ -77,6 +77,7 @@ void Tile2D_Com::Render(float DeltaTime)
 	tCBuffer.Projection.Transpose();
 	tCBuffer.WV.Transpose();
 	tCBuffer.WVP.Transpose();
+
 	ShaderManager::Get()->UpdateCBuffer("Transform", &tCBuffer);
 
 	Vector4	LineColor;
@@ -110,6 +111,9 @@ void Tile2D_Com::AfterClone()
 void Tile2D_Com::SetTileType(STAGE2D_TILE_TYPE type)
 {
 	m_TileType = type;
+	
+	SAFE_RELEASE(m_Mesh);
+	SAFE_RELEASE(m_Shader);
 
 	switch (type)
 	{
@@ -117,10 +121,10 @@ void Tile2D_Com::SetTileType(STAGE2D_TILE_TYPE type)
 			m_Mesh = ResourceManager::Get()->FindMesh("ColliderRect");
 			break;
 		case STT_ISO:
-			m_Mesh = ResourceManager::Get()->FindMesh("IsoTile");
+			m_Mesh = ResourceManager::Get()->FindMesh("IsoTileNomal");
 			break;
 	}
 
-	m_Shader = ShaderManager::Get()->FindShader(COLLIDER_SHADER);
+	m_Shader = ShaderManager::Get()->FindShader(TILE_SHADER);
 	m_Layout = ShaderManager::Get()->FindInputLayOut(POS_LAYOUT);
 }

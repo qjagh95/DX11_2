@@ -65,7 +65,7 @@ bool LoadingScene::Init()
 	SAFE_RELEASE(pBarObj);
 	SAFE_RELEASE(pLayer);
 
-	LoadingThread*	pThread = ThreadManager::Get()->ThreadCreate<LoadingThread>("LoadingThread");
+	LoadingThread* pThread = ThreadManager::Get()->ThreadCreate<LoadingThread>("LoadingThread");
 
 	Camera_Com* getCamera = m_Scene->GetMainCamera();
 	getCamera->SetCameraType(CT_ORTHO);

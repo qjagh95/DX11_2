@@ -51,6 +51,8 @@ bool Monster_Com::Init()
 	ColliderCircle_Com* CircleColl = m_Object->AddComponent<ColliderCircle_Com>("MCircleBody");
 	CircleColl->SetInfo(150.0f);
 	CircleColl->SetMyTypeName("M");
+	CircleColl->SetCollsionCallback<Monster_Com>(CCT_FIRST, this, &Monster_Com::BulletHit);
+	CircleColl->SetCollsionCallback<Monster_Com>(CCT_FIRST, this, &Monster_Com::BulletRotHit);
 	SAFE_RELEASE(CircleColl);
 
 	//ColliderOBB2D_Com* OBBColl = m_Object->AddComponent<ColliderOBB2D_Com>("MonsterOBBBody");
@@ -142,4 +144,6 @@ void Monster_Com::BulletRotHit(Collider_Com * Src, Collider_Com * Dest, float De
 
 		Dest->GetGameObject()->SetIsActive(false);
 	}
+
+
 }

@@ -19,6 +19,9 @@
 #include "Component/Button_Com.h"
 #include "Component/UICon_Com.h"
 #include "Component/IconSlot_Com.h"
+#include "Component/Stage2D_Com.h"
+#include "Component/Tile2D_Com.h"
+#include "Component/CheckBox_Com.h"
 
 #include "../UserComponent/Player_Com.h"
 #include "../UserComponent/Bullet_Com.h"
@@ -40,7 +43,7 @@ MainScene::~MainScene()
 
 bool MainScene::Init()
 {
-	LoadingThread* loadThread = (LoadingThread*)ThreadManager::Get()->FindThread("LoadingThread");
+	//LoadingThread* loadThread = (LoadingThread*)ThreadManager::Get()->FindThread("LoadingThread");
 
 	Camera_Com* mainCamera = m_Scene->GetMainCamera();
 	mainCamera->SetCameraType(CT_ORTHO);
@@ -48,27 +51,36 @@ bool MainScene::Init()
 
 	Layer* Default = m_Scene->FindLayer("Default");
 	Layer* UILayer = m_Scene->FindLayer("UI");
+	Layer* StageLayer = m_Scene->FindLayer("StageBackGround");
+
+	GameObject*	pStageObj = GameObject::CreateObject("StageObj", StageLayer);
+	Stage2D_Com* pStage = pStageObj->AddComponent<Stage2D_Com>("Stage");
+	pStage->CreateTileMap(100, 100, Vector3::Zero, Vector3(160.0f, 80.0f, 1.0f), STT_ISO);
+	pStage->SetLineOn(true);
+	//loadThread->AddLoadingCount();
 
 	GameObject* MonsterObject = GameObject::CreateObject("Monster", Default);
 	Monster_Com* monster_Com = MonsterObject->AddComponent<Monster_Com>("Monster_Com");
-	loadThread->AddLoadingCount();
+	//loadThread->AddLoadingCount();
 	GameObject* PlayerObject = GameObject::CreateObject("Player", Default);
 	Player_Com* player_Com = PlayerObject->AddComponent<Player_Com>("Player_Com");
-	loadThread->AddLoadingCount();
-	loadThread->AddLoadingCount();
-	loadThread->AddLoadingCount();
+	//loadThread->AddLoadingCount();
+	//loadThread->AddLoadingCount();
+	//loadThread->AddLoadingCount();
 
-	GameObject* BulletObject = GameObject::CreateProtoType("Bullet_Clone", false);
+	mainCamera->SetTarget(PlayerObject);
+
+	GameObject* BulletObject = GameObject::CreateProtoType("Bullet_Clone" /*false*/);
 	Bullet_Com* bullet_Com = BulletObject->AddComponent<Bullet_Com>("Bullet_Com");
-	loadThread->AddLoadingCount();
+	//loadThread->AddLoadingCount();
 
-	GameObject* BulletObject2 = GameObject::CreateProtoType("BulletRot_Clone", false);
+	GameObject* BulletObject2 = GameObject::CreateProtoType("BulletRot_Clone"/*false*/);
 	BulletRot_Com* bullet_Com2 = BulletObject2->AddComponent<BulletRot_Com>("BulletRot_Com");
-	loadThread->AddLoadingCount();
+	//loadThread->AddLoadingCount();
 
-	GameObject* BoomObject = GameObject::CreateProtoType("Boom", false);
+	GameObject* BoomObject = GameObject::CreateProtoType("Boom"/*, false*/);
 	BulletBoom_Com* bulletBoom_Com = BoomObject->AddComponent<BulletBoom_Com>("Boom_Com");
-	loadThread->AddLoadingCount();
+	//loadThread->AddLoadingCount();
 
 	GameObject*	TestPixelColl = GameObject::CreateObject("PixelColl", Default);
 	Renderer_Com* PixelRenderer = TestPixelColl->AddComponent<Renderer_Com>("PixelCollRenderer");
@@ -90,7 +102,7 @@ bool MainScene::Init()
 	m_TestBar->SetDir(BD_LEFT);
 	m_TestBar->SetValue(0.0f);
 	m_TestBar->SetScale(200.0f, 30.0f, 0.0f);
-	loadThread->AddLoadingCount();
+	//loadThread->AddLoadingCount();
 
 	GameObject* SlotObject1 = GameObject::CreateObject("Slot1", UILayer);
 	GameObject* SlotObject2 = GameObject::CreateObject("Slot2", UILayer);
@@ -128,6 +140,15 @@ bool MainScene::Init()
 	m_TestText->SetIsShow(true);
 	TextObject1->GetTransform()->SetWorldPos(Vector3(300.0f, 300.0f, 0));
 
+	GameObject* newCheck = GameObject::CreateObject("CheckBox", UILayer);
+	newCheck->GetTransform()->SetWorldPos(300.0f, 360.0f, 0.0f);
+	CheckBox_Com* CheckCom = newCheck->AddComponent<CheckBox_Com>("CheckBox");
+
+	SAFE_RELEASE(newCheck);
+	SAFE_RELEASE(CheckCom);
+	SAFE_RELEASE(StageLayer);
+	SAFE_RELEASE(pStage);
+	SAFE_RELEASE(pStageObj);
 	SAFE_RELEASE(TextObject1);
 	SAFE_RELEASE(material);
 	SAFE_RELEASE(SlotObject1);

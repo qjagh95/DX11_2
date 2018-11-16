@@ -32,6 +32,7 @@
 #define BUTTON_SHADER "ButtonShader"
 #define BAR_SHADER "BarShader"
 #define CHECKBOX_SHADER "CheckBoxShader"
+#define TILE_SHADER "TileShader"
 
 //Base InputLayOut
 #define POS_COLOR_LAYOUT "PosColorLayOut"

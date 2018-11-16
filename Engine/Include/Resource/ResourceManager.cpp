@@ -56,7 +56,6 @@ bool JEONG::ResourceManager::Init()
 	CreateMesh("TextureRect", STANDARD_UV_SHADER, POS_UV_LAYOUT, UVRect, 4, sizeof(VertexUV), D3D11_USAGE_DEFAULT,	D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST, IndexRect, 6, 2);
 	CreateSampler(LINER_SAMPLER);
 
-#ifdef _DEBUG
 	Vector3	DebugColliderPos[5] =
 	{
 		Vector3(0.0f, 1.0f, 0.0f),
@@ -78,16 +77,27 @@ bool JEONG::ResourceManager::Init()
 	}
 
 	CreateMesh("ColliderCircle", COLLIDER_SHADER, POS_LAYOUT, DebugColliderCirclePos, 37, sizeof(Vector3), D3D11_USAGE_DEFAULT, D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
-#endif
 
-	Vector3	IsoTile[5] = {};
-	IsoTile[0] = Vector3(0.5f, 1.0f, 0.0f);
-	IsoTile[1] = Vector3(1.0f, 0.5f, 0.0f);
-	IsoTile[2] = Vector3(0.5f, 0.0f, 0.0f);
-	IsoTile[3] = Vector3(0.0f, 0.5f, 0.0f);
-	IsoTile[4] = Vector3(0.5f, 1.0f, 0.0f);
+	Vector3	IsoTileNomal[5] = {};
+	IsoTileNomal[0] = Vector3(0.5f, 1.0f, 0.0f);
+	IsoTileNomal[1] = Vector3(1.0f, 0.5f, 0.0f);
+	IsoTileNomal[2] = Vector3(0.5f, 0.0f, 0.0f);
+	IsoTileNomal[3] = Vector3(0.0f, 0.5f, 0.0f);
+	IsoTileNomal[4] = Vector3(0.5f, 1.0f, 0.0f);
 
-	CreateMesh("IsoTile", COLLIDER_SHADER, POS_LAYOUT, IsoTile, 5, sizeof(Vector3), D3D11_USAGE_DEFAULT, D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+	CreateMesh("IsoTileNomal", TILE_SHADER, POS_LAYOUT, IsoTileNomal, 5, sizeof(Vector3), D3D11_USAGE_DEFAULT, D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+
+	Vector3	IsoTileNoMove[8] = {};
+	IsoTileNoMove[0] = Vector3(0.5f, 1.0f, 0.0f);
+	IsoTileNoMove[1] = Vector3(1.0f, 0.5f, 0.0f);
+	IsoTileNoMove[2] = Vector3(0.5f, 0.0f, 0.0f);
+	IsoTileNoMove[3] = Vector3(0.0f, 0.5f, 0.0f);
+	IsoTileNoMove[4] = Vector3(0.5f, 1.0f, 0.0f);
+	IsoTileNoMove[5] = Vector3(0.5f, 0.0f, 0.0f);
+	IsoTileNoMove[6] = Vector3(1.0f, 0.5f, 0.0f);
+	IsoTileNoMove[7] = Vector3(0.0f, 0.5f, 0.0f);
+
+	CreateMesh("IsoTileNomove", TILE_SHADER, POS_LAYOUT, IsoTileNoMove, 8, sizeof(Vector3), D3D11_USAGE_DEFAULT, D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 	return true;
 }
 

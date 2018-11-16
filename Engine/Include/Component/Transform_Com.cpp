@@ -82,9 +82,9 @@ int JEONG::Transform_Com::Update(float DeltaTime)
 	//World = S R T결합.	//Identity 단위행렬로 들어가서 곱해봤자 자기자신이다.
 
 	//Move변화량 체크.
-	Vector3 tPos;
-	tPos = m_DeltaMove.TransformCoord(m_MatWorld);
-	m_DeltaMove = tPos - m_WorldPos;
+	//Vector3 tPos;
+	//tPos = m_DeltaMove.TransformCoord(m_MatWorld);
+	//m_DeltaMove = m_WorldPos - tPos;
 
 	m_isUpdate = false;
 
@@ -319,6 +319,7 @@ void JEONG::Transform_Com::SetWorldRotZ(float z)
 
 void JEONG::Transform_Com::SetWorldPos(const Vector3 & vPos)
 {
+	m_DeltaMove = vPos - m_WorldPos;
 	m_WorldPos = vPos;
 
 	m_MatWorldPos.Translation(m_WorldPos);
@@ -328,6 +329,7 @@ void JEONG::Transform_Com::SetWorldPos(const Vector3 & vPos)
 
 void JEONG::Transform_Com::SetWorldPos(float x, float y, float z)
 {
+	m_DeltaMove = Vector3(x, y, z) - m_WorldPos;
 	m_WorldPos = Vector3(x, y, z);
 
 	m_MatWorldPos.Translation(m_WorldPos);
@@ -367,6 +369,7 @@ void JEONG::Transform_Com::Move(const Vector3 & vDir, float Speed, float DeltaTi
 void JEONG::Transform_Com::Move(const Vector3 & vMove)
 {
 	m_WorldPos += vMove;
+	m_DeltaMove = vMove;
 
 	m_MatWorldPos.Translation(m_WorldPos);
 

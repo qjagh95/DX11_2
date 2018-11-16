@@ -93,7 +93,7 @@ void ColliderPixel_Com::Render(float DeltaTime)
 	TransformCBuffer TransCBuffer = {};
 
 	TransCBuffer.World = matScale * matPos;
-	TransCBuffer.View = getCamera->GetViewMatrix();
+	TransCBuffer.View = matView;
 	TransCBuffer.Projection = getCamera->GetProjection();
 	TransCBuffer.Pivot = m_Pivot;
 	TransCBuffer.Lenth = m_Mesh->GetLenth();

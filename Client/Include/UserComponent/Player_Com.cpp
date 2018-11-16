@@ -70,7 +70,7 @@ bool Player_Com::Init()
 
 	m_Transform->SetWorldScale(300.0f, 300.0f, 1.0f);
 	m_Transform->SetWorldPivot(0.5f, 0.0f, 0.0f);
-	m_Transform->SetWorldPos(600.0f + 300, 720.0f / 2.0f, 1.0f);
+	m_Transform->SetWorldPos(8000.0f, 4000.0f, 1.0f);
 	m_Transform->RotationZ(45.0f);
 
 	myAnimation = m_Object->AddComponent<Animation2D_Com>("PlayerAnimation");
@@ -158,20 +158,14 @@ int Player_Com::Input(float DeltaTime)
 	Material_Com* getMaterial = m_Object->FindComponentFromType<Material_Com>(CT_MATERIAL);
 	getMaterial->SetMaterial(Vector4::White);
 
-	//나는 정면에서 보고있고 그리는건 앞 에서 그리기때문에 각도-
-	//if (KeyInput::Get().KeyPress("MoveLeft"))
-	//	m_Transform->RotationZ(180.0f, DeltaTime);
-	//else if (KeyInput::Get().KeyPress("MoveRight"))
-	//	m_Transform->RotationZ(-180.0f, DeltaTime);
-
 	if (KeyInput::Get()->KeyPress("MoveLeft"))
 		m_Transform->RotationZ(180.0f, DeltaTime);
 	else if (KeyInput::Get()->KeyPress("MoveRight"))
 		m_Transform->RotationZ(-180.0f, DeltaTime);
 	if (KeyInput::Get()->KeyPress("MoveUp"))
-		m_Transform->Move(AXIS_Y, 200.0f, DeltaTime);
+		m_Transform->Move(AXIS_Y, 1000.0f, DeltaTime);
 	else if (KeyInput::Get()->KeyPress("MoveDown"))
-		m_Transform->Move(AXIS_Y, -200.0f, DeltaTime);
+		m_Transform->Move(AXIS_Y, -1000.0f, DeltaTime);
 
 	if (KeyInput::Get()->KeyDown("S1"))
 	{
@@ -271,6 +265,7 @@ int Player_Com::Input(float DeltaTime)
 
 int Player_Com::Update(float DeltaTime)
 {
+
 	return 0;
 }
 

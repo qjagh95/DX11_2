@@ -22,11 +22,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hIstance, _In_opt_ HINSTANCE hPrevInstance,
 	Core::Get()->SetGameMode(GM_2D);
 
 	//MainScene추가
-	SceneManager::Get()->AddSceneComponent<StartScene>("StartScene");
+	SceneManager::Get()->AddSceneComponent<MainScene>("MainScene");
 
 	//Run에서 메세지 무한루프를(로직) 돈다.
 	//꺼지면 Delete, Result = 0
 	//싱글톤 삭제
+
 	int Result = Core::Get()->Run();
 	Core::Delete();
 

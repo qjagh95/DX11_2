@@ -5,8 +5,8 @@
 JEONG_USING
 
 Stage2D_Com::Stage2D_Com()
-	:m_vecTile2DCom(NULLPTR), m_vecTileObject(NULLPTR), m_vecTileTransform(NULLPTR),
-	m_TileObjectCapacity(10), m_TileObjectSize(0), m_TileTransformCapacity(10), m_TileTransformSize(0), m_Tile2DComCapacity(10), m_Tile2DComSize(0)
+	:m_vecTile2DCom(NULLPTR), m_vecTileObject(NULLPTR),
+	m_TileObjectCapacity(10), m_TileObjectSize(0),m_Tile2DComCapacity(10), m_Tile2DComSize(0)
 {
 	m_ComType = CT_TILE2D;
 	SetTag("Stage2D");
@@ -21,12 +21,13 @@ Stage2D_Com::Stage2D_Com(const Stage2D_Com& CopyData)
 
 Stage2D_Com::~Stage2D_Com()
 {
-	for (size_t i = 0; i < m_TileObjectSize; i++)
+	for (size_t i = 0; i < m_Tile2DComSize; i++)
 		SAFE_RELEASE(m_vecTileObject[i]);
-	for (size_t i = 0; i < m_TileTransformSize; i++)
-		SAFE_RELEASE(m_vecTileTransform[i]);
 	for (size_t i = 0; i < m_Tile2DComSize; i++)
 		SAFE_RELEASE(m_vecTile2DCom[i]);
+
+	SAFE_DELETE_ARRARY(m_vecTile2DCom);
+	SAFE_DELETE_ARRARY(m_vecTileObject);
 }
 
 bool Stage2D_Com::Init()
@@ -43,48 +44,72 @@ int Stage2D_Com::Update(float DeltaTime)
 {
 	Transform_Com* pMainCameraTr = m_Scene->GetMainCameraTransform();
 	Vector3	CameraPos = pMainCameraTr->GetWorldPos();
-	CameraPos -= m_StartPos;
+	Vector3	EndPos;
+	EndPos.x = CameraPos.x + Device::Get()->GetWinSize().Width;
+	EndPos.y = CameraPos.y + Device::Get()->GetWinSize().Height;
 
-	Vector3	EndPos = CameraPos;
-	EndPos.x += Device::Get()->GetWinSize().Width;
-	EndPos.y += Device::Get()->GetWinSize().Height;
+	switch (m_TileType)
+	{
+		case STT_TILE:
+		{
+			CameraPos -= m_StartPos;
+			CameraPos /= m_TileScale;
 
-	CameraPos /= m_TileScale;
-	EndPos /= m_TileScale;
+			EndPos /= m_TileScale;
 
-	m_StartX = (int)CameraPos.x;
-	if (m_StartX < 0)
-		m_StartX = 0;
+			m_StartX = (int)CameraPos.x;
+			m_StartY = (int)CameraPos.y;
 
-	else if (m_StartX >= m_TileCountX)
-		m_StartX = m_TileCountX - 1;
+			m_EndX = (int)EndPos.x + 1;
+			m_EndY = (int)EndPos.y * 2 + 1;
 
-	m_StartY = (int)CameraPos.y;
-	if (m_StartY < 0)
-		m_StartY = 0;
+			if (m_StartX < 0)
+				m_StartX = 0;
 
-	else if (m_StartY >= m_TileCountY)
-		m_StartY = m_TileCountY - 1;
+			else if (m_StartX >= m_TileCountX)
+				m_StartX = m_TileCountX - 1;
 
-	m_EndX = (int)EndPos.x + 1;
-	if (m_EndX < 0)
-		m_EndX = 0;
+			if (m_StartY < 0)
+				m_StartY = 0;
 
-	else if (m_EndX >= m_TileCountX)
-		m_EndX = m_TileCountX - 1;
+			else if (m_StartY >= m_TileCountY)
+				m_StartY = m_TileCountY - 1;
 
-	m_EndY = (int)EndPos.y * 2 + 1;
-	if (m_EndY < 0)
-		m_EndY = 0;
+			if (m_EndX < 0)
+				m_EndX = 0;
 
-	else if (m_EndY >= m_TileCountY)
-		m_EndY = m_TileCountY - 1;
+			else if (m_EndX >= m_TileCountX)
+				m_EndX = m_TileCountX - 1;
+
+			if (m_EndY < 0)
+				m_EndY = 0;
+
+			else if (m_EndY >= m_TileCountY)
+				m_EndY = m_TileCountY - 1;
+		}
+			break;
+		case STT_ISO:
+		{
+			Vector2 LBIndex = GetIsoTileIndexVec(CameraPos);
+			Vector2 LTIndex = GetIsoTileIndexVec(Vector3(CameraPos.x, EndPos.y, 0.0f));
+			Vector2 RBIndex = GetIsoTileIndexVec(Vector3(EndPos.x, CameraPos.y, 0.0f));
+			Vector2 RTIndex = GetIsoTileIndexVec(EndPos);
+
+			m_StartX = clamp((int)LBIndex.x, 0, m_TileCountX);
+			m_StartY = clamp((int)RBIndex.y, 0, m_TileCountY);
+			m_EndX = clamp((int)RTIndex.x, 0, m_TileCountX);
+			m_EndY = clamp((int)LTIndex.y, 0, m_TileCountY);
+
+		}
+			break;
+	}
 
 	for (int y = m_StartY; y < m_EndY; ++y)
 	{
 		for (int x = m_StartX; x < m_EndX; ++x)
 		{
-			m_vecTileObject[y * m_TileCountX + x]->Update(DeltaTime);
+			int Index = y * m_TileCountX + x;
+			m_vecTileObject[Index]->Update(DeltaTime);
 		}
 	}
 
@@ -97,7 +122,8 @@ int Stage2D_Com::LateUpdate(float DeltaTime)
 	{
 		for (int x = m_StartX; x < m_EndX; ++x)
 		{
-			m_vecTileObject[y * m_TileCountX + x]->LateUpdate(DeltaTime);
+			int Index = y * m_TileCountX + x;
+			m_vecTileObject[Index]->LateUpdate(DeltaTime);
 		}
 	}
 
@@ -110,10 +136,10 @@ void Stage2D_Com::Collision(float DeltaTime)
 	{
 		for (int x = m_StartX; x < m_EndX; ++x)
 		{
-			m_vecTileObject[y * m_TileCountX + x]->Collision(DeltaTime);
+			int Index = y * m_TileCountX + x;
+			m_vecTileObject[Index]->Collision(DeltaTime);
 		}
 	}
-
 }
 
 void Stage2D_Com::CollisionLateUpdate(float DeltaTime)
@@ -122,7 +148,8 @@ void Stage2D_Com::CollisionLateUpdate(float DeltaTime)
 	{
 		for (int x = m_StartX; x < m_EndX; ++x)
 		{
-			m_vecTileObject[y * m_TileCountX + x]->CollisionLateUpdate(DeltaTime);
+			int Index = y * m_TileCountX + x;
+			m_vecTileObject[Index]->CollisionLateUpdate(DeltaTime);
 		}
 	}
 }
@@ -133,7 +160,8 @@ void Stage2D_Com::Render(float DeltaTime)
 	{
 		for (int x = m_StartX; x < m_EndX; ++x)
 		{
-			m_vecTileObject[y * m_TileCountX + x]->Render(DeltaTime);
+			int Index = y * m_TileCountX + x;
+			m_vecTileObject[Index]->Render(DeltaTime);
 		}
 	}
 }
@@ -163,23 +191,14 @@ int Stage2D_Com::GetTileIndex(const Vector3 & Pos)
 
 void Stage2D_Com::CreateTileMap(int TileCountX, int TileCountY, const Vector3& StartPos, const Vector3& TileScale, STAGE2D_TILE_TYPE tileType, const string& KeyName, const TCHAR* FileName, const string& PathKey)
 {
-	for (size_t i = 0; i < m_TileObjectSize; i++)
-		SAFE_RELEASE(m_vecTileObject[i]);
-	for (size_t i = 0; i < m_TileTransformSize; i++)
-		SAFE_RELEASE(m_vecTileTransform[i]);
-	for (size_t i = 0; i < m_Tile2DComSize; i++)
-		SAFE_RELEASE(m_vecTile2DCom[i]);
-
 	m_StartPos = StartPos;
 	m_TileCountX = TileCountX;
 	m_TileCountY = TileCountY;
 
 	m_TileObjectCapacity = TileCountX * TileCountY;
-	m_TileTransformCapacity = TileCountX * TileCountY;
 	m_Tile2DComCapacity = TileCountX * TileCountY;
 
 	m_vecTileObject = new GameObject*[m_TileObjectCapacity];
-	m_vecTileTransform = new Transform_Com*[m_TileTransformCapacity];
 	m_vecTile2DCom = new Tile2D_Com*[m_Tile2DComCapacity];
 
 	m_TileScale = TileScale;
@@ -201,6 +220,7 @@ void Stage2D_Com::CreateTileMap(int TileCountX, int TileCountY, const Vector3& S
 			break;
 		case STT_ISO:
 			CreateIsoTile(StartPos, TileScale, KeyName, FileName, PathKey);
+			//CreateIsoTile(TileScale, KeyName, FileName, PathKey);
 			break;
 	}
 
@@ -215,15 +235,15 @@ void Stage2D_Com::CreateTile(const Vector3& StartPos, const Vector3& TileScale, 
 			//ÀÎµ¦½º°ø½Ä
 			int	Index = y * m_TileCountX + x;
 
-			GameObject*	pTileObject = GameObject::CreateObject("TileObject");
-			pTileObject->SetScene(m_Scene);
-			pTileObject->SetLayer(m_Layer);
+			GameObject*	newTileObject = GameObject::CreateObject("TileObject");
+			newTileObject->SetScene(m_Scene);
+			newTileObject->SetLayer(m_Layer);
 
-			Tile2D_Com*	pTile = pTileObject->AddComponent<Tile2D_Com>("Tile");
+			Tile2D_Com*	pTile = newTileObject->AddComponent<Tile2D_Com>("Tile");
 			pTile->SetTileType(STT_TILE);
 			pTile->SetLineOn(m_isLineOn);
 
-			Transform_Com*	pTransform = pTileObject->GetTransform();
+			Transform_Com*	pTransform = newTileObject->GetTransform();
 			pTransform->SetWorldScale(TileScale);
 
 			Vector3	vPos = StartPos + TileScale * Vector3((float)x, (float)y, 1.0f);
@@ -231,22 +251,20 @@ void Stage2D_Com::CreateTile(const Vector3& StartPos, const Vector3& TileScale, 
 
 			if (FileName != NULLPTR)
 			{
-				Renderer_Com* pRenderer = pTileObject->AddComponent<Renderer_Com>("Renderer");
+				Renderer_Com* pRenderer = newTileObject->AddComponent<Renderer_Com>("Renderer");
 				pRenderer->SetMesh("TextureRect");
 				pRenderer->SetRenderState(ALPHA_BLEND);
 				SAFE_RELEASE(pRenderer);
 
-				Material_Com* pMaterial = pTileObject->AddComponent<Material_Com>("Material");
+				Material_Com* pMaterial = newTileObject->AddComponent<Material_Com>("Material");
 				pMaterial->SetDiffuseTexture(0, KeyName, FileName, PathKey);
 				SAFE_RELEASE(pMaterial);
 			}
 
-			m_vecTileObject[Index] = pTileObject;
-			m_vecTileTransform[Index] = pTransform;
+			m_vecTileObject[Index] = newTileObject;
 			m_vecTile2DCom[Index] = pTile;
 
 			m_TileObjectSize++;
-			m_TileTransformSize++;
 			m_Tile2DComSize++;
 
 			if (m_TileObjectSize == m_TileObjectCapacity)
@@ -258,16 +276,7 @@ void Stage2D_Com::CreateTile(const Vector3& StartPos, const Vector3& TileScale, 
 				SAFE_DELETE(m_vecTileObject);
 				m_vecTileObject = newObject;
 			}
-			if (m_TileTransformSize == m_TileTransformCapacity)
-			{
-				m_TileTransformCapacity *= 2;
 
-				Transform_Com** newTr = new Transform_Com*[m_TileObjectCapacity];
-				memcpy(newTr, m_vecTileTransform, sizeof(m_vecTileTransform) * m_TileObjectSize);
-				SAFE_DELETE(m_vecTileTransform);
-				m_vecTileTransform = newTr;
-
-			}
 			if (m_Tile2DComSize == m_Tile2DComCapacity)
 			{
 				m_Tile2DComCapacity *= 2;
@@ -283,9 +292,12 @@ void Stage2D_Com::CreateTile(const Vector3& StartPos, const Vector3& TileScale, 
 
 void Stage2D_Com::CreateIsoTile(const Vector3& StartPos, const Vector3& TileScale, const string& KeyName , const TCHAR* FileName, const string& PathKey)
 {
+	Vector3 sPos;
+	sPos.x = (m_TileCountX * TileScale.x) * 0.5f;
+
 	for (int y = 0; y < m_TileCountY; y++)
 	{
-		for (int x = 0; x < m_TileCountY; x++)
+		for (int x = 0; x < m_TileCountX; x++)
 		{
 			int Index = y * m_TileCountX + x;
 			
@@ -300,8 +312,8 @@ void Stage2D_Com::CreateIsoTile(const Vector3& StartPos, const Vector3& TileScal
 			pTransform->SetWorldScale(TileScale);
 
 			Vector3 tPos;
-			tPos.x = StartPos.x + (TileScale.x * 0.5f) * (x - y);
-			tPos.y = StartPos.y + (TileScale.y * 0.5f) * (x - y);
+			tPos.x = sPos.x + (TileScale.x * 0.5f) * (x - y);
+			tPos.y = sPos.y + (TileScale.y * 0.5f) * (x + y);
 
 			pTransform->SetWorldPos(tPos);
 
@@ -318,11 +330,9 @@ void Stage2D_Com::CreateIsoTile(const Vector3& StartPos, const Vector3& TileScal
 			}
 
 			m_vecTile2DCom[Index] = pTile;
-			m_vecTileTransform[Index] = pTransform;
 			m_vecTileObject[Index] = newTileObject;
 
 			m_Tile2DComSize++;
-			m_TileTransformSize++;
 			m_TileObjectSize++;
 
 			if (m_TileObjectSize == m_TileObjectCapacity)
@@ -333,17 +343,6 @@ void Stage2D_Com::CreateIsoTile(const Vector3& StartPos, const Vector3& TileScal
 				memcpy(newObject, m_vecTileObject, sizeof(m_vecTileObject) * m_TileObjectSize);
 				SAFE_DELETE(m_vecTileObject);
 				m_vecTileObject = newObject;
-			}
-
-			if (m_TileTransformSize == m_TileTransformCapacity)
-			{
-				m_TileTransformCapacity *= 2;
-
-				Transform_Com** newTr = new Transform_Com*[m_TileObjectCapacity];
-				memcpy(newTr, m_vecTileTransform, sizeof(m_vecTileTransform) * m_TileObjectSize);
-				SAFE_DELETE(m_vecTileTransform);
-				m_vecTileTransform = newTr;
-
 			}
 
 			if (m_Tile2DComSize == m_Tile2DComCapacity)
@@ -375,7 +374,6 @@ void Stage2D_Com::SetLineOn(bool Value)
 
 	for (size_t i = 0; i < m_Tile2DComSize; i++)
 		m_vecTile2DCom[i]->SetLineOn(m_isLineOn);
-
 }
 
 int Stage2D_Com::GetRectTileIndex(const Vector3 & Pos)
@@ -396,12 +394,31 @@ int Stage2D_Com::GetRectTileIndex(const Vector3 & Pos)
 
 int Stage2D_Com::GetIsoTileIndex(const Vector3 & Pos)
 {
-	float ÆòÇàÀÌµ¿·® = Pos.y - (Pos.x * 0.5f);
-	Vector3 µÚ·Î¶¯±è = (Pos - ÆòÇàÀÌµ¿·®);
-	µÚ·Î¶¯±è.z = 0.0f;
-	
-	Vector3 ³ª´«°ª = µÚ·Î¶¯±è / m_TileScale;
-	int Å¸ÀÏÀÎµ¦½º = (int)(³ª´«°ª.y + m_TileCountX + ³ª´«°ª.x);
+	Vector3 sPos;
+	sPos.y = (m_TileCountY * m_TileScale.y) * 0.5f;
+	sPos.x = (m_TileCountX * m_TileScale.x) * 0.5f;
 
-	return Å¸ÀÏÀÎµ¦½º;
+	float dY = Pos.y - (Pos.x * 0.5f);
+	float dX = Pos.y + (Pos.x * 0.5f);
+
+	int XIndex = (int)((dX - sPos.y) / m_TileScale.y);
+	int YIndex = (int)((dY + sPos.y) / m_TileScale.y);
+
+	return YIndex * m_TileCountX + XIndex;
+}
+
+Vector2 Stage2D_Com::GetIsoTileIndexVec(const Vector3 & Pos)
+{
+	Vector3 sPos;
+	sPos.x = (m_TileCountX * m_TileScale.x) * 0.5f;
+	sPos.y = (m_TileCountY * m_TileScale.y) * 0.5f;
+
+								//Scale.x / Scale.y = 0.5
+	float dX = Pos.y + (Pos.x * 0.5f);
+	float dY = Pos.y - (Pos.x * 0.5f);
+
+	int XIndex = (int)((dX - sPos.y) / m_TileScale.y);
+	int YIndex = (int)((dY + sPos.y) / m_TileScale.y);
+	
+	return Vector2((float)XIndex, (float)YIndex);
 }

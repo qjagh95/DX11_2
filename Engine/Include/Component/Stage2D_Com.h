@@ -26,6 +26,7 @@ public:
 	int GetTileIndex(const Vector3& Pos);
 	int GetRectTileIndex(const Vector3& Pos);
 	int GetIsoTileIndex(const Vector3& Pos);
+	Vector2 GetIsoTileIndexVec(const Vector3& Pos);
 	void SetLineOn(bool Value);
 
 	void CreateTileMap(int TileCountX, int TileCountY, const Vector3& StartPos, const Vector3& TileScale, STAGE2D_TILE_TYPE tileType, const string& KeyName = "", const TCHAR* FileName = NULLPTR, const string& PathKey = TEXTURE_PATH);
@@ -36,13 +37,10 @@ private:
 
 private:
 	GameObject** m_vecTileObject;
-	Transform_Com** m_vecTileTransform;
 	Tile2D_Com** m_vecTile2DCom;
 
 	int m_TileObjectCapacity;
 	int m_TileObjectSize;
-	int m_TileTransformCapacity;
-	int m_TileTransformSize;
 	int m_Tile2DComCapacity;
 	int m_Tile2DComSize;
 

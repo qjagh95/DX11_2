@@ -7,11 +7,11 @@
 JEONG_USING
 SINGLETON_VAR_INIT(ShaderManager)
 
-ShaderManager::ShaderManager() : m_InputLayOutSize(0)
+JEONG::ShaderManager::ShaderManager() : m_InputLayOutSize(0)
 {
 }
 
-ShaderManager::~ShaderManager()
+JEONG::ShaderManager::~ShaderManager()
 {
 	Safe_Release_Map(m_ShaderMap);
 	Safe_Release_Map(m_LayOutMap);
@@ -27,7 +27,7 @@ ShaderManager::~ShaderManager()
 	m_CBufferMap.clear();
 }
 
-bool ShaderManager::Init()
+bool JEONG::ShaderManager::Init()
 {
 	char* Entry[ST_MAX] = {};
 
@@ -96,7 +96,7 @@ bool ShaderManager::Init()
 		return false;
 	}
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	Entry[ST_VERTEX] = "ColliderVS";
 	Entry[ST_PIXEL] = "ColliderPS";
 
@@ -113,7 +113,17 @@ bool ShaderManager::Init()
 		TrueAssert(true);
 		return false;
 	}
-#endif
+
+	Entry[ST_VERTEX] = "TileVS";
+	Entry[ST_PIXEL] = "TilePS";
+
+	if (LoadShader(TILE_SHADER, TEXT("TileShader.fx"), Entry) == false)
+	{
+		TrueAssert(true);
+		return false;
+	}
+
+//#endif
 
 	//상수버퍼 Create
 	CreateCBuffer("Transform", sizeof(TransformCBuffer), 0, CST_VERTEX | CST_PIXEL);

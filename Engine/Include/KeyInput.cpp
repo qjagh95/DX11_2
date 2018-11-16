@@ -16,22 +16,23 @@
 #include "Scene/SceneManager.h"
 
 JEONG_USING
-SINGLETON_VAR_INIT(KeyInput)
+SINGLETON_VAR_INIT(JEONG::KeyInput)
 
-KeyInput::KeyInput()
-	:m_NewKey(NULLPTR), m_MouseObject(NULLPTR), m_ShowCursor(false), m_isEquip(false), m_EquipObject(NULLPTR)
+JEONG::KeyInput::KeyInput()
+	:m_NewKey(NULLPTR), m_MouseObject(NULLPTR), m_EquipObject(NULLPTR), m_MouseWorldPoint(NULLPTR) ,m_ShowCursor(false), m_isEquip(false)
 {
 }
 
-KeyInput::~KeyInput()
+JEONG::KeyInput::~KeyInput()
 {
+	SAFE_RELEASE(m_MouseWindowPoint);
 	SAFE_RELEASE(m_MouseWorldPoint);
 	SAFE_RELEASE(m_MouseObject);
 	SAFE_RELEASE(m_EquipObject);
 	Safe_Delete_Map(m_KeyMap);
 }
 
-bool KeyInput::Init()
+bool JEONG::KeyInput::Init()
 {
 	AddKey("MoveLeft", 'A');
 	AddKey("MoveRight", 'D');
@@ -42,7 +43,7 @@ bool KeyInput::Init()
 	AddKey("RButton", VK_RBUTTON);
 	AddKey("MButton", VK_MBUTTON);
 
-	m_MouseObject = GameObject::CreateObject("MouseObject");
+	m_MouseObject = JEONG::GameObject::CreateObject("MouseObject");
 	m_MouseObject->GetTransform()->SetWorldScale(Vector3(31.0f, 32.0f, 0.0f));
 	m_MouseObject->GetTransform()->SetWorldPivot(Vector3(0.0f, 1.0f, 0.0f));
 
@@ -55,10 +56,9 @@ bool KeyInput::Init()
 	MouseMeterial->SetDiffuseTexture(0, "Mouse", TEXT("Mouse/Default/0.png"));
 	SAFE_RELEASE(MouseMeterial);
 
-	ColliderPoint_Com* MouseWindowPoint = m_MouseObject->AddComponent<ColliderPoint_Com>("MouseWindow");
-	MouseWindowPoint->SetCollisionGroup("UI");
-	MouseWindowPoint->SetMyTypeName("MouseWindow");
-	SAFE_RELEASE(MouseWindowPoint);
+	m_MouseWindowPoint = m_MouseObject->AddComponent<ColliderPoint_Com>("MouseWindow");
+	m_MouseWindowPoint->SetCollisionGroup("UI");
+	m_MouseWindowPoint->SetMyTypeName("MouseWindow");
 
 	m_MouseWorldPoint = m_MouseObject->AddComponent<ColliderPoint_Com>("MouseWorld");
 	m_MouseWorldPoint->SetMyTypeName("MouseWorld");
@@ -67,10 +67,13 @@ bool KeyInput::Init()
 	return true;
 }
 
-void KeyInput::Update(float DeltaTime)
+void JEONG::KeyInput::Update(float DeltaTime)
 {
-	unordered_map<string, KeyInfo*>::iterator StartIter = m_KeyMap.begin();
-	unordered_map<string, KeyInfo*>::iterator EndIter = m_KeyMap.end();
+	JEONG::Scene* curScene = JEONG::SceneManager::Get()->GetCurScene();
+	Vector3 CameraPos = curScene->GetMainCameraTransform()->GetWorldPos();
+
+	unordered_map<string, JEONG::KeyInfo*>::iterator StartIter = m_KeyMap.begin();
+	unordered_map<string, JEONG::KeyInfo*>::iterator EndIter = m_KeyMap.end();
 
 	for (; StartIter != EndIter; ++StartIter)
 	{
@@ -125,9 +128,10 @@ void KeyInput::Update(float DeltaTime)
 	m_MouseScreenPos.x = (float)DevicePos.x;
 	m_MouseScreenPos.y = (float)DevicePos.y;
 
-	//m_vMouseWorld = m_vMouseClient + GET_SINGLE(CCamera)->GetPos();
+	m_ResultPos.x = DevicePos.x + CameraPos.x;  
+	m_ResultPos.y = DevicePos.y + CameraPos.y;
 
-	m_MouseObject->GetTransform()->SetWorldPos((float)DevicePos.x, (float)DevicePos.y, 0.0f);
+	m_MouseObject->GetTransform()->SetWorldPos((float)m_ResultPos.x, (float)m_ResultPos.y, 0.0f);
 	m_MouseObject->Update(DeltaTime);
 
 	if (m_ShowCursor == false && (m_MouseScreenPos.x <= 0.0f && m_MouseScreenPos.x >= Device::Get()->GetWinSize().Width || m_MouseScreenPos.y <= 0.0f && m_MouseScreenPos.y >= Device::Get()->GetWinSize().Height))
@@ -141,31 +145,28 @@ void KeyInput::Update(float DeltaTime)
 		m_ShowCursor = false;
 		while (ShowCursor(FALSE) >= 0) {}
 	}
+
+	SAFE_RELEASE(curScene);
 }
 
-void KeyInput::RenderMouse(float DeltaTime)
+void JEONG::KeyInput::RenderMouse(float DeltaTime)
 {
 	m_MouseObject->Render(DeltaTime);
 }
 
-void KeyInput::ChangeMouseScene(Scene * pScene)
+void JEONG::KeyInput::ChangeMouseScene(JEONG::Scene * pScene)
 {
 	m_MouseObject->SetScene(pScene);
 }
 
-void KeyInput::UpdateMousePos()
+void JEONG::KeyInput::UpdateMousePos()
 {
 	m_MouseObject->LateUpdate(1.0f);
-
-	Scene* pScene = SceneManager::Get()->GetCurScene();
-	m_MouseWorldPoint->SetInfo(pScene->GetMainCameraTransform()->GetWorldPos());
-
-	SAFE_RELEASE(pScene);
 }
 
-bool KeyInput::KeyDown(const string & Name)
+bool JEONG::KeyInput::KeyDown(const string & Name)
 {
-	KeyInfo* getKey = FindKey(Name);
+	JEONG::KeyInfo* getKey = FindKey(Name);
 
 	if (getKey == NULLPTR)
 		return false;
@@ -173,9 +174,9 @@ bool KeyInput::KeyDown(const string & Name)
 	return getKey->KeyDown;
 }
 
-bool KeyInput::KeyPress(const string & Name)
+bool JEONG::KeyInput::KeyPress(const string & Name)
 {
-	KeyInfo* getKey = FindKey(Name);
+	JEONG::KeyInfo* getKey = FindKey(Name);
 
 	if (getKey == NULLPTR)
 		return false;
@@ -183,9 +184,9 @@ bool KeyInput::KeyPress(const string & Name)
 	return getKey->KeyPress;
 }
 
-bool KeyInput::KeyUp(const string & Name)
+bool JEONG::KeyInput::KeyUp(const string & Name)
 {
-	KeyInfo* getKey = FindKey(Name);
+	JEONG::KeyInfo* getKey = FindKey(Name);
 
 	if (getKey == NULLPTR)
 		return false;
@@ -193,22 +194,22 @@ bool KeyInput::KeyUp(const string & Name)
 	return getKey->KeyUp;
 }
    
-KeyInfo* KeyInput::FindKey(const string& Name)
+JEONG::KeyInfo* JEONG::KeyInput::FindKey(const string& Name)
 {
-	unordered_map<string, KeyInfo*>::iterator FindIter = m_KeyMap.find(Name);
+	unordered_map<string, JEONG::KeyInfo*>::iterator FindIter = m_KeyMap.find(Name);
 
 	if (FindIter == m_KeyMap.end())
 		return NULLPTR;
 	
 	return FindIter->second;
 }
-void KeyInput::SetEquipObject(GameObject * object)
+void JEONG::KeyInput::SetEquipObject(JEONG::GameObject * object)
 {
 	m_EquipObject = object;
 	m_isEquip = true;
 }
 
-void KeyInput::ResetEquipObject()
+void JEONG::KeyInput::ResetEquipObject()
 {
 	if (m_EquipObject != NULLPTR)
 	{

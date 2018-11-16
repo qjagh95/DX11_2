@@ -110,6 +110,7 @@
       <PreprocessorDefinitions>JEONG_IMPORTWIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\;$(SolutionDir)DirectXTK\Inc;</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>ClientHeader.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -125,6 +126,7 @@
       <PreprocessorDefinitions>JEONG_IMPORT_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>ClientHeader.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>.\;$(SolutionDir)DirectXTK\Inc;</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,6 +145,7 @@
       <PreprocessorDefinitions>JEONG_IMPORTWIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\;$(SolutionDir)DirectXTK\Inc;</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>ClientHeader.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -162,6 +165,7 @@
       <PreprocessorDefinitions>JEONG_IMPORTNDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>ClientHeader.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>.\;$(SolutionDir)DirectXTK\Inc;</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
