@@ -21,8 +21,8 @@ public:
 
 	Scene* GetScene() const { return m_Scene; }
 	Layer* GetLayer() const { return m_Layer; }
-	MOVE_DIR GetMoveDir() const { return m_MoveDir; }
-	void SetMoveDir(MOVE_DIR dir) { m_MoveDir = dir; }
+	string GetLayerName() const { return m_LayerName; }
+	int GetLayerZOrder() const { return m_LayerZOrder; }
 
 	void SetScene(Scene* scene);
 	void SetLayer(Layer* layer);
@@ -34,7 +34,7 @@ public:
 	void SetRotationX(float RotX);
 	void SetRotationY(float RotY);
 	void SetRotationZ(float RotZ);
-	static GameObject* CreateObject(const string& TagName, Layer* layer = NULLPTR);
+	static GameObject* CreateObject(const string& TagName, Layer* layer = NULLPTR, bool isStaticObject = false);
 
 	const list<Component_Base*>* GetComponentList() const;
 	bool CheckComponentType(COMPONENT_TYPE eType);
@@ -111,6 +111,7 @@ public:
 	static GameObject* FindObject(const string& TagName);
 
 	void AddChild(GameObject* Child);
+	void AddStaticObject();
 
 private:
 	list<Component_Base*> m_ComponentList;
@@ -118,7 +119,8 @@ private:
 
 	Scene* m_Scene;
 	Layer* m_Layer;
-	MOVE_DIR m_MoveDir;
+	string m_LayerName;
+	int m_LayerZOrder;
 	
 	list<Component_Base*> m_FindComList;
 	static unordered_map<Scene*, unordered_map<string, GameObject*>> m_ProtoTypeMap;

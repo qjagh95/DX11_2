@@ -26,6 +26,12 @@
     <Filter Include="LoadingScene">
       <UniqueIdentifier>{d25b6710-426d-4cd8-aadc-953b42cc3a31}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StaticTextScene">
+      <UniqueIdentifier>{23a968b4-dfdd-4c29-868b-6a4acd6f91ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StaticTextScene\SceneMain">
+      <UniqueIdentifier>{7eda37a0-9ada-4e94-9ffe-48e12225805b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -61,6 +67,9 @@
     <ClCompile Include="SceneMain\LoadingThread.cpp">
       <Filter>LoadingScene</Filter>
     </ClCompile>
+    <ClCompile Include="SceneMain\StaticTestScene.cpp">
+      <Filter>StaticTextScene\SceneMain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientHeader.h">
@@ -92,6 +101,9 @@
     </ClInclude>
     <ClInclude Include="SceneMain\LoadingThread.h">
       <Filter>LoadingScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMain\StaticTestScene.h">
+      <Filter>StaticTextScene\SceneMain</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

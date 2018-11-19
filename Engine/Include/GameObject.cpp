@@ -14,7 +14,7 @@ JEONG_USING
 unordered_map<JEONG::Scene*, unordered_map<string, JEONG::GameObject*>> JEONG::GameObject::m_ProtoTypeMap;
 
 JEONG::GameObject::GameObject()
-	:m_Scene(NULLPTR), m_Layer(NULLPTR), m_Transform(NULLPTR), m_Parent(NULLPTR), m_MoveDir(MD_UP)
+	:m_Scene(NULLPTR), m_Layer(NULLPTR), m_Transform(NULLPTR), m_Parent(NULLPTR)
 {
 	SetTag("GameObject");
 }
@@ -347,6 +347,9 @@ void JEONG::GameObject::SetScene(JEONG::Scene * scene)
 void JEONG::GameObject::SetLayer(JEONG::Layer * layer)
 {
 	m_Layer = layer;
+	m_LayerName = layer->GetTag();
+	m_LayerZOrder = layer->GetZOrder();
+
 	m_Transform->m_Layer = layer;
 
 	list<JEONG::Component_Base*>::iterator StartIter = m_ComponentList.begin();
@@ -356,10 +359,17 @@ void JEONG::GameObject::SetLayer(JEONG::Layer * layer)
 		(*StartIter)->m_Layer = layer;
 }
 
-JEONG::GameObject * JEONG::GameObject::CreateObject(const string & TagName, JEONG::Layer * layer)
+JEONG::GameObject * JEONG::GameObject::CreateObject(const string & TagName, JEONG::Layer * layer, bool isStaticObject)
 {
-	JEONG::GameObject*	newObject = new JEONG::GameObject();
+	JEONG::GameObject* newObject = StaticManager::Get()->FindStaticObject(TagName);
+
+	if(newObject == NULLPTR)
+		newObject = new JEONG::GameObject();
+
 	newObject->SetTag(TagName);
+
+	if (isStaticObject == true)
+		newObject->AddStaticObject();
 
 	if (newObject->Init() == false)
 	{
@@ -369,7 +379,17 @@ JEONG::GameObject * JEONG::GameObject::CreateObject(const string & TagName, JEON
 
 	//해당 레이어에 오브젝트 추가를 해준다.
 	if (layer != NULLPTR)
-		layer->AddObject(newObject);
+	{
+		if(isStaticObject == false)
+			layer->AddObject(newObject);
+
+		else
+		{
+			Scene* pScene = layer->GetScene();
+			newObject->SetScene(pScene);
+			newObject->SetLayer(layer);
+		}
+	}
 
 	return newObject;
 }
@@ -554,6 +574,11 @@ void JEONG::GameObject::AddChild(JEONG::GameObject * Child)
 
 	m_ChildList.push_back(Child);
 	m_Layer->AddObject(Child);
+}
+
+void GameObject::AddStaticObject()
+{
+	StaticManager::Get()->AddStaticObject(this);
 }
 
 const list<JEONG::Component_Base*>* JEONG::GameObject::FindComponentFromTag(const string& TagName)

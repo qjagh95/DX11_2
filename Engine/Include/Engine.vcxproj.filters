@@ -214,6 +214,9 @@
     <Filter Include="Core\05. PathManager">
       <UniqueIdentifier>{48f6e9a7-548c-4725-8616-1a4015796c91}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\08. Object\Component\BaseComponent\13. StaticManager">
+      <UniqueIdentifier>{48427f01-addd-4388-abb1-a58a2053d75a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -393,6 +396,9 @@
     <ClInclude Include="Component\Tile2D_Com.h">
       <Filter>Core\08. Object\Component\BaseComponent\12. Tile2D</Filter>
     </ClInclude>
+    <ClInclude Include="StaticManager.h">
+      <Filter>Core\08. Object\Component\BaseComponent\13. StaticManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Copy.bat">
@@ -561,6 +567,9 @@
     </ClCompile>
     <ClCompile Include="Component\Tile2D_Com.cpp">
       <Filter>Core\08. Object\Component\BaseComponent\12. Tile2D</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticManager.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\13. StaticManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

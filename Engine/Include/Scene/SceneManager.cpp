@@ -139,6 +139,7 @@ int JEONG::SceneManager::ChangeScene()
 		m_isChange = false;
 
 		JEONG::KeyInput::Get()->ChangeMouseScene(m_CurScene);
+		JEONG::StaticManager::Get()->ChangeScene(m_CurScene);
 		return 1;
 	}
 

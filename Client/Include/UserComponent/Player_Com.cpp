@@ -172,19 +172,16 @@ int Player_Com::Input(float DeltaTime)
 		GameObject* newClone1 = GameObject::CreateClone("BulletObject", "Bullet_Clone", m_Layer);
 		newClone1->GetTransform()->SetWorldPos(m_Transform->GetWorldPos());
 		newClone1->GetTransform()->RotationZ(45.0f);
-		newClone1->SetMoveDir(MD_UP);
 		SAFE_RELEASE(newClone1);
 
 		GameObject* newClone2 = GameObject::CreateClone("BulletObject", "Bullet_Clone", m_Layer);
 		newClone2->GetTransform()->SetWorldPos(m_Transform->GetWorldPos());
 		newClone2->GetTransform()->RotationZ(0.0f);
-		newClone2->SetMoveDir(MD_UP);
 		SAFE_RELEASE(newClone2);
 
 		GameObject* newClone3 = GameObject::CreateClone("BulletObject", "Bullet_Clone", m_Layer);
 		newClone3->GetTransform()->SetWorldPos(m_Transform->GetWorldPos());
 		newClone3->GetTransform()->RotationZ(-45.0f);
-		newClone3->SetMoveDir(MD_UP);
 		SAFE_RELEASE(newClone3);
 
 		getMaterial->SetMaterial(Vector4::DarkCyan);
@@ -221,7 +218,6 @@ int Player_Com::Input(float DeltaTime)
 	{
 		GameObject* newClone3 = GameObject::CreateClone("BulletObjectRot", "BulletRot_Clone", m_Layer);
 		newClone3->GetTransform()->SetWorldPos(m_Transform->GetWorldPos());   
-		newClone3->SetMoveDir(MD_UP);
 
 		BulletRot_Com* getCom = newClone3->FindComponentFromTag<BulletRot_Com>("BulletRot_Com");
 		GameObject* TargetObject = GameObject::FindObject("Monster");
@@ -236,7 +232,6 @@ int Player_Com::Input(float DeltaTime)
 	{
 		GameObject* newClone1 = GameObject::CreateClone("BulletObjectRot", "BulletRot_Clone", m_Layer);
 		newClone1->GetTransform()->SetWorldPos(m_Transform->GetWorldPos());
-		newClone1->SetMoveDir(MD_UP);
 		newClone1->GetTransform()->SetWorldRotZ(135.0f);
 
 		BulletRot_Com* getCom1 = newClone1->FindComponentFromTag<BulletRot_Com>("BulletRot_Com");
@@ -245,7 +240,6 @@ int Player_Com::Input(float DeltaTime)
 
 		GameObject* newClone2 = GameObject::CreateClone("BulletObjectRot", "BulletRot_Clone", m_Layer);
 		newClone2->GetTransform()->SetWorldPos(m_Transform->GetWorldPos());
-		newClone2->SetMoveDir(MD_UP);
 		newClone2->GetTransform()->SetWorldRotZ(-135.0f);
 
 		BulletRot_Com* getCom2 = newClone2->FindComponentFromTag<BulletRot_Com>("BulletRot_Com");

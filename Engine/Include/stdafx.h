@@ -65,6 +65,7 @@
 #include "SlotManager.h"
 #include "GameObject.h"
 #include "SoundManager.h"
+#include "StaticManager.h"
 
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"

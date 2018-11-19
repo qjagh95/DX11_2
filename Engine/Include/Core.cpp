@@ -44,6 +44,8 @@ Core::~Core()
 	ThreadManager::Delete();
 	FontManager::Delete();
 	SoundManager::Delete();
+	StaticManager::Delete();
+
 	CoUninitialize();
 }
 
@@ -124,6 +126,12 @@ bool Core::Init(HINSTANCE hInst, HWND hWnd, unsigned int Width, unsigned int Hei
 	}
 
 	if (FontManager::Get()->Init() == false)
+	{
+		TrueAssert(true);
+		return false;
+	}
+
+	if (StaticManager::Get()->Init() == false)
 	{
 		TrueAssert(true);
 		return false;

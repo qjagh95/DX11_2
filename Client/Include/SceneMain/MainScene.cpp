@@ -1,6 +1,7 @@
 #include "ClientHeader.h"
 #include "MainScene.h"
 #include "StartScene.h"
+#include "StaticTestScene.h"
 #include "GameObject.h"
 
 #include "Thread.h"
@@ -70,11 +71,11 @@ bool MainScene::Init()
 
 	mainCamera->SetTarget(PlayerObject);
 
-	GameObject* BulletObject = GameObject::CreateProtoType("Bullet_Clone" /*false*/);
+	GameObject* BulletObject = GameObject::CreateProtoType("Bullet_Clone"/*, false*/);
 	Bullet_Com* bullet_Com = BulletObject->AddComponent<Bullet_Com>("Bullet_Com");
 	//loadThread->AddLoadingCount();
 
-	GameObject* BulletObject2 = GameObject::CreateProtoType("BulletRot_Clone"/*false*/);
+	GameObject* BulletObject2 = GameObject::CreateProtoType("BulletRot_Clone"/*, false*/);
 	BulletRot_Com* bullet_Com2 = BulletObject2->AddComponent<BulletRot_Com>("BulletRot_Com");
 	//loadThread->AddLoadingCount();
 
@@ -110,6 +111,9 @@ bool MainScene::Init()
 	SlotObject1->GetTransform()->SetWorldPos(Vector3(1030.0f, 300.0f, 0.0f));
 	SlotObject2->GetTransform()->SetWorldPos(Vector3(1060.0f, 300.0f, 0.0f));
 	SlotObject3->GetTransform()->SetWorldPos(Vector3(1090.0f, 300.0f, 0.0f));
+	//loadThread->AddLoadingCount();
+	//loadThread->AddLoadingCount();
+	//loadThread->AddLoadingCount();
 
 	IconSlot_Com* SlotCom1 = SlotObject1->AddComponent<IconSlot_Com>("Slot1");
 	SlotCom1->SetSlotIndex(0);
@@ -122,6 +126,8 @@ bool MainScene::Init()
 	GameObject* IconObject2 = GameObject::CreateObject("Icon2", UILayer);
 	IconObject1->GetTransform()->SetWorldPos(Vector3(400.0f, 100.0f, 0.0f));
 	IconObject2->GetTransform()->SetWorldPos(Vector3(500.0f, 100.0f, 0.0f));
+	//loadThread->AddLoadingCount();
+	//loadThread->AddLoadingCount();
 
 	UICon_Com* IconCom1 = IconObject1->AddComponent<UICon_Com>("Icon1");
 	UICon_Com* IconCom2 = IconObject2->AddComponent<UICon_Com>("Icon2");
@@ -139,10 +145,12 @@ bool MainScene::Init()
 	m_TestText->SetRenderArea(0, 0, 200, 200);
 	m_TestText->SetIsShow(true);
 	TextObject1->GetTransform()->SetWorldPos(Vector3(300.0f, 300.0f, 0));
+	//loadThread->AddLoadingCount();
 
 	GameObject* newCheck = GameObject::CreateObject("CheckBox", UILayer);
 	newCheck->GetTransform()->SetWorldPos(300.0f, 360.0f, 0.0f);
 	CheckBox_Com* CheckCom = newCheck->AddComponent<CheckBox_Com>("CheckBox");
+	//loadThread->AddLoadingCount();
 
 	SAFE_RELEASE(newCheck);
 	SAFE_RELEASE(CheckCom);
@@ -215,6 +223,13 @@ int MainScene::Input(float DeltaTime)
 	//	m_TestText->GetTransform()->Move(Vector3(0.0f, 1.0f, 0.0f), 300.0f, DeltaTime);
 	//if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 	//	m_TestText->GetTransform()->Move(Vector3(0.0f, -1.0f, 0.0f), 300.0f, DeltaTime);
+
+	if (GetAsyncKeyState(VK_HOME) & 0x8000)
+	{
+		SceneManager::Get()->CreateNextScene();
+		SceneManager::Get()->AddSceneComponent<StaticTestScene>("StaticTestScene", false);
+	}
+
 
 	return 0;
 }

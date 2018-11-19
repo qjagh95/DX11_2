@@ -186,6 +186,7 @@
     <ClCompile Include="SceneMain\LoadingThread.cpp" />
     <ClCompile Include="SceneMain\MainScene.cpp" />
     <ClCompile Include="SceneMain\StartScene.cpp" />
+    <ClCompile Include="SceneMain\StaticTestScene.cpp" />
     <ClCompile Include="UserComponent\BulletBoom_Com.cpp" />
     <ClCompile Include="UserComponent\BulletRot_Com.cpp" />
     <ClCompile Include="WinMain.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="SceneMain\LoadingThread.h" />
     <ClInclude Include="SceneMain\MainScene.h" />
     <ClInclude Include="SceneMain\StartScene.h" />
+    <ClInclude Include="SceneMain\StaticTestScene.h" />
     <ClInclude Include="UserComponent\BulletBoom_Com.h" />
     <ClInclude Include="UserComponent\BulletRot_Com.h" />
     <ClInclude Include="UserComponent\Bullet_Com.h" />

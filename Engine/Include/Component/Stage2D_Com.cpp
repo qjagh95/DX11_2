@@ -315,6 +315,11 @@ void Stage2D_Com::CreateIsoTile(const Vector3& StartPos, const Vector3& TileScal
 			tPos.x = sPos.x + (TileScale.x * 0.5f) * (x - y);
 			tPos.y = sPos.y + (TileScale.y * 0.5f) * (x + y);
 
+			//전체사이즈의 중앙에서부터 시작한다.
+			//x축이 증가할때 y축도 증가해야함.
+
+			//y축이 증가할땐 x축이 줄어들어야함.
+
 			pTransform->SetWorldPos(tPos);
 
 			if (FileName != NULLPTR)
@@ -413,7 +418,7 @@ Vector2 Stage2D_Com::GetIsoTileIndexVec(const Vector3 & Pos)
 	sPos.x = (m_TileCountX * m_TileScale.x) * 0.5f;
 	sPos.y = (m_TileCountY * m_TileScale.y) * 0.5f;
 
-								//Scale.x / Scale.y = 0.5
+								//Scale.x / Scale.y = 기울기(일단 고정값)
 	float dX = Pos.y + (Pos.x * 0.5f);
 	float dY = Pos.y - (Pos.x * 0.5f);
 

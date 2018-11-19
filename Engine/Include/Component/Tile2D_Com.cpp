@@ -10,6 +10,7 @@ Tile2D_Com::Tile2D_Com()
 {
 	m_ComType = CT_STAGE2D;
 	SetTag("Stage2D");
+	m_isLine = true;
 }
 
 Tile2D_Com::Tile2D_Com(const Tile2D_Com& CopyData)
