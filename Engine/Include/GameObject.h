@@ -112,6 +112,7 @@ public:
 
 	void AddChild(GameObject* Child);
 	void AddStaticObject();
+	bool EmptyComponent() { return m_ComponentList.empty(); }
 
 private:
 	list<Component_Base*> m_ComponentList;

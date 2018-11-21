@@ -102,5 +102,5 @@ void StartScene::Render(float DeltaTime)
 void StartScene::StartButtonActive(float DeltaTime)
 {
 	SceneManager::Get()->CreateNextScene();
-	SceneManager::Get()->AddSceneComponent<LoadingScene>("LoadingScene", false);
+	SceneManager::Get()->AddSceneComponent<MainScene>("MainScene", false);
 }

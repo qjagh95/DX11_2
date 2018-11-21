@@ -38,9 +38,9 @@ private:
 	RendererCBuffer* FindCBuffer(const string& KeyName);
 
 private:
+
 	//랜더 컴포넌트가 매쉬, 쉐이더, 재질정보를 갖고있는다.
 	//기본으로 초기화구문에서 바로 White(1, 1, 1, 1) = 곱하면 원색상을 가지고 있다.
-
 	Mesh* m_Mesh;				
 	Shader* m_Shader;
 	Material_Com* m_Material;

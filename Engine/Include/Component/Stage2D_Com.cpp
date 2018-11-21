@@ -63,6 +63,11 @@ int Stage2D_Com::Update(float DeltaTime)
 			m_EndX = (int)EndPos.x + 1;
 			m_EndY = (int)EndPos.y * 2 + 1;
 
+			//m_StartX = m_StartX < 0 ? 0 : m_TileCountX - 1;
+			//m_StartY = m_StartY < 0 ? 0 : m_TileCountY - 1;
+			//m_EndX = m_EndX < 0 ? 0 : m_TileCountX - 1;
+			//m_EndY = m_EndY < 0 ? 0 : m_TileCountY - 1;
+
 			if (m_StartX < 0)
 				m_StartX = 0;
 

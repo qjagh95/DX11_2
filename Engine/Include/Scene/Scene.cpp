@@ -332,7 +332,7 @@ void JEONG::Scene::Render(float DeltaTime)
 
 void JEONG::Scene::AddLayer(const string & TagName, int ZOrder)
 {
-	Layer* newLayer = new Layer();
+	JEONG::Layer* newLayer = new JEONG::Layer();
 	newLayer->m_Scene = this;
 	newLayer->SetTag(TagName);
 
@@ -389,9 +389,7 @@ void JEONG::Scene::SetLayerDie(const string & TagName, bool isActive)
 	for (; StartIter != EndIter; StartIter++)
 	{
 		if ((*StartIter)->GetTag() == TagName)
-		{
 			(*StartIter)->SetIsActive(isActive);
-		}
 	}
 }
 

@@ -70,7 +70,7 @@ bool Player_Com::Init()
 
 	m_Transform->SetWorldScale(300.0f, 300.0f, 1.0f);
 	m_Transform->SetWorldPivot(0.5f, 0.0f, 0.0f);
-	m_Transform->SetWorldPos(8000.0f, 4000.0f, 1.0f);
+	m_Transform->SetWorldPos(0.0f, 0.0f, 1.0f);
 	m_Transform->RotationZ(45.0f);
 
 	myAnimation = m_Object->AddComponent<Animation2D_Com>("PlayerAnimation");

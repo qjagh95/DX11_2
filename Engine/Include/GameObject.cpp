@@ -363,9 +363,10 @@ JEONG::GameObject * JEONG::GameObject::CreateObject(const string & TagName, JEON
 {
 	JEONG::GameObject* newObject = StaticManager::Get()->FindStaticObject(TagName);
 
-	if(newObject == NULLPTR)
-		newObject = new JEONG::GameObject();
+	if (newObject != NULLPTR)
+		return newObject;
 
+	newObject = new JEONG::GameObject();
 	newObject->SetTag(TagName);
 
 	if (isStaticObject == true)

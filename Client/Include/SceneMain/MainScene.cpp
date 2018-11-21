@@ -63,23 +63,29 @@ bool MainScene::Init()
 	GameObject* MonsterObject = GameObject::CreateObject("Monster", Default);
 	Monster_Com* monster_Com = MonsterObject->AddComponent<Monster_Com>("Monster_Com");
 	//loadThread->AddLoadingCount();
-	GameObject* PlayerObject = GameObject::CreateObject("Player", Default);
-	Player_Com* player_Com = PlayerObject->AddComponent<Player_Com>("Player_Com");
+	GameObject* PlayerObject = GameObject::CreateObject("Player", Default, true);
+
+	if (PlayerObject->EmptyComponent())
+	{
+		Player_Com* player_Com = PlayerObject->AddComponent<Player_Com>("Player_Com");
+		SAFE_RELEASE(player_Com);
+	}
+
 	//loadThread->AddLoadingCount();
 	//loadThread->AddLoadingCount();
 	//loadThread->AddLoadingCount();
 
 	mainCamera->SetTarget(PlayerObject);
 
-	GameObject* BulletObject = GameObject::CreateProtoType("Bullet_Clone"/*, false*/);
+	GameObject* BulletObject = GameObject::CreateProtoType("Bullet_Clone", false);
 	Bullet_Com* bullet_Com = BulletObject->AddComponent<Bullet_Com>("Bullet_Com");
 	//loadThread->AddLoadingCount();
 
-	GameObject* BulletObject2 = GameObject::CreateProtoType("BulletRot_Clone"/*, false*/);
+	GameObject* BulletObject2 = GameObject::CreateProtoType("BulletRot_Clone", false);
 	BulletRot_Com* bullet_Com2 = BulletObject2->AddComponent<BulletRot_Com>("BulletRot_Com");
 	//loadThread->AddLoadingCount();
 
-	GameObject* BoomObject = GameObject::CreateProtoType("Boom"/*, false*/);
+	GameObject* BoomObject = GameObject::CreateProtoType("Boom", false);
 	BulletBoom_Com* bulletBoom_Com = BoomObject->AddComponent<BulletBoom_Com>("Boom_Com");
 	//loadThread->AddLoadingCount();
 
@@ -182,7 +188,6 @@ bool MainScene::Init()
 	SAFE_RELEASE(monster_Com);
 	SAFE_RELEASE(bullet_Com);
 	SAFE_RELEASE(BulletObject);
-	SAFE_RELEASE(player_Com);
 	SAFE_RELEASE(PlayerObject);
 	SAFE_RELEASE(Default);
 	SAFE_RELEASE(UILayer);
