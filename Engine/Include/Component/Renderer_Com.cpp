@@ -20,7 +20,7 @@
 
 JEONG_USING
 
-Renderer_Com::Renderer_Com()
+JEONG::Renderer_Com::Renderer_Com()
 	:m_Mesh(NULLPTR), m_Shader(NULLPTR), m_LayOut(NULLPTR), m_Material(NULLPTR)
 {
 	m_ComType = CT_RENDER;
@@ -31,7 +31,7 @@ Renderer_Com::Renderer_Com()
 		SetRenderState(DEPTH_DISABLE); //여기서 2D오브젝트들은 이미 Set을 해줌 알파 XX
 }
 
-Renderer_Com::Renderer_Com(const Renderer_Com& copyObject)
+JEONG::Renderer_Com::Renderer_Com(const Renderer_Com& copyObject)
 	:Component_Base(copyObject)
 {
 	*this = copyObject;
@@ -65,7 +65,7 @@ Renderer_Com::Renderer_Com(const Renderer_Com& copyObject)
 	}
 }
 
-Renderer_Com::~Renderer_Com()
+JEONG::Renderer_Com::~Renderer_Com()
 {
 	SAFE_RELEASE(m_Mesh);
 	SAFE_RELEASE(m_Shader);
@@ -86,43 +86,43 @@ Renderer_Com::~Renderer_Com()
 	m_CBufferMap.clear();
 }
 
-bool Renderer_Com::Init()
+bool JEONG::Renderer_Com::Init()
 {
 	//내가 가지고있는 오브젝트에 AddComponent
-	m_Material = AddComponent<Material_Com>("Material");
+	m_Material = AddComponent<JEONG::Material_Com>("Material");
 	CheckComponent();
 
 	return true;
 }
 
-int Renderer_Com::Input(float DeltaTime)
+int JEONG::Renderer_Com::Input(float DeltaTime)
 {
 	return 0;
 }
 
-int Renderer_Com::Update(float DeltaTime)
+int JEONG::Renderer_Com::Update(float DeltaTime)
 {
 	return 0;
 }
 
-int Renderer_Com::LateUpdate(float DeltaTime)
+int JEONG::Renderer_Com::LateUpdate(float DeltaTime)
 {
 
 	return 0;
 }
 
-void Renderer_Com::Collision(float DeltaTime)
+void JEONG::Renderer_Com::Collision(float DeltaTime)
 {
 }
 
-void Renderer_Com::CollisionLateUpdate(float DeltaTime)
+void JEONG::Renderer_Com::CollisionLateUpdate(float DeltaTime)
 {
 }
 
-void Renderer_Com::Render(float DeltaTime)
+void JEONG::Renderer_Com::Render(float DeltaTime)
 {
 	if (m_Material == NULLPTR)
-		m_Material = FindComponentFromType<Material_Com>(CT_MATERIAL);	
+		m_Material = FindComponentFromType<JEONG::Material_Com>(CT_MATERIAL);
 
 	//업데이트 함수에서 이미 World행렬은 변환이 되었다.
 	//랜더러 컴포넌트에서 투영변환(Projection)을하고, 쉐이더에 버퍼정보를 보낸다.(UpdateTransform)
@@ -164,17 +164,17 @@ void Renderer_Com::Render(float DeltaTime)
 	}
 }
 
-Renderer_Com * Renderer_Com::Clone()
+JEONG::Renderer_Com * JEONG::Renderer_Com::Clone()
 {
-	return new Renderer_Com(*this);
+	return new JEONG::Renderer_Com(*this);
 }
 
-void Renderer_Com::AfterClone()
+void JEONG::Renderer_Com::AfterClone()
 {
-	m_Material = FindComponentFromType<Material_Com>(CT_MATERIAL);
+	m_Material = FindComponentFromType<JEONG::Material_Com>(CT_MATERIAL);
 }
 
-void Renderer_Com::SetMesh(Mesh * mesh)
+void JEONG::Renderer_Com::SetMesh(JEONG::Mesh * mesh)
 {
 	SAFE_RELEASE(m_Mesh);
 	m_Mesh = mesh;
@@ -188,7 +188,7 @@ void Renderer_Com::SetMesh(Mesh * mesh)
 	}
 }
 
-void Renderer_Com::SetMesh(const string & KeyName)
+void JEONG::Renderer_Com::SetMesh(const string & KeyName)
 {
 	SAFE_RELEASE(m_Mesh);
 
@@ -202,7 +202,7 @@ void Renderer_Com::SetMesh(const string & KeyName)
 	}
 }
 
-void Renderer_Com::SetShader(Shader * shader)
+void JEONG::Renderer_Com::SetShader(JEONG::Shader * shader)
 {
 	SAFE_RELEASE(m_Shader);
 	m_Shader = shader;
@@ -211,20 +211,20 @@ void Renderer_Com::SetShader(Shader * shader)
 		shader->AddRefCount();
 }
 
-void Renderer_Com::SetShader(const string & KeyName)
+void JEONG::Renderer_Com::SetShader(const string & KeyName)
 {
 	SAFE_RELEASE(m_Shader);
 	m_Shader = ShaderManager::Get()->FindShader(KeyName);
 }
 
-void Renderer_Com::SetLayOut(const string & KeyName)
+void JEONG::Renderer_Com::SetLayOut(const string & KeyName)
 {
 	m_LayOut = ShaderManager::Get()->FindInputLayOut(KeyName);
 }
 
-void Renderer_Com::SetRenderState(const string & KeyName)
+void JEONG::Renderer_Com::SetRenderState(const string & KeyName)
 {
-	RenderState* getState = RenderManager::Get()->FindRenderState(KeyName);
+	JEONG::RenderState* getState = RenderManager::Get()->FindRenderState(KeyName);
 
 	if (getState == NULLPTR)
 		return;
@@ -233,7 +233,7 @@ void Renderer_Com::SetRenderState(const string & KeyName)
 	m_RenderState[getState->GetStateEnum()] = getState;
 }
 
-bool Renderer_Com::CreateRendererCBuffer(const string & KeyName, int BufferSize)
+bool JEONG::Renderer_Com::CreateRendererCBuffer(const string & KeyName, int BufferSize)
 {
 	RendererCBuffer* newCBuffer = FindCBuffer(KeyName);
 
@@ -249,7 +249,7 @@ bool Renderer_Com::CreateRendererCBuffer(const string & KeyName, int BufferSize)
 	return true;
 }
 
-void Renderer_Com::UpdateRendererCBuffer(const string & KeyName, void * pData, int BufferSize)
+void JEONG::Renderer_Com::UpdateRendererCBuffer(const string & KeyName, void * pData, int BufferSize)
 {
 	//여기선 메모리 복사만 해놓고 랜더에서 쉐이더로 넘긴다.
 	RendererCBuffer* getCBuffer = FindCBuffer(KeyName);
@@ -267,14 +267,14 @@ void Renderer_Com::UpdateRendererCBuffer(const string & KeyName, void * pData, i
 }
 
 //여기에서 실질적인 투영을위한 변환을 해준다!
-void Renderer_Com::UpdateTransform()
+void JEONG::Renderer_Com::UpdateTransform()
 {
 	//m_Transform은 GameObject가 생성될때 동적할당으로 자동생성되며 자동초기화를 한다.
 	//AddComponent를 할때 Component가 가진 Transform_Com변수는 오브젝트가 가진 Transform_Com
 	//변수로 이미 초기화가 되어있다.
 
 	TransformCBuffer cBuffer = {};
-	Camera_Com* getCamera = NULLPTR;
+	JEONG::Camera_Com* getCamera = NULLPTR;
 
 	if (CheckComponentFromType(CT_UI) == true)
 		getCamera = m_Scene->GetUICamera();
@@ -303,7 +303,7 @@ void Renderer_Com::UpdateTransform()
 	ShaderManager::Get()->UpdateCBuffer("Transform", &cBuffer);
 }
 
-RendererCBuffer * Renderer_Com::FindCBuffer(const string & KeyName)
+RendererCBuffer * JEONG::Renderer_Com::FindCBuffer(const string & KeyName)
 {
 	unordered_map<string, RendererCBuffer*>::iterator FindIter = m_CBufferMap.find(KeyName);
 
@@ -313,7 +313,7 @@ RendererCBuffer * Renderer_Com::FindCBuffer(const string & KeyName)
 	return FindIter->second;
 }
 
-void Renderer_Com::CheckComponent()
+void JEONG::Renderer_Com::CheckComponent()
 {
 	const list<Component_Base*>* TempList = m_Object->GetComponentList();
 
@@ -331,7 +331,7 @@ void Renderer_Com::CheckComponent()
 	}
 }
 
-void Renderer_Com::DeleteComponentCBuffer(Component_Base * DeleteCom)
+void JEONG::Renderer_Com::DeleteComponentCBuffer(Component_Base * DeleteCom)
 {
 	switch (DeleteCom->GetComType())
 	{

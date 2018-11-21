@@ -217,6 +217,9 @@
     <Filter Include="Core\08. Object\Component\BaseComponent\13. StaticManager">
       <UniqueIdentifier>{48427f01-addd-4388-abb1-a58a2053d75a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\09. Render\06. RenderTarget">
+      <UniqueIdentifier>{3ab1ccf2-4ba5-4d07-80fd-d003e856cf09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -399,6 +402,9 @@
     <ClInclude Include="StaticManager.h">
       <Filter>Core\08. Object\Component\BaseComponent\13. StaticManager</Filter>
     </ClInclude>
+    <ClInclude Include="Render\RenderTarget.h">
+      <Filter>Core\09. Render\06. RenderTarget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Copy.bat">
@@ -570,6 +576,9 @@
     </ClCompile>
     <ClCompile Include="StaticManager.cpp">
       <Filter>Core\08. Object\Component\BaseComponent\13. StaticManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\RenderTarget.cpp">
+      <Filter>Core\09. Render\06. RenderTarget</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

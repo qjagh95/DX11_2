@@ -280,6 +280,8 @@ void Core::Render(float DeltaTime)
 	Device::Get()->Clear(ClearColor);
 	{
 		SceneManager::Get()->Render(DeltaTime);
+		RenderManager::Get()->Render(DeltaTime);
+
 		KeyInput::Get()->RenderMouse(DeltaTime);
 	}
 	Device::Get()->Present();

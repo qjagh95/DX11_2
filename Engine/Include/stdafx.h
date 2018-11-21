@@ -81,5 +81,10 @@
 #include "UserComponent/UserComponent_Base.h"
 
 #include "Resource/ResourceManager.h"
+#include "Resource/Mesh.h"
+
 #include "Render/RenderManager.h"
 #include "Render/ShaderManager.h"
+#include "Render/Shader.h"
+#include "Render/DepthStancilState.h"
+#include "Render/BlendState.h"

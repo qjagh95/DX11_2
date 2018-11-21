@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Layer.h"
 #include "Scene.h"
+
 #include "../GameObject.h"
 
 JEONG_USING
@@ -163,7 +164,8 @@ void JEONG::Layer::Render(float DeltaTime)
 			continue;
 		}
 
-		(*StartIter)->Render(DeltaTime);
+		//(*StartIter)->Render(DeltaTime);
+		RenderManager::Get()->AddRenderObject((*StartIter));
 		StartIter++;
 	}
 }

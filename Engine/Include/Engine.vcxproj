@@ -218,6 +218,7 @@
     <ClInclude Include="Render\DepthStancilState.h" />
     <ClInclude Include="Render\RenderManager.h" />
     <ClInclude Include="Render\RenderState.h" />
+    <ClInclude Include="Render\RenderTarget.h" />
     <ClInclude Include="Render\Shader.h" />
     <ClInclude Include="Render\ShaderManager.h" />
     <ClInclude Include="resource.h" />
@@ -279,6 +280,7 @@
     <ClCompile Include="Render\DepthStancilState.cpp" />
     <ClCompile Include="Render\RenderManager.cpp" />
     <ClCompile Include="Render\RenderState.cpp" />
+    <ClCompile Include="Render\RenderTarget.cpp" />
     <ClCompile Include="Render\Shader.cpp" />
     <ClCompile Include="Render\ShaderManager.cpp" />
     <ClCompile Include="Resource\Mesh.cpp" />
