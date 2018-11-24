@@ -3,7 +3,7 @@
 #include "Shader.h"
 #include "DepthStancilState.h"
 
-#include "../Resource/Mesh.h"
+#include "../Resource/Sampler.h"
 
 JEONG_USING
 
@@ -20,6 +20,8 @@ RenderTarget::RenderTarget()
 	m_Mesh = NULLPTR;
 	m_Layout = NULLPTR;
 	m_DepthState = NULLPTR;
+	m_FullScreenShader = NULLPTR;
+	m_Sampler = NULLPTR;
 
 	ZeroMemory(m_ClearColor, sizeof(float) * 4);
 }
@@ -35,8 +37,10 @@ RenderTarget::~RenderTarget()
 	SAFE_RELEASE(m_OldDepthView);
 	SAFE_RELEASE(m_Shader);
 	SAFE_RELEASE(m_Mesh);
-	SAFE_RELEASE(m_Layout);
-	SAFE_RELEASE(m_DepthState);  
+	//SAFE_RELEASE(m_Layout);
+	SAFE_RELEASE(m_DepthState);
+	SAFE_RELEASE(m_FullScreenShader);
+	SAFE_RELEASE(m_Sampler);
 }
 
 bool RenderTarget::CreateRenderTarget(DXGI_FORMAT TargetFormat, const Vector3 & Pos, const Vector3 & Scale, DXGI_FORMAT DepthFormat)
@@ -87,24 +91,16 @@ bool RenderTarget::CreateRenderTarget(DXGI_FORMAT TargetFormat, const Vector3 & 
 			return false;
 	}
 
-	return true;
-}
-	
-void RenderTarget::SetDrawDebug(bool isDraw)
-{
-	m_isDebugDraw = isDraw;
+	m_Sampler = ResourceManager::Get()->FindSampler(LINER_SAMPLER);
 
-	m_DepthState = (DepthStancilState*)RenderManager::Get()->FindRenderState(DEPTH_DISABLE);
-	m_Shader = ShaderManager::Get()->FindShader(STANDARD_UV_SHADER);
-	m_Mesh = ResourceManager::Get()->FindMesh("TextureRect");
-	m_Layout = ShaderManager::Get()->FindInputLayOut(POS_UV_LAYOUT);
+	return true;
 }
 
 void RenderTarget::ClearTarget()
 {
 	Device::Get()->GetContext()->ClearRenderTargetView(m_TargetView, m_ClearColor);
 
-	if (m_DepthView)
+	if (m_DepthView != NULLPTR)
 		Device::Get()->GetContext()->ClearDepthStencilView(m_DepthView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
@@ -117,14 +113,17 @@ void RenderTarget::SetTarget()
 	// 깊이 버퍼를 그대로 지정한다.
 	ID3D11DepthStencilView*	pDepth = m_OldDepthView;
 
-	if (m_DepthView)
+	if (m_DepthView != NULLPTR)
 		pDepth = m_DepthView;
+
+	Device::Get()->GetContext()->OMSetRenderTargets(1, &m_TargetView, pDepth);
 }
 
 void RenderTarget::ResetTarget()
 {
 	// 원래 타겟들로 교체한다.
 	Device::Get()->GetContext()->OMSetRenderTargets(1, &m_OldTargetView, m_OldDepthView);
+
 	SAFE_RELEASE(m_OldDepthView);
 	SAFE_RELEASE(m_OldTargetView);
 }
@@ -142,6 +141,8 @@ void RenderTarget::Render(float DeltaTime)
 	Scene* pScene = SceneManager::Get()->GetCurScene();
 	Camera_Com*	pCamera = pScene->GetUICamera();
 
+	SAFE_RELEASE(pScene);
+
 	Matrix	matView, matProj;
 	matView = pCamera->GetViewMatrix();
 	matProj = pCamera->GetProjection();
@@ -162,65 +163,67 @@ void RenderTarget::Render(float DeltaTime)
 	ShaderManager::Get()->UpdateCBuffer("Transform", &tTransform);
 
 	m_DepthState->SetState();
-
-	Device::Get()->GetContext()->IASetInputLayout(m_Layout);
-	Device::Get()->GetContext()->PSSetShaderResources(0, 1, &m_TargetShaderResourceView);
-
-	m_Shader->SetShader();
 	{
+		if (m_Sampler != NULLPTR)
+			m_Sampler->SetSamplerState(0);
+
+		Device::Get()->GetContext()->IASetInputLayout(m_Layout);
+		Device::Get()->GetContext()->PSSetShaderResources(0, 1, &m_TargetShaderResourceView);
+
+		m_Shader->SetShader();
 		m_Mesh->Render();
+
+		ID3D11ShaderResourceView* pSRV = NULLPTR;
+		Device::Get()->GetContext()->PSSetShaderResources(0, 1, &pSRV);
 	}
 	m_DepthState->ResetState();
 
-	SAFE_RELEASE(pScene);
 }
 
 void RenderTarget::RenderFullScreen()
 {
-	//매쉬설정 후 그 곳에다가 출력한다.
-
-	TransformCBuffer tTransform = {};
-	Matrix	matPos, matScale;
-	matScale.Scaling(m_Scale);
-	matPos.Translation(m_Pos);
-
-	Scene* pScene = SceneManager::Get()->GetCurScene();
-	Camera_Com*	pCamera = pScene->GetUICamera();
-
-	Matrix	matView, matProj;
-	matView = pCamera->GetViewMatrix();
-	matProj = pCamera->GetProjection();
-
-	tTransform.World = matScale * matPos;
-	tTransform.View = matView;
-	tTransform.Projection = matProj;
-	tTransform.WV = tTransform.World * matView;
-	tTransform.WVP = tTransform.WV * matProj;
-	tTransform.Lenth = m_Mesh->GetLenth();
-
-	tTransform.World.Transpose();
-	tTransform.View.Transpose();
-	tTransform.Projection.Transpose();
-	tTransform.WV.Transpose();
-	tTransform.WVP.Transpose();
-
-	ShaderManager::Get()->UpdateCBuffer("Transform", &tTransform);
+	if (m_FullScreenShader == NULLPTR)
+		m_FullScreenShader = ShaderManager::Get()->FindShader(FULLSCREEN_SHADER);
 
 	m_DepthState->SetState();
+	{			
+		if (m_Sampler != NULLPTR)
+			m_Sampler->SetSamplerState(0);
 
-	Device::Get()->GetContext()->IASetInputLayout(m_Layout);
-	Device::Get()->GetContext()->PSSetShaderResources(0, 1, &m_TargetShaderResourceView);
+		Device::Get()->GetContext()->PSSetShaderResources(0, 1, &m_TargetShaderResourceView);
+		m_FullScreenShader->SetShader();
 
-	m_Shader->SetShader();
-	{
-		m_Mesh->Render();
+		//NULL Buffer를 이용한 출력준비.
+		//NULL Buffer로 전체 화면크기의 사각형을 출력한다.
+		Device::Get()->GetContext()->IASetInputLayout(NULLPTR);
+
+		UINT Offset = 0;
+		Device::Get()->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+		Device::Get()->GetContext()->IASetVertexBuffers(0, 0, NULLPTR, 0, &Offset);
+		Device::Get()->GetContext()->IASetIndexBuffer(0, DXGI_FORMAT_UNKNOWN, 0);
+		Device::Get()->GetContext()->Draw(4, 0);
+
+		//NULLBUFFER 사용 후 반드시 NULL로 초기화 해줘야한다.
+		ID3D11ShaderResourceView* pSRV = NULLPTR;
+		Device::Get()->GetContext()->PSSetShaderResources(0, 1, &pSRV);
 	}
 	m_DepthState->ResetState();
-
-	SAFE_RELEASE(pScene);
 }
 
 void RenderTarget::SetShader(int Register)
 {
 	Device::Get()->GetContext()->PSSetShaderResources(Register, 1, &m_TargetShaderResourceView);
+}
+
+void RenderTarget::SetDrawDebug(bool isDraw)
+{
+	m_isDebugDraw = isDraw;
+
+	if (m_isDebugDraw == true)
+	{
+		m_DepthState = (DepthStancilState*)RenderManager::Get()->FindRenderState(DEPTH_DISABLE);
+		m_Mesh = ResourceManager::Get()->FindMesh("TextureRect");
+		m_Shader = ShaderManager::Get()->FindShader(STANDARD_UV_STATIC_SHADER);
+		m_Layout = ShaderManager::Get()->FindInputLayOut(POS_UV_LAYOUT);
+	}
 }

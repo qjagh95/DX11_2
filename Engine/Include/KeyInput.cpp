@@ -50,6 +50,8 @@ bool JEONG::KeyInput::Init()
 	Renderer_Com* MouseRender = m_MouseObject->AddComponent<Renderer_Com>("MouseRenderer");
 	MouseRender->SetMesh("TextureRect");
 	MouseRender->SetRenderState(ALPHA_BLEND);
+	MouseRender->SetShader(STANDARD_UV_STATIC_SHADER);
+	MouseRender->SetScreenRender(true);
 	SAFE_RELEASE(MouseRender);
 
 	Material_Com* MouseMeterial = m_MouseObject->FindComponentFromType<Material_Com>(CT_MATERIAL);
@@ -70,7 +72,7 @@ bool JEONG::KeyInput::Init()
 void JEONG::KeyInput::Update(float DeltaTime)
 {
 	JEONG::Scene* curScene = JEONG::SceneManager::Get()->GetCurScene();
-	Vector3 CameraPos = curScene->GetMainCameraTransform()->GetWorldPos();
+	m_CameraPos = curScene->GetMainCameraTransform()->GetWorldPos();
 
 	unordered_map<string, JEONG::KeyInfo*>::iterator StartIter = m_KeyMap.begin();
 	unordered_map<string, JEONG::KeyInfo*>::iterator EndIter = m_KeyMap.end();
@@ -128,10 +130,10 @@ void JEONG::KeyInput::Update(float DeltaTime)
 	m_MouseScreenPos.x = (float)DevicePos.x;
 	m_MouseScreenPos.y = (float)DevicePos.y;
 
-	m_ResultPos.x = DevicePos.x + CameraPos.x;  
-	m_ResultPos.y = DevicePos.y + CameraPos.y;
+	m_MouseWorldPos.x = DevicePos.x + m_CameraPos.x;  
+	m_MouseWorldPos.y = DevicePos.y + m_CameraPos.y;
 
-	m_MouseObject->GetTransform()->SetWorldPos((float)m_ResultPos.x, (float)m_ResultPos.y, 0.0f);
+	m_MouseObject->GetTransform()->SetWorldPos((float)m_MouseScreenPos.x, (float)m_MouseScreenPos.y, 0.0f);
 	m_MouseObject->Update(DeltaTime);
 
 	if (m_ShowCursor == false && (m_MouseScreenPos.x <= 0.0f && m_MouseScreenPos.x >= Device::Get()->GetWinSize().Width || m_MouseScreenPos.y <= 0.0f && m_MouseScreenPos.y >= Device::Get()->GetWinSize().Height))
@@ -161,6 +163,7 @@ void JEONG::KeyInput::ChangeMouseScene(JEONG::Scene * pScene)
 
 void JEONG::KeyInput::UpdateMousePos()
 {
+	m_MouseWorldPoint->SetInfo(m_CameraPos);
 	m_MouseObject->LateUpdate(1.0f);
 }
 

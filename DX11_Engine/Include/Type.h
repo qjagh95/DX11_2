@@ -51,12 +51,12 @@ struct JEONG_DLL CBuffer
 	int RegisterNumber;
 };
 
-struct JEONG_DLL Material
+struct JEONG_DLL MaterialCbuffer
 {
 	//재질정보 (색상) 나머지필요한 변수들은 나중에 추가 예정.
 	Vector4 Diffuse;
 
-	Material() : Diffuse(Vector4::White) {}
+	MaterialCbuffer() : Diffuse(Vector4::White) {}
 };
 
 struct JEONG_DLL BoxInfo

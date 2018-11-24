@@ -105,7 +105,7 @@ private:
 	bool m_ShowCursor;
 	GameObject* m_EquipObject;
 	bool m_isEquip;
-	Vector3 m_ResultPos;
+	Vector3 m_CameraPos;
 
 public:
 	CLASS_IN_SINGLE(KeyInput)

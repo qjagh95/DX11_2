@@ -192,9 +192,9 @@ bool JEONG::ResourceManager::CreateSampler(const string & KeyName, D3D11_FILTER 
 	return true;
 }
 
-Mesh* JEONG::ResourceManager::FindMesh(const string & TagName)
+JEONG::Mesh* JEONG::ResourceManager::FindMesh(const string & TagName)
 {
-	unordered_map<string, Mesh*>::iterator FindIter = m_MeshMap.find(TagName);
+	unordered_map<string, JEONG::Mesh*>::iterator FindIter = m_MeshMap.find(TagName);
 
 	if (FindIter == m_MeshMap.end())
 		return NULLPTR;

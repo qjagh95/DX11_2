@@ -26,7 +26,7 @@ bool Core::m_isLoop = true;
 Core::Core()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	//_CrtSetBreakAlloc(444);
+	//_CrtSetBreakAlloc(390);
 	ZeroMemory(ClearColor, sizeof(float) * 4);
 }
 
@@ -37,7 +37,6 @@ Core::~Core()
 	ShaderManager::Delete();
 	PathManager::Delete();
 	SceneManager::Delete();
-	RenderManager::Delete();
 	TimeManager::Delete();
 	CollsionManager::Delete();
 	KeyInput::Delete();
@@ -45,6 +44,7 @@ Core::~Core()
 	FontManager::Delete();
 	SoundManager::Delete();
 	StaticManager::Delete();
+	RenderManager::Delete();
 
 	CoUninitialize();
 }
@@ -278,7 +278,7 @@ int Core::CollsionLateUpdate(float DeltaTime)
 void Core::Render(float DeltaTime)
 {
 	Device::Get()->Clear(ClearColor);
-	{
+	{		
 		SceneManager::Get()->Render(DeltaTime);
 		RenderManager::Get()->Render(DeltaTime);
 

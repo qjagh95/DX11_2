@@ -26,6 +26,7 @@ public:
 	void SetShader(const string& KeyName);
 	void SetLayOut(const string& KeyName);
 	void SetRenderState(const string& KeyName);
+	void SetScreenRender(bool Value) { m_isScreenRender = Value; }
 
 	bool CreateRendererCBuffer(const string& KeyName, int BufferSize);
 	void UpdateRendererCBuffer(const string& KeyName, void* pData, int BufferSize);
@@ -47,6 +48,7 @@ private:
 	ID3D11InputLayout* m_LayOut;
 	RenderState* m_RenderState[RS_END];
 	ComponentCBuffer m_ComponentCBuffer;
+	bool m_isScreenRender;
 
 	unordered_map<string, RendererCBuffer*> m_CBufferMap;
 

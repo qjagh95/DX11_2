@@ -32,7 +32,7 @@ Player_Com::~Player_Com()
 
 bool Player_Com::Init()
 {				   
-	KeyInput::Get()->AddKey("S1", VK_F1);
+KeyInput::Get()->AddKey("S1", VK_F1);
 	KeyInput::Get()->AddKey("S2", VK_F2);
 	KeyInput::Get()->AddKey("S3", VK_F3);
 	KeyInput::Get()->AddKey("S4", VK_F4);
@@ -46,6 +46,7 @@ bool Player_Com::Init()
 
 	Material_Com* MaterialComponent = m_Object->FindComponentFromType<Material_Com>(CT_MATERIAL);
 	MaterialComponent->SetDiffuseTexture(0, "Player", TEXT("Player.png"));
+	MaterialComponent->SetMaterial(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 	SAFE_RELEASE(MaterialComponent);
 
 	//ColliderRect_Com* RectColl = m_Object->AddComponent<ColliderRect_Com>("PlayerBody");
@@ -146,6 +147,8 @@ bool Player_Com::Init()
 	OBBColl->SetCollsionCallback(CCT_DOING, this, &Player_Com::PixelHit);
 	SAFE_RELEASE(OBBColl);
 	SAFE_RELEASE(pChildObj);
+
+	return true;
 
 	return true;
 }
@@ -287,6 +290,7 @@ Player_Com * Player_Com::Clone()
 
 void Player_Com::PixelHit(Collider_Com * Src, Collider_Com * Dest, float DeltaTime)
 {
+	int a = 0;
 	if (Dest->GetTag() == "TestPixel")
 	{
 	}

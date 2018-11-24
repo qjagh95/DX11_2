@@ -59,9 +59,6 @@ int ColliderPoint_Com::LateUpdate(float DeltaTime)
 	Vector3 tempPos = m_Transform->GetWorldPos();
 	m_WorldInfo = tempPos + m_Virtual;
 
-	if (m_CollisionGroupName == "UI")
-		m_WorldInfo -= curScene->GetMainCameraTransform()->GetWorldPos();
-
 	m_SectionMin = m_WorldInfo;
 	m_SectionMax = m_WorldInfo;
 

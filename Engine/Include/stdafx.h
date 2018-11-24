@@ -15,7 +15,7 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-#include <atlstr.h>
+//#include <atlstr.h>
 #include <process.h>
 
 #include <MathHeader.h>
@@ -30,10 +30,11 @@
 #include <d3dcompiler.h> //shader를 컴파일하는 기능을 제공한다.
 #include <d2d1.h>
 #include <dwrite.h>
+#include <dxgidebug.h>
 
 #include <Audio.h>
 
-#pragma comment(lib, "dxguid.lib")
+#pragma comment(lib, "dxguid")
 #pragma comment(lib, "d3d11")
 #pragma comment(lib, "d3dcompiler")
 //DWrite

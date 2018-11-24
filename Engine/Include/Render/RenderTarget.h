@@ -4,6 +4,7 @@ JEONG_BEGIN
 class Shader;
 class Mesh;
 class DepthStancilState;
+class Sampler;
 class JEONG_DLL RenderTarget
 {
 public:
@@ -20,8 +21,9 @@ public:
 
 private:
 	ID3D11Texture2D* m_TargetBuffer;
-	ID3D11ShaderResourceView* m_TargetShaderResourceView;
 	ID3D11RenderTargetView*	m_TargetView;
+	ID3D11ShaderResourceView* m_TargetShaderResourceView;
+
 	ID3D11Texture2D* m_DepthBuffer;
 	ID3D11DepthStencilView*	m_DepthView;
 
@@ -31,18 +33,17 @@ private:
 	bool m_isDebugDraw;
 
 	Shader*	m_Shader;
+	Shader* m_FullScreenShader;
 	Mesh* m_Mesh;
+	Sampler* m_Sampler;
 	ID3D11InputLayout* m_Layout;
 	DepthStancilState* m_DepthState;
 	Vector3	m_Pos;
 	Vector3	m_Scale;
 
-private:
+public:
 	RenderTarget();
 	~RenderTarget();
-
-public:
-	friend class RenderManager;
 };
 
 JEONG_END

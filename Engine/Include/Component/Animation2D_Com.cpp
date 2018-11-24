@@ -70,13 +70,14 @@ int Animation2D_Com::Update(float DeltaTime)
 
 int Animation2D_Com::LateUpdate(float DeltaTime)
 {
+	//LimitTime = 1.0 / 10Àå = 0.1ÃÊ
 	float FrameTime = m_CurClip->PlayLimitTime / m_CurClip->vecFrame.size();
 
 	m_CurClip->PlayTime += DeltaTime;
 
 	while (m_CurClip->PlayTime >= FrameTime)
 	{
-		m_CurClip->PlayTime -= FrameTime;
+		m_CurClip->PlayTime = 0.0f;
 		m_CurClip->Frame++;
 
 		if (m_CurClip->Frame >= m_CurClip->vecFrame.size())

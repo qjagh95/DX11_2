@@ -5,7 +5,7 @@
 
 //변수 뒤에 : (시맨틱)
 
-//쉐이더는 1줄짜리코드라도 갯수만큼 실행되기때문에 한줄이짜리가 아니다
+//쉐이더는 1줄짜리코드라도 갯수만큼 실행되기때문에 한줄짜리가 아니다
 //버텍스가 2만개라면 한줄짜리코드가 2만줄짜리 코드가된다.
 
 struct VS_INPUT_COLOR
@@ -52,6 +52,23 @@ struct PS_OUTPUT_SINGLE
     float4 vTarget0 : SV_Target;
 };
 
+static const float2 NULLPos[4] =
+{
+    float2(-1.0f, 1.0f),
+	float2(1.0f, 1.0f),
+	float2(-1.0f, -1.0f),
+	float2(1.0f, -1.0f)
+};
+
+static const float2 NULLUV[4] =
+{
+    float2(0.0f, 0.0f),
+	float2(1.0f, 0.0f),
+	float2(0.0f, 1.0f),
+	float2(1.0f, 1.0f)
+};
+
+
 /////////////////////////////////////////////////////////////////////
 
 //CBuffer는 상수버퍼 (C++코드에서 쉐이더로 값을 받아오기 위함)
@@ -89,5 +106,6 @@ cbuffer Componeent : register(b2)
 
 Texture2D Diffuse : register(t0);
 SamplerState DiffuseSampler : register(s0);
+Texture2D TargetDiffuse : register(t10);
 
 /////////////////////////////////////////////////////////////////////

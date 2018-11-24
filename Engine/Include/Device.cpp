@@ -3,7 +3,7 @@
 
 JEONG_USING
 
-SINGLETON_VAR_INIT(Device);
+SINGLETON_VAR_INIT(JEONG::Device);
 
 JEONG::Device::Device()
 	:m_Device(NULLPTR), m_Context(NULLPTR), m_SwapChain(NULLPTR), m_TargerView(NULLPTR), m_DepthView(NULLPTR), m_Hwnd(NULLPTR), m_2DFactory(NULLPTR), m_2DTarget(NULLPTR)
@@ -41,7 +41,7 @@ bool JEONG::Device::Init(HWND hWnd, unsigned int Width, unsigned int Height, boo
 	UINT Flag = 0;
 
 #ifdef _DEBUG
-	//Flag = D3D11_CREATE_DEVICE_DEBUG;
+	Flag = D3D11_CREATE_DEVICE_DEBUG;
 
 	//asd = LoadLibrary(L"DXGIDebug.dll");
 	//auto qwe = reinterpret_cast<HRESULT(*)(REFIID, void**)>(GetProcAddress(asd, "DXGIGetDebugInterface"));
@@ -159,7 +159,7 @@ bool JEONG::Device::Init(HWND hWnd, unsigned int Width, unsigned int Height, boo
 	// 2D 렌더타겟을 생성하기 위한 옵션 설정
 	D2D1_RENDER_TARGET_PROPERTIES props = D2D1::RenderTargetProperties(D2D1_RENDER_TARGET_TYPE_HARDWARE, D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED));
 
-	if (FAILED(m_2DFactory->CreateDxgiSurfaceRenderTarget(pBackSurface, props,	&m_2DTarget)))
+	if (FAILED(m_2DFactory->CreateDxgiSurfaceRenderTarget(pBackSurface, props, &m_2DTarget)))
 		return false;
 
 	SAFE_RELEASE(pBackSurface);

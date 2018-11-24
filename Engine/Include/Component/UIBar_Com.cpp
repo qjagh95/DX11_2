@@ -81,6 +81,8 @@ int UIBar_Com::Update(float DeltaTime)
 		{
 			tempScale.x *= m_BarCBuffer.Percent;
 			m_Transform->SetWorldScale(tempScale);
+
+			m_RectCollider->SetInfo(TempVar, tempScale);
 			break;
 		}
 		case BD_RIGHT:

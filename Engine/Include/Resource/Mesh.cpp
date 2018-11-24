@@ -6,11 +6,11 @@
 
 JEONG_USING
 
-Mesh::Mesh()
+JEONG::Mesh::Mesh()
 {
 }
 
-Mesh::~Mesh()
+JEONG::Mesh::~Mesh()
 {
 	for (size_t i = 0; i < m_vecMeshContainer.size(); i++)
 	{
@@ -28,7 +28,7 @@ Mesh::~Mesh()
 	m_vecMeshContainer.clear();
 }
 
-void Mesh::Render()
+void JEONG::Mesh::Render()
 {
 	for (size_t i = 0; i < m_vecMeshContainer.size(); i++)
 	{
@@ -56,7 +56,7 @@ void Mesh::Render()
 	}
 }
 
-void Mesh::Render(int Container, int Subset)
+void JEONG::Mesh::Render(int Container, int Subset)
 {
 	Device::Get()->GetContext()->IASetPrimitiveTopology(m_vecMeshContainer[Container]->PrimitiveType);
 
@@ -74,13 +74,13 @@ void Mesh::Render(int Container, int Subset)
 	}
 }
 
-bool Mesh::CreateMesh(const string & TagName, const string & ShaderKeyName, const string & LayOutKeyName, void * vertexInfo, int vertexCount, int vertexSize, D3D11_USAGE vertexUsage, D3D11_PRIMITIVE_TOPOLOGY primitiveType, void * indexInfo, int indexCount, int indexSize, D3D11_USAGE indexUsage, DXGI_FORMAT indexFormat)
+bool JEONG::Mesh::CreateMesh(const string & TagName, const string & ShaderKeyName, const string & LayOutKeyName, void * vertexInfo, int vertexCount, int vertexSize, D3D11_USAGE vertexUsage, D3D11_PRIMITIVE_TOPOLOGY primitiveType, void * indexInfo, int indexCount, int indexSize, D3D11_USAGE indexUsage, DXGI_FORMAT indexFormat)
 {
 	SetTag(TagName);
 	m_ShaderKeyName = ShaderKeyName;
 	m_LayOutKeyName = LayOutKeyName;
 
-	MeshContainer* newContainer = new MeshContainer();
+	JEONG::MeshContainer* newContainer = new MeshContainer();
 	newContainer->PrimitiveType = primitiveType;
 
 	m_vecMeshContainer.push_back(newContainer);
@@ -103,10 +103,10 @@ bool Mesh::CreateMesh(const string & TagName, const string & ShaderKeyName, cons
 	return true;
 }
 
-bool Mesh::CreateVertexBuffer(void * vertexInfo, int vertexCount, int vertexSize, D3D11_USAGE vertexUsage)
+bool JEONG::Mesh::CreateVertexBuffer(void * vertexInfo, int vertexCount, int vertexSize, D3D11_USAGE vertexUsage)
 {
 	//항상 마지막에 추가된 것을 가져온다.
-	MeshContainer* getContainer = m_vecMeshContainer[m_vecMeshContainer.size() - 1];
+	JEONG::MeshContainer* getContainer = m_vecMeshContainer[m_vecMeshContainer.size() - 1];
 	getContainer->vertexBuffer.vCount = vertexCount;
 	getContainer->vertexBuffer.vInfo = new char[vertexSize * vertexCount];
 	getContainer->vertexBuffer.vUsage = vertexUsage;
@@ -175,10 +175,10 @@ bool Mesh::CreateVertexBuffer(void * vertexInfo, int vertexCount, int vertexSize
 	return true;
 }
 
-bool Mesh::CreateIndexBuffer(void * indexInfo, int indexCount, int indexSize, D3D11_USAGE indexUsage, DXGI_FORMAT indexFormat)
+bool JEONG::Mesh::CreateIndexBuffer(void * indexInfo, int indexCount, int indexSize, D3D11_USAGE indexUsage, DXGI_FORMAT indexFormat)
 {
 	//항상 마지막에 추가된 것을 가져온다.  
-	MeshContainer* getContainer = m_vecMeshContainer[m_vecMeshContainer.size() - 1];
+	JEONG::MeshContainer* getContainer = m_vecMeshContainer[m_vecMeshContainer.size() - 1];
 
 	IndexBuffer TempIndexBuffer;
 	TempIndexBuffer.iCount = indexCount;
@@ -210,7 +210,7 @@ bool Mesh::CreateIndexBuffer(void * indexInfo, int indexCount, int indexSize, D3
 	return true;
 }
 
-void Mesh::UpdateVertexBuffer(void * vertexInfo, int ContainerIndex)
+void JEONG::Mesh::UpdateVertexBuffer(void * vertexInfo, int ContainerIndex)
 {
 	if (ContainerIndex < 0 || ContainerIndex >= m_vecMeshContainer.size())
 		return;

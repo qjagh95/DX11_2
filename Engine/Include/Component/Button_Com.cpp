@@ -34,6 +34,7 @@ bool Button_Com::Init()
 	RenderComponent->SetRenderState(ALPHA_BLEND);
 	RenderComponent->SetShader(BUTTON_SHADER);
 	RenderComponent->CreateRendererCBuffer("ButtonCBuffer", sizeof(ButtonCBuffer));
+	RenderComponent->SetScreenRender(true);
 	SAFE_RELEASE(RenderComponent);
 
 	Material_Com* MaterialComponent = m_Object->FindComponentFromType<Material_Com>(CT_MATERIAL);

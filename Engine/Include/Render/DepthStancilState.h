@@ -8,7 +8,7 @@ JEONG_BEGIN
 class DepthStancilState : public RenderState
 {
 public:
-	bool CreateState(BOOL bDepthEnable, D3D11_DEPTH_WRITE_MASK eMask = D3D11_DEPTH_WRITE_MASK_ALL, D3D11_COMPARISON_FUNC eDepthFunc = D3D11_COMPARISON_LESS, BOOL bStencilEnable = FALSE, UINT8 iStencilReadMask = 0, UINT8 iStencilWriteMask = 0, D3D11_DEPTH_STENCILOP_DESC tFrontFace = {}, D3D11_DEPTH_STENCILOP_DESC tBackFace = {});
+	bool CreateState(BOOL DepthEnable, D3D11_DEPTH_WRITE_MASK Mask = D3D11_DEPTH_WRITE_MASK_ALL , D3D11_COMPARISON_FUNC DepthFunc = D3D11_COMPARISON_LESS, BOOL StencilEnable = FALSE, UINT8 StencilReadMask = 0, UINT8 StencilWriteMask = 0, D3D11_DEPTH_STENCILOP_DESC FrontFace = {}, D3D11_DEPTH_STENCILOP_DESC BackFace = {});
 
 	void SetState() override;
 	void ResetState() override;

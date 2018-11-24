@@ -77,3 +77,46 @@ PS_OUTPUT_SINGLE Standard_UV_PS(VS_OUTPUT_UV input)
     return output;
 }
 //////////////////////////////////UVShader/////////////////////////////
+
+//////////////////////////////////STAITC Shader/////////////////////////////
+
+VS_OUTPUT_UV StandardTexStaticVS(VS_INPUT_UV input)
+{
+    VS_OUTPUT_UV output = (VS_OUTPUT_UV) 0;
+
+    float3 TempPos = input.vPos - g_Pivot * g_Length;
+
+    output.vPos = mul(float4(TempPos, 1.0f), g_WVP);
+    output.vUV = input.vUV;
+
+    return output;
+}
+
+PS_OUTPUT_SINGLE StandardTexStaticPS(VS_OUTPUT_UV input)
+{
+    PS_OUTPUT_SINGLE output = (PS_OUTPUT_SINGLE) 0;
+
+    output.vTarget0 = Diffuse.Sample(DiffuseSampler, input.vUV);
+
+    return output;
+}
+
+//////////////////////////////////NULLBufferÃâ·Â¿ë/////////////////////////////
+
+VS_OUTPUT_UV FullScreenVS(uint VertexID : SV_VertexID)
+{
+    VS_OUTPUT_UV output = (VS_OUTPUT_UV) 0;
+
+    output.vPos = float4(NULLPos[VertexID], 0.0f, 1.0f);
+    output.vUV = NULLUV[VertexID];
+
+    return output;
+}
+
+PS_OUTPUT_SINGLE FullScreenPS(VS_OUTPUT_UV input)
+{
+    PS_OUTPUT_SINGLE output = (PS_OUTPUT_SINGLE) 0;
+
+    output.vTarget0 = Diffuse.Sample(DiffuseSampler, input.vUV);
+    return output;
+}

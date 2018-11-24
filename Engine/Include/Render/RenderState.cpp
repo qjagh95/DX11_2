@@ -3,12 +3,12 @@
 
 JEONG_USING
 
-RenderState::RenderState()
+JEONG::RenderState::RenderState()
 	:m_RenderState(NULLPTR), m_OldRenderState(NULLPTR)
 {
 }
 
-RenderState::~RenderState()
+JEONG::RenderState::~RenderState()
 {
 	SAFE_RELEASE(m_RenderState);
 	SAFE_RELEASE(m_OldRenderState);

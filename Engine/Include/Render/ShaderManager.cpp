@@ -5,7 +5,7 @@
 #include "../Device.h"
 
 JEONG_USING
-SINGLETON_VAR_INIT(ShaderManager)
+SINGLETON_VAR_INIT(JEONG::ShaderManager)
 
 JEONG::ShaderManager::ShaderManager() : m_InputLayOutSize(0)
 {
@@ -125,9 +125,25 @@ bool JEONG::ShaderManager::Init()
 
 //#endif
 
+	Entry[ST_VERTEX] = "FullScreenVS";
+	Entry[ST_PIXEL] = "FullScreenPS";
+	if (LoadShader(FULLSCREEN_SHADER, TEXT("Standard.fx"), Entry) == false)
+	{
+		TrueAssert(true);
+		return false;
+	}
+
+	Entry[ST_VERTEX] = "StandardTexStaticVS";
+	Entry[ST_PIXEL] = "StandardTexStaticPS";
+	if (LoadShader(STANDARD_UV_STATIC_SHADER, TEXT("Standard.fx"), Entry) == false)
+	{
+		TrueAssert(true);
+		return false;
+	}
+
 	//상수버퍼 Create
 	CreateCBuffer("Transform", sizeof(TransformCBuffer), 0, CST_VERTEX | CST_PIXEL);
-	CreateCBuffer("Material", sizeof(Material), 1, CST_VERTEX | CST_PIXEL);
+	CreateCBuffer("Material", sizeof(MaterialCbuffer), 1, CST_VERTEX | CST_PIXEL);
 	CreateCBuffer("Animation2D", sizeof(Animation2DCBuffer), 8, CST_VERTEX | CST_PIXEL);
 	CreateCBuffer("Component", sizeof(ComponentCBuffer), 2, CST_VERTEX | CST_PIXEL);
 	CreateCBuffer("Collider", sizeof(Vector4), 8, CST_VERTEX | CST_PIXEL);
@@ -138,9 +154,9 @@ bool JEONG::ShaderManager::Init()
 	return true;
 }
 
-bool ShaderManager::LoadShader(const string & KeyName, const TCHAR * FileName, char * Entry[ST_MAX], const string & PathKey)
+bool JEONG::ShaderManager::LoadShader(const string & KeyName, const TCHAR * FileName, char * Entry[ST_MAX], const string & PathKey)
 {
-	Shader* newShader = FindShader(KeyName);
+	JEONG::Shader* newShader = FindShader(KeyName);
 
 	if (newShader != NULLPTR)
 	{
@@ -148,7 +164,7 @@ bool ShaderManager::LoadShader(const string & KeyName, const TCHAR * FileName, c
 		return true;
 	}
 
-	newShader = new Shader();
+	newShader = new JEONG::Shader();
 
 	if (newShader->LoadShader(KeyName, FileName, Entry, PathKey) == false)
 	{
@@ -161,7 +177,7 @@ bool ShaderManager::LoadShader(const string & KeyName, const TCHAR * FileName, c
 	return true;
 }
 
-void ShaderManager::AddInputElement(char * Semantic, int Index, DXGI_FORMAT Format, int Size, int InputSlot, D3D11_INPUT_CLASSIFICATION eInputClass, int InstanceStepRate)
+void JEONG::ShaderManager::AddInputElement(char * Semantic, int Index, DXGI_FORMAT Format, int Size, int InputSlot, D3D11_INPUT_CLASSIFICATION eInputClass, int InstanceStepRate)
 {
 	D3D11_INPUT_ELEMENT_DESC elementDesc;
 	elementDesc.SemanticName = Semantic;				///쉐이더 파일에있는 시맨틱 이름
@@ -177,7 +193,7 @@ void ShaderManager::AddInputElement(char * Semantic, int Index, DXGI_FORMAT Form
 	m_vecInputElement.push_back(elementDesc);
 }
 
-bool ShaderManager::CreateInputLayOut(const string & InputLayoutKeyName, const string & ShaderKey)
+bool JEONG::ShaderManager::CreateInputLayOut(const string & InputLayoutKeyName, const string & ShaderKey)
 {
 	Shader* getShader = FindShader(ShaderKey);
 
@@ -208,7 +224,7 @@ bool ShaderManager::CreateInputLayOut(const string & InputLayoutKeyName, const s
 	return true;
 }
 
-bool ShaderManager::CreateCBuffer(const string & KeyName, int BufferSize, int RegisterNumber, int ShaderType)
+bool JEONG::ShaderManager::CreateCBuffer(const string & KeyName, int BufferSize, int RegisterNumber, int ShaderType)
 {
 	CBuffer* newCBuffer = FindCBuffer(KeyName);
 
@@ -235,7 +251,7 @@ bool ShaderManager::CreateCBuffer(const string & KeyName, int BufferSize, int Re
 }
 
 //버텍스와 픽셀쉐이더에 상수버퍼를 셋팅한다.
-bool ShaderManager::UpdateCBuffer(const string& KeyName, void * Info)
+bool JEONG::ShaderManager::UpdateCBuffer(const string& KeyName, void * Info)
 {
 	CBuffer* getBuffer = FindCBuffer(KeyName);
 
@@ -258,7 +274,7 @@ bool ShaderManager::UpdateCBuffer(const string& KeyName, void * Info)
 	return true;
 }
 
-CBuffer * ShaderManager::FindCBuffer(const string & KeyName)
+CBuffer * JEONG::ShaderManager::FindCBuffer(const string & KeyName)
 {
 	unordered_map<string, CBuffer*>::iterator FindIter = m_CBufferMap.find(KeyName);
 
@@ -268,9 +284,9 @@ CBuffer * ShaderManager::FindCBuffer(const string & KeyName)
 	return FindIter->second;
 }
 
-Shader * ShaderManager::FindShader(const string & KeyName)
+JEONG::Shader * JEONG::ShaderManager::FindShader(const string & KeyName)
 {
-	unordered_map<string, Shader*>::iterator FindIter = m_ShaderMap.find(KeyName);
+	unordered_map<string, JEONG::Shader*>::iterator FindIter = m_ShaderMap.find(KeyName);
 
 	if (FindIter == m_ShaderMap.end())
 		return NULLPTR;
@@ -280,7 +296,7 @@ Shader * ShaderManager::FindShader(const string & KeyName)
 	return FindIter->second;
 }
 
-ID3D11InputLayout * ShaderManager::FindInputLayOut(const string & KeyName)
+ID3D11InputLayout * JEONG::ShaderManager::FindInputLayOut(const string & KeyName)
 {
 	unordered_map<string, ID3D11InputLayout*>::iterator FindIter = m_LayOutMap.find(KeyName);
 

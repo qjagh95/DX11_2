@@ -4,24 +4,18 @@
 #include "Camera_Com.h"
 #include "Material_Com.h"
 
+#include "../Device.h"
 #include "../GameObject.h"
 
 #include "../Scene/Scene.h"
-
-#include "../Resource/ResourceManager.h"
 #include "../Resource/Mesh.h"
-
 #include "../Render/Shader.h"
-#include "../Render/ShaderManager.h"
 #include "../Render/RenderState.h"
-#include "../Render/RenderManager.h"
-
-#include "../Device.h"
 
 JEONG_USING
 
 JEONG::Renderer_Com::Renderer_Com()
-	:m_Mesh(NULLPTR), m_Shader(NULLPTR), m_LayOut(NULLPTR), m_Material(NULLPTR)
+	:m_Mesh(NULLPTR), m_Shader(NULLPTR), m_LayOut(NULLPTR), m_Material(NULLPTR), m_isScreenRender(false)
 {
 	m_ComType = CT_RENDER;
 	ZeroMemory(m_RenderState, sizeof(RenderState*) * RS_END);
@@ -152,6 +146,7 @@ void JEONG::Renderer_Com::Render(float DeltaTime)
 	{
 		for (size_t j = 0; j < m_Mesh->GetSubsetCount((int)i); j++)
 		{
+
 			m_Material->SetShader((int)i, (int)j);
  			m_Mesh->Render((int)i, (int)j);
 		}
@@ -276,7 +271,7 @@ void JEONG::Renderer_Com::UpdateTransform()
 	TransformCBuffer cBuffer = {};
 	JEONG::Camera_Com* getCamera = NULLPTR;
 
-	if (CheckComponentFromType(CT_UI) == true)
+	if (m_isScreenRender == true)
 		getCamera = m_Scene->GetUICamera();
 	else
 		getCamera = m_Scene->GetMainCamera();

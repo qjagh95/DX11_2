@@ -37,6 +37,7 @@ bool CheckBox_Com::Init()
 	RenderComponent->SetRenderState(ALPHA_BLEND);
 	RenderComponent->SetShader(CHECKBOX_SHADER);
 	RenderComponent->CreateRendererCBuffer("CheckBoxCBuffer", sizeof(CheckBoxCBuffer));
+	RenderComponent->SetScreenRender(true);
 	SAFE_RELEASE(RenderComponent);
 
 	Material_Com* MaterialComponent = m_Object->FindComponentFromType<Material_Com>(CT_MATERIAL);

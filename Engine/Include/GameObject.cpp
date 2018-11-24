@@ -220,36 +220,8 @@ int JEONG::GameObject::LateUpdate(float DeltaTime)
 
 void JEONG::GameObject::Collision(float DeltaTime)
 {
+	//충돌체 추가한다.
 	CollsionManager::Get()->AddCollsion(this);
-
-	//list<Component_Base*>::iterator StartIter = m_ComponentList.begin();
-	//list<Component_Base*>::iterator EndIter = m_ComponentList.end();
-
-	//for (; StartIter != EndIter;)
-	//{
-	//	if ((*StartIter)->GetIsActive() == false)
-	//	{
-	//		Renderer_Com* pRenderer = FindComponentFromType<Renderer_Com>(CT_RENDER);
-	//		if (pRenderer != NULLPTR)
-	//		{
-	//			pRenderer->DeleteComponentCBuffer(*StartIter);
-	//			SAFE_RELEASE(pRenderer);
-	//		}
-
-	//		SAFE_RELEASE((*StartIter));
-	//		StartIter = m_ComponentList.erase(StartIter);
-	//		continue;
-	//	}
-	//	else if ((*StartIter)->GetIsShow() == false)
-	//	{
-	//		StartIter++;
-	//		continue;
-	//	}
-	//	(*StartIter)->Collision(DeltaTime);
-	//	StartIter++;
-	//}
-
-	//m_Transform->Collision(DeltaTime);
 }
 
 void JEONG::GameObject::CollisionLateUpdate(float DeltaTime)
@@ -287,6 +259,23 @@ void JEONG::GameObject::Render(float DeltaTime)
 {
 	m_Transform->Render(DeltaTime);
 
+	Renderer_Com* getRender = FindComponentFromType<Renderer_Com>(CT_RENDER);
+	
+	if (getRender != NULLPTR)
+	{
+		if (getRender->GetIsActive() == false)
+		{
+			getRender->Release();
+			m_ComponentList.remove(getRender);
+		}
+		else if (getRender->GetIsShow() == true)
+		{
+			getRender->Render(DeltaTime);
+		}
+
+		SAFE_RELEASE(getRender);
+	}
+
 	list<JEONG::Component_Base*>::iterator StartIter = m_ComponentList.begin();
 	list<JEONG::Component_Base*>::iterator EndIter = m_ComponentList.end();
 
@@ -294,12 +283,10 @@ void JEONG::GameObject::Render(float DeltaTime)
 	{
 		if ((*StartIter)->GetIsActive() == false)
 		{
-			JEONG::Renderer_Com* getRenderer = FindComponentFromType<JEONG::Renderer_Com>(CT_RENDER);
-
-			if (getRenderer != NULLPTR)
+			if (getRender != NULLPTR)
 			{
-				getRenderer->DeleteComponentCBuffer(*StartIter);
-				SAFE_RELEASE(getRenderer);
+				getRender->DeleteComponentCBuffer(*StartIter);
+				SAFE_RELEASE(getRender);
 			}
 
 			SAFE_RELEASE((*StartIter));
@@ -577,7 +564,7 @@ void JEONG::GameObject::AddChild(JEONG::GameObject * Child)
 	m_Layer->AddObject(Child);
 }
 
-void GameObject::AddStaticObject()
+void JEONG::GameObject::AddStaticObject()
 {
 	StaticManager::Get()->AddStaticObject(this);
 }

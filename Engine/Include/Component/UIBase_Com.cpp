@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "UIBase_Com.h"
+#include "ColliderRect_Com.h"
 
 JEONG_USING
 

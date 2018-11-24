@@ -163,8 +163,7 @@ void JEONG::Layer::Render(float DeltaTime)
 			StartIter++;
 			continue;
 		}
-
-		//(*StartIter)->Render(DeltaTime);
+		//씬의 Render는 RenderTarget에다가 픽셀정보를 보내준다.
 		RenderManager::Get()->AddRenderObject((*StartIter));
 		StartIter++;
 	}

@@ -26,17 +26,17 @@ JEONG::Scene::~Scene()
 	Safe_Release_VecList(m_SceneComponentList);
 
 	SAFE_RELEASE(m_MainCamera);
-	SAFE_RELEASE(m_MainCameraTransform);
 	SAFE_RELEASE(m_MainCameraObject);
+	//SAFE_RELEASE(m_MainCameraTransform);
 	SAFE_RELEASE(m_UICamera);
 	SAFE_RELEASE(m_UICameraObject);
-	SAFE_RELEASE(m_UICameraTransform);
+	//SAFE_RELEASE(m_UICameraTransform);
 }
 
 bool JEONG::Scene::Init()
 {
-	AddLayer("BackGround", INT_MIN);
-	AddLayer("StageBackGround", INT_MIN + 1);
+	AddLayer("BackGround", 0);
+	AddLayer("StageBackGround", 1);
 	AddLayer("Default", 2);
 	AddLayer("UI", INT_MAX);
 
@@ -344,6 +344,7 @@ void JEONG::Scene::AddLayer(const string & TagName, int ZOrder)
 
 	m_LayerList.push_back(newLayer);
 	newLayer->SetZOrder(ZOrder);
+	SortLayer();
 }
 
 void JEONG::Scene::ChangeLayerZOrder(const string & TagName, int ZOrder)
@@ -411,7 +412,7 @@ JEONG::Layer * JEONG::Scene::FindLayer(const string & TagName)
 
 bool JEONG::Scene::SortLayerFunc(const JEONG::Layer * Src, const JEONG::Layer * Dest)
 {
-	return Src->GetZOrder() > Dest->GetZOrder();
+	return Src->GetZOrder() < Dest->GetZOrder();
 }
 
 JEONG::GameObject * JEONG::Scene::FindObject(const string & TagName)

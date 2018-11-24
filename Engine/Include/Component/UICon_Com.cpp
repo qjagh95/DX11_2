@@ -32,6 +32,7 @@ bool UICon_Com::Init()
 	Renderer_Com* RenderComponent = m_Object->AddComponent<Renderer_Com>("UIconRender");
 	RenderComponent->SetMesh("TextureRect");
 	RenderComponent->SetRenderState(ALPHA_BLEND);
+	RenderComponent->SetScreenRender(true);
 	SAFE_RELEASE(RenderComponent);
 
 	Material_Com* MaterialComponent = m_Object->FindComponentFromType<Material_Com>(CT_MATERIAL);

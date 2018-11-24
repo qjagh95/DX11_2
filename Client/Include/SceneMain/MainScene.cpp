@@ -39,7 +39,7 @@ MainScene::MainScene()
 MainScene::~MainScene()
 {
 	SAFE_RELEASE(m_TestBar);
-	SAFE_RELEASE(m_TestText);
+	//SAFE_RELEASE(m_TestText);
 }
 
 bool MainScene::Init()
@@ -59,13 +59,31 @@ bool MainScene::Init()
 	pStage->CreateTileMap(100, 100, Vector3::Zero, Vector3(160.0f, 80.0f, 1.0f), STT_ISO);
 	pStage->SetLineOn(true);
 	//loadThread->AddLoadingCount();
+	SAFE_RELEASE(pStage);
+	SAFE_RELEASE(pStageObj);
+
+	GameObject* BgObject = GameObject::CreateObject("BgObject", StageLayer);
+	BgObject->GetTransform()->SetWorldPos(0.0f, 0.0f, 0.0f);
+	BgObject->GetTransform()->SetWorldScale(1280.0f, 720.0f, 1.0f);
+
+	Renderer_Com* bgRender = BgObject->AddComponent<Renderer_Com>("BgRender");
+	bgRender->SetMesh("TextureRect");
+	bgRender->SetRenderState(ALPHA_BLEND);
+	SAFE_RELEASE(bgRender);
+
+	Material_Com* bgMater = BgObject->FindComponentFromType<Material_Com>(CT_MATERIAL);
+	bgMater->SetDiffuseTexture(0, "BG", TEXT("Stage.png"));
+	SAFE_RELEASE(bgMater);
+	SAFE_RELEASE(BgObject);
 
 	GameObject* MonsterObject = GameObject::CreateObject("Monster", Default);
 	Monster_Com* monster_Com = MonsterObject->AddComponent<Monster_Com>("Monster_Com");
 	//loadThread->AddLoadingCount();
-	GameObject* PlayerObject = GameObject::CreateObject("Player", Default, true);
+	SAFE_RELEASE(MonsterObject);
+	SAFE_RELEASE(monster_Com);
 
-	if (PlayerObject->EmptyComponent())
+	GameObject* PlayerObject = GameObject::CreateObject("Player", Default, true);
+	if (PlayerObject->EmptyComponent() == true)
 	{
 		Player_Com* player_Com = PlayerObject->AddComponent<Player_Com>("Player_Com");
 		SAFE_RELEASE(player_Com);
@@ -76,18 +94,26 @@ bool MainScene::Init()
 	//loadThread->AddLoadingCount();
 
 	mainCamera->SetTarget(PlayerObject);
+	SAFE_RELEASE(mainCamera);
+	SAFE_RELEASE(PlayerObject);
 
 	GameObject* BulletObject = GameObject::CreateProtoType("Bullet_Clone", false);
 	Bullet_Com* bullet_Com = BulletObject->AddComponent<Bullet_Com>("Bullet_Com");
 	//loadThread->AddLoadingCount();
+	SAFE_RELEASE(bullet_Com);
+	SAFE_RELEASE(BulletObject);
 
 	GameObject* BulletObject2 = GameObject::CreateProtoType("BulletRot_Clone", false);
 	BulletRot_Com* bullet_Com2 = BulletObject2->AddComponent<BulletRot_Com>("BulletRot_Com");
 	//loadThread->AddLoadingCount();
+	SAFE_RELEASE(BulletObject2);
+	SAFE_RELEASE(bullet_Com2);
 
 	GameObject* BoomObject = GameObject::CreateProtoType("Boom", false);
 	BulletBoom_Com* bulletBoom_Com = BoomObject->AddComponent<BulletBoom_Com>("Boom_Com");
 	//loadThread->AddLoadingCount();
+	SAFE_RELEASE(BoomObject);
+	SAFE_RELEASE(bulletBoom_Com);
 
 	GameObject*	TestPixelColl = GameObject::CreateObject("PixelColl", Default);
 	Renderer_Com* PixelRenderer = TestPixelColl->AddComponent<Renderer_Com>("PixelCollRenderer");
@@ -102,14 +128,20 @@ bool MainScene::Init()
 	Transform_Com* pTransform = TestPixelColl->GetTransform();
 	pTransform->SetWorldPos(500.0f, 200.0f, 0.0f);
 	pTransform->SetWorldScale(200.0f, 50.0f, 1.0f);
+	SAFE_RELEASE(PixelRenderer);
+	SAFE_RELEASE(pixelMaterial);
+	SAFE_RELEASE(ColliderPixel);
+	SAFE_RELEASE(TestPixelColl);
 
 	GameObject* BarObject = GameObject::CreateObject("TestBar", UILayer);
 	BarObject->GetTransform()->SetWorldPos(200.0f, 600.0f, 0.0f);
+
 	m_TestBar = BarObject->AddComponent<UIBar_Com>("HpBar");
 	m_TestBar->SetDir(BD_LEFT);
-	m_TestBar->SetValue(0.0f);
-	m_TestBar->SetScale(200.0f, 30.0f, 0.0f);
+	m_TestBar->SetValue(100.0f);
+	m_TestBar->SetScale(100.0f, 30.0f, 0.0f);
 	//loadThread->AddLoadingCount();
+	SAFE_RELEASE(BarObject);
 
 	GameObject* SlotObject1 = GameObject::CreateObject("Slot1", UILayer);
 	GameObject* SlotObject2 = GameObject::CreateObject("Slot2", UILayer);
@@ -128,6 +160,13 @@ bool MainScene::Init()
 	IconSlot_Com* SlotCom3 = SlotObject3->AddComponent<IconSlot_Com>("Slot3");
 	SlotCom3->SetSlotIndex(2);
 
+	SAFE_RELEASE(SlotObject1);
+	SAFE_RELEASE(SlotObject2);
+	SAFE_RELEASE(SlotObject3);
+	SAFE_RELEASE(SlotCom1);
+	SAFE_RELEASE(SlotCom2);
+	SAFE_RELEASE(SlotCom3);
+
 	GameObject* IconObject1 = GameObject::CreateObject("Icon1", UILayer);
 	GameObject* IconObject2 = GameObject::CreateObject("Icon2", UILayer);
 	IconObject1->GetTransform()->SetWorldPos(Vector3(400.0f, 100.0f, 0.0f));
@@ -137,61 +176,51 @@ bool MainScene::Init()
 
 	UICon_Com* IconCom1 = IconObject1->AddComponent<UICon_Com>("Icon1");
 	UICon_Com* IconCom2 = IconObject2->AddComponent<UICon_Com>("Icon2");
+	SAFE_RELEASE(IconObject1);
+	SAFE_RELEASE(IconCom1);
+	SAFE_RELEASE(IconCom2);
 
 	Material_Com* material = IconObject2->FindComponentFromType<Material_Com>(CT_MATERIAL);
 	material->SetDiffuseTexture(0, "Icon2", TEXT("Icon2.png"));
+	SAFE_RELEASE(material);
+	SAFE_RELEASE(IconObject2);
 
-	GameObject* TextObject1 = GameObject::CreateObject("Text1", UILayer);
-	m_TestText = TextObject1->AddComponent<Text_Com>("Text1");
-
-	m_TestText->SetText(L"¤·¤µ¤·?");
-	m_TestText->SetTextType(TRT_UI);
-	m_TestText->SetFont(L"±Ã¼­Ã¼", 20.0f);
-	m_TestText->SetColor(Vector4::LightPink);
-	m_TestText->SetRenderArea(0, 0, 200, 200);
-	m_TestText->SetIsShow(true);
-	TextObject1->GetTransform()->SetWorldPos(Vector3(300.0f, 300.0f, 0));
-	//loadThread->AddLoadingCount();
+	//GameObject* TextObject1 = GameObject::CreateObject("Text1", UILayer);
+	//m_TestText = TextObject1->AddComponent<Text_Com>("Text1");
+	//m_TestText->SetText(L"¤·¤µ¤·?");
+	//m_TestText->SetTextType(TRT_UI);
+	//m_TestText->SetFont(L"±Ã¼­Ã¼", 20.0f);
+	//m_TestText->SetColor(Vector4::LightPink);
+	//m_TestText->SetRenderArea(0, 0, 200, 200);
+	//m_TestText->SetIsShow(true);
+	//TextObject1->GetTransform()->SetWorldPos(Vector3(300.0f, 300.0f, 0));
+	////loadThread->AddLoadingCount();
+	//SAFE_RELEASE(TextObject1);
 
 	GameObject* newCheck = GameObject::CreateObject("CheckBox", UILayer);
 	newCheck->GetTransform()->SetWorldPos(300.0f, 360.0f, 0.0f);
 	CheckBox_Com* CheckCom = newCheck->AddComponent<CheckBox_Com>("CheckBox");
 	//loadThread->AddLoadingCount();
-
 	SAFE_RELEASE(newCheck);
 	SAFE_RELEASE(CheckCom);
-	SAFE_RELEASE(StageLayer);
-	SAFE_RELEASE(pStage);
-	SAFE_RELEASE(pStageObj);
-	SAFE_RELEASE(TextObject1);
-	SAFE_RELEASE(material);
-	SAFE_RELEASE(SlotObject1);
-	SAFE_RELEASE(SlotObject2);
-	SAFE_RELEASE(SlotObject3);
-	SAFE_RELEASE(SlotCom1);
-	SAFE_RELEASE(SlotCom2);
-	SAFE_RELEASE(SlotCom3);
-	SAFE_RELEASE(IconObject1);
-	SAFE_RELEASE(IconObject2);
-	SAFE_RELEASE(IconCom1);
-	SAFE_RELEASE(IconCom2);
-	SAFE_RELEASE(BarObject);
-	SAFE_RELEASE(PixelRenderer);
-	SAFE_RELEASE(pixelMaterial);
-	SAFE_RELEASE(ColliderPixel);
-	SAFE_RELEASE(TestPixelColl);
-	SAFE_RELEASE(BoomObject);
-	SAFE_RELEASE(bulletBoom_Com);
-	SAFE_RELEASE(BulletObject2);
-	SAFE_RELEASE(bullet_Com2);
-	SAFE_RELEASE(MonsterObject);
-	SAFE_RELEASE(monster_Com);
-	SAFE_RELEASE(bullet_Com);
-	SAFE_RELEASE(BulletObject);
-	SAFE_RELEASE(PlayerObject);
+
+	GameObject* TestObject = GameObject::CreateObject("TestObject", StageLayer);
+	TestObject->GetTransform()->SetWorldPos(300.0f, 0.0f, 0.0f);
+	TestObject->GetTransform()->SetWorldScale(100.0f, 100.0f, 1.0f);
+
+	Renderer_Com* TestRender = TestObject->AddComponent<Renderer_Com>("TestRender");
+	TestRender->SetMesh("TextureRect");
+	TestRender->SetRenderState(ALPHA_BLEND);
+	SAFE_RELEASE(TestRender);
+
+	Material_Com* TestMater = TestObject->FindComponentFromType<Material_Com>(CT_MATERIAL);
+	TestMater->SetDiffuseTexture(0, "aaa", TEXT("aaa.png"));
+	SAFE_RELEASE(TestMater);
+	SAFE_RELEASE(TestObject);
+
 	SAFE_RELEASE(Default);
 	SAFE_RELEASE(UILayer);
-	SAFE_RELEASE(mainCamera);
+	SAFE_RELEASE(StageLayer);
 
 	return true;
 }

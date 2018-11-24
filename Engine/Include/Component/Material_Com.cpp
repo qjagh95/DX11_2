@@ -250,7 +250,7 @@ void JEONG::Material_Com::SetShader(int Container, int Subset)
 {
 	JEONG::SubsetMaterial* getMaterial = m_vecMaterial[Container][Subset];
 
-	GET_SINGLE(ShaderManager)->UpdateCBuffer("Material", &getMaterial->MatrialInfo);
+	ShaderManager::Get()->UpdateCBuffer("Material", &getMaterial->MatrialInfo);
 
 	for (size_t i = 0; i < getMaterial->vecDiffuseTexture.size(); i++)
 	{

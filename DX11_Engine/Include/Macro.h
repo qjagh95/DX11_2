@@ -33,6 +33,8 @@
 #define BAR_SHADER "BarShader"
 #define CHECKBOX_SHADER "CheckBoxShader"
 #define TILE_SHADER "TileShader"
+#define FULLSCREEN_SHADER "FullScreenShader"
+#define STANDARD_UV_STATIC_SHADER "StandardUVStaticShader"
 
 //Base InputLayOut
 #define POS_COLOR_LAYOUT "PosColorLayOut"

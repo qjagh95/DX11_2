@@ -1,20 +1,14 @@
 #include "stdafx.h"
 #include "IconSlot_Com.h"
-#include "Renderer_Com.h"
-#include "Material_Com.h"
 #include "ColliderPoint_Com.h"
-#include "Animation2D_Com.h"
-#include "Transform_Com.h"
 #include "UICon_Com.h"
-
-#include "../GameObject.h"
-#include "../KeyInput.h"
 
 JEONG_USING
 
 IconSlot_Com::IconSlot_Com()
 {
 	m_UIType = UT_ICONSLOT;
+	m_ComType = CT_UI;
 	SetTag("IconSlot");
 }
 
@@ -32,6 +26,7 @@ bool IconSlot_Com::Init()
 	Renderer_Com* RenderComponent = m_Object->AddComponent<Renderer_Com>("IconSlotRender");
 	RenderComponent->SetMesh("TextureRect");
 	RenderComponent->SetRenderState(ALPHA_BLEND);
+	RenderComponent->SetScreenRender(true);
 	SAFE_RELEASE(RenderComponent);
 
 	Material_Com* MaterialComponent = m_Object->FindComponentFromType<Material_Com>(CT_MATERIAL);

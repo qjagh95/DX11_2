@@ -2,23 +2,23 @@
 #include "StaticManager.h"
 
 JEONG_USING
-SINGLETON_VAR_INIT(StaticManager)
+SINGLETON_VAR_INIT(JEONG::StaticManager)
 
-StaticManager::StaticManager()
+JEONG::StaticManager::StaticManager()
 {
 }
 
-StaticManager::~StaticManager()
+JEONG::StaticManager::~StaticManager()
 {
 	Safe_Release_VecList(m_staticObjectList);
 }
 
-bool StaticManager::Init()
+bool JEONG::StaticManager::Init()
 {
 	return true;
 }
 
-void StaticManager::AddStaticObject(GameObject * object)
+void JEONG::StaticManager::AddStaticObject(GameObject * object)
 {
 	list<GameObject*>::iterator	StartIter = m_staticObjectList.begin();
 	list<GameObject*>::iterator	EndIter = m_staticObjectList.end();
@@ -33,7 +33,7 @@ void StaticManager::AddStaticObject(GameObject * object)
 	m_staticObjectList.push_back(object);
 }
 
-void StaticManager::ChangeScene(Scene * scene)
+void JEONG::StaticManager::ChangeScene(Scene * scene)
 {
 	list<GameObject*>::iterator	StartIter = m_staticObjectList.begin();
 	list<GameObject*>::iterator	EndIter = m_staticObjectList.end();
@@ -42,19 +42,18 @@ void StaticManager::ChangeScene(Scene * scene)
 	{
 		Layer* pLayer = scene->FindLayer((*StartIter)->GetLayerName());
 
-		if (pLayer != NULLPTR)
+		if (pLayer == NULLPTR)
 		{
 			scene->AddLayer((*StartIter)->GetLayerName(), (*StartIter)->GetLayerZOrder());
 			pLayer = scene->FindLayer((*StartIter)->GetLayerName());
 		}
 
 		pLayer->AddObject(*StartIter);
-
 		SAFE_RELEASE(pLayer);
 	}
 }
 
-bool StaticManager::CheckStaticObject(const string & TagName)
+bool JEONG::StaticManager::CheckStaticObject(const string & TagName)
 {
 	list<GameObject*>::iterator	StartIter = m_staticObjectList.begin();
 	list<GameObject*>::iterator	EndIter = m_staticObjectList.end();
@@ -68,7 +67,7 @@ bool StaticManager::CheckStaticObject(const string & TagName)
 	return false;
 }
 
-GameObject * StaticManager::FindStaticObject(const string & TagName)
+GameObject * JEONG::StaticManager::FindStaticObject(const string & TagName)
 {
 	list<GameObject*>::iterator	StartIter = m_staticObjectList.begin();
 	list<GameObject*>::iterator	EndIter = m_staticObjectList.end();
@@ -76,10 +75,8 @@ GameObject * StaticManager::FindStaticObject(const string & TagName)
 	for (; StartIter != EndIter; ++StartIter)
 	{
 		if (TagName == (*StartIter)->GetTag())
-		{
-			(*StartIter)->AddRefCount();
 			return *StartIter;
-		}
 	}
+
 	return NULLPTR;
 }
