@@ -149,8 +149,6 @@ KeyInput::Get()->AddKey("S1", VK_F1);
 	SAFE_RELEASE(pChildObj);
 
 	return true;
-
-	return true;
 }
 
 int Player_Com::Input(float DeltaTime)
@@ -169,6 +167,7 @@ int Player_Com::Input(float DeltaTime)
 		m_Transform->Move(AXIS_Y, 1000.0f, DeltaTime);
 	else if (KeyInput::Get()->KeyPress("MoveDown"))
 		m_Transform->Move(AXIS_Y, -1000.0f, DeltaTime);
+
 
 	if (KeyInput::Get()->KeyDown("S1"))
 	{

@@ -176,27 +176,20 @@ void EditorApp::OnAppAbout()
 	aboutDlg.DoModal();
 }
 
-// CPunRealEditorApp 메시지 처리기
-
-
-
-
+// EditorApp 메시지 처리기
 
 int EditorApp::Run()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-
 	return CWinApp::Run();
 }
-
 
 BOOL EditorApp::OnIdle(LONG lCount)
 {
 	if (m_pMainWnd->IsIconic())
 		return FALSE;
-
-	//else
-	//	GET_SINGLE(CCore)->Logic();
+	else
+		Core::Get()->Logic();
 
 	return TRUE;
 }

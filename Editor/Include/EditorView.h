@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "EditorDoc.h"
 
 class EditorView : public CView
 {

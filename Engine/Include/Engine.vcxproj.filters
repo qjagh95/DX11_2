@@ -405,6 +405,9 @@
     <ClInclude Include="Render\RenderTarget.h">
       <Filter>Core\09. Render\06. RenderTarget</Filter>
     </ClInclude>
+    <ClInclude Include="Component\FreeCamera_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\05. Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Copy.bat">
@@ -579,6 +582,9 @@
     </ClCompile>
     <ClCompile Include="Render\RenderTarget.cpp">
       <Filter>Core\09. Render\06. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\FreeCamera_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\05. Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

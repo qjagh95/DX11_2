@@ -35,6 +35,8 @@
 
 #include <stdafx.h>
 #include <Core.h>
+#include <afxcontrolbars.h>
+#include "MainFrame.h"
 
 JEONG_USING
 

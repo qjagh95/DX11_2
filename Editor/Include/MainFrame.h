@@ -4,6 +4,9 @@
 
 #pragma once
 
+class EditorView;
+class EditorForm;
+
 class MainFrame : public CFrameWnd
 {
 	
@@ -20,6 +23,8 @@ public:
 // 재정의입니다.
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	EditorView* GetEditorView() const { return m_EditorView; }
+	EditorForm* GetEditorForm() const { return m_EditorForm; }
 
 // 구현입니다.
 public:
@@ -29,9 +34,12 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:  // 컨트롤 모음이 포함된 멤버입니다.
-	CToolBar          m_wndToolBar;
-	CStatusBar        m_wndStatusBar;
+protected:  
+	//분할윈도우 (동적분할과 정적분할이 있음)
+	CSplitterWnd m_SplitWindow;
+	EditorView* m_EditorView;
+	EditorForm* m_EditorForm;
+
 
 // 생성된 메시지 맵 함수
 protected:
@@ -40,6 +48,7 @@ protected:
 
 public:
 	virtual BOOL DestroyWindow();
+	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
 };
 
 

@@ -3,6 +3,7 @@
 //
 
 #include "EditorHeader.h"
+#include "EditScene.h"
 // SHARED_HANDLERS는 미리 보기, 축소판 그림 및 검색 필터 처리기를 구현하는 ATL 프로젝트에서 정의할 수 있으며
 // 해당 프로젝트와 문서 코드를 공유하도록 해 줍니다.
 #ifndef SHARED_HANDLERS
@@ -11,6 +12,7 @@
 
 #include "EditorDoc.h"
 #include "EditorView.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -100,10 +102,9 @@ EditorDoc* EditorView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 
 }
 #endif //_DEBUG
 
+//이 클래스에서 Window를 띄운다.
 
 // EditorView 메시지 처리기
-
-
 void EditorView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
@@ -112,4 +113,7 @@ void EditorView::OnInitialUpdate()
 	//Window HISTANCE을 얻어오는 함수
 	Core::Get()->Init(AfxGetInstanceHandle(), m_hWnd, 1280, 720);
 	Core::Get()->SetGameMode(GM_2D);
+	
+
+	SceneManager::Get()->AddSceneComponent<EditScene>("EditScene");
 }

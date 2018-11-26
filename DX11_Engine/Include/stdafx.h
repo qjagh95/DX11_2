@@ -51,9 +51,9 @@
 #define JEONG_USING using namespace JEONG;
 #define TrueAssert(Var) assert(!(Var))
 
-#ifdef _DEBUG
-#define new new(_CLIENT_BLOCK,__FILE__,__LINE__)
-#endif // DEBUG
+//#ifdef _DEBUG
+//#define new new(_CLIENT_BLOCK,__FILE__,__LINE__)
+//#endif // DEBUG
 
 #include "FontManager.h"
 #include "ThreadManager.h"

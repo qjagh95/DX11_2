@@ -28,6 +28,7 @@ public:
 	DECLARE_MESSAGE_MAP()
 	virtual int Run();
 	virtual BOOL OnIdle(LONG lCount);
+
 };
 
 extern EditorApp theApp;

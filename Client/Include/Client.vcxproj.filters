@@ -32,12 +32,6 @@
     <Filter Include="StaticTextScene\SceneMain">
       <UniqueIdentifier>{7eda37a0-9ada-4e94-9ffe-48e12225805b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EditScene">
-      <UniqueIdentifier>{f0e3bbdb-b153-4fb0-afa5-9e34c6cb380c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="EditScene\SceneMain">
-      <UniqueIdentifier>{c3e0759a-2be9-4802-b3e8-efc3b3f71eae}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -76,9 +70,6 @@
     <ClCompile Include="SceneMain\StaticTestScene.cpp">
       <Filter>StaticTextScene\SceneMain</Filter>
     </ClCompile>
-    <ClCompile Include="SceneMain\EditScene.cpp">
-      <Filter>EditScene\SceneMain</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientHeader.h">
@@ -113,9 +104,6 @@
     </ClInclude>
     <ClInclude Include="SceneMain\StaticTestScene.h">
       <Filter>StaticTextScene\SceneMain</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneMain\EditScene.h">
-      <Filter>EditScene\SceneMain</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

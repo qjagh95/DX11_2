@@ -4,15 +4,15 @@
 JEONG_USING
 SINGLETON_VAR_INIT(PathManager)
 
-PathManager::PathManager()
+JEONG::PathManager::PathManager()
 {
 }
 
-PathManager::~PathManager()
+JEONG::PathManager::~PathManager()
 {
 }
 
-bool PathManager::Init()
+bool JEONG::PathManager::Init()
 {
 	TCHAR strPath[MAX_PATH];
 	//실행파일 있는곳의 경로를 뽑아낸다.
@@ -33,11 +33,12 @@ bool PathManager::Init()
 	AddPath(TEXTURE_PATH, TEXT("Texture\\"));
 	AddPath(SHADER_PATH, TEXT("Shader\\"));
 	AddPath(SOUND_PATH, TEXT("Sound\\"));
+	AddPath(DATA_PATH, TEXT("Data\\"));
 
 	return true;
 }
 
-bool PathManager::AddPath(const string & KeyName, const wstring & PathName, const string & BaseKeyName)
+bool JEONG::PathManager::AddPath(const string & KeyName, const wstring & PathName, const string & BaseKeyName)
 {
 	if (FindPath(KeyName) != NULLPTR)
 		return false;
@@ -54,7 +55,7 @@ bool PathManager::AddPath(const string & KeyName, const wstring & PathName, cons
 	return true;
 }
 
-const TCHAR * PathManager::FindPath(const string & KeyName)
+const TCHAR * JEONG::PathManager::FindPath(const string & KeyName)
 {
 	unordered_map<string, wstring>::iterator FindIter = PathMap.find(KeyName);
 
@@ -64,7 +65,7 @@ const TCHAR * PathManager::FindPath(const string & KeyName)
 	return FindIter->second.c_str();
 }
 
-const char * PathManager::FindPathMultiByte(const string & KeyName)
+const char * JEONG::PathManager::FindPathMultiByte(const string & KeyName)
 {
 	const TCHAR* mPath = FindPath(KeyName);
 

@@ -11,15 +11,13 @@
 #define SAFE_RELEASE(p) if(p) {p->Release(); p = NULLPTR;}
 #define SAFE_DELETE_ARRARY(p) if(p){delete[] p; p = NULLPTR;}
 
-#define GET_SINGLE(Type) Type::Get()
-#define DELETE_SINGLE(Type) Type::Delete()
-
 #define NULLPTR nullptr
 
 #define ROOT_PATH "RootPath"
 #define TEXTURE_PATH "TexturPath"
 #define SHADER_PATH "ShaderPath"
 #define SOUND_PATH "SoundPath"
+#define DATA_PATH "DataPath"
 
 #define KEYPRESS(Key) KeyInput::Get()->KeyPress(key)
 #define KEYUP(Key) KeyInput::Get()->KeyUp(key)

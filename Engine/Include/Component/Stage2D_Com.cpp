@@ -101,10 +101,9 @@ int Stage2D_Com::Update(float DeltaTime)
 			Vector2 RTIndex = GetIsoTileIndexVec(EndPos);
 
 			m_StartX = clamp((int)LBIndex.x, 0, m_TileCountX);
-			m_StartY = clamp((int)RBIndex.y, 0, m_TileCountY);
 			m_EndX = clamp((int)RTIndex.x, 0, m_TileCountX);
+			m_StartY = clamp((int)RBIndex.y, 0, m_TileCountY);
 			m_EndY = clamp((int)LTIndex.y, 0, m_TileCountY);
-
 		}
 			break;
 	}

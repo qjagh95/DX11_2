@@ -3,6 +3,8 @@
 
 #include "EditorHeader.h"
 #include "Editor.h"
+#include "EditorView.h"
+#include "EditorForm.h"
 
 #include "MainFrame.h"
 
@@ -41,30 +43,11 @@ MainFrame::~MainFrame()
 {
 }
 
+//윈도우프레임이 맨처음 만들어질때 들어오는 함수
 int MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
-
-	if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
-		!m_wndToolBar.LoadToolBar(IDR_MAINFRAME))
-	{
-		TRACE0("도구 모음을 만들지 못했습니다.\n");
-		return -1;      // 만들지 못했습니다.
-	}
-
-	if (!m_wndStatusBar.Create(this))
-	{
-		TRACE0("상태 표시줄을 만들지 못했습니다.\n");
-		return -1;      // 만들지 못했습니다.
-	}
-	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
-
-	// TODO: 도구 모음을 도킹할 수 없게 하려면 이 세 줄을 삭제하십시오.
-	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
-	EnableDocking(CBRS_ALIGN_ANY);
-	DockControlBar(&m_wndToolBar);
-
 
 	return 0;
 }
@@ -75,6 +58,10 @@ BOOL MainFrame::PreCreateWindow(CREATESTRUCT& cs)
 		return FALSE;
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
 	//  Window 클래스 또는 스타일을 수정합니다.
+
+	//메인프레임 가로크기
+	cs.cx = 1800;
+	cs.cy = 720;
 
 	return TRUE;
 }
@@ -104,4 +91,22 @@ BOOL MainFrame::DestroyWindow()
 	Core::Delete();
 
 	return CFrameWnd::DestroyWindow();
+}
+
+
+BOOL MainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
+{
+	//창을 분할한다.
+	//부모, 세로몇개 가로몇개?
+	m_SplitWindow.CreateStatic(this, 1, 2);
+
+	//분할된 각 창에 원하는 윈도우를 생성한다.
+	m_SplitWindow.CreateView(0, 0, RUNTIME_CLASS(EditorView), CSize(1280, 720), pContext);
+	m_SplitWindow.CreateView(0, 1, RUNTIME_CLASS(EditorForm), CSize(520, 720), pContext);
+	
+	//윈도우를 얻어오는 함수.
+	m_EditorView = (EditorView*)m_SplitWindow.GetPane(0, 0);
+	m_EditorForm = (EditorForm*)m_SplitWindow.GetPane(0, 1);
+
+	return TRUE;
 }

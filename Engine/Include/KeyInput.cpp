@@ -17,10 +17,12 @@
 
 JEONG_USING
 SINGLETON_VAR_INIT(JEONG::KeyInput)
+bool KeyInput::m_isMosueShow = false;
 
 JEONG::KeyInput::KeyInput()
 	:m_NewKey(NULLPTR), m_MouseObject(NULLPTR), m_EquipObject(NULLPTR), m_MouseWorldPoint(NULLPTR) ,m_ShowCursor(false), m_isEquip(false)
 {
+	
 }
 
 JEONG::KeyInput::~KeyInput()
@@ -65,7 +67,7 @@ bool JEONG::KeyInput::Init()
 	m_MouseWorldPoint = m_MouseObject->AddComponent<ColliderPoint_Com>("MouseWorld");
 	m_MouseWorldPoint->SetMyTypeName("MouseWorld");
 
-	ShowCursor(FALSE);
+	ShowCursor(TRUE);
 	return true;
 }
 
@@ -136,16 +138,19 @@ void JEONG::KeyInput::Update(float DeltaTime)
 	m_MouseObject->GetTransform()->SetWorldPos((float)m_MouseScreenPos.x, (float)m_MouseScreenPos.y, 0.0f);
 	m_MouseObject->Update(DeltaTime);
 
-	if (m_ShowCursor == false && (m_MouseScreenPos.x <= 0.0f && m_MouseScreenPos.x >= Device::Get()->GetWinSize().Width || m_MouseScreenPos.y <= 0.0f && m_MouseScreenPos.y >= Device::Get()->GetWinSize().Height))
+	if (m_isMosueShow == false)
 	{
-		m_ShowCursor = true;
-		while (ShowCursor(TRUE) != 0) {}
-	}
-	
-	else if (m_ShowCursor == true && m_MouseScreenPos.x >= 0.0f && m_MouseScreenPos.x <= Device::Get()->GetWinSize().Width && m_MouseScreenPos.y >= 0.0f && m_MouseScreenPos.y <= Device::Get()->GetWinSize().Height)
-	{
-		m_ShowCursor = false;
-		while (ShowCursor(FALSE) >= 0) {}
+		if (m_ShowCursor == false && (m_MouseScreenPos.x <= 0.0f && m_MouseScreenPos.x >= Device::Get()->GetWinSize().Width || m_MouseScreenPos.y <= 0.0f && m_MouseScreenPos.y >= Device::Get()->GetWinSize().Height))
+		{
+			m_ShowCursor = true;
+			while (ShowCursor(TRUE) != 0) {}
+		}
+
+		else if (m_ShowCursor == true && m_MouseScreenPos.x >= 0.0f && m_MouseScreenPos.x <= Device::Get()->GetWinSize().Width && m_MouseScreenPos.y >= 0.0f && m_MouseScreenPos.y <= Device::Get()->GetWinSize().Height)
+		{
+			m_ShowCursor = false;
+			while (ShowCursor(FALSE) >= 0) {}
+		}
 	}
 
 	SAFE_RELEASE(curScene);

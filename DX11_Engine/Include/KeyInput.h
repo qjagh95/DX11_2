@@ -34,6 +34,7 @@ public:
 	GameObject* GetEquipObject() const { return m_EquipObject; }
 	void ResetEquipObject();
 	bool GetisEquipObject() const { return m_isEquip; }
+	void SetShowCursor(bool Value) { m_isMosueShow = Value; }
 
 	template <typename T>
 	bool AddKey(const T& value)
@@ -106,6 +107,7 @@ private:
 	GameObject* m_EquipObject;
 	bool m_isEquip;
 	Vector3 m_CameraPos;
+	static bool m_isMosueShow;
 
 public:
 	CLASS_IN_SINGLE(KeyInput)

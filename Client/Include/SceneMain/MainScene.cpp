@@ -12,11 +12,7 @@
 #include "scene/Layer.h"
 
 #include "Component/Component_Base.h"
-#include "Component/Transform_Com.h"
-#include "Component/Renderer_Com.h"
-#include "Component/Camera_Com.h"
 #include "Component/ColliderPixel_Com.h"
-#include "Component/Material_Com.h"
 #include "Component/Button_Com.h"
 #include "Component/UICon_Com.h"
 #include "Component/IconSlot_Com.h"
@@ -39,7 +35,7 @@ MainScene::MainScene()
 MainScene::~MainScene()
 {
 	SAFE_RELEASE(m_TestBar);
-	//SAFE_RELEASE(m_TestText);
+	SAFE_RELEASE(m_TestText);
 }
 
 bool MainScene::Init()
@@ -49,6 +45,8 @@ bool MainScene::Init()
 	Camera_Com* mainCamera = m_Scene->GetMainCamera();
 	mainCamera->SetCameraType(CT_ORTHO);
 	mainCamera->SetNear(0.0f);
+
+	KeyInput::Get()->SetShowCursor(false);
 
 	Layer* BackLayer = m_Scene->FindLayer("BackGround");
 	Layer* Default = m_Scene->FindLayer("Default");
@@ -186,17 +184,17 @@ bool MainScene::Init()
 	SAFE_RELEASE(material);
 	SAFE_RELEASE(IconObject2);
 
-	//GameObject* TextObject1 = GameObject::CreateObject("Text1", UILayer);
-	//m_TestText = TextObject1->AddComponent<Text_Com>("Text1");
-	//m_TestText->SetText(L"¤·¤µ¤·?");
-	//m_TestText->SetTextType(TRT_UI);
-	//m_TestText->SetFont(L"±Ã¼­Ã¼", 20.0f);
-	//m_TestText->SetColor(Vector4::LightPink);
-	//m_TestText->SetRenderArea(0, 0, 200, 200);
-	//m_TestText->SetIsShow(true);
-	//TextObject1->GetTransform()->SetWorldPos(Vector3(300.0f, 300.0f, 0));
-	////loadThread->AddLoadingCount();
-	//SAFE_RELEASE(TextObject1);
+	GameObject* TextObject1 = GameObject::CreateObject("Text1", UILayer);
+	m_TestText = TextObject1->AddComponent<Text_Com>("Text1");
+	m_TestText->SetText(L"¤·¤µ¤·?");
+	m_TestText->SetTextType(TRT_UI);
+	m_TestText->SetFont(L"±Ã¼­Ã¼", 20.0f);
+	m_TestText->SetColor(Vector4::LightPink);
+	m_TestText->SetRenderArea(0, 0, 200, 200);
+	m_TestText->SetIsShow(true);
+	TextObject1->GetTransform()->SetWorldPos(Vector3(300.0f, 300.0f, 0));
+	//loadThread->AddLoadingCount();
+	SAFE_RELEASE(TextObject1);
 
 	GameObject* newCheck = GameObject::CreateObject("CheckBox", UILayer);
 	newCheck->GetTransform()->SetWorldPos(300.0f, 360.0f, 0.0f);

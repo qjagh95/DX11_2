@@ -182,7 +182,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="SceneMain\EditScene.cpp" />
     <ClCompile Include="SceneMain\LoadingScene.cpp" />
     <ClCompile Include="SceneMain\LoadingThread.cpp" />
     <ClCompile Include="SceneMain\MainScene.cpp" />
@@ -199,7 +198,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientHeader.h" />
-    <ClInclude Include="SceneMain\EditScene.h" />
     <ClInclude Include="SceneMain\LoadingScene.h" />
     <ClInclude Include="SceneMain\LoadingThread.h" />
     <ClInclude Include="SceneMain\MainScene.h" />

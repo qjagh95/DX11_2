@@ -110,7 +110,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions);EDITOR;</PreprocessorDefinitions>
       <PrecompiledHeaderFile>EditorHeader.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -134,7 +134,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions);EDITOR;</PreprocessorDefinitions>
       <PrecompiledHeaderFile>EditorHeader.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -160,7 +160,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions);EDITOR;</PreprocessorDefinitions>
       <PrecompiledHeaderFile>EditorHeader.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -188,7 +188,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions);EDITOR;</PreprocessorDefinitions>
       <PrecompiledHeaderFile>EditorHeader.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -210,15 +210,20 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="EditorForm.h" />
+    <ClInclude Include="EditScene.h" />
     <ClInclude Include="MainFrame.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorDoc.h" />
     <ClInclude Include="EditorView.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="EditorHeader.h" />
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EditorForm.cpp" />
+    <ClCompile Include="EditScene.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="EditorDoc.cpp" />
