@@ -50,11 +50,12 @@ bool MainScene::Init()
 	mainCamera->SetCameraType(CT_ORTHO);
 	mainCamera->SetNear(0.0f);
 
+	Layer* BackLayer = m_Scene->FindLayer("BackGround");
 	Layer* Default = m_Scene->FindLayer("Default");
 	Layer* UILayer = m_Scene->FindLayer("UI");
-	Layer* StageLayer = m_Scene->FindLayer("StageBackGround");
+	Layer* TileLayer = m_Scene->FindLayer("Tile");
 
-	GameObject*	pStageObj = GameObject::CreateObject("StageObj", StageLayer);
+	GameObject*	pStageObj = GameObject::CreateObject("StageObj", TileLayer);
 	Stage2D_Com* pStage = pStageObj->AddComponent<Stage2D_Com>("Stage");
 	pStage->CreateTileMap(100, 100, Vector3::Zero, Vector3(160.0f, 80.0f, 1.0f), STT_ISO);
 	pStage->SetLineOn(true);
@@ -62,7 +63,7 @@ bool MainScene::Init()
 	SAFE_RELEASE(pStage);
 	SAFE_RELEASE(pStageObj);
 
-	GameObject* BgObject = GameObject::CreateObject("BgObject", StageLayer);
+	GameObject* BgObject = GameObject::CreateObject("BgObject", TileLayer);
 	BgObject->GetTransform()->SetWorldPos(0.0f, 0.0f, 0.0f);
 	BgObject->GetTransform()->SetWorldScale(1280.0f, 720.0f, 1.0f);
 
@@ -204,7 +205,7 @@ bool MainScene::Init()
 	SAFE_RELEASE(newCheck);
 	SAFE_RELEASE(CheckCom);
 
-	GameObject* TestObject = GameObject::CreateObject("TestObject", StageLayer);
+	GameObject* TestObject = GameObject::CreateObject("TestObject", Default);
 	TestObject->GetTransform()->SetWorldPos(300.0f, 0.0f, 0.0f);
 	TestObject->GetTransform()->SetWorldScale(100.0f, 100.0f, 1.0f);
 
@@ -220,7 +221,8 @@ bool MainScene::Init()
 
 	SAFE_RELEASE(Default);
 	SAFE_RELEASE(UILayer);
-	SAFE_RELEASE(StageLayer);
+	SAFE_RELEASE(TileLayer);
+	SAFE_RELEASE(BackLayer);
 
 	return true;
 }

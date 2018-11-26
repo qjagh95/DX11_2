@@ -15,10 +15,10 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-//#include <atlstr.h>
+#include <atlstr.h>
 #include <process.h>
 
-#include <MathHeader.h>
+#include "MathHeader.h"
 #include <Vector2.h>
 #include <Vector3.h>
 #include <Vector4.h>
@@ -48,9 +48,8 @@
 
 #define JEONG_BEGIN namespace JEONG {
 #define JEONG_END }
-
-#define TrueAssert(Var) assert(!(Var))
 #define JEONG_USING using namespace JEONG;
+#define TrueAssert(Var) assert(!(Var))
 
 #ifdef _DEBUG
 #define new new(_CLIENT_BLOCK,__FILE__,__LINE__)

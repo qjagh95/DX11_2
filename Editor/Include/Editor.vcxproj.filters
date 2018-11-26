@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ㄴㄴ">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="ㄴㄴ\리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Control">
+      <UniqueIdentifier>{0e87472a-6a8d-4038-a7ab-475020974b67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Control\View">
+      <UniqueIdentifier>{97a160b4-d0d5-4e50-becb-2cb6521aaa4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Control\Main">
+      <UniqueIdentifier>{0bcc9c6c-adcc-4bf9-a5ef-b41ab3eede3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Control\Doc">
+      <UniqueIdentifier>{ff345e76-454a-4813-8d4d-c5301846b5f8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MainFrame.h">
+      <Filter>Control\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorDoc.h">
+      <Filter>Control\Doc</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorView.h">
+      <Filter>Control\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>ㄴㄴ</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>ㄴㄴ</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorHeader.h">
+      <Filter>ㄴㄴ</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>Control</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MainFrame.cpp">
+      <Filter>Control\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorDoc.cpp">
+      <Filter>Control\Doc</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorView.cpp">
+      <Filter>Control\View</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorHeader.cpp">
+      <Filter>ㄴㄴ</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>Control</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>ㄴㄴ\리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Editor.ico">
+      <Filter>ㄴㄴ\리소스 파일</Filter>
+    </Image>
+    <Image Include="res\EditorDoc.ico">
+      <Filter>ㄴㄴ\리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Editor.rc">
+      <Filter>ㄴㄴ\리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Editor.rc2">
+      <Filter>ㄴㄴ\리소스 파일</Filter>
+    </None>
+  </ItemGroup>
+</Project>

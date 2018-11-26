@@ -36,7 +36,7 @@ JEONG::Scene::~Scene()
 bool JEONG::Scene::Init()
 {
 	AddLayer("BackGround", 0);
-	AddLayer("StageBackGround", 1);
+	AddLayer("Tile", 1);
 	AddLayer("Default", 2);
 	AddLayer("UI", INT_MAX);
 

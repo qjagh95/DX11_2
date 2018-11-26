@@ -10,14 +10,9 @@
 #include "FontManager.h"
 #include "SoundManager.h"
 
-#include "Resource\ResourceManager.h"
 #include "Resource/Mesh.h"
 
 #include "Render\Shader.h"
-#include "Render/ShaderManager.h"
-#include "Render/RenderManager.h"
-
-#include "Scene/SceneManager.h"
 
 JEONG_USING
 SINGLETON_VAR_INIT(Core)
@@ -248,7 +243,6 @@ int Core::Input(float DeltaTime)
 int Core::Update(float DeltaTime)
 {
 	SceneManager::Get()->Update(DeltaTime);
-	//SoundManager::Get()->Update();
 
 	if (KeyInput::Get()->KeyDown("SystemPause"))
 		system("pause");

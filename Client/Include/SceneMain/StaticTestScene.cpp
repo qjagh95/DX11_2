@@ -15,7 +15,7 @@ bool StaticTestScene::Init()
 {
 	//Layer* Default = m_Scene->FindLayer("Default");
 	//Layer* UILayer = m_Scene->FindLayer("UI");
-	//Layer* StageLayer = m_Scene->FindLayer("StageBackGround");
+	//Layer* StageLayer = m_Scene->FindLayer("Tile");
 
 	//GameObject* PlayerObject = GameObject::CreateObject("Player", Default, true);
 
@@ -28,7 +28,6 @@ bool StaticTestScene::Init()
 	//SAFE_RELEASE(Default);
 	//SAFE_RELEASE(StageLayer);
 	//SAFE_RELEASE(UILayer);
-
 
 	return true;
 }
