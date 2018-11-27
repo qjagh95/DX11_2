@@ -1,14 +1,7 @@
 #include "stdafx.h"
 #include "Core.h"
 #include "Device.h"
-#include "PathManager.h"
 #include "Timer.h"
-#include "TimeManager.h"
-#include "KeyInput.h"
-#include "CollsionManager.h"
-#include "ThreadManager.h"
-#include "FontManager.h"
-#include "SoundManager.h"
 
 #include "Resource/Mesh.h"
 
@@ -40,6 +33,7 @@ Core::~Core()
 	SoundManager::Delete();
 	StaticManager::Delete();
 	RenderManager::Delete();
+	ExcelManager::Delete();
 
 	CoUninitialize();
 }
@@ -52,6 +46,8 @@ bool Core::Init(HINSTANCE hInst, unsigned int Width, unsigned int Height, const 
 
 	Register(ClassName, iIconID ,iSmallIconID);
 	CreateWnd(TitleName, ClassName);
+
+	LoadLibrary(TEXT("libxl.dll"));
 	
 	return Init(m_hIstance,m_hWnd, Width, Height, bWindowMode);
 }
@@ -63,6 +59,7 @@ bool Core::Init(HINSTANCE hInst, HWND hWnd, unsigned int Width, unsigned int Hei
 	m_WinSize.Width = Width;
 	m_WinSize.Height = Height;
 
+	//컴객체 초기화.
 	CoInitializeEx(NULLPTR, COINIT_MULTITHREADED);
 
 	//DirectX11 Device초기화
@@ -127,6 +124,12 @@ bool Core::Init(HINSTANCE hInst, HWND hWnd, unsigned int Width, unsigned int Hei
 	}
 
 	if (StaticManager::Get()->Init() == false)
+	{
+		TrueAssert(true);
+		return false;
+	}
+
+	if (ExcelManager::Get()->Init() == false)
 	{
 		TrueAssert(true);
 		return false;

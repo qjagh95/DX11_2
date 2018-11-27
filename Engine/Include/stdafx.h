@@ -18,6 +18,16 @@
 #include <atlstr.h>
 #include <process.h>
 
+///Excel
+#include <enum.h>
+#include <IBookT.h>
+#include <IFontT.h>
+#include <IFormatT.h>
+#include <ISheetT.h>
+#include <setup.h>
+#include <libxl.h>
+///Excel
+
 #include "MathHeader.h"
 #include <Vector2.h>
 #include <Vector3.h>
@@ -42,6 +52,9 @@
 #pragma comment(lib, "dwrite")
 #pragma warning(disable:4099)
 
+///Excel
+#pragma comment(lib, "libxl")
+
 #include "Macro.h"
 #include "Flag.h"
 #include "Type.h"
@@ -50,6 +63,8 @@
 #define JEONG_END }
 #define JEONG_USING using namespace JEONG;
 #define TrueAssert(Var) assert(!(Var))
+
+using namespace libxl;
 
 //#ifdef _DEBUG
 //#define new new(_CLIENT_BLOCK,__FILE__,__LINE__)
@@ -66,6 +81,7 @@
 #include "GameObject.h"
 #include "SoundManager.h"
 #include "StaticManager.h"
+#include "ExcelManager.h"
 
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"

@@ -209,6 +209,7 @@
     <ClInclude Include="Component\UICon_Com.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="Device.h" />
+    <ClInclude Include="ExcelManager.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="KeyInput.h" />
@@ -273,6 +274,7 @@
     <ClCompile Include="Component\UICon_Com.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Device.cpp" />
+    <ClCompile Include="ExcelManager.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="KeyInput.cpp" />
