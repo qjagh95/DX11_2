@@ -15,6 +15,7 @@ Animation2D_Com::Animation2D_Com()
 	:m_CurClip(NULLPTR)
 {
 	m_ComType = CT_ANIMATION2D;
+	m_isEnd = false;
 }
 
 Animation2D_Com::Animation2D_Com(const Animation2D_Com& copyData)
@@ -82,6 +83,7 @@ int Animation2D_Com::LateUpdate(float DeltaTime)
 
 		if (m_CurClip->Frame >= m_CurClip->vecFrame.size())
 		{
+			m_isEnd = true;
 			m_CurClip->Frame = 0;
 
 			if (m_CurClip->AnimationOption == AO_ONCE_DESTROY)
@@ -89,6 +91,10 @@ int Animation2D_Com::LateUpdate(float DeltaTime)
 				m_Object->SetIsActive(false);
 				break;
 			}
+		}
+		else
+		{
+			m_isEnd = false;
 		}
 	}
 	
@@ -174,7 +180,7 @@ void Animation2D_Com::AddClip(const string & AnimationName, ANIMATION2D_TYPE Typ
 
 void Animation2D_Com::SetDefaultClip(const string & ClipName)
 {
-	m_DefaultClipName = ClipName;
+	m_DefaultClipName = ClipName; 
 }
 
 void Animation2D_Com::ChangeClip(const string & AnimationName)

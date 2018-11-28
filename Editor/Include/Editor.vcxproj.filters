@@ -106,5 +106,8 @@
     <None Include="res\Editor.rc2">
       <Filter>02. Control\ResourceFile</Filter>
     </None>
+    <None Include="..\..\EditorCopy.bat">
+      <Filter>03. 노쓸모</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -14,7 +14,7 @@
   #else
       #define XLAPI __declspec(dllimport)
   #endif
-
+  
   #define XLAPIENTRY LIBXL_CALLING
 
 #else

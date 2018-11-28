@@ -82,6 +82,8 @@ using namespace libxl;
 #include "SoundManager.h"
 #include "StaticManager.h"
 #include "ExcelManager.h"
+#include "BineryWriter.h"
+#include "BineryReader.h"
 
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"
