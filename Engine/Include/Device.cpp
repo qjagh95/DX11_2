@@ -149,7 +149,9 @@ bool JEONG::Device::Init(HWND hWnd, unsigned int Width, unsigned int Height, boo
 	D2D1_FACTORY_OPTIONS tOption = {};
 	tOption.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
 
-	if (FAILED(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, tOption, &m_2DFactory)))
+	//싱글쓰레드일때 3D렌더링 후 2D렌더링이돈다
+	//멀티쓰레드일때 쓰레드를 하나 생성 후 3D와 2D렌더링 동시에 된다.
+	if (FAILED(D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, tOption, &m_2DFactory)))
 		return false;
 
 	// DirectX11 BackBuffer 타겟을 이용하여 2D 렌더링 타겟을 설정해준다.

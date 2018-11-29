@@ -9,17 +9,14 @@ public:
 	int ReadInt();
 	float ReadFloat();
 	double ReadDouble();
-
 	Vector2 ReadVector2();
 	Vector3 ReadVector3();
 	Vector4 ReadVector4();
-	Matrix ReadMatrix();
-
 	string ReadString();
+	wstring ReadWString();
 
 private:
-	HANDLE m_FileHandle;
-	DWORD m_Size;
+	ifstream m_ReadFile;
 
 private:
 	BineryRead(const string& FileName);

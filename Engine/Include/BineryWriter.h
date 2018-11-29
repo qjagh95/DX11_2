@@ -3,25 +3,24 @@ JEONG_BEGIN
 class JEONG_DLL BineryWrite
 {
 public:
-	void WriteBool(bool Data);
-	void WriteInt(int Data);
-	void WriteFloat(float Data);
-	void WriteDouble(double Data);
-
-	void WriteVector2(const Vector2& Data);
-	void WriteVector3(const Vector3& Data);
-	void WriteVector4(const Vector4& Data);
-	void WriteMatrix(const Matrix& Data);
-
-	void WriteString(const string& Data);
-
-private:
-	HANDLE m_FileHandle;
-	DWORD m_Size;
+	void WriteData(bool Data);
+	void WriteData(int Data);
+	void WriteData(float Data);
+	void WriteData(double Data);
+	void WriteData(const Vector2& Data);
+	void WriteData(const Vector3& Data);
+	void WriteData(const Vector4& Data);
+	void WriteData(const string& Data);
+	void WriteData(const wstring& Data);
+	void WriteData(const char* Data);
+	void WriteData(const wchar_t* Data);
 
 private:
-	BineryWrite(string FileName, UINT OpenOption = CREATE_ALWAYS);
-	BineryWrite(wstring FileName, UINT OpenOption = CREATE_ALWAYS);
+	ofstream m_WriteFile;
+
+private:
+	BineryWrite(string FileName);
+	BineryWrite(wstring FileName);
 	~BineryWrite();
 };
 

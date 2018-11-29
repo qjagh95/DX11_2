@@ -4,7 +4,6 @@
 JEONG_USING
 
 BineryRead::BineryRead(const string& FileName)
-	:m_FileHandle(NULLPTR), m_Size(0)
 {
 	wstring Temp;
 	Temp = PathManager::Get()->FindPath(DATA_PATH);
@@ -15,11 +14,10 @@ BineryRead::BineryRead(const string& FileName)
 	Temp += CA2W(FileName.c_str());
 	string Temp2 = CW2A(Temp.c_str());
 
-	m_FileHandle = CreateFileA(Temp2.c_str(), GENERIC_READ, FILE_SHARE_READ, NULLPTR, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULLPTR);
+	m_ReadFile.open(Temp2.c_str(), ios::binary);
 }
 
 BineryRead::BineryRead(const wstring& FileName)
-	: m_FileHandle(NULLPTR)
 {
 	wstring Temp;
 	Temp = PathManager::Get()->FindPath(DATA_PATH);
@@ -28,23 +26,19 @@ BineryRead::BineryRead(const wstring& FileName)
 		return;
 
 	Temp += FileName;
-	m_FileHandle = CreateFileW(Temp.c_str(), GENERIC_READ, FILE_SHARE_READ, NULLPTR, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULLPTR);
+	m_ReadFile.open(Temp.c_str());
 }
 
 BineryRead::~BineryRead()
 {
-	if (m_FileHandle != NULLPTR)
-	{
-		CloseHandle(m_FileHandle);
-		m_FileHandle = NULL;
-	}
+	m_ReadFile.close();
 }
 
 bool BineryRead::ReadBool()
 {
 	bool Temp = false;
 
-	ReadFile(m_FileHandle, &Temp, sizeof(bool), &m_Size, NULLPTR);
+	m_ReadFile >> Temp;
 
 	return Temp;
 }
@@ -53,7 +47,7 @@ int BineryRead::ReadInt()
 {
 	int Temp = -1;
 
-	ReadFile(m_FileHandle, &Temp, sizeof(int), &m_Size, NULLPTR);
+	m_ReadFile >> Temp;
 
 	return Temp;
 }
@@ -62,16 +56,16 @@ float BineryRead::ReadFloat()
 {
 	float Temp = -1.0f;
 
-	ReadFile(m_FileHandle, &Temp, sizeof(float), &m_Size, NULLPTR);
+	m_ReadFile >> Temp;
 
-	return 0.0f;
+	return Temp;
 }
 
 double BineryRead::ReadDouble()
 {
 	double Temp = -1.0f;
 
-	ReadFile(m_FileHandle, &Temp, sizeof(double), &m_Size, NULLPTR);
+	m_ReadFile >> Temp;
 
 	return Temp;
 }
@@ -80,7 +74,8 @@ Vector2 BineryRead::ReadVector2()
 {
 	Vector2 Temp;
 
-	ReadFile(m_FileHandle, &Temp, sizeof(Vector2), &m_Size, NULLPTR);
+	m_ReadFile >> Temp.x;
+	m_ReadFile >> Temp.y;
 
 	return Temp;
 }
@@ -89,7 +84,9 @@ Vector3 BineryRead::ReadVector3()
 {
 	Vector3 Temp;
 
-	ReadFile(m_FileHandle, &Temp, sizeof(Vector3), &m_Size, NULLPTR);
+	m_ReadFile >> Temp.x;
+	m_ReadFile >> Temp.y;
+	m_ReadFile >> Temp.z;
 
 	return Temp;
 }
@@ -97,17 +94,11 @@ Vector3 BineryRead::ReadVector3()
 Vector4 BineryRead::ReadVector4()
 {
 	Vector4 Temp;
-
-	ReadFile(m_FileHandle, &Temp, sizeof(Vector4), &m_Size, NULLPTR);
-
-	return Temp;
-}
-
-Matrix BineryRead::ReadMatrix()
-{
-	Matrix Temp;
-
-	ReadFile(m_FileHandle, &Temp, sizeof(Matrix), &m_Size, NULLPTR);
+	
+	m_ReadFile >> Temp.x;
+	m_ReadFile >> Temp.y;
+	m_ReadFile >> Temp.z;
+	m_ReadFile >> Temp.w;
 
 	return Temp;
 }
@@ -115,10 +106,19 @@ Matrix BineryRead::ReadMatrix()
 string BineryRead::ReadString()
 {
 	string Temp;
-	UINT StringLenth;
 
-	ReadFile(m_FileHandle, &StringLenth, sizeof(UINT), &m_Size, NULLPTR);
-	ReadFile(m_FileHandle, &Temp, StringLenth, &m_Size, NULLPTR);
+	m_ReadFile >> Temp;
 
 	return Temp;
+}
+
+wstring BineryRead::ReadWString()
+{
+	string Temp;
+
+	m_ReadFile >> Temp;
+
+	wstring ReturnString = CA2W(Temp.c_str());
+
+	return ReturnString;
 }

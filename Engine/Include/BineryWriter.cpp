@@ -3,8 +3,7 @@
 
 JEONG_USING
 
-BineryWrite::BineryWrite(string FileName, UINT OpenOption)
-	:m_FileHandle(NULLPTR), m_Size(0)
+BineryWrite::BineryWrite(string FileName)
 {
 	wstring Temp;
 	Temp = PathManager::Get()->FindPath(DATA_PATH);
@@ -15,11 +14,10 @@ BineryWrite::BineryWrite(string FileName, UINT OpenOption)
 	Temp += CA2W(FileName.c_str());
 	string Temp2 = CW2A(Temp.c_str());
 
-	m_FileHandle = CreateFileA(Temp2.c_str(), GENERIC_WRITE, 0, NULLPTR, OpenOption, FILE_ATTRIBUTE_NORMAL, NULLPTR);
+	m_WriteFile.open(Temp2.c_str(), ios::binary);
 }
 
-BineryWrite::BineryWrite(wstring FileName, UINT OpenOption)
-	: m_FileHandle(NULLPTR)
+BineryWrite::BineryWrite(wstring FileName)
 {
 	wstring Temp;
 	Temp = PathManager::Get()->FindPath(DATA_PATH);
@@ -28,64 +26,79 @@ BineryWrite::BineryWrite(wstring FileName, UINT OpenOption)
 		return;
 
 	Temp += FileName;
-	m_FileHandle = CreateFileW(Temp.c_str(), GENERIC_WRITE, 0, NULLPTR, OpenOption, FILE_ATTRIBUTE_NORMAL, NULLPTR);
-	
+
+	m_WriteFile.open(Temp.c_str(), ios::binary);
 }
 
 BineryWrite::~BineryWrite()
 {
-	if (m_FileHandle != NULLPTR)
-	{
-		CloseHandle(m_FileHandle);
-		m_FileHandle = NULLPTR;
-	}
+	m_WriteFile.close();
 }
 
-void BineryWrite::WriteBool(bool Data)
+void BineryWrite::WriteData(bool Data)
 {
-	WriteFile(m_FileHandle, &Data, sizeof(bool), &m_Size, NULLPTR);
+	m_WriteFile << Data << endl;
 }
 
-void BineryWrite::WriteInt(int Data)
+void BineryWrite::WriteData(int Data)
 {
-	WriteFile(m_FileHandle, &Data, sizeof(int), &m_Size, NULLPTR);
+	m_WriteFile << Data << endl;
 }
 
-void BineryWrite::WriteFloat(float Data)
+void BineryWrite::WriteData(float Data)
 {
-	WriteFile(m_FileHandle, &Data, sizeof(float), &m_Size, NULLPTR);
+	m_WriteFile << Data << endl;
 }
 
-void BineryWrite::WriteDouble(double Data)
+void BineryWrite::WriteData(double Data)
 {
-	WriteFile(m_FileHandle, &Data, sizeof(double), &m_Size, NULLPTR);
+	m_WriteFile << Data << endl;
 }
 
-void BineryWrite::WriteVector2(const Vector2 & Data)
+void BineryWrite::WriteData(const Vector2 & Data)
 {
-	WriteFile(m_FileHandle, &Data, sizeof(Vector2), &m_Size, NULLPTR);
+	m_WriteFile << Data.x << endl;
+	m_WriteFile << Data.y << endl;
 }
 
-void BineryWrite::WriteVector3(const Vector3 & Data)
+void BineryWrite::WriteData(const Vector3 & Data)
 {
-	WriteFile(m_FileHandle, &Data, sizeof(Vector3), &m_Size, NULLPTR);
+	m_WriteFile << Data.x << endl;
+	m_WriteFile << Data.y << endl;
+	m_WriteFile << Data.z << endl;
 }
 
-void BineryWrite::WriteVector4(const Vector4 & Data)
+void BineryWrite::WriteData(const Vector4 & Data)
 {
-	WriteFile(m_FileHandle, &Data, sizeof(Vector4), &m_Size, NULLPTR);
+	m_WriteFile << Data.x << endl;
+	m_WriteFile << Data.y << endl;
+	m_WriteFile << Data.z << endl;
+	m_WriteFile << Data.w << endl;
 }
 
-void BineryWrite::WriteMatrix(const Matrix & Data)
+void BineryWrite::WriteData(const string & Data)
 {
-	WriteFile(m_FileHandle, &Data, sizeof(Matrix), &m_Size, NULLPTR);
+	m_WriteFile << Data << endl;
 }
 
-void BineryWrite::WriteString(const string & Data)
+void BineryWrite::WriteData(const wstring & Data)
 {
-	const char* Temp = Data.c_str();
-	size_t StringLenth = Data.length();
+	string Temp = CW2A(Data.c_str());
 
-	WriteFile(m_FileHandle, &StringLenth, sizeof(size_t), &m_Size, NULLPTR);
-	WriteFile(m_FileHandle, &Temp, StringLenth, &m_Size, NULLPTR);
+	m_WriteFile << Temp << endl;
+}
+
+void BineryWrite::WriteData(const char * Data)
+{
+	string Temp = Data;
+
+	m_WriteFile << Temp << endl;
+}
+
+void BineryWrite::WriteData(const wchar_t * Data)
+{
+	wstring Temp = Data;
+	string Temp2 = CW2A(Temp.c_str());
+
+	m_WriteFile << Temp2 << endl;
 }
