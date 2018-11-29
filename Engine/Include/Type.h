@@ -177,9 +177,6 @@ struct JEONG_DLL CheckBoxCBuffer
 
 struct JEONG_DLL BarCBuffer
 {
-	float Percent;
-	int MoveDir;
-	Vector2 Empty;
 	Vector4 Light;
 };
 

@@ -5,8 +5,6 @@
 #include "EditorForm.h"
 #include "afxwin.h"
 
-
-
 // EditorForm
 
 IMPLEMENT_DYNCREATE(EditorForm, CFormView)
@@ -29,7 +27,6 @@ EditorForm::EditorForm()
 	, m_PosZ(0)
 	, m_StartPosX(0)
 	, m_StartPosY(0)
-	, m_StartPosZ(0)
 	, m_BackColorR(0)
 	, m_BackColorG(0)
 	, m_BackColorB(0)
@@ -76,28 +73,28 @@ void EditorForm::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_WORK, m_WorkList);
 	DDX_Text(pDX, IDC_STARTPOSX, m_StartPosX);
 	DDX_Text(pDX, IDC_STARTPOSY, m_StartPosY);
-	DDX_Text(pDX, IDC_STARTPOSZ, m_StartPosZ);
 	DDX_Control(pDX, IDC_STARTPOSX, m_StartPosXControl);
 	DDX_Control(pDX, IDC_STARTPOSY, m_StartPosYControl);
-	DDX_Control(pDX, IDC_STARTPOSZ, m_StartPosZControl);
 	DDX_Text(pDX, IDC_COLORR, m_BackColorR);
 	DDX_Text(pDX, IDC_COLORG, m_BackColorG);
 	DDX_Text(pDX, IDC_COLORB, m_BackColorB);
 	DDX_Text(pDX, IDC_COLORA, m_BackColorA);
 
-	int a = m_TileTypeBox.GetCurSel();
 
 	if (m_TileTypeBox.GetCurSel() == 0)
 	{
 		GetDlgItem(IDC_STARTPOSX)->EnableWindow(true);
 		GetDlgItem(IDC_STARTPOSY)->EnableWindow(true);
-		GetDlgItem(IDC_STARTPOSZ)->EnableWindow(true);
 	}
-	else
+	else if(m_TileTypeBox.GetCurSel() == 1)
 	{
 		GetDlgItem(IDC_STARTPOSX)->EnableWindow(false);
 		GetDlgItem(IDC_STARTPOSY)->EnableWindow(false);
-		GetDlgItem(IDC_STARTPOSZ)->EnableWindow(false);
+	}
+	else
+	{
+		GetDlgItem(IDC_STARTPOSX)->EnableWindow(true);
+		GetDlgItem(IDC_STARTPOSY)->EnableWindow(true);
 	}
 
 }
@@ -116,14 +113,19 @@ BEGIN_MESSAGE_MAP(EditorForm, CFormView)
 	ON_CBN_SELCHANGE(IDC_TILEOPTIONSELECT, &EditorForm::OnCbnSelchangeTileoptionselect)
 	ON_CBN_SELCHANGE(IDC_TILEIMAGESELECT, &EditorForm::OnCbnSelchangeTileimageselect)
 	ON_BN_CLICKED(IDC_TILECREATEBUTTON, &EditorForm::OnBnClickedTilecreatebutton)
-	ON_LBN_SELCHANGE(IDC_WORK, &EditorForm::OnLbnSelchangeWork)
 	ON_BN_CLICKED(IDC_COLORSAVE, &EditorForm::OnBnClickedColorsave)
 	ON_EN_CHANGE(IDC_COLORR, &EditorForm::OnEnChangeColorr)
 	ON_EN_CHANGE(IDC_COLORG, &EditorForm::OnEnChangeColorg)
 	ON_EN_CHANGE(IDC_COLORB, &EditorForm::OnEnChangeColorb)
 	ON_EN_CHANGE(IDC_COLORA, &EditorForm::OnEnChangeColora)
+	ON_EN_CHANGE(IDC_TILECOUNTX, &EditorForm::OnEnChangeTilecountx)
+	ON_EN_CHANGE(IDC_TILECOUNTY, &EditorForm::OnEnChangeTilecounty)
+	ON_EN_CHANGE(IDC_TILESIZEX, &EditorForm::OnEnChangeTilesizex)
+	ON_EN_CHANGE(IDC_TILESIZEY, &EditorForm::OnEnChangeTilesizey)
+	ON_EN_CHANGE(IDC_STARTPOSX, &EditorForm::OnEnChangeStartposx)
+	ON_EN_CHANGE(IDC_STARTPOSY, &EditorForm::OnEnChangeStartposy)
+	ON_EN_CHANGE(IDC_TAGNAME, &EditorForm::OnEnChangeTagname)
 END_MESSAGE_MAP()
-
 
 // EditorForm 진단입니다.
 
@@ -141,6 +143,37 @@ void EditorForm::Dump(CDumpContext& dc) const
 #endif
 #endif //_DEBUG
 
+
+void EditorForm::AddWorkText(const wstring& Text, int Index)
+{
+	m_WorkList.InsertString(Index, Text.c_str());
+}
+
+void EditorForm::AddWorkText(const string & Text, int Index)
+{
+	wstring Temp = CA2W(Text.c_str());
+	m_WorkList.InsertString(Index, Temp.c_str());
+}
+
+void EditorForm::AddWorkText(const CString & Text, int Index)
+{
+	string	Temp = CT2CA(Text);
+	wstring Temp2 = CA2W(Temp.c_str());
+
+	m_WorkList.InsertString(Index, Temp2.c_str());
+}
+
+void EditorForm::AddWorkText(wchar_t * Text, int Index)
+{
+	wstring Temp = Text;
+	AddWorkText(Temp, Index);
+}
+
+void EditorForm::AddWorkText(char * Text, int Index)
+{
+	string Temp = Text;
+	AddWorkText(Temp, Index);
+}
 
 int EditorForm::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -164,12 +197,20 @@ void EditorForm::OnEnChangeScalex()
 {
 	UpdateData(TRUE);
 
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"SacleX : %d 변경", m_ScaleX);
+	AddWorkText(Buffer);
+
 	UpdateData(FALSE);
 }
 
 void EditorForm::OnEnChangeScaley()
 {
 	UpdateData(TRUE);
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"SacleY : %d 변경", m_ScaleY);
+	AddWorkText(Buffer);
 
 	UpdateData(FALSE);
 }
@@ -178,12 +219,26 @@ void EditorForm::OnEnChangeScalez()
 {
 	UpdateData(TRUE);
 
+	if (RenderManager::Get()->GetGameMode() == GM_2D)
+	{
+		m_ScaleZ = 1;
+		return;
+	}
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"SacleZ : %d 변경", m_ScaleZ);
+	AddWorkText(Buffer);
+
 	UpdateData(FALSE);
 }
 
 void EditorForm::OnEnChangeRotationx()
 {
 	UpdateData(TRUE);
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"RotationX : %d 변경", m_RotationX);
+	AddWorkText(Buffer);
 
 	UpdateData(FALSE);
 }
@@ -192,12 +247,20 @@ void EditorForm::OnEnChangeRotationy()
 {
 	UpdateData(TRUE);
 
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"RotationY : %d 변경", m_RotationY);
+	AddWorkText(Buffer);
+
 	UpdateData(FALSE);
 }
 
 void EditorForm::OnEnChangeRotationz()
 {
 	UpdateData(TRUE);
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"RotationZ : %d 변경", m_RotationZ);
+	AddWorkText(Buffer);
 
 	UpdateData(FALSE);
 }
@@ -206,6 +269,10 @@ void EditorForm::OnEnChangePositionx()
 {
 	UpdateData(TRUE);
 
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"PosX : %d 변경", m_PosX);
+	AddWorkText(Buffer);
+
 	UpdateData(FALSE);
 }
 
@@ -213,12 +280,26 @@ void EditorForm::OnEnChangePositiony()
 {
 	UpdateData(TRUE);
 
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"PosY : %d 변경", m_PosY);
+	AddWorkText(Buffer);
+
 	UpdateData(FALSE);
 }
 
 void EditorForm::OnEnChangePositionz()
 {
 	UpdateData(TRUE);
+
+	if (RenderManager::Get()->GetGameMode() == GM_2D)
+	{
+		m_PosZ = 0;
+		return;
+	}
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"PosZ : %d 변경", m_PosZ);
+	AddWorkText(Buffer);
 
 	UpdateData(FALSE);
 }
@@ -230,6 +311,12 @@ void EditorForm::OnCbnSelchangeTileselect()
 {
 	UpdateData(TRUE);
 
+	CString Buffer;
+	m_TileTypeBox.GetLBText(m_TileTypeBox.GetCurSel(),Buffer);
+	Buffer += " 선택";
+
+	AddWorkText(Buffer);
+
 	UpdateData(FALSE);
 }
 
@@ -237,12 +324,11 @@ void EditorForm::OnCbnSelchangeTileoptionselect()
 {
 	UpdateData(TRUE);
 
-	UpdateData(FALSE);
-}
+	CString Buffer;
+	m_TileOptionBox.GetLBText(m_TileOptionBox.GetCurSel(), Buffer);
+	Buffer += " 옵션 선택";
 
-void EditorForm::OnCbnSelchangeBackcolorselect()
-{
-	UpdateData(TRUE);
+	AddWorkText(Buffer);
 
 	UpdateData(FALSE);
 }
@@ -250,6 +336,14 @@ void EditorForm::OnCbnSelchangeBackcolorselect()
 void EditorForm::OnCbnSelchangeTileimageselect()
 {
 	UpdateData(TRUE);
+
+	CString Buffer;
+	m_TileImageBox.GetLBText(m_TileImageBox.GetCurSel(), Buffer);
+	Buffer += " 타일 이미지 선택";
+
+	AddWorkText(Buffer);
+
+	//여기서 Path추가 후 타일 가져와서 Texture변경
 
 	UpdateData(FALSE);
 }
@@ -260,6 +354,17 @@ void EditorForm::OnBnClickedTilecreatebutton()
 		return;
 
 	UpdateData(TRUE);
+
+	if (m_TileCountX == 0 || m_TileCountY == 0)
+	{
+		wchar_t Buffer[255];
+		wsprintf(Buffer, L" 타일갯수를 정확히 입력하세요");
+
+		AddWorkText(Buffer);
+		UpdateData(TRUE);
+
+		return;
+	}
 
 	Scene* getScene = SceneManager::Get()->GetCurScene();
 	Layer* TileLayer = getScene->FindLayer("Tile");
@@ -281,61 +386,235 @@ void EditorForm::OnBnClickedTilecreatebutton()
 	SAFE_RELEASE(getScene);
 	SAFE_RELEASE(TileLayer);
 
-	AddWorkText("타일 추가");
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"타일 X : %d, 타일 Y : %d, 총 타일 : %d 추가", m_TileCountX, m_TileCountY, m_TileCountX * m_TileCountY);
+	AddWorkText(Buffer);
 
 	UpdateData(FALSE);
 }
 
-void EditorForm::OnLbnSelchangeWork()
-{
-}
-
 void EditorForm::OnBnClickedColorsave()
 {
+	UpdateData(TRUE);
+
 	wchar_t Buffer[255];
-	wsprintf(Buffer, L"배경색 %d, %d, %d, %d 으로 설정", m_BackColorR, m_BackColorG, m_BackColorB, m_BackColorA);
+	wsprintf(Buffer, L"배경색 %d, %d, %d, %d 값 저장", m_BackColorR, m_BackColorG, m_BackColorB, m_BackColorA);
 	AddWorkText(Buffer);
-}
 
-void EditorForm::AddWorkText(const wstring& Text)
-{
-	m_WorkList.AddString(Text.c_str());
-}
+	ExcelManager::Get()->WriteData("BackColor", 0, 0, Vector4((float)m_BackColorR, (float)m_BackColorG, (float)m_BackColorB, (float)m_BackColorA));
 
-void EditorForm::AddWorkText(const string & Text)
-{
-	wstring Temp = CA2W(Text.c_str());
-
-	m_WorkList.AddString(Temp.c_str());
-}
-
-void EditorForm::AddWorkText(wchar_t * Text)
-{
-	wstring Temp = Text;
-	AddWorkText(Temp);
-}
-
-void EditorForm::AddWorkText(char * Text)
-{
-	string Temp = Text;
-	AddWorkText(Temp);
+	UpdateData(FALSE);
 }
 
 
 void EditorForm::OnEnChangeColorr()
 {
-	
+	UpdateData(TRUE);
+
+	if (m_BackColorR < 0)
+		m_BackColorR = 0;
+	else if (m_BackColorR > 255)
+		m_BackColorR = 255;
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"R값 %d 입력", m_BackColorR);
+	AddWorkText(Buffer);
+
+	wsprintf(Buffer, L"R : %d, G : %d, B : %d, A : %d", m_BackColorR, m_BackColorG, m_BackColorB, m_BackColorA);
+	AddWorkText(Buffer, 1);
+
+	wsprintf(Buffer, L"\n");
+	AddWorkText(Buffer, 2);
+
+	UpdateData(FALSE);
 }
 
 void EditorForm::OnEnChangeColorg()
 {
+	UpdateData(TRUE);
+
+	if (m_BackColorG < 0)
+		m_BackColorG = 0;
+	else if (m_BackColorG > 255)
+		m_BackColorG = 255;
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"G값 %d 입력", m_BackColorG);
+	AddWorkText(Buffer);
+
+	wsprintf(Buffer, L"R : %d, G : %d, B : %d, A : %d", m_BackColorR, m_BackColorG, m_BackColorB, m_BackColorA);
+	AddWorkText(Buffer, 1);
+
+	wsprintf(Buffer, L"\n");
+	AddWorkText(Buffer, 2);
+
+	UpdateData(FALSE);
 }
 
 void EditorForm::OnEnChangeColorb()
 {
-	
+	UpdateData(TRUE);
+
+	if (m_BackColorB < 0)
+		m_BackColorB = 0;
+	else if (m_BackColorB > 255)
+		m_BackColorB = 255;
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"B값 %d 입력", m_BackColorB);
+	AddWorkText(Buffer);
+
+	wsprintf(Buffer, L"R : %d, G : %d, B : %d, A : %d", m_BackColorR, m_BackColorG, m_BackColorB, m_BackColorA);
+	AddWorkText(Buffer, 1);
+
+	wsprintf(Buffer, L"\n");
+	AddWorkText(Buffer, 2);
+
+	UpdateData(FALSE);
 }
 
 void EditorForm::OnEnChangeColora()
 {
+	UpdateData(TRUE);
+
+	if (m_BackColorA < 0)
+		m_BackColorA = 0;
+	else if (m_BackColorA > 255)
+		m_BackColorA = 255;
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"A값 %d 입력", m_BackColorA);
+	AddWorkText(Buffer);
+
+	wsprintf(Buffer, L"R : %d, G : %d, B : %d, A : %d", m_BackColorR, m_BackColorG, m_BackColorB, m_BackColorA);
+	AddWorkText(Buffer, 1);
+
+	wsprintf(Buffer, L"\n");
+	AddWorkText(Buffer, 2);
+
+	UpdateData(FALSE);
+}
+
+void EditorForm::OnEnChangeTilecountx()
+{
+	UpdateData(TRUE);
+
+	if (m_TileCountX > 10000)
+		m_TileCountX = 10000;
+	else if (m_TileCountX < 0)
+		m_TileCountX = 0;
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"X축 타일 갯수 : %d 입력", m_TileCountX);
+	AddWorkText(Buffer);
+
+	UpdateData(FALSE);
+}
+
+void EditorForm::OnEnChangeTilecounty()
+{
+	UpdateData(TRUE);
+
+	if (m_TileCountY > 10000)
+		m_TileCountY = 10000;
+	else if (m_TileCountY < 0)
+		m_TileCountY = 0;
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"Y축 타일 갯수 : %d 입력", m_TileCountY);
+	AddWorkText(Buffer);
+
+	UpdateData(FALSE);
+}
+
+void EditorForm::OnEnChangeTilesizex()
+{
+	UpdateData(TRUE);
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"타일 사이즈X : %d 입력", m_TileSizeX);
+	AddWorkText(Buffer);
+
+	UpdateData(FALSE);
+}
+
+void EditorForm::OnEnChangeTilesizey()
+{
+	UpdateData(TRUE);
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"타일 사이즈Y : %d 입력", m_TileSizeY);
+	AddWorkText(Buffer);
+
+	UpdateData(FALSE);
+}
+
+void EditorForm::OnEnChangeStartposx()
+{
+	UpdateData(TRUE);
+
+	if (m_TileCountX == 0 || m_TileCountY == 0 || m_TileSizeX == 0 || m_TileSizeY == 0)
+	{
+		wchar_t Buffer[255];
+		wsprintf(Buffer, L"타일갯수 또는 사이즈를 먼저 입력해주세요");
+		AddWorkText(Buffer);
+
+		m_StartPosX = 0;
+
+		UpdateData(FALSE);
+		return;
+	}
+
+	if (m_TileCountX * m_TileSizeX < m_StartPosX)
+		m_StartPosX = m_TileCountX * m_TileSizeX;
+	else if (m_StartPosX < 0)
+		m_StartPosX = 0;
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"시작위치 X : %d 입력", m_StartPosX);
+	AddWorkText(Buffer);
+
+	UpdateData(FALSE);
+}
+
+void EditorForm::OnEnChangeStartposy()
+{
+	UpdateData(TRUE);
+
+	if (m_TileCountX == 0 || m_TileCountY == 0 || m_TileSizeX == 0 || m_TileSizeY == 0)
+	{
+		wchar_t Buffer[255];
+		wsprintf(Buffer, L"타일갯수 또는 사이즈를 먼저 입력해주세요");
+		AddWorkText(Buffer);
+
+		m_StartPosY = 0;
+
+		UpdateData(FALSE);
+		return;
+	}
+	
+	if (m_TileCountY * m_TileSizeY < m_StartPosY)
+		m_StartPosY = m_TileCountY * m_TileSizeY;
+	else if (m_StartPosY < 0)
+		m_StartPosY = 0;
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"시작위치 Y : %d 입력", m_StartPosY);
+	AddWorkText(Buffer);
+
+	UpdateData(FALSE);
+}
+
+void EditorForm::OnEnChangeTagname()
+{
+	UpdateData(TRUE);
+
+	CString Buffer;
+	Buffer = "TagName : ";
+	Buffer += m_TagName;
+	Buffer += " 설정";
+
+	AddWorkText(Buffer);
+
+	UpdateData(FALSE);
 }

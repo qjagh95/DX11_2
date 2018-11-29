@@ -2,7 +2,7 @@
 #include "PathManager.h"
 
 JEONG_USING
-SINGLETON_VAR_INIT(PathManager)
+SINGLETON_VAR_INIT(JEONG::PathManager)
 
 JEONG::PathManager::PathManager()
 {

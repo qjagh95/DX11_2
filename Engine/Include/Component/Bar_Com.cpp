@@ -15,6 +15,7 @@ JEONG::Bar_Com::Bar_Com()
 	:m_RectCollider(NULLPTR)
 {
 	SetTag("Bar");
+	m_Percent = 0.0f;
 }
 
 JEONG::Bar_Com::Bar_Com(const Bar_Com & CopyData)
@@ -26,7 +27,6 @@ JEONG::Bar_Com::Bar_Com(const Bar_Com & CopyData)
 	m_Value = CopyData.m_Value;
 
 	m_Scale = CopyData.m_Scale;
-	m_BarCBuffer = CopyData.m_BarCBuffer;
 	m_ValueLenth = CopyData.m_ValueLenth;
 }
 
@@ -42,19 +42,15 @@ bool JEONG::Bar_Com::Init()
 	m_MinValue = 0.0f;
 	m_MaxValue = 100.0f;
 	m_Value = 100.0f;
-	m_BarCBuffer.Percent = 0.0f;
-	m_BarCBuffer.Light = Vector4::White;
+	m_Percent = 0.0f;
 
 	Renderer_Com* RenderComponent = m_Object->AddComponent<Renderer_Com>("ButtonRender");
 	RenderComponent->SetMesh("TextureRect");
 	RenderComponent->SetRenderState(ALPHA_BLEND);
-	RenderComponent->SetShader(BAR_SHADER);
-	RenderComponent->CreateRendererCBuffer("BarCBuffer", sizeof(BarCBuffer));
 	SAFE_RELEASE(RenderComponent);
 
 	Material_Com* MaterialComponent = m_Object->FindComponentFromType<Material_Com>(CT_MATERIAL);
 	MaterialComponent->SetDiffuseTexture(0, "Bar", TEXT("Bar.png"));
-	MaterialComponent->SetDiffuseTexture(1, "LightTest", TEXT("Light.png"));
 	SAFE_RELEASE(MaterialComponent);
 
 	m_RectCollider = m_Object->AddComponent<ColliderRect_Com>("BarBody");
@@ -79,13 +75,13 @@ int JEONG::Bar_Com::Update(float DeltaTime)
 	{
 		case BD_LEFT:
 		{
-			tempScale.x *= m_BarCBuffer.Percent;
+			tempScale.x *= m_Percent;
 			m_Transform->SetWorldScale(tempScale);
 			break;
 		}
 		case BD_RIGHT:
 		{
-			tempScale.x *= m_BarCBuffer.Percent;
+			tempScale.x *= m_Percent;
 			TempVar = tempScale - m_Scale;
 
 			m_Transform->SetWorldScale(tempScale);
@@ -95,7 +91,7 @@ int JEONG::Bar_Com::Update(float DeltaTime)
 		}
 		case BD_UP:
 		{
-			tempScale.y *= m_BarCBuffer.Percent;
+			tempScale.y *= m_Percent;
 			TempVar = tempScale - m_Scale;
 
 			m_Transform->SetWorldScale(tempScale);
@@ -105,7 +101,7 @@ int JEONG::Bar_Com::Update(float DeltaTime)
 		}
 		case BD_DOWN:
 		{
-			tempScale.y *= m_BarCBuffer.Percent;
+			tempScale.y *= m_Percent;
 			m_Transform->SetWorldScale(tempScale);
 			break;
 		}
@@ -128,9 +124,6 @@ void JEONG::Bar_Com::CollisionLateUpdate(float DeltaTime)
 
 void JEONG::Bar_Com::Render(float DeltaTime)
 {
-	Renderer_Com* getRender = FindComponentFromType<Renderer_Com>(CT_RENDER);
-	getRender->UpdateRendererCBuffer("BarCBuffer", &m_BarCBuffer, sizeof(BarCBuffer));
-	SAFE_RELEASE(getRender);
 }
 
 JEONG::Bar_Com * JEONG::Bar_Com::Clone()
@@ -146,7 +139,6 @@ void JEONG::Bar_Com::AfterClone()
 void JEONG::Bar_Com::SetDir(BAR_DIR dir)
 {
 	m_Dir = dir;
-	m_BarCBuffer.MoveDir = dir;
 
 	//줄어드는 방향에 따라서 피봇을 조정한다.
 	switch (m_Dir)
@@ -177,7 +169,7 @@ void JEONG::Bar_Com::SetValue(float Value)
 		m_Value = m_MaxValue;
 
 	m_ValueLenth = m_MaxValue - m_MinValue;
-	m_BarCBuffer.Percent = (m_Value - m_MinValue) / m_ValueLenth;
+	m_Percent = (m_Value - m_MinValue) / m_ValueLenth;
 }
 
 void JEONG::Bar_Com::AddValue(float Value)
@@ -193,7 +185,7 @@ void JEONG::Bar_Com::AddValue(float Value)
 	//비율을 구한다. HP값이 -일 수도있다.
 	m_ValueLenth = m_MaxValue - m_MinValue;
 	//HP가 무조건 0이라는 법은 없으므로 이렇게 구했다.
-	m_BarCBuffer.Percent = (m_Value - m_MinValue) / m_ValueLenth;
+	m_Percent = (m_Value - m_MinValue) / m_ValueLenth;
 }
 
 void JEONG::Bar_Com::SetMinMaxValue(float minValue, float maxValue)
@@ -208,7 +200,7 @@ void JEONG::Bar_Com::SetMinMaxValue(float minValue, float maxValue)
 		m_Value = m_MaxValue;
 
 	m_ValueLenth = m_MaxValue - m_MinValue;
-	m_BarCBuffer.Percent = (m_Value - m_MinValue) / m_ValueLenth;
+	m_Percent = (m_Value - m_MinValue) / m_ValueLenth;
 }
 
 void JEONG::Bar_Com::SetScale(const Vector3 & Scale)
@@ -223,6 +215,6 @@ void JEONG::Bar_Com::SetScale(float x, float y, float z)
 	m_Transform->SetWorldScale(Vector3(x, y, z));
 }
 
-void Bar_Com::MouseHit(Collider_Com * Src, Collider_Com * Dest, float DeltaTime)
+void JEONG::Bar_Com::MouseHit(Collider_Com * Src, Collider_Com * Dest, float DeltaTime)
 {
 }

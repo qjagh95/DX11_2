@@ -7,9 +7,9 @@ public:
 	void WriteData(int Data);
 	void WriteData(float Data);
 	void WriteData(double Data);
-	void WriteData(const Vector2&  Data);
-	void WriteData(const Vector3&  Data);
-	void WriteData(const Vector4&  Data);
+	void WriteData(const Vector2& Data);
+	void WriteData(const Vector3& Data);
+	void WriteData(const Vector4& Data);
 	void WriteData(const string& Data);
 	void WriteData(const wstring& Data);
 	void WriteData(const char* Data);

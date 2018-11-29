@@ -26,11 +26,9 @@ public:
 
 	void SetScale(const Vector3& Scale);
 	void SetScale(float x, float y, float z);
-	void LightOn() { m_BarCBuffer.Light = Vector4::White * 2.0f; }
-	void LightOff() { m_BarCBuffer.Light = Vector4::White; }
 
 	float GetVal() const { return m_Value; }
-	float GetPercent() const { return m_BarCBuffer.Percent; }
+	float GetPercent() const { return m_Percent; }
 
 	void MouseHit(Collider_Com* Src, Collider_Com* Dest, float DeltaTime);
 
@@ -40,10 +38,10 @@ private:
 	float m_MaxValue;
 	float m_Value;
 	float m_ValueLenth;
+	float m_Percent;
 
 	ColliderRect_Com* m_RectCollider;
 	Vector3 m_Scale;
-	BarCBuffer m_BarCBuffer;
 
 protected:
 	Bar_Com();

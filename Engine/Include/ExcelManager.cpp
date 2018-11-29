@@ -2,13 +2,13 @@
 #include "ExcelManager.h"
 
 JEONG_USING
-SINGLETON_VAR_INIT(ExcelManager)
+SINGLETON_VAR_INIT(JEONG::ExcelManager)
 
-ExcelManager::ExcelManager()
+JEONG::ExcelManager::ExcelManager()
 {
 }
 
-ExcelManager::~ExcelManager()
+JEONG::ExcelManager::~ExcelManager()
 {
 	unordered_map<string, ExcelData*>::iterator StartIter = m_ExcelDataMap.begin();
 	unordered_map<string, ExcelData*>::iterator EndIter = m_ExcelDataMap.end();
@@ -19,7 +19,7 @@ ExcelManager::~ExcelManager()
 	}
 }
 
-bool ExcelManager::Init()
+bool JEONG::ExcelManager::Init()
 {
 	//Sample
 	/*
@@ -49,9 +49,9 @@ bool ExcelManager::Init()
 	return true;
 }
 
-void ExcelManager::WriteIntData(const string & KeyName, const Vector2 & CellNumber, const int & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, const Vector2 & CellNumber, const int & Data)
 {
-	ExcelData* getData = FindExcelData(KeyName);
+	JEONG::ExcelData* getData = FindExcelData(KeyName);
 
 	if (getData == NULLPTR)
 		getData = CreateExcel(KeyName);
@@ -65,9 +65,9 @@ void ExcelManager::WriteIntData(const string & KeyName, const Vector2 & CellNumb
 	}
 }
 
-void ExcelManager::WriteStringData(const string & KeyName, const Vector2 & CellNumber, const string & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, const Vector2 & CellNumber, const string & Data)
 {
-	ExcelData* getData = FindExcelData(KeyName);
+	JEONG::ExcelData* getData = FindExcelData(KeyName);
 
 	if (getData == NULLPTR)
 		getData = CreateExcel(KeyName);
@@ -82,9 +82,9 @@ void ExcelManager::WriteStringData(const string & KeyName, const Vector2 & CellN
 	}
 }
 
-void ExcelManager::WriteWStringData(const string & KeyName, const Vector2 & CellNumber, const wstring & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, const Vector2 & CellNumber, const wstring & Data)
 {
-	ExcelData* getData = FindExcelData(KeyName);
+	JEONG::ExcelData* getData = FindExcelData(KeyName);
 
 	if (getData == NULLPTR)
 		getData = CreateExcel(KeyName);
@@ -98,9 +98,9 @@ void ExcelManager::WriteWStringData(const string & KeyName, const Vector2 & Cell
 	}
 }
 
-void ExcelManager::WriteFloatData(const string & KeyName, const Vector2 & CellNumber, const float & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, const Vector2 & CellNumber, const float & Data)
 {
-	ExcelData* getData = FindExcelData(KeyName);
+	JEONG::ExcelData* getData = FindExcelData(KeyName);
 
 	if (getData == NULLPTR)
 		getData = CreateExcel(KeyName);
@@ -114,9 +114,9 @@ void ExcelManager::WriteFloatData(const string & KeyName, const Vector2 & CellNu
 	}
 }
 
-void ExcelManager::WriteDoubleData(const string & KeyName, const Vector2 & CellNumber, const double & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, const Vector2 & CellNumber, const double & Data)
 {
-	ExcelData* getData = FindExcelData(KeyName);
+	JEONG::ExcelData* getData = FindExcelData(KeyName);
 
 	if (getData == NULLPTR)
 		getData = CreateExcel(KeyName);
@@ -130,9 +130,9 @@ void ExcelManager::WriteDoubleData(const string & KeyName, const Vector2 & CellN
 	}
 }
 
-void ExcelManager::WriteBoolData(const string & KeyName, const Vector2 & CellNumber, const bool & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, const Vector2 & CellNumber, const bool & Data)
 {
-	ExcelData* getData = FindExcelData(KeyName);
+	JEONG::ExcelData* getData = FindExcelData(KeyName);
 
 	if (getData == NULLPTR)
 		getData = CreateExcel(KeyName);
@@ -146,9 +146,9 @@ void ExcelManager::WriteBoolData(const string & KeyName, const Vector2 & CellNum
 	}
 }
 
-void ExcelManager::WriteVector2Data(const string & KeyName, const Vector2 & CellNumber, const Vector2 & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, const Vector2 & CellNumber, const Vector2 & Data)
 {
-	ExcelData* getData = FindExcelData(KeyName);
+	JEONG::ExcelData* getData = FindExcelData(KeyName);
 
 	if (getData == NULLPTR)
 		getData = CreateExcel(KeyName);
@@ -163,9 +163,9 @@ void ExcelManager::WriteVector2Data(const string & KeyName, const Vector2 & Cell
 	}
 }
 
-void ExcelManager::WriteVector3Data(const string & KeyName, const Vector2 & CellNumber, const Vector3 & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, const Vector2 & CellNumber, const Vector3 & Data)
 {
-	ExcelData* getData = FindExcelData(KeyName);
+	JEONG::ExcelData* getData = FindExcelData(KeyName);
 
 	if (getData == NULLPTR)
 		getData = CreateExcel(KeyName);
@@ -181,9 +181,9 @@ void ExcelManager::WriteVector3Data(const string & KeyName, const Vector2 & Cell
 	}
 }
 
-void ExcelManager::WriteVector4Data(const string & KeyName, const Vector2 & CellNumber, const Vector4 & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, const Vector2 & CellNumber, const Vector4 & Data)
 {
-	ExcelData* getData = FindExcelData(KeyName);
+	JEONG::ExcelData* getData = FindExcelData(KeyName);
 
 	if (getData == NULLPTR)
 		getData = CreateExcel(KeyName);
@@ -200,52 +200,52 @@ void ExcelManager::WriteVector4Data(const string & KeyName, const Vector2 & Cell
 	}
 }
 
-void ExcelManager::WriteIntData(const string & KeyName, size_t CellX, size_t CellY, const int & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, size_t CellX, size_t CellY, const int & Data)
 {
-	WriteIntData(KeyName, Vector2((float)CellX, (float)CellY), Data);
+	WriteData(KeyName, Vector2((float)CellX, (float)CellY), Data);
 }
 
-void ExcelManager::WriteStringData(const string & KeyName, size_t CellX, size_t CellY, const string & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, size_t CellX, size_t CellY, const string & Data)
 {
-	WriteStringData(KeyName, Vector2((float)CellX, (float)CellY), Data);
+	WriteData(KeyName, Vector2((float)CellX, (float)CellY), Data);
 }
 
-void ExcelManager::WriteWStringData(const string & KeyName, size_t CellX, size_t CellY, const wstring & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, size_t CellX, size_t CellY, const wstring & Data)
 {
-	WriteWStringData(KeyName, Vector2((float)CellX, (float)CellY), Data);
+	WriteData(KeyName, Vector2((float)CellX, (float)CellY), Data);
 }
 
-void ExcelManager::WriteFloatData(const string & KeyName, size_t CellX, size_t CellY, const float & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, size_t CellX, size_t CellY, const float & Data)
 {
-	WriteFloatData(KeyName, Vector2((float)CellX, (float)CellY), Data);
+	WriteData(KeyName, Vector2((float)CellX, (float)CellY), Data);
 }
 
-void ExcelManager::WriteDoubleData(const string & KeyName, size_t CellX, size_t CellY, const double & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, size_t CellX, size_t CellY, const double & Data)
 {
-	WriteDoubleData(KeyName, Vector2((float)CellX, (float)CellY), Data);
+	WriteData(KeyName, Vector2((float)CellX, (float)CellY), Data);
 }
 
-void ExcelManager::WriteBoolData(const string & KeyName, size_t CellX, size_t CellY, const bool & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, size_t CellX, size_t CellY, const bool & Data)
 {
-	WriteBoolData(KeyName, Vector2((float)CellX, (float)CellY), Data);
+	WriteData(KeyName, Vector2((float)CellX, (float)CellY), Data);
 }
 
-void ExcelManager::WriteVector2Data(const string & KeyName, size_t CellX, size_t CellY, const Vector2 & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, size_t CellX, size_t CellY, const Vector2 & Data)
 {
-	WriteVector2Data(KeyName, Vector2((float)CellX, (float)CellY), Data);
+	WriteData(KeyName, Vector2((float)CellX, (float)CellY), Data);
 }
 
-void ExcelManager::WriteVector3Data(const string & KeyName, size_t CellX, size_t CellY, const Vector3 & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, size_t CellX, size_t CellY, const Vector3 & Data)
 {
-	WriteVector3Data(KeyName, Vector2((float)CellX, (float)CellY), Data);
+	WriteData(KeyName, Vector2((float)CellX, (float)CellY), Data);
 }
 
-void ExcelManager::WriteVector4Data(const string & KeyName, size_t CellX, size_t CellY, const Vector4 & Data)
+void JEONG::ExcelManager::WriteData(const string & KeyName, size_t CellX, size_t CellY, const Vector4 & Data)
 {
-	WriteVector4Data(KeyName, Vector2((float)CellX, (float)CellY), Data);
+	WriteData(KeyName, Vector2((float)CellX, (float)CellY), Data);
 }
 
-int ExcelManager::ReadIntData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+int JEONG::ExcelManager::ReadIntData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
 {
 	if (LoadExcel(KeyName) == false)
 		return 0;
@@ -263,7 +263,7 @@ int ExcelManager::ReadIntData(const string & KeyName, const Vector2 & CellNumber
 	return (int)getData->sheet->readNum((int)(CellNumber.y + 1.0f), (int)CellNumber.x);
 }
 
-string ExcelManager::ReadStringData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+string JEONG::ExcelManager::ReadStringData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
 {
 	string a = "";
 
@@ -287,7 +287,7 @@ string ExcelManager::ReadStringData(const string & KeyName, const Vector2 & Cell
 	return ReturnString;
 }
 
-wstring ExcelManager::ReadWStringData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+wstring JEONG::ExcelManager::ReadWStringData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
 {
 	wstring a = L"";
 
@@ -309,7 +309,7 @@ wstring ExcelManager::ReadWStringData(const string & KeyName, const Vector2 & Ce
 	return Temp;
 }
 
-float ExcelManager::ReadFloatData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+float JEONG::ExcelManager::ReadFloatData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
 {
 	if (LoadExcel(KeyName) == false)
 		return 0;
@@ -327,7 +327,7 @@ float ExcelManager::ReadFloatData(const string & KeyName, const Vector2 & CellNu
 	return (float)getSheet->readNum((int)(CellNumber.y + 1.0f), (int)CellNumber.x);
 }
 
-double ExcelManager::ReadDoubleData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+double JEONG::ExcelManager::ReadDoubleData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
 {
 	if (LoadExcel(KeyName) == false)
 		return -1.0f;
@@ -345,7 +345,7 @@ double ExcelManager::ReadDoubleData(const string & KeyName, const Vector2 & Cell
 	return getSheet->readNum((int)(CellNumber.y + 1.0f), (int)CellNumber.x);
 }
 
-bool ExcelManager::ReadBoolData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+bool JEONG::ExcelManager::ReadBoolData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
 {
 	if (LoadExcel(KeyName) == false)
 		return false;
@@ -363,7 +363,7 @@ bool ExcelManager::ReadBoolData(const string & KeyName, const Vector2 & CellNumb
 	return getSheet->readBool((int)(CellNumber.y + 1.0f), (int)CellNumber.x);
 }
 
-Vector2 ExcelManager::ReadVector2Data(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+Vector2 JEONG::ExcelManager::ReadVector2Data(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
 {
 	if (LoadExcel(KeyName) == false)
 		return Vector2();
@@ -384,7 +384,7 @@ Vector2 ExcelManager::ReadVector2Data(const string & KeyName, const Vector2 & Ce
 	return ReturnValue;
 }
 
-Vector3 ExcelManager::ReadVector3Data(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+Vector3 JEONG::ExcelManager::ReadVector3Data(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
 {
 	if (LoadExcel(KeyName) == false)
 		return Vector3();
@@ -407,7 +407,7 @@ Vector3 ExcelManager::ReadVector3Data(const string & KeyName, const Vector2 & Ce
 	return ReturnValue;
 }
 
-Vector4 ExcelManager::ReadVector4Data(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+Vector4 JEONG::ExcelManager::ReadVector4Data(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
 {
 	if (LoadExcel(KeyName) == false)
 		return Vector4();
@@ -431,61 +431,61 @@ Vector4 ExcelManager::ReadVector4Data(const string & KeyName, const Vector2 & Ce
 	return ReturnValue;
 }
 
-int ExcelManager::ReadIntData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
+int JEONG::ExcelManager::ReadIntData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	return ReadIntData(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
 }
 
-string ExcelManager::ReadStringData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
+string JEONG::ExcelManager::ReadStringData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	return ReadStringData(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
 }
 
-wstring ExcelManager::ReadWStringData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
+wstring JEONG::ExcelManager::ReadWStringData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	return ReadWStringData(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
 }
 
-float ExcelManager::ReadFloatData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
+float JEONG::ExcelManager::ReadFloatData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	return ReadFloatData(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
 }
 
-double ExcelManager::ReadDoubleData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
+double JEONG::ExcelManager::ReadDoubleData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	return ReadDoubleData(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
 }
 
-bool ExcelManager::ReadBoolData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
+bool JEONG::ExcelManager::ReadBoolData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	return ReadBoolData(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
 }
 
-Vector2 ExcelManager::ReadVector2Data(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
+Vector2 JEONG::ExcelManager::ReadVector2Data(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	return ReadVector2Data(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
 }
 
-Vector3 ExcelManager::ReadVector3Data(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
+Vector3 JEONG::ExcelManager::ReadVector3Data(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	return ReadVector3Data(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
 }
 
-Vector4 ExcelManager::ReadVector4Data(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
+Vector4 JEONG::ExcelManager::ReadVector4Data(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	return ReadVector4Data(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
 }
 
-ExcelData* ExcelManager::CreateExcel(const string & KeyName)
+JEONG::ExcelData* JEONG::ExcelManager::CreateExcel(const string & KeyName)
 {
-	ExcelData* newData = FindExcelData(KeyName);
+	JEONG::ExcelData* newData = FindExcelData(KeyName);
 
 	if (newData != NULLPTR)
 		return newData;
 
 	wstring Temp = CA2W(KeyName.c_str());
 
-	newData = new ExcelData();
+	newData = new JEONG::ExcelData();
 	newData->book = xlCreateBookW();
 	newData->sheet = newData->book->addSheet(Temp.c_str());
 
@@ -494,7 +494,7 @@ ExcelData* ExcelManager::CreateExcel(const string & KeyName)
 	return newData;
 }
 
-void ExcelManager::AddSheet(const string & KeyName, const string & SheetName)
+void JEONG::ExcelManager::AddSheet(const string & KeyName, const string & SheetName)
 {
 	ExcelData* getData = FindExcelData(KeyName);
 	
@@ -508,7 +508,7 @@ void ExcelManager::AddSheet(const string & KeyName, const string & SheetName)
 	getData->book->addSheet(Temp.c_str());
 }
 
-ExcelData * ExcelManager::FindExcelData(const string & KeyName)
+JEONG::ExcelData * JEONG::ExcelManager::FindExcelData(const string & KeyName)
 {
 	unordered_map<string, ExcelData*>::iterator FindIter = m_ExcelDataMap.find(KeyName);
 
@@ -518,7 +518,7 @@ ExcelData * ExcelManager::FindExcelData(const string & KeyName)
 	return FindIter->second;
 }
 
-bool ExcelManager::SaveExcel(const string& KeyName, const string& PathKey)
+bool JEONG::ExcelManager::SaveExcel(const string& KeyName, const string& PathKey)
 {
 	ExcelData* getData = FindExcelData(KeyName);
 
@@ -537,7 +537,7 @@ bool ExcelManager::SaveExcel(const string& KeyName, const string& PathKey)
 	return getData->book->save(Path.c_str());
 }
 
-bool ExcelManager::LoadExcel(const string& KeyName, const string& PathKey)
+bool JEONG::ExcelManager::LoadExcel(const string& KeyName, const string& PathKey)
 {
 	ExcelData* getData = FindExcelData(KeyName);
 

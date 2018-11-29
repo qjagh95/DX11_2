@@ -25,8 +25,6 @@ public:
 
 	void SetScale(const Vector3& Scale);
 	void SetScale(float x, float y, float z);
-	void LightOn() { m_BarCBuffer.Light = Vector4::White * 2.0f; }
-	void LightOff() { m_BarCBuffer.Light = Vector4::White; }
 
 	void MouseHit(Collider_Com* Src, Collider_Com* Dest, float DeltaTime);
 
@@ -36,10 +34,10 @@ private:
 	float m_MaxValue;
 	float m_Value;
 	float m_ValueLenth;
+	float m_Percent;
 
 	ColliderRect_Com* m_RectCollider; //마우스를 올렸을때 HP표시..를 위함.
 	Vector3 m_Scale;
-	BarCBuffer m_BarCBuffer;
 
 protected:
 	UIBar_Com();

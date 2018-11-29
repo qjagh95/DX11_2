@@ -15,6 +15,7 @@ UIBar_Com::UIBar_Com()
 {
 	m_UIType = UT_BAR;
 	SetTag("Bar");
+	m_Percent = 0.0f;
 }
 
 UIBar_Com::UIBar_Com(const UIBar_Com & CopyData)
@@ -26,7 +27,6 @@ UIBar_Com::UIBar_Com(const UIBar_Com & CopyData)
 	m_Value = CopyData.m_Value;
 
 	m_Scale = CopyData.m_Scale;
-	m_BarCBuffer= CopyData.m_BarCBuffer;
 	m_ValueLenth = CopyData.m_ValueLenth;
 }
 
@@ -43,14 +43,11 @@ bool UIBar_Com::Init()
 	m_MinValue = 0.0f;
 	m_MaxValue = 100.0f;
 	m_Value = 100.0f;
-	m_BarCBuffer.Percent = 0.0f;
-	m_BarCBuffer.Light = Vector4::White;
+	m_Percent = 0.0f;
 
 	Renderer_Com* RenderComponent = m_Object->AddComponent<Renderer_Com>("ButtonRender");
 	RenderComponent->SetMesh("TextureRect");
 	RenderComponent->SetRenderState(ALPHA_BLEND);
-	RenderComponent->SetShader(BAR_SHADER);
-	RenderComponent->CreateRendererCBuffer("BarCBuffer", sizeof(BarCBuffer));
 	SAFE_RELEASE(RenderComponent);
 
 	Material_Com* MaterialComponent = m_Object->FindComponentFromType<Material_Com>(CT_MATERIAL);
@@ -79,7 +76,7 @@ int UIBar_Com::Update(float DeltaTime)
 	{
 		case BD_LEFT:
 		{
-			tempScale.x *= m_BarCBuffer.Percent;
+			tempScale.x *= m_Percent;
 			m_Transform->SetWorldScale(tempScale);
 
 			m_RectCollider->SetInfo(TempVar, tempScale);
@@ -87,7 +84,7 @@ int UIBar_Com::Update(float DeltaTime)
 		}
 		case BD_RIGHT:
 		{
-			tempScale.x *= m_BarCBuffer.Percent;
+			tempScale.x *= m_Percent;
 			TempVar = tempScale - m_Scale;
 
 			m_Transform->SetWorldScale(tempScale);
@@ -97,7 +94,7 @@ int UIBar_Com::Update(float DeltaTime)
 		}
 		case BD_UP:
 		{
-			tempScale.y *= m_BarCBuffer.Percent;
+			tempScale.y *= m_Percent;
 			TempVar = tempScale - m_Scale;
 
 			m_Transform->SetWorldScale(tempScale);
@@ -107,7 +104,7 @@ int UIBar_Com::Update(float DeltaTime)
 		}
 		case BD_DOWN:
 		{
-			tempScale.y *= m_BarCBuffer.Percent;
+			tempScale.y *= m_Percent;
 			m_Transform->SetWorldScale(tempScale);
 			break;
 		}
@@ -130,9 +127,7 @@ void UIBar_Com::CollisionLateUpdate(float DeltaTime)
 
 void UIBar_Com::Render(float DeltaTime)
 {
-	Renderer_Com* getRender = FindComponentFromType<Renderer_Com>(CT_RENDER);
-	getRender->UpdateRendererCBuffer("BarCBuffer", &m_BarCBuffer, sizeof(BarCBuffer));
-	SAFE_RELEASE(getRender);
+
 }
 
 UIBar_Com * UIBar_Com::Clone()
@@ -148,7 +143,6 @@ void UIBar_Com::AfterClone()
 void UIBar_Com::SetDir(BAR_DIR dir)
 {
 	m_Dir = dir;
-	m_BarCBuffer.MoveDir = dir;
 
 	//줄어드는 방향에 따라서 피봇을 조정한다.
 	switch (m_Dir)
@@ -179,7 +173,7 @@ void UIBar_Com::SetValue(float Value)
 		m_Value = m_MaxValue;
 
 	m_ValueLenth = m_MaxValue - m_MinValue;
-	m_BarCBuffer.Percent = (m_Value - m_MinValue) / m_ValueLenth;
+	m_Percent = (m_Value - m_MinValue) / m_ValueLenth;
 }
 
 void UIBar_Com::AddValue(float Value)
@@ -195,7 +189,7 @@ void UIBar_Com::AddValue(float Value)
 	//비율을 구한다. HP값이 -일 수도있다.
 	m_ValueLenth = m_MaxValue - m_MinValue;
 	//HP가 무조건 0이라는 법은 없으므로 이렇게 구했다.
-	m_BarCBuffer.Percent = (m_Value - m_MinValue) / m_ValueLenth;
+	m_Percent = (m_Value - m_MinValue) / m_ValueLenth;
 }
 
 void UIBar_Com::SetMinMaxValue(float minValue, float maxValue)
@@ -210,7 +204,7 @@ void UIBar_Com::SetMinMaxValue(float minValue, float maxValue)
 		m_Value = m_MaxValue;
 
 	m_ValueLenth = m_MaxValue - m_MinValue;
-	m_BarCBuffer.Percent = (m_Value - m_MinValue) / m_ValueLenth;
+	m_Percent = (m_Value - m_MinValue) / m_ValueLenth;
 }
 
 void UIBar_Com::SetScale(const Vector3 & Scale)
@@ -225,6 +219,6 @@ void UIBar_Com::SetScale(float x, float y, float z)
 	m_Transform->SetWorldScale(Vector3(x, y, z));
 }
 
-void UIBar_Com::MouseHit(Collider_Com * Src, Collider_Com * Dest, float DeltaTime)
+void JEONG::UIBar_Com::MouseHit(Collider_Com * Src, Collider_Com * Dest, float DeltaTime)
 {
 }

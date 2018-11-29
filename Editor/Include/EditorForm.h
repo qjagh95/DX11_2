@@ -44,9 +44,8 @@ public:
 	int m_TileCountY;
 	int m_TileSizeX;
 	int m_TileSizeY;
-	float m_StartPosX;
-	float m_StartPosY;
-	float m_StartPosZ;
+	int m_StartPosX;
+	int m_StartPosY;
 
 	GameObject* m_StageObject;
 	Stage2D_Com* m_StageCom;
@@ -60,14 +59,14 @@ public:
 	GameObject* GetStageObject() const { return m_StageObject; }
 	Stage2D_Com* GetStageComponent() const { return m_StageCom; }
 	Transform_Com* GetStageTransform() const { return m_StageTransform; }
-	void AddWorkText(const wstring& Text);
-	void AddWorkText(const string& Text);
-	void AddWorkText(wchar_t* Text);
-	void AddWorkText(char* Text);
+	void AddWorkText(const wstring& Text, int Index = 0);
+	void AddWorkText(const string& Text, int Index = 0);
+	void AddWorkText(const CString& Text, int Index = 0);
+	void AddWorkText(wchar_t* Text, int Index = 0);
+	void AddWorkText(char* Text, int Index = 0);
 
 	CComboBox m_TileTypeBox;
 	CComboBox m_TileOptionBox;
-	CComboBox m_BackColorBox;
 	CComboBox m_TileImageBox;
 	CListBox m_WorkList;
 
@@ -92,13 +91,19 @@ public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnBnClickedTilecreatebutton();
 
-	afx_msg void OnLbnSelchangeWork();
 	afx_msg void OnBnClickedColorsave();
 
 	afx_msg void OnEnChangeColorr();
 	afx_msg void OnEnChangeColorg();
 	afx_msg void OnEnChangeColorb();
 	afx_msg void OnEnChangeColora();
+	afx_msg void OnEnChangeTilecountx();
+	afx_msg void OnEnChangeTilecounty();
+	afx_msg void OnEnChangeTilesizex();
+	afx_msg void OnEnChangeTilesizey();
+	afx_msg void OnEnChangeStartposx();
+	afx_msg void OnEnChangeStartposy();
+	afx_msg void OnEnChangeTagname();
 };
 
 
