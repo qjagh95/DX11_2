@@ -14,7 +14,7 @@ bool Core::m_isLoop = true;
 Core::Core()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	//_CrtSetBreakAlloc(390);
+	//_CrtSetBreakAlloc(390);  
 	ZeroMemory(ClearColor, sizeof(float) * 4);
 }
 

@@ -12,6 +12,7 @@
 
 #include "EditorDoc.h"
 #include "EditorView.h"
+#include <Component/FreeCamera_Com.h>
 
 
 #ifdef _DEBUG
@@ -50,20 +51,15 @@ BOOL EditorView::PreCreateWindow(CREATESTRUCT& cs)
 	return CView::PreCreateWindow(cs);
 }
 
-// EditorView 그리기
 
 void EditorView::OnDraw(CDC* /*pDC*/)
 {
 	EditorDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
+
 	if (!pDoc)
 		return;
-
-	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 }
-
-
-// EditorView 인쇄
 
 BOOL EditorView::OnPreparePrinting(CPrintInfo* pInfo)
 {
@@ -104,16 +100,9 @@ EditorDoc* EditorView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 
 
 //이 클래스에서 Window를 띄운다.
 
+//TODO
 // EditorView 메시지 처리기
 void EditorView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
-
-	//AfxGetInstanceHandle
-	//Window HISTANCE을 얻어오는 함수
-	Core::Get()->Init(AfxGetInstanceHandle(), m_hWnd, 1280, 720);
-	Core::Get()->SetGameMode(GM_2D);
-	
-
-	SceneManager::Get()->AddSceneComponent<EditScene>("EditScene");
 }

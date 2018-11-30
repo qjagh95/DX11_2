@@ -26,6 +26,9 @@ public:
 	EditorView* GetEditorView() const { return m_EditorView; }
 	EditorForm* GetEditorForm() const { return m_EditorForm; }
 
+	CSplitterWnd m_SplitWindow;
+
+	MainFrame* GetMainframe() { return this; }
 // 구현입니다.
 public:
 	virtual ~MainFrame();
@@ -36,7 +39,7 @@ public:
 
 protected:  
 	//분할윈도우 (동적분할과 정적분할이 있음)
-	CSplitterWnd m_SplitWindow;
+
 	EditorView* m_EditorView;
 	EditorForm* m_EditorForm;
 

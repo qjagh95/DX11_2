@@ -36,16 +36,6 @@ public:
 	void WriteData(const string& KeyName, size_t CellX, size_t CellY, const Vector3& Data);
 	void WriteData(const string& KeyName, size_t CellX, size_t CellY, const Vector4& Data);
 
-	int ReadIntData(const string& KeyName, const Vector2& CellNumber, int SheetIndex = 0);
-	string ReadStringData(const string& KeyName, const Vector2& CellNumber, int SheetIndex = 0);
-	wstring ReadWStringData(const string& KeyName, const Vector2& CellNumber, int SheetIndex = 0);
-	float ReadFloatData(const string& KeyName, const Vector2& CellNumber, int SheetIndex = 0);
-	double ReadDoubleData(const string& KeyName, const Vector2& CellNumber, int SheetIndex = 0);
-	bool ReadBoolData(const string& KeyName, const Vector2& CellNumber, int SheetIndex = 0);
-	Vector2 ReadVector2Data(const string& KeyName, const Vector2& CellNumber, int SheetIndex = 0);
-	Vector3 ReadVector3Data(const string& KeyName, const Vector2& CellNumber, int SheetIndex = 0);
-	Vector4 ReadVector4Data(const string& KeyName, const Vector2& CellNumber, int SheetIndex = 0);
-
 	int ReadIntData(const string& KeyName, size_t CellX, size_t CellY, int SheetIndex = 0);
 	string ReadStringData(const string& KeyName, size_t CellX, size_t CellY, int SheetIndex = 0);
 	wstring ReadWStringData(const string& KeyName, size_t CellX, size_t CellY, int SheetIndex = 0);
@@ -55,11 +45,10 @@ public:
 	Vector2 ReadVector2Data(const string& KeyName, size_t CellX, size_t CellY, int SheetIndex = 0);
 	Vector3 ReadVector3Data(const string& KeyName, size_t CellX, size_t CellY, int SheetIndex = 0);
 	Vector4 ReadVector4Data(const string& KeyName, size_t CellX, size_t CellY, int SheetIndex = 0);
-
-	JEONG::ExcelData* CreateExcel(const string& KeyName);
 	void AddSheet(const string& KeyName, const string& SheetName);
 
 private:
+	JEONG::ExcelData* CreateExcel(const string& KeyName);
 	bool SaveExcel(const string& KeyName, const string& PathKey = DATA_PATH);
 	bool LoadExcel(const string& KeyName, const string& PathKey = DATA_PATH);
 

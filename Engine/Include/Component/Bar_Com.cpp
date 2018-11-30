@@ -44,7 +44,7 @@ bool JEONG::Bar_Com::Init()
 	m_Value = 100.0f;
 	m_Percent = 0.0f;
 
-	Renderer_Com* RenderComponent = m_Object->AddComponent<Renderer_Com>("ButtonRender");
+	Renderer_Com* RenderComponent = m_Object->AddComponent<Renderer_Com>("BarRender");
 	RenderComponent->SetMesh("TextureRect");
 	RenderComponent->SetRenderState(ALPHA_BLEND);
 	SAFE_RELEASE(RenderComponent);
@@ -55,7 +55,6 @@ bool JEONG::Bar_Com::Init()
 
 	m_RectCollider = m_Object->AddComponent<ColliderRect_Com>("BarBody");
 	m_RectCollider->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(200.0f, 30.0f, 0.0f));
-	m_RectCollider->SetCollisionGroup("UI");
 	m_RectCollider->SetCollsionCallback(CCT_DOING, this, &Bar_Com::MouseHit);
 
 	return true;
@@ -106,6 +105,7 @@ int JEONG::Bar_Com::Update(float DeltaTime)
 			break;
 		}
 	}
+
 	return 0;
 }
 

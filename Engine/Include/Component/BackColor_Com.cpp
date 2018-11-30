@@ -5,6 +5,7 @@ JEONG_USING
 
 BackColor_Com::BackColor_Com()
 {
+	m_ComType = CT_BACKCOLOR;
 }
 
 BackColor_Com::BackColor_Com(const BackColor_Com & CopyData)
@@ -15,15 +16,31 @@ BackColor_Com::BackColor_Com(const BackColor_Com & CopyData)
 
 BackColor_Com::~BackColor_Com()
 {
+	SAFE_RELEASE(m_Material);
 }
 
 bool BackColor_Com::Init()
 {
+	Renderer_Com* RenderComponent = m_Object->AddComponent<Renderer_Com>("BackColorObject");
+	RenderComponent->SetMesh("TextureRect");
+	RenderComponent->SetRenderState(ALPHA_BLEND);
+	RenderComponent->SetScreenRender(true);
+	SAFE_RELEASE(RenderComponent);
+
+	m_Color = Vector4::Blue;
+
+	m_Material = m_Object->FindComponentFromType<Material_Com>(CT_MATERIAL);
+	m_Material->SetDiffuseTexture(0, "White", TEXT("White.png"));
+	m_Material->SetMaterial(m_Color);
+
+	m_Transform->SetWorldScale(Vector3((float)Device::Get()->GetWinSize().Width, (float)Device::Get()->GetWinSize().Height, 1.0f));
+
 	return true;
 }
 
 int BackColor_Com::Input(float DeltaTime)
 {
+	m_Material->SetMaterial(m_Color);
 	return 0;
 }
 

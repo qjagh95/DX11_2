@@ -74,6 +74,11 @@ public:
 	CEdit m_StartPosYControl;
 	CEdit m_StartPosZControl;
 
+	int m_TextCount;
+	static int m_MaxStrLenth;
+
+	int GetTileOption() const { return m_TileTypeBox.GetCurSel(); }
+
 	virtual void OnInitialUpdate();
 	afx_msg void OnEnChangeScalex();
 	afx_msg void OnEnChangeRotationx();
@@ -86,7 +91,6 @@ public:
 	afx_msg void OnEnChangePositionz();
 	afx_msg void OnCbnSelchangeTileselect();
 	afx_msg void OnCbnSelchangeTileoptionselect();
-	afx_msg void OnCbnSelchangeBackcolorselect();
 	afx_msg void OnCbnSelchangeTileimageselect();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnBnClickedTilecreatebutton();
@@ -101,8 +105,6 @@ public:
 	afx_msg void OnEnChangeTilecounty();
 	afx_msg void OnEnChangeTilesizex();
 	afx_msg void OnEnChangeTilesizey();
-	afx_msg void OnEnChangeStartposx();
-	afx_msg void OnEnChangeStartposy();
 	afx_msg void OnEnChangeTagname();
 };
 

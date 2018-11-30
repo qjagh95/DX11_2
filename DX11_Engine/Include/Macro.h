@@ -23,7 +23,7 @@
 #define KEYUP(Key) KeyInput::Get()->KeyUp(key)
 #define KEYPDOWN(Key) KeyInput::Get()->KeyDown(key)
 
-//BaseShader
+//Shader
 #define STANDARD_COLOR_SHADER "StandardColorShader"
 #define STANDARD_UV_SHADER "StandardUVShader"
 #define COLLIDER_SHADER "ColliderShader"
@@ -33,6 +33,7 @@
 #define TILE_SHADER "TileShader"
 #define FULLSCREEN_SHADER "FullScreenShader"
 #define STANDARD_UV_STATIC_SHADER "StandardUVStaticShader"
+#define BACKCOLOR_SHADER "BackColorShader"
 
 //Base InputLayOut
 #define POS_COLOR_LAYOUT "PosColorLayOut"

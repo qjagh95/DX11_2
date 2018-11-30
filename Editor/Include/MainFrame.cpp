@@ -56,6 +56,7 @@ BOOL MainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CFrameWnd::PreCreateWindow(cs) )
 		return FALSE;
+
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
 	//  Window 클래스 또는 스타일을 수정합니다.
 
@@ -65,8 +66,6 @@ BOOL MainFrame::PreCreateWindow(CREATESTRUCT& cs)
 
 	return TRUE;
 }
-
-// CMainFrame 진단
 
 #ifdef _DEBUG
 void MainFrame::AssertValid() const
@@ -80,15 +79,11 @@ void MainFrame::Dump(CDumpContext& dc) const
 }
 #endif //_DEBUG
 
-
-// CMainFrame 메시지 처리기
-
-
-
+//TODO
 BOOL MainFrame::DestroyWindow()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	Core::Delete();
+	//Core::Delete();
 
 	return CFrameWnd::DestroyWindow();
 }

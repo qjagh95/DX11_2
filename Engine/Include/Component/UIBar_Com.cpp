@@ -48,13 +48,14 @@ bool UIBar_Com::Init()
 	Renderer_Com* RenderComponent = m_Object->AddComponent<Renderer_Com>("ButtonRender");
 	RenderComponent->SetMesh("TextureRect");
 	RenderComponent->SetRenderState(ALPHA_BLEND);
+	RenderComponent->SetScreenRender(true);
 	SAFE_RELEASE(RenderComponent);
 
 	Material_Com* MaterialComponent = m_Object->FindComponentFromType<Material_Com>(CT_MATERIAL);
 	MaterialComponent->SetDiffuseTexture(0, "Bar", TEXT("Bar.png"));
 	SAFE_RELEASE(MaterialComponent);
 
-	m_RectCollider = m_Object->AddComponent<ColliderRect_Com>("BarBody");
+	m_RectCollider = m_Object->AddComponent<ColliderRect_Com>("UIBarBody");
 	m_RectCollider->SetInfo(Vector3(0.0f, 0.0f, 0.0f), Vector3(200.0f, 30.0f, 0.0f));
 	m_RectCollider->SetCollisionGroup("UI");
 	m_RectCollider->SetCollsionCallback(CCT_DOING, this, &UIBar_Com::MouseHit);

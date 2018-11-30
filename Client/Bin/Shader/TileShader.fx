@@ -21,6 +21,6 @@ PS_OUTPUT_SINGLE TilePS()
     PS_OUTPUT_SINGLE output = (PS_OUTPUT_SINGLE) 0;
 
     output.vTarget0 = g_Color;
-    
+
     return output;
 }

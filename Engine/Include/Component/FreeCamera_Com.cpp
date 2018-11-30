@@ -24,7 +24,7 @@ bool FreeCamera_Com::Init()
 	KeyInput::Get()->AddKey("CameraLeft", VK_LEFT);
 	KeyInput::Get()->AddKey("CameraRight", VK_RIGHT);
 
-	m_Speed = 500.0f;
+	m_Speed = 1000.0f;
 	return true;
 }
 

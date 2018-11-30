@@ -19,6 +19,7 @@
 #include "Component/Stage2D_Com.h"
 #include "Component/Tile2D_Com.h"
 #include "Component/CheckBox_Com.h"
+#include "Component/BackColor_Com.h"
 
 #include "../UserComponent/Player_Com.h"
 #include "../UserComponent/Bullet_Com.h"
@@ -53,6 +54,17 @@ bool MainScene::Init()
 	Layer* UILayer = m_Scene->FindLayer("UI");
 	Layer* TileLayer = m_Scene->FindLayer("Tile");
 
+	GameObject* BackObject = GameObject::CreateObject("BackObject", BackLayer);
+	BackColor_Com* BackCom = BackObject->AddComponent<BackColor_Com>("BackColor");
+
+	Vector4 A = ExcelManager::Get()->ReadVector4Data("BackColor", 0, 0);
+	BackCom->SetBackColor(ExcelManager::Get()->ReadVector4Data("BackColor", 0, 0));
+
+	ExcelManager::Get()->ReadVector4Data("BaclColor", 0, 0);
+
+	SAFE_RELEASE(BackCom);
+	SAFE_RELEASE(BackObject);
+
 	GameObject*	pStageObj = GameObject::CreateObject("StageObj", TileLayer);
 	Stage2D_Com* pStage = pStageObj->AddComponent<Stage2D_Com>("Stage");
 	pStage->CreateTileMap(100, 100, Vector3::Zero, Vector3(160.0f, 80.0f, 1.0f), STT_ISO);
@@ -60,20 +72,6 @@ bool MainScene::Init()
 	//loadThread->AddLoadingCount();
 	SAFE_RELEASE(pStage);
 	SAFE_RELEASE(pStageObj);
-
-	GameObject* BgObject = GameObject::CreateObject("BgObject", TileLayer);
-	BgObject->GetTransform()->SetWorldPos(0.0f, 0.0f, 0.0f);
-	BgObject->GetTransform()->SetWorldScale(1280.0f, 720.0f, 1.0f);
-
-	Renderer_Com* bgRender = BgObject->AddComponent<Renderer_Com>("BgRender");
-	bgRender->SetMesh("TextureRect");
-	bgRender->SetRenderState(ALPHA_BLEND);
-	SAFE_RELEASE(bgRender);
-
-	Material_Com* bgMater = BgObject->FindComponentFromType<Material_Com>(CT_MATERIAL);
-	bgMater->SetDiffuseTexture(0, "BG", TEXT("Stage.png"));
-	SAFE_RELEASE(bgMater);
-	SAFE_RELEASE(BgObject);
 
 	GameObject* MonsterObject = GameObject::CreateObject("Monster", Default);
 	Monster_Com* monster_Com = MonsterObject->AddComponent<Monster_Com>("Monster_Com");
@@ -216,6 +214,7 @@ bool MainScene::Init()
 	TestMater->SetDiffuseTexture(0, "aaa", TEXT("aaa.png"));
 	SAFE_RELEASE(TestMater);
 	SAFE_RELEASE(TestObject);
+
 
 	SAFE_RELEASE(Default);
 	SAFE_RELEASE(UILayer);

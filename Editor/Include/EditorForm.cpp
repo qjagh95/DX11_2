@@ -5,9 +5,13 @@
 #include "EditorForm.h"
 #include "afxwin.h"
 
+//로그를 텍스트파일로 시간입력해서. (엑셀)
+//Control Z 되돌리기..?
+
 // EditorForm
 
 IMPLEMENT_DYNCREATE(EditorForm, CFormView)
+int EditorForm::m_MaxStrLenth = 70;
 
 EditorForm::EditorForm()
 	: CFormView(IDD_DIALOG_EDIT)
@@ -31,6 +35,7 @@ EditorForm::EditorForm()
 	, m_BackColorG(0)
 	, m_BackColorB(0)
 	, m_BackColorA(0)
+	, m_TextCount(0)
 {
 	m_TileCountX = 0;
 	m_TileCountY = 0;
@@ -122,8 +127,6 @@ BEGIN_MESSAGE_MAP(EditorForm, CFormView)
 	ON_EN_CHANGE(IDC_TILECOUNTY, &EditorForm::OnEnChangeTilecounty)
 	ON_EN_CHANGE(IDC_TILESIZEX, &EditorForm::OnEnChangeTilesizex)
 	ON_EN_CHANGE(IDC_TILESIZEY, &EditorForm::OnEnChangeTilesizey)
-	ON_EN_CHANGE(IDC_STARTPOSX, &EditorForm::OnEnChangeStartposx)
-	ON_EN_CHANGE(IDC_STARTPOSY, &EditorForm::OnEnChangeStartposy)
 	ON_EN_CHANGE(IDC_TAGNAME, &EditorForm::OnEnChangeTagname)
 END_MESSAGE_MAP()
 
@@ -146,21 +149,83 @@ void EditorForm::Dump(CDumpContext& dc) const
 
 void EditorForm::AddWorkText(const wstring& Text, int Index)
 {
+	CTime Time = CTime::GetTickCount();
+
+	wstring Temp2;
+	
+	Temp2 += to_wstring(Time.GetYear());
+	Temp2 += L"년 ";
+	Temp2 += to_wstring(Time.GetMonth());
+	Temp2 += L"월 ";
+	Temp2 += to_wstring(Time.GetDay());
+	Temp2 += L"일 ";
+	Temp2 += to_wstring(Time.GetHour());
+	Temp2 += L"시 ";
+	Temp2 += to_wstring(Time.GetMinute());
+	Temp2 += L"분 ";
+	Temp2 += to_wstring(Time.GetSecond());
+	Temp2 += L"초 ";
+
 	m_WorkList.InsertString(Index, Text.c_str());
+	ExcelManager::Get()->WriteData("EditorLog", 0, m_TextCount, Text);
+	ExcelManager::Get()->WriteData("EditorLog", 6, m_TextCount, Temp2);
+
+	m_TextCount++;
 }
 
 void EditorForm::AddWorkText(const string & Text, int Index)
 {
+	CTime Time = CTime::GetTickCount();
+
+	wstring Temp2;
+
+	Temp2 += to_wstring(Time.GetYear());
+	Temp2 += L"년 ";
+	Temp2 += to_wstring(Time.GetMonth());
+	Temp2 += L"월 ";
+	Temp2 += to_wstring(Time.GetDay());
+	Temp2 += L"일 ";
+	Temp2 += to_wstring(Time.GetHour());
+	Temp2 += L"시 ";
+	Temp2 += to_wstring(Time.GetMinute());
+	Temp2 += L"분 ";
+	Temp2 += to_wstring(Time.GetSecond());
+	Temp2 += L"초 ";
+
 	wstring Temp = CA2W(Text.c_str());
 	m_WorkList.InsertString(Index, Temp.c_str());
+	ExcelManager::Get()->WriteData("EditorLog", 0, m_TextCount, Text);
+	ExcelManager::Get()->WriteData("EditorLog", 6, m_TextCount, Temp2);
+
+	m_TextCount++;
 }
 
 void EditorForm::AddWorkText(const CString & Text, int Index)
 {
+	CTime Time = CTime::GetTickCount();
+	string Temp3;
+
+	Temp3 += to_string(Time.GetYear());
+	Temp3 += "년 ";
+	Temp3 += to_string(Time.GetMonth());
+	Temp3 += "월 ";
+	Temp3 += to_string(Time.GetDay());
+	Temp3 += "일 ";
+	Temp3 += to_string(Time.GetHour());
+	Temp3 += "시 ";
+	Temp3 += to_string(Time.GetMinute());
+	Temp3 += "분 ";
+	Temp3 += to_string(Time.GetSecond());
+	Temp3 += "초 ";
+
 	string	Temp = CT2CA(Text);
 	wstring Temp2 = CA2W(Temp.c_str());
 
 	m_WorkList.InsertString(Index, Temp2.c_str());
+	ExcelManager::Get()->WriteData("EditorLog", 0, m_TextCount, Text);
+	ExcelManager::Get()->WriteData("EditorLog", 6, m_TextCount, Temp3);
+
+	m_TextCount++;
 }
 
 void EditorForm::AddWorkText(wchar_t * Text, int Index)
@@ -182,14 +247,14 @@ int EditorForm::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	return 0;
 }
-// EditorForm 메시지 처리기입니다.
 
 void EditorForm::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
 
+	//초기화
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	m_TileTypeBox.SetCurSel(0);
+	m_TileTypeBox.SetCurSel(1);
 	m_TileOptionBox.SetCurSel(0);
 }
 
@@ -221,7 +286,13 @@ void EditorForm::OnEnChangeScalez()
 
 	if (RenderManager::Get()->GetGameMode() == GM_2D)
 	{
-		m_ScaleZ = 1;
+		m_ScaleZ = 0;
+
+		wchar_t Buffer[255];
+		wsprintf(Buffer, L"2D 모드일땐 ScaleZ값 변경불가");
+		AddWorkText(Buffer);
+
+		UpdateData(FALSE);
 		return;
 	}
 
@@ -294,6 +365,12 @@ void EditorForm::OnEnChangePositionz()
 	if (RenderManager::Get()->GetGameMode() == GM_2D)
 	{
 		m_PosZ = 0;
+
+		wchar_t Buffer[255];
+		wsprintf(Buffer, L"2D 모드일땐 PosZ값 변경불가");
+		AddWorkText(Buffer);
+
+		UpdateData(FALSE);
 		return;
 	}
 
@@ -314,6 +391,9 @@ void EditorForm::OnCbnSelchangeTileselect()
 	CString Buffer;
 	m_TileTypeBox.GetLBText(m_TileTypeBox.GetCurSel(),Buffer);
 	Buffer += " 선택";
+
+	m_StartPosX = 0;
+	m_StartPosY = 0;
 
 	AddWorkText(Buffer);
 
@@ -355,10 +435,10 @@ void EditorForm::OnBnClickedTilecreatebutton()
 
 	UpdateData(TRUE);
 
-	if (m_TileCountX == 0 || m_TileCountY == 0)
+	if (m_TileCountX == 0 || m_TileCountY == 0 || m_TileSizeX == 0 || m_TileSizeY == 0)
 	{
 		wchar_t Buffer[255];
-		wsprintf(Buffer, L" 타일갯수를 정확히 입력하세요");
+		wsprintf(Buffer, L" 타일갯수와 사이즈를 정확히 입력하세요");
 
 		AddWorkText(Buffer);
 		UpdateData(TRUE);
@@ -372,15 +452,20 @@ void EditorForm::OnBnClickedTilecreatebutton()
 	m_StageObject = GameObject::CreateObject("StageObject", TileLayer);
 
 	Renderer_Com* stageRender = m_StageObject->AddComponent<Renderer_Com>("StageRender");
-	stageRender->SetMesh("TexRect");
+	stageRender->SetMesh("TextureRect");
 	SAFE_RELEASE(stageRender);
+
+	Material_Com* stageMat = m_StageObject->FindComponentFromType<Material_Com>(CT_MATERIAL);
+	stageMat->SetMaterial(Vector4::Black);
+	
+	SAFE_RELEASE(stageMat);
 
 	m_StageCom = m_StageObject->AddComponent<Stage2D_Com>("Stage");
 
 	int	TileType = m_TileTypeBox.GetCurSel();
 	Vector3	TileScale = Vector3((float)m_TileSizeX, (float)m_TileSizeY, 1.0f);
 
-	m_StageCom->CreateTileMap(m_TileCountX, m_TileCountY, Vector3::Zero, TileScale, (STAGE2D_TILE_TYPE)TileType);
+	m_StageCom->CreateTileMap(m_TileCountX, m_TileCountY, Vector3((float)m_StartPosX, (float)m_StartPosY, 0.0f), TileScale, (STAGE2D_TILE_TYPE)TileType);
 	m_StageTransform = m_StageObject->GetTransform();
 
 	SAFE_RELEASE(getScene);
@@ -420,11 +505,9 @@ void EditorForm::OnEnChangeColorr()
 	wsprintf(Buffer, L"R값 %d 입력", m_BackColorR);
 	AddWorkText(Buffer);
 
-	wsprintf(Buffer, L"R : %d, G : %d, B : %d, A : %d", m_BackColorR, m_BackColorG, m_BackColorB, m_BackColorA);
-	AddWorkText(Buffer, 1);
-
-	wsprintf(Buffer, L"\n");
-	AddWorkText(Buffer, 2);
+	wchar_t Buffer2[255];
+	wsprintf(Buffer2, L"R : %d, G : %d, B : %d, A : %d", m_BackColorR, m_BackColorG, m_BackColorB, m_BackColorA);
+	AddWorkText(Buffer2, 1);
 
 	UpdateData(FALSE);
 }
@@ -442,11 +525,9 @@ void EditorForm::OnEnChangeColorg()
 	wsprintf(Buffer, L"G값 %d 입력", m_BackColorG);
 	AddWorkText(Buffer);
 
-	wsprintf(Buffer, L"R : %d, G : %d, B : %d, A : %d", m_BackColorR, m_BackColorG, m_BackColorB, m_BackColorA);
-	AddWorkText(Buffer, 1);
-
-	wsprintf(Buffer, L"\n");
-	AddWorkText(Buffer, 2);
+	wchar_t Buffer2[255];
+	wsprintf(Buffer2, L"R : %d, G : %d, B : %d, A : %d \n", m_BackColorR, m_BackColorG, m_BackColorB, m_BackColorA);
+	AddWorkText(Buffer2, 1);
 
 	UpdateData(FALSE);
 }
@@ -464,11 +545,9 @@ void EditorForm::OnEnChangeColorb()
 	wsprintf(Buffer, L"B값 %d 입력", m_BackColorB);
 	AddWorkText(Buffer);
 
-	wsprintf(Buffer, L"R : %d, G : %d, B : %d, A : %d", m_BackColorR, m_BackColorG, m_BackColorB, m_BackColorA);
-	AddWorkText(Buffer, 1);
-
-	wsprintf(Buffer, L"\n");
-	AddWorkText(Buffer, 2);
+	wchar_t Buffer2[255];
+	wsprintf(Buffer2, L"R : %d, G : %d, B : %d, A : %d \n", m_BackColorR, m_BackColorG, m_BackColorB, m_BackColorA);
+	AddWorkText(Buffer2, 1);
 
 	UpdateData(FALSE);
 }
@@ -486,11 +565,9 @@ void EditorForm::OnEnChangeColora()
 	wsprintf(Buffer, L"A값 %d 입력", m_BackColorA);
 	AddWorkText(Buffer);
 
-	wsprintf(Buffer, L"R : %d, G : %d, B : %d, A : %d", m_BackColorR, m_BackColorG, m_BackColorB, m_BackColorA);
-	AddWorkText(Buffer, 1);
-
-	wsprintf(Buffer, L"\n");
-	AddWorkText(Buffer, 2);
+	wchar_t Buffer2[255];
+	wsprintf(Buffer2, L"R : %d, G : %d, B : %d, A : %d \n", m_BackColorR, m_BackColorG, m_BackColorB, m_BackColorA);
+	AddWorkText(Buffer2, 1);
 
 	UpdateData(FALSE);
 }
@@ -508,6 +585,21 @@ void EditorForm::OnEnChangeTilecountx()
 	wsprintf(Buffer, L"X축 타일 갯수 : %d 입력", m_TileCountX);
 	AddWorkText(Buffer);
 
+	if (m_TileTypeBox.GetCurSel() == 0)
+	{
+		m_StartPosX = (int)(m_TileCountX * m_TileSizeX / 2.0f);
+		m_StartPosY = (int)(m_TileCountY * m_TileSizeY / 2.0f);
+
+		wchar_t Buffer2[255];
+		wsprintf(Buffer2, L"타일 시작위치 X : %d ,Y : %d 자동입력 \n", m_StartPosX, m_StartPosY);
+		AddWorkText(Buffer2, 1);
+	}
+	else
+	{
+		m_StartPosX = 0;
+		m_StartPosY = 0;
+	}
+
 	UpdateData(FALSE);
 }
 
@@ -524,6 +616,21 @@ void EditorForm::OnEnChangeTilecounty()
 	wsprintf(Buffer, L"Y축 타일 갯수 : %d 입력", m_TileCountY);
 	AddWorkText(Buffer);
 
+	if (m_TileTypeBox.GetCurSel() == 0)
+	{
+		m_StartPosX = (int)(m_TileCountX * m_TileSizeX / 2.0f);
+		m_StartPosY = (int)(m_TileCountY * m_TileSizeY / 2.0f);
+
+		wchar_t Buffer2[255];
+		wsprintf(Buffer2, L"타일 시작위치 X : %d ,Y : %d 자동입력 \n", m_StartPosX, m_StartPosY);
+		AddWorkText(Buffer2);
+	}
+	else
+	{
+		m_StartPosX = 0;
+		m_StartPosY = 0;
+	}
+
 	UpdateData(FALSE);
 }
 
@@ -531,9 +638,27 @@ void EditorForm::OnEnChangeTilesizex()
 {
 	UpdateData(TRUE);
 
+	if (m_TileSizeX > 500)
+		m_TileSizeX = 500;
+
 	wchar_t Buffer[255];
 	wsprintf(Buffer, L"타일 사이즈X : %d 입력", m_TileSizeX);
 	AddWorkText(Buffer);
+
+	if (m_TileTypeBox.GetCurSel() == 0)
+	{
+		m_StartPosX = (int)(m_TileCountX * m_TileSizeX / 2.0f);
+		m_StartPosY = (int)(m_TileCountY * m_TileSizeY / 2.0f);
+
+		wchar_t Buffer2[255];
+		wsprintf(Buffer2, L"타일 시작위치 X : %d ,Y : %d 자동입력 \n", m_StartPosX, m_StartPosY);
+		AddWorkText(Buffer2);
+	}
+	else
+	{
+		m_StartPosX = 0;
+		m_StartPosY = 0;
+	}
 
 	UpdateData(FALSE);
 }
@@ -542,65 +667,30 @@ void EditorForm::OnEnChangeTilesizey()
 {
 	UpdateData(TRUE);
 
+	if (m_TileSizeY > 500)
+		m_TileSizeY = 500;
+
 	wchar_t Buffer[255];
 	wsprintf(Buffer, L"타일 사이즈Y : %d 입력", m_TileSizeY);
 	AddWorkText(Buffer);
 
-	UpdateData(FALSE);
-}
-
-void EditorForm::OnEnChangeStartposx()
-{
-	UpdateData(TRUE);
-
-	if (m_TileCountX == 0 || m_TileCountY == 0 || m_TileSizeX == 0 || m_TileSizeY == 0)
+	if (m_TileTypeBox.GetCurSel() == 0)
 	{
-		wchar_t Buffer[255];
-		wsprintf(Buffer, L"타일갯수 또는 사이즈를 먼저 입력해주세요");
-		AddWorkText(Buffer);
+		if (m_TileSizeY > m_TileSizeX / 2)
+			m_TileSizeY = m_TileSizeX / 2;
 
-		m_StartPosX = 0;
+		m_StartPosX = (int)(m_TileCountX * m_TileSizeX / 2.0f);
+		m_StartPosY = (int)(m_TileCountY * m_TileSizeY / 2.0f);
 
-		UpdateData(FALSE);
-		return;
+		wchar_t Buffer2[255];
+		wsprintf(Buffer2, L"타일 시작위치 X : %d ,Y : %d 자동입력 \n", m_StartPosX, m_StartPosY);
+		AddWorkText(Buffer2);
 	}
-
-	if (m_TileCountX * m_TileSizeX < m_StartPosX)
-		m_StartPosX = m_TileCountX * m_TileSizeX;
-	else if (m_StartPosX < 0)
-		m_StartPosX = 0;
-
-	wchar_t Buffer[255];
-	wsprintf(Buffer, L"시작위치 X : %d 입력", m_StartPosX);
-	AddWorkText(Buffer);
-
-	UpdateData(FALSE);
-}
-
-void EditorForm::OnEnChangeStartposy()
-{
-	UpdateData(TRUE);
-
-	if (m_TileCountX == 0 || m_TileCountY == 0 || m_TileSizeX == 0 || m_TileSizeY == 0)
+	else
 	{
-		wchar_t Buffer[255];
-		wsprintf(Buffer, L"타일갯수 또는 사이즈를 먼저 입력해주세요");
-		AddWorkText(Buffer);
-
+		m_StartPosX = 0;
 		m_StartPosY = 0;
-
-		UpdateData(FALSE);
-		return;
 	}
-	
-	if (m_TileCountY * m_TileSizeY < m_StartPosY)
-		m_StartPosY = m_TileCountY * m_TileSizeY;
-	else if (m_StartPosY < 0)
-		m_StartPosY = 0;
-
-	wchar_t Buffer[255];
-	wsprintf(Buffer, L"시작위치 Y : %d 입력", m_StartPosY);
-	AddWorkText(Buffer);
 
 	UpdateData(FALSE);
 }

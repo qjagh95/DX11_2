@@ -215,7 +215,7 @@ void Stage2D_Com::CreateTileMap(int TileCountX, int TileCountY, const Vector3& S
 	SumScale.z = 1.0f;
 
 	m_Transform->SetWorldPos(StartPos);
-	m_Transform->SetWorldScale(SumScale);
+	//m_Transform->SetWorldScale(SumScale);
 
 	switch (tileType)
 	{
@@ -224,7 +224,6 @@ void Stage2D_Com::CreateTileMap(int TileCountX, int TileCountY, const Vector3& S
 			break;
 		case STT_ISO:
 			CreateIsoTile(StartPos, TileScale, KeyName, FileName, PathKey);
-			//CreateIsoTile(TileScale, KeyName, FileName, PathKey);
 			break;
 	}
 
@@ -268,9 +267,6 @@ void Stage2D_Com::CreateTile(const Vector3& StartPos, const Vector3& TileScale, 
 			m_vecTileObject[Index] = newTileObject;
 			m_vecTile2DCom[Index] = pTile;
 
-			m_TileObjectSize++;
-			m_Tile2DComSize++;
-
 			if (m_TileObjectSize == m_TileObjectCapacity)
 			{
 				m_TileObjectCapacity *= 2;
@@ -290,6 +286,9 @@ void Stage2D_Com::CreateTile(const Vector3& StartPos, const Vector3& TileScale, 
 				SAFE_DELETE(m_vecTile2DCom);
 				m_vecTile2DCom = newTile;
 			}
+
+			m_TileObjectSize++;
+			m_Tile2DComSize++;
 		}//for(x)
 	}//for(y)
 }
@@ -341,9 +340,6 @@ void Stage2D_Com::CreateIsoTile(const Vector3& StartPos, const Vector3& TileScal
 			m_vecTile2DCom[Index] = pTile;
 			m_vecTileObject[Index] = newTileObject;
 
-			m_Tile2DComSize++;
-			m_TileObjectSize++;
-
 			if (m_TileObjectSize == m_TileObjectCapacity)
 			{
 				m_TileObjectCapacity *= 2;
@@ -363,6 +359,10 @@ void Stage2D_Com::CreateIsoTile(const Vector3& StartPos, const Vector3& TileScal
 				SAFE_DELETE(m_vecTile2DCom);
 				m_vecTile2DCom = newTile;
 			}
+
+			m_Tile2DComSize++;
+			m_TileObjectSize++;
+
 		}//for(x)
 	}//for(y)
 }
@@ -430,4 +430,28 @@ Vector2 Stage2D_Com::GetIsoTileIndexVec(const Vector3 & Pos)
 	int YIndex = (int)((dY + sPos.y) / m_TileScale.y);
 	
 	return Vector2((float)XIndex, (float)YIndex);
+}
+
+void Stage2D_Com::SetNoMoveMesh(const Vector3 & Pos)
+{
+	int Index = GetTileIndex(Pos);
+
+	if (Index == -1)
+		return;
+
+	Renderer_Com* getRender = m_vecTile2DCom[Index]->FindComponentFromType<Renderer_Com>(CT_RENDER);
+	getRender->SetMesh("TileNoMove");
+	SAFE_RELEASE(getRender);
+}
+
+void Stage2D_Com::SetMoveMesh(const Vector3 & Pos)
+{
+	int Index = GetTileIndex(Pos);
+
+	if (Index == -1)
+		return;
+
+	Renderer_Com* getRender = m_vecTile2DCom[Index]->FindComponentFromType<Renderer_Com>(CT_RENDER);
+	getRender->SetMesh("ColliderRect");
+	SAFE_RELEASE(getRender);
 }

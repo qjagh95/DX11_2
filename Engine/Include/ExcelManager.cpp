@@ -245,7 +245,7 @@ void JEONG::ExcelManager::WriteData(const string & KeyName, size_t CellX, size_t
 	WriteData(KeyName, Vector2((float)CellX, (float)CellY), Data);
 }
 
-int JEONG::ExcelManager::ReadIntData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+int JEONG::ExcelManager::ReadIntData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	if (LoadExcel(KeyName) == false)
 		return 0;
@@ -260,10 +260,10 @@ int JEONG::ExcelManager::ReadIntData(const string & KeyName, const Vector2 & Cel
 	Sheet* getSheet = getData->book->getSheet(SheetIndex);
 	getData->sheet = getSheet;
 
-	return (int)getData->sheet->readNum((int)(CellNumber.y + 1.0f), (int)CellNumber.x);
+	return (int)getData->sheet->readNum((int)(CellY + 1), (int)CellX);
 }
 
-string JEONG::ExcelManager::ReadStringData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+string JEONG::ExcelManager::ReadStringData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	string a = "";
 
@@ -281,13 +281,13 @@ string JEONG::ExcelManager::ReadStringData(const string & KeyName, const Vector2
 	Sheet* getSheet = getData->book->getSheet(SheetIndex);
 	getData->sheet = getSheet;
 
-	wstring Temp = getSheet->readStr((int)(CellNumber.y + 1.0f), (int)CellNumber.x);
+	wstring Temp = getSheet->readStr((int)(CellY + 1), ((int)CellX));
 	string ReturnString = CW2A(Temp.c_str());
 
 	return ReturnString;
 }
 
-wstring JEONG::ExcelManager::ReadWStringData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+wstring JEONG::ExcelManager::ReadWStringData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	wstring a = L"";
 
@@ -305,11 +305,11 @@ wstring JEONG::ExcelManager::ReadWStringData(const string & KeyName, const Vecto
 	Sheet* getSheet = getData->book->getSheet(SheetIndex);
 	getData->sheet = getSheet;
 
-	wstring Temp = getSheet->readStr((int)(CellNumber.y + 1.0f), (int)CellNumber.x);
+	wstring Temp = getSheet->readStr((int)(CellY + 1), ((int)CellX));
 	return Temp;
 }
 
-float JEONG::ExcelManager::ReadFloatData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+float JEONG::ExcelManager::ReadFloatData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	if (LoadExcel(KeyName) == false)
 		return 0;
@@ -323,11 +323,11 @@ float JEONG::ExcelManager::ReadFloatData(const string & KeyName, const Vector2 &
 	}
 	Sheet* getSheet = getData->book->getSheet(SheetIndex);
 	getData->sheet = getSheet;
-	
-	return (float)getSheet->readNum((int)(CellNumber.y + 1.0f), (int)CellNumber.x);
+
+	return (float)getSheet->readNum((int)CellY + 1, (int)CellX);
 }
 
-double JEONG::ExcelManager::ReadDoubleData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+double JEONG::ExcelManager::ReadDoubleData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	if (LoadExcel(KeyName) == false)
 		return -1.0f;
@@ -342,10 +342,10 @@ double JEONG::ExcelManager::ReadDoubleData(const string & KeyName, const Vector2
 	Sheet* getSheet = getData->book->getSheet(SheetIndex);
 	getData->sheet = getSheet;
 
-	return getSheet->readNum((int)(CellNumber.y + 1.0f), (int)CellNumber.x);
+	return getSheet->readNum((int)(CellY + 1), (int)CellX);
 }
 
-bool JEONG::ExcelManager::ReadBoolData(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+bool JEONG::ExcelManager::ReadBoolData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	if (LoadExcel(KeyName) == false)
 		return false;
@@ -360,10 +360,10 @@ bool JEONG::ExcelManager::ReadBoolData(const string & KeyName, const Vector2 & C
 	Sheet* getSheet = getData->book->getSheet(SheetIndex);
 	getData->sheet = getSheet;
 
-	return getSheet->readBool((int)(CellNumber.y + 1.0f), (int)CellNumber.x);
+	return getSheet->readBool((int)(CellY + 1), (int)CellX);
 }
 
-Vector2 JEONG::ExcelManager::ReadVector2Data(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+Vector2 JEONG::ExcelManager::ReadVector2Data(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	if (LoadExcel(KeyName) == false)
 		return Vector2();
@@ -379,12 +379,12 @@ Vector2 JEONG::ExcelManager::ReadVector2Data(const string & KeyName, const Vecto
 	Sheet* getSheet = getData->book->getSheet(SheetIndex);
 	getData->sheet = getSheet;
 
-	Vector2 ReturnValue = Vector2((float)getSheet->readNum((int)(CellNumber.y + 1.0f), (int)CellNumber.x),
-						  (float)getSheet->readNum((int)(CellNumber.y + 1.0f), (int)(CellNumber.x + 1.0f)));
+	
+	Vector2 ReturnValue = Vector2((float)getSheet->readNum((int)(CellY + 1), (int)CellX), (float)getSheet->readNum((int)(CellX + 1), (int)(CellY + 1)));
 	return ReturnValue;
 }
 
-Vector3 JEONG::ExcelManager::ReadVector3Data(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+Vector3 JEONG::ExcelManager::ReadVector3Data(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	if (LoadExcel(KeyName) == false)
 		return Vector3();
@@ -400,14 +400,12 @@ Vector3 JEONG::ExcelManager::ReadVector3Data(const string & KeyName, const Vecto
 	Sheet* getSheet = getData->book->getSheet(SheetIndex);
 	getData->sheet = getSheet;
 
-	Vector3 ReturnValue = Vector3((float)getSheet->readNum((int)(CellNumber.y + 1.0f), (int)CellNumber.x),
-						  (float)getSheet->readNum((int)(CellNumber.y + 1.0f), (int)(CellNumber.x + 1.0f)),
-						  (float)getSheet->readNum((int)(CellNumber.y + 1.0f), (int)(CellNumber.x + 2.0f)));
+	Vector3 ReturnValue = Vector3((float)getSheet->readNum((int)(CellY + 1), (int)CellX) , (float)getSheet->readNum((int)(CellY + 1), (int)(CellX + 1)) , (float)getSheet->readNum((int)(CellY + 1), (int)CellX + 2));
 
 	return ReturnValue;
 }
 
-Vector4 JEONG::ExcelManager::ReadVector4Data(const string & KeyName, const Vector2 & CellNumber, int SheetIndex)
+Vector4 JEONG::ExcelManager::ReadVector4Data(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
 {
 	if (LoadExcel(KeyName) == false)
 		return Vector4();
@@ -423,57 +421,9 @@ Vector4 JEONG::ExcelManager::ReadVector4Data(const string & KeyName, const Vecto
 	Sheet* getSheet = getData->book->getSheet(SheetIndex);
 	getData->sheet = getSheet;
 
-	Vector4 ReturnValue = Vector4((float)getSheet->readNum((int)(CellNumber.y + 1.0f), (int)CellNumber.x),
-						  (float)getSheet->readNum((int)(CellNumber.y + 1.0f), (int)(CellNumber.x + 1.0f)),
-						  (float)getSheet->readNum((int)(CellNumber.y + 1.0f), (int)(CellNumber.x + 2.0f)),
-						  (float)getSheet->readNum((int)(CellNumber.y + 1.0f), (int)(CellNumber.x + 3.0f)));
+	Vector4 ReturnValue = Vector4((float)getSheet->readNum((int)(CellY + 1), (int)CellX), (float)getSheet->readNum((int)(CellY + 1), (int)(CellX + 1)), (float)getSheet->readNum((int)(CellY + 1), (int)(CellX + 2)), (float)getSheet->readNum((int)(CellY + 1), (int)(CellX + 3)));
 
 	return ReturnValue;
-}
-
-int JEONG::ExcelManager::ReadIntData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
-{
-	return ReadIntData(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
-}
-
-string JEONG::ExcelManager::ReadStringData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
-{
-	return ReadStringData(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
-}
-
-wstring JEONG::ExcelManager::ReadWStringData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
-{
-	return ReadWStringData(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
-}
-
-float JEONG::ExcelManager::ReadFloatData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
-{
-	return ReadFloatData(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
-}
-
-double JEONG::ExcelManager::ReadDoubleData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
-{
-	return ReadDoubleData(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
-}
-
-bool JEONG::ExcelManager::ReadBoolData(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
-{
-	return ReadBoolData(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
-}
-
-Vector2 JEONG::ExcelManager::ReadVector2Data(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
-{
-	return ReadVector2Data(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
-}
-
-Vector3 JEONG::ExcelManager::ReadVector3Data(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
-{
-	return ReadVector3Data(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
-}
-
-Vector4 JEONG::ExcelManager::ReadVector4Data(const string & KeyName, size_t CellX, size_t CellY, int SheetIndex)
-{
-	return ReadVector4Data(KeyName, Vector2((float)CellX, (float)CellY), SheetIndex);
 }
 
 JEONG::ExcelData* JEONG::ExcelManager::CreateExcel(const string & KeyName)
@@ -542,10 +492,7 @@ bool JEONG::ExcelManager::LoadExcel(const string& KeyName, const string& PathKey
 	ExcelData* getData = FindExcelData(KeyName);
 
 	if (getData == NULLPTR)
-	{
-		CreateExcel(KeyName);
-		return true;
-	}
+		getData = CreateExcel(KeyName);
 
 	wstring Path = PathManager::Get()->FindPath(PathKey);
 

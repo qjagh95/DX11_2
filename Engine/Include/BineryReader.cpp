@@ -3,7 +3,7 @@
 
 JEONG_USING
 
-BineryRead::BineryRead(const string& FileName)
+JEONG::BineryRead::BineryRead(const string& FileName)
 {
 	wstring Temp;
 	Temp = PathManager::Get()->FindPath(DATA_PATH);
@@ -17,7 +17,7 @@ BineryRead::BineryRead(const string& FileName)
 	m_ReadFile.open(Temp2.c_str(), ios::binary);
 }
 
-BineryRead::BineryRead(const wstring& FileName)
+JEONG::BineryRead::BineryRead(const wstring& FileName)
 {
 	wstring Temp;
 	Temp = PathManager::Get()->FindPath(DATA_PATH);
@@ -29,12 +29,12 @@ BineryRead::BineryRead(const wstring& FileName)
 	m_ReadFile.open(Temp.c_str());
 }
 
-BineryRead::~BineryRead()
+JEONG::BineryRead::~BineryRead()
 {
 	m_ReadFile.close();
 }
 
-bool BineryRead::ReadBool()
+bool JEONG::BineryRead::ReadBool()
 {
 	bool Temp = false;
 
@@ -43,7 +43,7 @@ bool BineryRead::ReadBool()
 	return Temp;
 }
 
-int BineryRead::ReadInt()
+int JEONG::BineryRead::ReadInt()
 {
 	int Temp = -1;
 
@@ -52,7 +52,7 @@ int BineryRead::ReadInt()
 	return Temp;
 }
 
-float BineryRead::ReadFloat()
+float JEONG::BineryRead::ReadFloat()
 {
 	float Temp = -1.0f;
 
@@ -61,7 +61,7 @@ float BineryRead::ReadFloat()
 	return Temp;
 }
 
-double BineryRead::ReadDouble()
+double JEONG::BineryRead::ReadDouble()
 {
 	double Temp = -1.0f;
 
@@ -70,7 +70,7 @@ double BineryRead::ReadDouble()
 	return Temp;
 }
  
-Vector2 BineryRead::ReadVector2()
+Vector2 JEONG::BineryRead::ReadVector2()
 {
 	Vector2 Temp;
 
@@ -80,7 +80,7 @@ Vector2 BineryRead::ReadVector2()
 	return Temp;
 }
 
-Vector3 BineryRead::ReadVector3()
+Vector3 JEONG::BineryRead::ReadVector3()
 {
 	Vector3 Temp;
 
@@ -91,7 +91,7 @@ Vector3 BineryRead::ReadVector3()
 	return Temp;
 }
 
-Vector4 BineryRead::ReadVector4()
+Vector4 JEONG::BineryRead::ReadVector4()
 {
 	Vector4 Temp;
 	
@@ -103,7 +103,7 @@ Vector4 BineryRead::ReadVector4()
 	return Temp;
 }
 
-string BineryRead::ReadString()
+string JEONG::BineryRead::ReadString()
 {
 	string Temp;
 
@@ -112,7 +112,7 @@ string BineryRead::ReadString()
 	return Temp;
 }
 
-wstring BineryRead::ReadWString()
+wstring JEONG::BineryRead::ReadWString()
 {
 	string Temp;
 

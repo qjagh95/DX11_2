@@ -27,16 +27,14 @@ JEONG::Scene::~Scene()
 
 	SAFE_RELEASE(m_MainCamera);
 	SAFE_RELEASE(m_MainCameraObject);
-	//SAFE_RELEASE(m_MainCameraTransform);
 	SAFE_RELEASE(m_UICamera);
 	SAFE_RELEASE(m_UICameraObject);
-	//SAFE_RELEASE(m_UICameraTransform);
 }
 
 bool JEONG::Scene::Init()
 {
-	AddLayer("BackGround", 0);
-	AddLayer("Tile", 1);
+	AddLayer("BackGround", INT_MIN);
+	AddLayer("Tile", 0);
 	AddLayer("Default", 2);
 	AddLayer("UI", INT_MAX);
 
@@ -49,6 +47,8 @@ bool JEONG::Scene::Init()
 	m_UICamera = m_UICameraObject->FindComponentFromType<JEONG::Camera_Com>(CT_CAMERA);
 
 	//CreateCamera함수안에서 카메라 컴포넌트 생성 후 AddComponent
+
+	SortLayer();
 
 	return true;
 }
@@ -144,6 +144,7 @@ int JEONG::Scene::Update(float DeltaTime)
 		(*StartIter1)->Update(DeltaTime);
 		StartIter1++;
 	}
+
 	m_MainCameraObject->Update(DeltaTime);
 	return 0;
 }

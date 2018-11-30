@@ -22,6 +22,8 @@ public:
 	void SetStageTileType(STAGE2D_TILE_TYPE TileType) { m_TileType = TileType; }
 	STAGE2D_TILE_TYPE GetStageTileType() const { return m_TileType; }
 	void SetTileOption(const Vector3& Pos, enum TILE2D_OPTION option);
+	void SetNoMoveMesh(const Vector3& Pos);
+	void SetMoveMesh(const Vector3& Pos);
 
 	int GetTileIndex(const Vector3& Pos);
 	int GetRectTileIndex(const Vector3& Pos);

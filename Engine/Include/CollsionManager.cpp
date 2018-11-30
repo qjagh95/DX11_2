@@ -11,18 +11,18 @@
 #include "Component/ColliderPoint_Com.h"
 
 JEONG_USING
-SINGLETON_VAR_INIT(CollsionManager)
+SINGLETON_VAR_INIT(JEONG::CollsionManager)
 
-CollsionManager::CollsionManager()
+JEONG::CollsionManager::CollsionManager()
 {
 }
 
-CollsionManager::~CollsionManager()
+JEONG::CollsionManager::~CollsionManager()
 {
 	Safe_Delete_Map(m_GroupMap);
 }
 
-bool CollsionManager::Init()
+bool JEONG::CollsionManager::Init()
 {
 	CreateGroup("Default", Vector3(0.0f, 0.0f, 0.0f), Vector3(5000.f, 5000.f, 0.f), 10, 10, 1, CGT_2D);
 	CreateGroup("BackGround", Vector3(0.0f, 0.0f, 0.0f), Vector3(5000.f, 5000.f, 0.f), 10, 10, 1, CGT_2D);
@@ -31,7 +31,7 @@ bool CollsionManager::Init()
 	return true;
 }
 
-bool CollsionManager::CreateGroup(const string & KeyName, const Vector3 & Min, const Vector3 & Max, int SpaceCountX, int SpaceCountY, int SpaceCountZ, COLLSION_GROUP_TYPE eType)
+bool JEONG::CollsionManager::CreateGroup(const string & KeyName, const Vector3 & Min, const Vector3 & Max, int SpaceCountX, int SpaceCountY, int SpaceCountZ, COLLSION_GROUP_TYPE eType)
 {
 	CollsionGroup* newGroup = FindGroup(KeyName);
 
@@ -58,7 +58,7 @@ bool CollsionManager::CreateGroup(const string & KeyName, const Vector3 & Min, c
 	return true;
 }
 
-void CollsionManager::ChangeGroupType(const string& KeyName, COLLSION_GROUP_TYPE eType)
+void JEONG::CollsionManager::ChangeGroupType(const string& KeyName, COLLSION_GROUP_TYPE eType)
 {
 	CollsionGroup* getGroup = FindGroup(KeyName);
 
@@ -68,14 +68,14 @@ void CollsionManager::ChangeGroupType(const string& KeyName, COLLSION_GROUP_TYPE
 	getGroup->Type = eType;
 }
 
-void CollsionManager::AddCollsion(GameObject * object)
+void JEONG::CollsionManager::AddCollsion(GameObject * object)
 {
 	//컬라이더(충돌체)컴포넌트가 없다면
 	if (object->CheckComponentType(CT_COLLIDER) == false)
 		return;
 
 	Scene* CurScene = SceneManager::Get()->GetCurScene();
-	Transform_Com* getTransform = CurScene->GetMainCameraTransform();
+	JEONG::Transform_Com* getTransform = CurScene->GetMainCameraTransform();
 	Vector3 CameraPos = getTransform->GetWorldPos();
 
 	SAFE_RELEASE(CurScene);
@@ -182,7 +182,7 @@ void CollsionManager::AddCollsion(GameObject * object)
 	}//for(ColliderList)
 }
 
-void CollsionManager::Collsion(float DeltaTime)
+void JEONG::CollsionManager::Collsion(float DeltaTime)
 {
 	//마우스와 오브젝트의 충돌처리
 	GameObject* MouseObject = KeyInput::Get()->GetMouseObject();
@@ -412,8 +412,8 @@ void CollsionManager::Collsion(float DeltaTime)
 			{
 				for (int k = j + 1; k < getSection->Size; k++)
 				{
-					GameObject* Src = getSection->ColliderList[j]->GetGameObject();
-					GameObject* Dest = getSection->ColliderList[k]->GetGameObject();
+					JEONG::GameObject* Src = getSection->ColliderList[j]->GetGameObject();
+					JEONG::GameObject* Dest = getSection->ColliderList[k]->GetGameObject();
 
 					//만약 나와 나의 충돌체가 충돌한다면..? 말도안됨
 					if (Src == Dest)
@@ -469,7 +469,7 @@ void CollsionManager::Collsion(float DeltaTime)
 	}//for(GroupCount)
 }
 
-CollsionManager::CollsionGroup * CollsionManager::FindGroup(const string & KeyName)
+JEONG::CollsionManager::CollsionGroup * CollsionManager::FindGroup(const string & KeyName)
 {
 	unordered_map<string, CollsionGroup*>::iterator FindIter = m_GroupMap.find(KeyName);
 

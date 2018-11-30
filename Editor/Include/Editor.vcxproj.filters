@@ -27,7 +27,7 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="02. Control\Editor">
+    <Filter Include="02. Control\EditorApp%28Window%29">
       <UniqueIdentifier>{59911a50-2ff7-4587-9805-d7c42c893952}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -60,7 +60,7 @@
       <Filter>02. Control\FormView</Filter>
     </ClInclude>
     <ClInclude Include="Editor.h">
-      <Filter>02. Control\Editor</Filter>
+      <Filter>02. Control\EditorApp%28Window%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -83,7 +83,7 @@
       <Filter>02. Control\FormView</Filter>
     </ClCompile>
     <ClCompile Include="Editor.cpp">
-      <Filter>02. Control\Editor</Filter>
+      <Filter>02. Control\EditorApp%28Window%29</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -27,7 +27,7 @@ PS_OUTPUT_SINGLE Standard_Color_PS(VS_OUTPUT_COLOR input)
 {
     PS_OUTPUT_SINGLE output = (PS_OUTPUT_SINGLE)0;
 
-    output.vTarget0 = input.vColor;
+    output.vTarget0 = g_MaterialDiffuse;
 
     return output;
 }

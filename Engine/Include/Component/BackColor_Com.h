@@ -3,6 +3,7 @@
 
 JEONG_BEGIN
 
+class Material_Com;
 class JEONG_DLL BackColor_Com : public UIBase_Com
 {
 public:
@@ -16,10 +17,19 @@ public:
 	BackColor_Com* Clone() override;
 	void AfterClone() override;
 
+	void SetBackColor(const Vector4& Color) { m_Color = Color / 255.0f; }
+
+private:
+	Material_Com* m_Material;
+	Vector4 m_Color;
+
 protected:
 	BackColor_Com();
 	BackColor_Com(const BackColor_Com& CopyData);
 	~BackColor_Com();
+
+public:
+	friend class GameObject;
 };
 
 JEONG_END
