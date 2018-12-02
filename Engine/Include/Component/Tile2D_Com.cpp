@@ -28,8 +28,10 @@ Tile2D_Com::~Tile2D_Com()
 bool Tile2D_Com::Init()
 {
 	m_TileOption = T2D_NORMAL;
-	m_Mesh = ResourceManager::Get()->FindMesh("IsoTileNomal");
-	m_Shader = ShaderManager::Get()->FindShader(TILE_SHADER);
+	m_Mesh = ResourceManager::Get()->FindMesh("ColliderRect");
+	m_Shader = ShaderManager::Get()->FindShader(COLLIDER_SHADER);
+
+	m_Transform->SetWorldPivot(0.5f, 0.5f, 0.0f);
 
 	return true;
 }
@@ -109,6 +111,22 @@ void Tile2D_Com::AfterClone()
 {
 }
 
+void Tile2D_Com::Save(BineryWrite & Writer)
+{
+	Component_Base::Save(Writer);
+
+	Writer.WriteData((int)m_TileType);
+	Writer.WriteData((int)m_TileOption);
+}
+
+void Tile2D_Com::Load(BineryRead & Reader)
+{
+	Component_Base::Load(Reader);
+
+	Reader.ReadData((int&)m_TileType);
+	Reader.ReadData((int&)m_TileOption);
+}
+
 void Tile2D_Com::SetTileType(STAGE2D_TILE_TYPE type)
 {
 	m_TileType = type;
@@ -128,4 +146,11 @@ void Tile2D_Com::SetTileType(STAGE2D_TILE_TYPE type)
 
 	m_Shader = ShaderManager::Get()->FindShader(TILE_SHADER);
 	m_Layout = ShaderManager::Get()->FindInputLayOut(POS_LAYOUT);
+}
+
+void Tile2D_Com::SetMesh(const string & KeyName)
+{
+	SAFE_RELEASE(m_Mesh);
+
+	m_Mesh = ResourceManager::Get()->FindMesh(KeyName);
 }

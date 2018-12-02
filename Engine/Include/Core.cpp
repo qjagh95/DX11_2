@@ -7,9 +7,11 @@
 
 #include "Render\Shader.h"
 
+
 JEONG_USING
 SINGLETON_VAR_INIT(Core)
 bool Core::m_isLoop = true;
+WPARAM Core::m_wParam;
 
 Core::Core()
 {
@@ -223,6 +225,8 @@ void Core::CreateWnd(const TCHAR * TitleName, const TCHAR * ClassName)
 
 LRESULT Core::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	m_wParam = wParam; 
+
 	switch (message)
 	{
 		case WM_DESTROY:

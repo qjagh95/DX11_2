@@ -11,6 +11,7 @@ public:
 
 private:
 	BackColor_Com* m_BackColorCom;
+	Vector3 m_CameraScale;
 
 public:
 	EditScene();

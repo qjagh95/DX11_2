@@ -39,6 +39,7 @@ private:
 	float m_ViewAngle;
 	float m_Near;
 	float m_Far;
+	Vector3 m_Zoom;
 
 	Transform_Com* m_Target;
 

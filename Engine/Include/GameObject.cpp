@@ -569,6 +569,14 @@ void JEONG::GameObject::AddStaticObject()
 	StaticManager::Get()->AddStaticObject(this);
 }
 
+void GameObject::Save(BineryWrite & Writer)
+{
+}
+
+void GameObject::Load(BineryRead & Reader)
+{
+}
+
 const list<JEONG::Component_Base*>* JEONG::GameObject::FindComponentFromTag(const string& TagName)
 {
 	Safe_Release_VecList(m_FindComList);

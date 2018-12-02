@@ -15,10 +15,20 @@ public:
 	string ReadString();
 	wstring ReadWString();
 
+	void ReadData(bool& Data);
+	void ReadData(int& Data);
+	void ReadData(float& Data);
+	void ReadData(double& Data);
+	void ReadData(Vector2& Data);
+	void ReadData(Vector3& Data);
+	void ReadData(Vector4& Data);
+	void ReadData(string& Data);
+	void ReadData(wstring& Data);
+
 private:
 	ifstream m_ReadFile;
 
-private:
+public:
 	BineryRead(const string& FileName);
 	BineryRead(const wstring& FileName);
 	~BineryRead();

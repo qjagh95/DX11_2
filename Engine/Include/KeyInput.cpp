@@ -161,6 +161,11 @@ void JEONG::KeyInput::RenderMouse(float DeltaTime)
 	m_MouseObject->Render(DeltaTime);
 }
 
+Vector3 KeyInput::GetMouseWorldPos() const
+{
+	return Vector3(m_MouseWorldPos.x, m_MouseWorldPos.y, 0.0f);
+}
+
 void JEONG::KeyInput::ChangeMouseScene(JEONG::Scene * pScene)
 {
 	m_MouseObject->SetScene(pScene);

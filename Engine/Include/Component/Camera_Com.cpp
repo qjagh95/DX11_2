@@ -2,6 +2,7 @@
 #include "Camera_Com.h"
 #include "../GameObject.h"
 #include "Transform_Com.h"
+
 JEONG_USING
 
 JEONG::Camera_Com::Camera_Com()
@@ -9,6 +10,7 @@ JEONG::Camera_Com::Camera_Com()
 	m_ComType = CT_CAMERA;
 	m_CameraType = CT_PERSPECTIVE;
 	m_Target = NULLPTR;
+	m_Zoom = Vector3(1.0f, 1.0f, 1.0f);
 }
 
 JEONG::Camera_Com::~Camera_Com()
@@ -26,7 +28,6 @@ JEONG::Camera_Com::Camera_Com(const Camera_Com & camera)
 
 bool JEONG::Camera_Com::Init()
 {
-
 	return true;
 }
 
@@ -129,7 +130,7 @@ void JEONG::Camera_Com::SetCameraType(CAMERA_TYPE eType)
 void JEONG::Camera_Com::SetCameraInfo(CAMERA_TYPE eType, float Width, float Height, float ViewAngle, float Near, float Far)
 {
 	m_Width = Width;
-	m_Height= Height;
+	m_Height = Height;
 	m_Near = Near;
 	m_Far = Far;
 	m_ViewAngle = ViewAngle;

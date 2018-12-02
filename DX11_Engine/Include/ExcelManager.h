@@ -45,6 +45,7 @@ public:
 	Vector2 ReadVector2Data(const string& KeyName, size_t CellX, size_t CellY, int SheetIndex = 0);
 	Vector3 ReadVector3Data(const string& KeyName, size_t CellX, size_t CellY, int SheetIndex = 0);
 	Vector4 ReadVector4Data(const string& KeyName, size_t CellX, size_t CellY, int SheetIndex = 0);
+
 	void AddSheet(const string& KeyName, const string& SheetName);
 
 private:

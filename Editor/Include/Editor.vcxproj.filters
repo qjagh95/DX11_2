@@ -53,9 +53,6 @@
     <ClInclude Include="EditScene.h">
       <Filter>01. EditScene</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>03. 노쓸모</Filter>
-    </ClInclude>
     <ClInclude Include="EditorForm.h">
       <Filter>02. Control\FormView</Filter>
     </ClInclude>

@@ -59,11 +59,15 @@ public:
 	GameObject* GetStageObject() const { return m_StageObject; }
 	Stage2D_Com* GetStageComponent() const { return m_StageCom; }
 	Transform_Com* GetStageTransform() const { return m_StageTransform; }
+
 	void AddWorkText(const wstring& Text, int Index = 0);
 	void AddWorkText(const string& Text, int Index = 0);
 	void AddWorkText(const CString& Text, int Index = 0);
 	void AddWorkText(wchar_t* Text, int Index = 0);
 	void AddWorkText(char* Text, int Index = 0);
+
+	void SaveStage(CString FileName);
+	void LoadStage(CString FileName);
 
 	CComboBox m_TileTypeBox;
 	CComboBox m_TileOptionBox;
@@ -77,7 +81,8 @@ public:
 	int m_TextCount;
 	static int m_MaxStrLenth;
 
-	int GetTileOption() const { return m_TileTypeBox.GetCurSel(); }
+	STAGE2D_TILE_TYPE GetTileType() const;
+	TILE2D_OPTION GetTileOption() const;
 
 	virtual void OnInitialUpdate();
 	afx_msg void OnEnChangeScalex();
@@ -106,6 +111,12 @@ public:
 	afx_msg void OnEnChangeTilesizex();
 	afx_msg void OnEnChangeTilesizey();
 	afx_msg void OnEnChangeTagname();
+	afx_msg void OnBnClickedTileclear();
+
+	BOOL m_isLine;
+	afx_msg void OnBnClickedLineon();
+	afx_msg void OnBnClickedTileload();
+	afx_msg void OnBnClickedTilesave();
 };
 
 

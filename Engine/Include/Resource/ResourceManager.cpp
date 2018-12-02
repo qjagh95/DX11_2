@@ -109,7 +109,7 @@ bool JEONG::ResourceManager::Init()
 		Vector3(0.0f, 0.0f, 0.0f),
 		Vector3(1.0f, 1.0f, 0.0f),
 		Vector3(1.0f, 0.0f, 0.0f),
-		Vector3(0.0f, 0.0f, 0.0f),
+		Vector3(0.0f, 1.0f, 0.0f),
 	};
 
 	CreateMesh("TileNoMove", COLLIDER_SHADER, POS_LAYOUT, TileNoMove, 9, sizeof(Vector3), D3D11_USAGE_DEFAULT, D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);

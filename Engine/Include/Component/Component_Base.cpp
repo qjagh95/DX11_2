@@ -51,6 +51,18 @@ void JEONG::Component_Base::Render(float DeltaTime)
 {
 }
 
+void JEONG::Component_Base::Save(BineryWrite & Writer)
+{
+	Writer.WriteData((int)m_ComType);
+	Writer.WriteData(m_TagName);
+}
+
+void JEONG::Component_Base::Load(BineryRead & Reader)
+{
+	m_ComType = (COMPONENT_TYPE)Reader.ReadInt();
+	m_TagName = Reader.ReadString();
+}
+
 const list<JEONG::Component_Base*>* JEONG::Component_Base::FindComponentFromTag(const string& TagName)
 {
 	return m_Object->FindComponentFromTag(TagName);

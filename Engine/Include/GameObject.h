@@ -114,6 +114,9 @@ public:
 	void AddStaticObject();
 	bool EmptyComponent() { return m_ComponentList.empty(); }
 
+	void Save(BineryWrite& Writer);
+	void Load(BineryRead& Reader);
+
 private:
 	list<Component_Base*> m_ComponentList;
 	Transform_Com* m_Transform;

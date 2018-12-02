@@ -110,7 +110,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions);EDITOR;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions);EDITOR;;JEONG_EDITOR;JEONG_EDITOR</PreprocessorDefinitions>
       <PrecompiledHeaderFile>EditorHeader.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -137,7 +137,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions);EDITOR;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions);EDITOR;;JEONG_EDITOR;JEONG_EDITOR</PreprocessorDefinitions>
       <PrecompiledHeaderFile>EditorHeader.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -163,10 +163,10 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions);EDITOR;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions);EDITOR;;JEONG_EDITOR;JEONG_EDITOR</PreprocessorDefinitions>
       <PrecompiledHeaderFile>EditorHeader.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -194,10 +194,10 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions);EDITOR;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions);EDITOR;;JEONG_EDITOR;JEONG_EDITOR</PreprocessorDefinitions>
       <PrecompiledHeaderFile>EditorHeader.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -230,7 +230,6 @@
     <ClInclude Include="EditorView.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="EditorHeader.h" />
-    <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>

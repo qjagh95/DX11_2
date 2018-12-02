@@ -2,6 +2,7 @@
 #include "EditScene.h"
 #include "MainFrame.h"
 #include "EditorForm.h"
+#include <Component/Tile2D_Com.h>
 
 EditScene::EditScene()
 {
@@ -26,6 +27,12 @@ bool EditScene::Init()
 	GameObject* BackObject = GameObject::CreateObject("BackObject", BackLayer);
 	m_BackColorCom = BackObject->AddComponent<BackColor_Com>("BackColor");
 
+	KeyInput::Get()->AddKey("TileOption", VK_TAB);
+	KeyInput::Get()->AddKey("MouseWhill", WM_MOUSEWHEEL);
+	KeyInput::Get()->AddKey("TileOption", VK_TAB);
+
+	m_CameraScale = Vector3::One;
+
 	SAFE_RELEASE(BackObject);
 
 	SAFE_RELEASE(BackLayer);
@@ -49,15 +56,26 @@ int EditScene::Update(float DeltaTime)
 	{
 		if (KeyInput::Get()->KeyPress("LButton"))
 		{
-			// 마우스의 월드위치를 얻어온다.
-			Vector2	MouseWorld = KeyInput::Get()->GetMouseWorldPos();
+			Vector3	MouseWorld = KeyInput::Get()->GetMouseWorldPos();
 
-			TileStage->SetTileOption(Vector3(MouseWorld.x, MouseWorld.y, 0.0f), (TILE2D_OPTION)editorForm->GetTileOption());
-
-			if (editorForm->GetTileOption() == STT_TILE)
-				TileStage->SetMoveMesh(Vector3(MouseWorld.x, MouseWorld.y, 0.0f));
+			if (editorForm->GetTileOption() == T2D_NORMAL)
+			{
+				TileStage->SetMoveMesh(MouseWorld);
+				TileStage->SetTileOption(MouseWorld, T2D_NORMAL);
+			}
 			else
-				TileStage->SetNoMoveMesh(Vector3(MouseWorld.x, MouseWorld.y, 0.0f));
+			{
+				TileStage->SetNoMoveMesh(MouseWorld);
+				TileStage->SetTileOption(MouseWorld, T2D_NOMOVE);
+			}
+		}
+
+		if (KeyInput::Get()->KeyDown("TileOption"))
+		{
+			if (editorForm->m_TileOptionBox.GetCurSel() == 0)
+				editorForm->m_TileOptionBox.SetCurSel(1);
+			else 
+				editorForm->m_TileOptionBox.SetCurSel(0);
 		}
 	}
 

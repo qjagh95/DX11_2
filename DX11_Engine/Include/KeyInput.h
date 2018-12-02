@@ -24,7 +24,7 @@ public:
 	bool KeyUp(const string& Name);
 
 	Vector2 GetMouseScreenPos() const { return m_MouseScreenPos; }
-	Vector2 GetMouseWorldPos() const { return m_MouseWorldPos; }
+	Vector3 GetMouseWorldPos() const;
 	Vector2 GetMouseGap() const { return m_MouseGap; }
 	void ChangeMouseScene(Scene* pScene);
 	void UpdateMousePos();

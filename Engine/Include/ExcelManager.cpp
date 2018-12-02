@@ -25,14 +25,14 @@ bool JEONG::ExcelManager::Init()
 	/*
 	for (size_t i = 0; i < 10; i++)
 	{
-		WriteIntData("AnimationData", Vector2(0.0f, (float)i), (int)i);
+		WriteData("AnimationData", Vector2(0.0f, (float)i), (int)i);
 	}
 
 	for (size_t i = 0; i < 10; i++)
 	{
-		WriteVector2Data("Temp", Vector2(0.0f, i + 1), Vector2(i * 2, i * 5));
-		WriteVector3Data("Temp", Vector2(0.0f, i + 15), Vector3(i * 2, i * 5, i * 10));
-		WriteVector4Data("Temp", Vector2(0.0f, i + 35), Vector4(i * 2, i * 5, i * 20, i * 30));
+		WriteData("Temp", Vector2(0.0f, i + 1), Vector2(i * 2, i * 5));
+		WriteData("Temp", Vector2(0.0f, i + 15), Vector3(i * 2, i * 5, i * 10));
+		WriteData("Temp", Vector2(0.0f, i + 35), Vector4(i * 2, i * 5, i * 20, i * 30));
 	}
 
 	vector<Vector2> a;

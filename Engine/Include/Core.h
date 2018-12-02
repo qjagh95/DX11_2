@@ -14,6 +14,7 @@ public:
 
 	HWND GetHwnd() const { return m_hWnd; }
 	HINSTANCE GetHinstance() const { return m_hIstance; }
+	WPARAM GetWParem() const { return m_wParam; }
 
 private:
 	int Input(float DeltaTime);
@@ -34,6 +35,7 @@ private:
 	HWND m_hWnd;
 	float ClearColor[4];
 	GAME_MODE m_GameMode;
+	static WPARAM m_wParam;
 
 public:
 	CLASS_IN_SINGLE(Core);

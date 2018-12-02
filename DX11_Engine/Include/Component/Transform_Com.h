@@ -104,10 +104,11 @@ public:
 	Matrix GetParentRot() const;
 	Matrix GetParentScale() const;
 
+	//부모꺼
 	Matrix GetScaleDelta() const { return m_DeltaScale; }
 	Matrix GetPosDelta() const { return m_DeltaPos; }
 	Matrix GetRotDelta() const { return m_DeltaRot; }
-
+	
 private:
 	//행렬연산은 연산자체가 무겁기 때문에 연산을 해줄때만 해주겠다.
 	bool m_isStatic;	///가만히 있는놈은 연산할 필요가 없다
@@ -133,12 +134,6 @@ private:
 	Vector3 m_WorldRotation;
 	Vector3 m_WorldPos;
 	Vector3 m_WorldAxis[AXIS_MAX];
-
-	//Child구조에서 자식 Transform에 대하여
-	//상대적인 정보를 잡아주기 위함.
-	Vector3	m_WorldRelativeScale;
-	Vector3	m_WorldRelativeRot;
-	Vector3	m_WorldRelativePos;
 
 	Vector3 m_Pivot;
 	Vector3 m_DeltaMove;

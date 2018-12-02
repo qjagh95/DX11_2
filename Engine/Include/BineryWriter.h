@@ -3,10 +3,10 @@ JEONG_BEGIN
 class JEONG_DLL BineryWrite
 {
 public:
-	void WriteData(bool Data);
-	void WriteData(int Data);
-	void WriteData(float Data);
-	void WriteData(double Data);
+	void WriteData(const bool& Data);
+	void WriteData(const int& Data);
+	void WriteData(const float& Data);
+	void WriteData(const double& Data);
 	void WriteData(const Vector2& Data);
 	void WriteData(const Vector3& Data);
 	void WriteData(const Vector4& Data);
@@ -18,9 +18,9 @@ public:
 private:
 	ofstream m_WriteFile;
 
-private:
-	BineryWrite(string FileName);
-	BineryWrite(wstring FileName);
+public:
+	BineryWrite(const string& FileName);
+	BineryWrite(const wstring& FileName);
 	~BineryWrite();
 };
 

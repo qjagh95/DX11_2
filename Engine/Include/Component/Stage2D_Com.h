@@ -18,12 +18,20 @@ public:
 	void Render(float DeltaTime) override;
 	Stage2D_Com* Clone() override;
 	void AfterClone() override;
+	void Save(BineryWrite& Writer) override;
+	void Load(BineryRead& Reader) override;
 
 	void SetStageTileType(STAGE2D_TILE_TYPE TileType) { m_TileType = TileType; }
 	STAGE2D_TILE_TYPE GetStageTileType() const { return m_TileType; }
-	void SetTileOption(const Vector3& Pos, enum TILE2D_OPTION option);
+	void SetTileOption(const Vector3& Pos, TILE2D_OPTION option);
 	void SetNoMoveMesh(const Vector3& Pos);
 	void SetMoveMesh(const Vector3& Pos);
+
+	Tile2D_Com* GetTile2D(const Vector3& Pos);
+	Tile2D_Com* GetTile2D(float X, float Y, float Z);
+	Vector3 GetTileScale() const { return m_TileScale; }
+	int GetTileXCount() const { return m_TileCountX; }
+	int GetTileYCount() const { return m_TileCountY; }
 
 	int GetTileIndex(const Vector3& Pos);
 	int GetRectTileIndex(const Vector3& Pos);

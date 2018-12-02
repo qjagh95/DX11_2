@@ -84,7 +84,8 @@ BOOL EditorApp::InitInstance()
 	m_pMainWnd->ShowWindow(SW_SHOW);
 	m_pMainWnd->UpdateWindow();
 
-	
+	AllocConsole();
+
 	auto abc = ((MainFrame*)m_pMainWnd)->GetActiveView();
 
 	Core::Get()->Init(m_hInstance, abc->m_hWnd, 1280, 720);
@@ -98,7 +99,6 @@ BOOL EditorApp::InitInstance()
 
 	SAFE_RELEASE(freeCamera);
 	SAFE_RELEASE(CurScene);
-
 
 	return TRUE;
 }

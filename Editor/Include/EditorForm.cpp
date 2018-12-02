@@ -4,6 +4,8 @@
 #include "Editor.h"
 #include "EditorForm.h"
 #include "afxwin.h"
+#include <BineryReader.h>
+#include <BineryWriter.h>
 
 //로그를 텍스트파일로 시간입력해서. (엑셀)
 //Control Z 되돌리기..?
@@ -36,6 +38,7 @@ EditorForm::EditorForm()
 	, m_BackColorB(0)
 	, m_BackColorA(0)
 	, m_TextCount(0)
+	, m_isLine(TRUE)
 {
 	m_TileCountX = 0;
 	m_TileCountY = 0;
@@ -84,14 +87,14 @@ void EditorForm::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_COLORG, m_BackColorG);
 	DDX_Text(pDX, IDC_COLORB, m_BackColorB);
 	DDX_Text(pDX, IDC_COLORA, m_BackColorA);
-
+	DDX_Check(pDX, IDC_LINEON, m_isLine);
 
 	if (m_TileTypeBox.GetCurSel() == 0)
 	{
 		GetDlgItem(IDC_STARTPOSX)->EnableWindow(true);
 		GetDlgItem(IDC_STARTPOSY)->EnableWindow(true);
 	}
-	else if(m_TileTypeBox.GetCurSel() == 1)
+	else if (m_TileTypeBox.GetCurSel() == 1)
 	{
 		GetDlgItem(IDC_STARTPOSX)->EnableWindow(false);
 		GetDlgItem(IDC_STARTPOSY)->EnableWindow(false);
@@ -101,6 +104,11 @@ void EditorForm::DoDataExchange(CDataExchange* pDX)
 		GetDlgItem(IDC_STARTPOSX)->EnableWindow(true);
 		GetDlgItem(IDC_STARTPOSY)->EnableWindow(true);
 	}
+
+	if (m_StageCom == NULLPTR || m_StageObject == NULLPTR)
+		GetDlgItem(IDC_LINEON)->EnableWindow(false);
+	else
+		GetDlgItem(IDC_LINEON)->EnableWindow(true);
 
 }
 
@@ -128,6 +136,10 @@ BEGIN_MESSAGE_MAP(EditorForm, CFormView)
 	ON_EN_CHANGE(IDC_TILESIZEX, &EditorForm::OnEnChangeTilesizex)
 	ON_EN_CHANGE(IDC_TILESIZEY, &EditorForm::OnEnChangeTilesizey)
 	ON_EN_CHANGE(IDC_TAGNAME, &EditorForm::OnEnChangeTagname)
+	ON_BN_CLICKED(IDC_TILECLEAR, &EditorForm::OnBnClickedTileclear)
+	ON_BN_CLICKED(IDC_LINEON, &EditorForm::OnBnClickedLineon)
+	ON_BN_CLICKED(IDC_TILELOAD, &EditorForm::OnBnClickedTileload)
+	ON_BN_CLICKED(IDC_TILESAVE, &EditorForm::OnBnClickedTilesave)
 END_MESSAGE_MAP()
 
 // EditorForm 진단입니다.
@@ -240,12 +252,73 @@ void EditorForm::AddWorkText(char * Text, int Index)
 	AddWorkText(Temp, Index);
 }
 
+void EditorForm::SaveStage(CString FileName)
+{
+	string Temp = CW2A(FileName);
+	
+	BineryWrite WriteFile(Temp);
+	m_StageCom->Save(WriteFile);
+}
+
+void EditorForm::LoadStage(CString FileName)
+{
+	string File = CT2CA(FileName);
+
+	BineryRead ReadFile(File);
+
+	Scene* getScene = SceneManager::Get()->GetCurScene();
+	Layer* getStageLayer = getScene->FindLayer("Tile");
+
+	m_StageObject = GameObject::CreateObject("StageObject", getStageLayer);
+
+	m_StageCom = m_StageObject->AddComponent<Stage2D_Com>("Stage");
+	m_StageCom->Load(ReadFile);
+	m_StageTransform = m_StageObject->GetTransform();
+
+	SAFE_RELEASE(getStageLayer);
+	SAFE_RELEASE(getScene);
+
+	m_TileTypeBox.SetCurSel(m_StageCom->GetStageTileType());
+	m_TileCountX = (int)m_StageCom->GetTileXCount();
+	m_TileCountY = (int)m_StageCom->GetTileYCount();
+	m_TileSizeX = (int)m_StageCom->GetTileScale().x;
+	m_TileSizeY = (int)m_StageCom->GetTileScale().y;
+
+	UpdateData(FALSE);
+}
+
 int EditorForm::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFormView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
 	return 0;
+}
+
+TILE2D_OPTION EditorForm::GetTileOption() const
+{
+	CString getString;
+	m_TileOptionBox.GetWindowTextW(getString);
+
+	if (getString == "이동불가")
+		return T2D_NOMOVE;
+	else if (getString == "이동가능")
+		return T2D_NORMAL;
+	else
+		return T2D_NORMAL;
+}
+
+STAGE2D_TILE_TYPE EditorForm::GetTileType() const
+{
+	CString getString;
+	m_TileTypeBox.GetWindowTextW(getString);
+
+	if (getString == "RectTile")
+		return STT_TILE;
+	else if (getString == "IsoMatric")
+		return STT_ISO;
+	else
+		return STT_NONE;
 }
 
 void EditorForm::OnInitialUpdate()
@@ -289,7 +362,7 @@ void EditorForm::OnEnChangeScalez()
 		m_ScaleZ = 0;
 
 		wchar_t Buffer[255];
-		wsprintf(Buffer, L"2D 모드일땐 ScaleZ값 변경불가");
+		wsprintf(Buffer, L"Error! 2D 모드일땐 ScaleZ값 변경불가");
 		AddWorkText(Buffer);
 
 		UpdateData(FALSE);
@@ -367,7 +440,7 @@ void EditorForm::OnEnChangePositionz()
 		m_PosZ = 0;
 
 		wchar_t Buffer[255];
-		wsprintf(Buffer, L"2D 모드일땐 PosZ값 변경불가");
+		wsprintf(Buffer, L"Error! 2D 모드일땐 PosZ값 변경불가");
 		AddWorkText(Buffer);
 
 		UpdateData(FALSE);
@@ -438,7 +511,7 @@ void EditorForm::OnBnClickedTilecreatebutton()
 	if (m_TileCountX == 0 || m_TileCountY == 0 || m_TileSizeX == 0 || m_TileSizeY == 0)
 	{
 		wchar_t Buffer[255];
-		wsprintf(Buffer, L" 타일갯수와 사이즈를 정확히 입력하세요");
+		wsprintf(Buffer, L"Error! 타일갯수와 사이즈를 정확히 입력하세요");
 
 		AddWorkText(Buffer);
 		UpdateData(TRUE);
@@ -462,10 +535,18 @@ void EditorForm::OnBnClickedTilecreatebutton()
 
 	m_StageCom = m_StageObject->AddComponent<Stage2D_Com>("Stage");
 
-	int	TileType = m_TileTypeBox.GetCurSel();
 	Vector3	TileScale = Vector3((float)m_TileSizeX, (float)m_TileSizeY, 1.0f);
 
-	m_StageCom->CreateTileMap(m_TileCountX, m_TileCountY, Vector3((float)m_StartPosX, (float)m_StartPosY, 0.0f), TileScale, (STAGE2D_TILE_TYPE)TileType);
+	switch (GetTileType())
+	{
+		case STT_TILE:
+			m_StageCom->CreateTileMap(m_TileCountX, m_TileCountY, Vector3((float)m_StartPosX, (float)m_StartPosY, 0.0f), TileScale, STT_TILE);
+			break;
+		case STT_ISO:
+			m_StageCom->CreateTileMap(m_TileCountX, m_TileCountY, Vector3((float)m_StartPosX, (float)m_StartPosY, 0.0f), TileScale, STT_ISO);
+			break;
+	}
+
 	m_StageTransform = m_StageObject->GetTransform();
 
 	SAFE_RELEASE(getScene);
@@ -704,6 +785,144 @@ void EditorForm::OnEnChangeTagname()
 	Buffer += m_TagName;
 	Buffer += " 설정";
 
+	AddWorkText(Buffer);
+
+	UpdateData(FALSE);
+}
+
+
+void EditorForm::OnBnClickedTileclear()
+{
+	UpdateData(TRUE);
+
+	wchar_t Buffer[255];
+
+	if (m_StageObject == NULLPTR || m_StageCom == NULLPTR)
+	{
+		m_isLine = TRUE;
+
+		wsprintf(Buffer, L"Error! 타일이 만들어지지 않았습니다.");
+		AddWorkText(Buffer);
+
+		UpdateData(FALSE);
+		return;
+	}
+
+	m_StageTransform->SetIsActive(false);
+	m_StageCom->SetIsActive(false);
+	m_StageObject->SetIsActive(false);
+	
+	SAFE_RELEASE(m_StageObject);
+	SAFE_RELEASE(m_StageCom);
+	SAFE_RELEASE(m_StageTransform);
+
+
+	wsprintf(Buffer, L"타일 전체 갯수 : %d개 제거", m_TileCountX * m_TileCountY);
+	AddWorkText(Buffer);
+
+	UpdateData(FALSE);
+}
+
+void EditorForm::OnBnClickedLineon()
+{
+	UpdateData(TRUE);
+
+	wchar_t Buffer[255];
+
+	if (m_StageObject == NULLPTR || m_StageCom == NULLPTR)
+	{
+		m_isLine = TRUE;
+
+		wsprintf(Buffer, L"Error! 타일을 만들어 주세요");
+		AddWorkText(Buffer);
+
+		UpdateData(FALSE);
+		return;
+	}
+
+	if (m_isLine == TRUE)
+	{
+		m_StageCom->SetLineOn(m_isLine);
+
+		wsprintf(Buffer, L"Greed On");
+		AddWorkText(Buffer);
+	}
+	else
+	{
+		m_StageCom->SetLineOn(m_isLine);
+
+		wsprintf(Buffer, L"Greed Off");
+		AddWorkText(Buffer);
+	}
+
+	UpdateData(FALSE);
+}
+
+
+void EditorForm::OnBnClickedTileload()
+{
+	UpdateData(TRUE);
+
+	wchar_t Buffer[255];
+
+	if (m_StageObject != NULLPTR || m_StageCom != NULLPTR)
+	{
+		m_StageTransform->SetIsActive(false);
+		m_StageCom->SetIsActive(false);
+		m_StageObject->SetIsActive(false);
+
+		SAFE_RELEASE(m_StageObject);
+		SAFE_RELEASE(m_StageCom);
+		SAFE_RELEASE(m_StageTransform);
+
+		wsprintf(Buffer, L"타일 전체 갯수 : %d개 제거", m_TileCountX * m_TileCountY);
+		AddWorkText(Buffer);
+	}
+
+	//필터 문법.
+	const TCHAR* Filter = TEXT("StageFile(*.tInfo)|*.tInfo|모든파일(*.*)|*.*||");
+	//파일 다이얼로그 띄우기OFN_HIDEREADONLY
+	CFileDialog	FileDlg(FALSE, TEXT(".tInfo"), NULLPTR, OFN_HIDEREADONLY, Filter);
+
+	if (FileDlg.DoModal() == IDOK)
+	{
+		CString	fileName = FileDlg.GetFileName();
+		LoadStage(fileName);
+	}
+
+	wsprintf(Buffer, L"타일정보 로드");
+	AddWorkText(Buffer);
+
+	UpdateData(FALSE);
+}
+
+void EditorForm::OnBnClickedTilesave()
+{
+	UpdateData(TRUE);
+
+	wchar_t Buffer[255];
+
+	if (m_StageObject == NULLPTR || m_StageCom == NULLPTR)
+	{
+		wsprintf(Buffer, L"Error! 타일이 만들어지지 않았습니다.", m_TileCountX * m_TileCountY);
+		AddWorkText(Buffer);
+
+		UpdateData(FALSE);
+		return;
+	}
+
+	//필터 문법.
+	const TCHAR* Filter = TEXT("StageFile(*.tInfo)|*.tInfo|모든파일(*.*)|*.*||");
+	//파일 다이얼로그 띄우기
+	CFileDialog	FileDlg(FALSE, TEXT(".tInfo"), NULLPTR, OFN_OVERWRITEPROMPT, Filter);
+
+	if (FileDlg.DoModal() == IDOK)
+	{
+		CString	fileName = FileDlg.GetFileName();
+		SaveStage(fileName);
+	}
+
+	wsprintf(Buffer, L"타일정보 저장.");
 	AddWorkText(Buffer);
 
 	UpdateData(FALSE);

@@ -3,12 +3,6 @@
 
 JEONG_BEGIN
 
-enum TILE2D_OPTION
-{
-	T2D_NORMAL,
-	T2D_NOMOVE,
-};
-
 class Shader;
 class Mesh;
 class JEONG_DLL Tile2D_Com : public Component_Base
@@ -23,11 +17,14 @@ public:
 	void Render(float DeltaTime) override;
 	Tile2D_Com* Clone() override;
 	void AfterClone() override;
+	void Save(BineryWrite& Writer) override;
+	void Load(BineryRead& Reader) override;
 
 	TILE2D_OPTION GetTileOption() const { return m_TileOption; }
 	void SetTileOption(TILE2D_OPTION option) { m_TileOption = option; }
 	void SetLineOn(bool Value) { m_isLine = Value; }
 	void SetTileType(STAGE2D_TILE_TYPE type);
+	void SetMesh(const string& KeyName);
 
 private:
 	TILE2D_OPTION m_TileOption;

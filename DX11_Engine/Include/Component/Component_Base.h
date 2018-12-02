@@ -6,6 +6,8 @@ class Scene;
 class Layer;
 class GameObject;
 class Transform_Com;
+class BineryRead;
+class BineryWrite;
 class JEONG_DLL Component_Base : public RefCount
 {
 public:
@@ -18,6 +20,8 @@ public:
 	virtual void Render(float DeltaTime);
 	virtual Component_Base* Clone() = 0;
 	virtual void AfterClone() {}
+	virtual void Save(BineryWrite& Writer);
+	virtual void Load(BineryRead& Reader);
 
 public:
 	Scene* GetScene() const { return m_Scene; }

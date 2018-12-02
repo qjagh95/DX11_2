@@ -61,7 +61,7 @@ int Stage2D_Com::Update(float DeltaTime)
 			m_StartY = (int)CameraPos.y;
 
 			m_EndX = (int)EndPos.x + 1;
-			m_EndY = (int)EndPos.y * 2 + 1;
+			m_EndY = (int)EndPos.y + 1;
 
 			//m_StartX = m_StartX < 0 ? 0 : m_TileCountX - 1;
 			//m_StartY = m_StartY < 0 ? 0 : m_TileCountY - 1;
@@ -72,25 +72,25 @@ int Stage2D_Com::Update(float DeltaTime)
 				m_StartX = 0;
 
 			else if (m_StartX >= m_TileCountX)
-				m_StartX = m_TileCountX - 1;
+				m_StartX = m_TileCountX;
 
 			if (m_StartY < 0)
 				m_StartY = 0;
 
 			else if (m_StartY >= m_TileCountY)
-				m_StartY = m_TileCountY - 1;
+				m_StartY = m_TileCountY;
 
 			if (m_EndX < 0)
 				m_EndX = 0;
 
 			else if (m_EndX >= m_TileCountX)
-				m_EndX = m_TileCountX - 1;
+				m_EndX = m_TileCountX;
 
 			if (m_EndY < 0)
 				m_EndY = 0;
 
 			else if (m_EndY >= m_TileCountY)
-				m_EndY = m_TileCountY - 1;
+				m_EndY = m_TileCountY;
 		}
 			break;
 		case STT_ISO:
@@ -179,6 +179,84 @@ void Stage2D_Com::AfterClone()
 {
 }
 
+void Stage2D_Com::Save(BineryWrite & Writer)
+{
+	Component_Base::Save(Writer);
+	
+	Writer.WriteData(m_TileCountX);
+	Writer.WriteData(m_TileCountY);
+
+	Writer.WriteData(m_TileScale);
+	Writer.WriteData(m_StartPos);
+
+	Writer.WriteData((int&)m_TileType);
+
+	for (size_t i = 0; i < m_Tile2DComSize; ++i)
+	{
+		// 타일의 크기와 위치를 저장한다.
+		Vector3	vScale = m_vecTile2DCom[i]->GetTransform()->GetWorldScale();
+		Vector3	vPos = m_vecTile2DCom[i]->GetTransform()->GetWorldPos();
+
+		Writer.WriteData(vScale);
+		Writer.WriteData(vPos);
+
+		m_vecTile2DCom[i]->Save(Writer);
+	}
+}
+
+void Stage2D_Com::Load(BineryRead & Reader)
+{
+	Component_Base::Load(Reader);
+
+	Reader.ReadData(m_TileCountX);
+	Reader.ReadData(m_TileCountY);
+
+	Reader.ReadData(m_TileScale);
+	Reader.ReadData(m_StartPos);
+
+	Reader.ReadData((int&)m_TileType);
+
+	m_Tile2DComCapacity = m_TileCountX * m_TileCountY;
+	m_TileObjectCapacity = m_TileCountX * m_TileCountY;
+	m_TileObjectSize = 0;
+	m_Tile2DComSize = 0;
+
+	m_vecTileObject = new GameObject*[m_TileObjectCapacity];
+	m_vecTile2DCom = new Tile2D_Com*[m_Tile2DComCapacity];
+
+	for (size_t y = 0; y < m_TileCountY; ++y)
+	{
+		for (size_t x = 0; x < m_TileCountX; x++)
+		{
+			size_t Index = y * m_TileCountX + x;
+
+			GameObject*	newTileObject = GameObject::CreateObject("TileObject");
+			newTileObject->SetScene(m_Scene);
+			newTileObject->SetLayer(m_Layer);
+
+			Transform_Com*	TileTransform = newTileObject->GetTransform();
+
+			Vector3	vScale;
+			Vector3	vPos;
+
+			Reader.ReadData(vScale);
+			Reader.ReadData(vPos);
+
+			TileTransform->SetWorldScale(vScale);
+			TileTransform->SetWorldPos(vPos);
+
+			Tile2D_Com*	newTileCom = newTileObject->AddComponent<Tile2D_Com>("Tile");
+			newTileCom->Load(Reader);
+
+			m_vecTileObject[Index] = newTileObject;
+			m_vecTile2DCom[Index] = newTileCom;
+
+			m_TileObjectSize++;
+			m_Tile2DComSize++;
+		}
+	}
+}
+
 int Stage2D_Com::GetTileIndex(const Vector3 & Pos)
 {
 	switch (m_TileType)
@@ -215,7 +293,6 @@ void Stage2D_Com::CreateTileMap(int TileCountX, int TileCountY, const Vector3& S
 	SumScale.z = 1.0f;
 
 	m_Transform->SetWorldPos(StartPos);
-	//m_Transform->SetWorldScale(SumScale);
 
 	switch (tileType)
 	{
@@ -245,6 +322,7 @@ void Stage2D_Com::CreateTile(const Vector3& StartPos, const Vector3& TileScale, 
 			Tile2D_Com*	pTile = newTileObject->AddComponent<Tile2D_Com>("Tile");
 			pTile->SetTileType(STT_TILE);
 			pTile->SetLineOn(m_isLineOn);
+			pTile->SetMesh("ColliderRect");
 
 			Transform_Com*	pTransform = newTileObject->GetTransform();
 			pTransform->SetWorldScale(TileScale);
@@ -310,6 +388,8 @@ void Stage2D_Com::CreateIsoTile(const Vector3& StartPos, const Vector3& TileScal
 
 			Tile2D_Com*	pTile = newTileObject->AddComponent<Tile2D_Com>("IsoTile");
 			pTile->SetTileType(STT_ISO);
+			pTile->SetMesh("IsoTileNomal");
+			pTile->SetLineOn(m_isLineOn);
 
 			Transform_Com* pTransform = newTileObject->GetTransform();
 			pTransform->SetWorldScale(TileScale);
@@ -371,10 +451,11 @@ void Stage2D_Com::SetTileOption(const Vector3& Pos, TILE2D_OPTION option)
 {
 	int Index = GetTileIndex(Pos);
 
-	if (Index == -1)
+	if (Index == -1 || Index > m_TileCountX * m_TileCountY)
 		return;
 
-	m_vecTile2DCom[Index]->SetTileOption(option);
+	if(m_vecTile2DCom[Index] != NULLPTR)
+		m_vecTile2DCom[Index]->SetTileOption(option);
 }
 
 void Stage2D_Com::SetLineOn(bool Value)
@@ -434,24 +515,36 @@ Vector2 Stage2D_Com::GetIsoTileIndexVec(const Vector3 & Pos)
 
 void Stage2D_Com::SetNoMoveMesh(const Vector3 & Pos)
 {
-	int Index = GetTileIndex(Pos);
-
-	if (Index == -1)
-		return;
-
-	Renderer_Com* getRender = m_vecTile2DCom[Index]->FindComponentFromType<Renderer_Com>(CT_RENDER);
-	getRender->SetMesh("TileNoMove");
-	SAFE_RELEASE(getRender);
+	Tile2D_Com* getTile = GetTile2D(Pos);
+	
+	if (getTile != NULLPTR)
+		getTile->SetMesh("TileNoMove");
 }
 
 void Stage2D_Com::SetMoveMesh(const Vector3 & Pos)
 {
+	Tile2D_Com* getTile = GetTile2D(Pos);
+
+	if(getTile != NULLPTR)
+		getTile->SetMesh("ColliderRect");
+}
+
+Tile2D_Com * Stage2D_Com::GetTile2D(const Vector3 & Pos)
+{		
 	int Index = GetTileIndex(Pos);
 
 	if (Index == -1)
-		return;
+		return NULLPTR;
 
-	Renderer_Com* getRender = m_vecTile2DCom[Index]->FindComponentFromType<Renderer_Com>(CT_RENDER);
-	getRender->SetMesh("ColliderRect");
-	SAFE_RELEASE(getRender);
+	return m_vecTile2DCom[Index];
+}
+
+Tile2D_Com * Stage2D_Com::GetTile2D(float X, float Y, float Z)
+{
+	int Index = GetTileIndex(Vector3(X, Y, Z));
+
+	if (Index == -1)
+		return NULLPTR;
+
+	return m_vecTile2DCom[Index];
 }

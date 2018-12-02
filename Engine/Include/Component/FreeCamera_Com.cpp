@@ -19,10 +19,10 @@ FreeCamera_Com::~FreeCamera_Com()
 
 bool FreeCamera_Com::Init()
 {
-	KeyInput::Get()->AddKey("CameraUp", VK_UP);
-	KeyInput::Get()->AddKey("CameraDown", VK_DOWN);
-	KeyInput::Get()->AddKey("CameraLeft", VK_LEFT);
-	KeyInput::Get()->AddKey("CameraRight", VK_RIGHT);
+	KeyInput::Get()->AddKey("CameraUp", 'W');
+	KeyInput::Get()->AddKey("CameraDown", 'S');
+	KeyInput::Get()->AddKey("CameraLeft", 'A');
+	KeyInput::Get()->AddKey("CameraRight", 'D');
 
 	m_Speed = 1000.0f;
 	return true;

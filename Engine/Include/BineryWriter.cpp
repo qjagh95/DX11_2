@@ -3,7 +3,7 @@
 
 JEONG_USING
 
-JEONG::BineryWrite::BineryWrite(string FileName)
+JEONG::BineryWrite::BineryWrite(const string& FileName)
 {
 	wstring Temp;
 	Temp = PathManager::Get()->FindPath(DATA_PATH);
@@ -17,7 +17,7 @@ JEONG::BineryWrite::BineryWrite(string FileName)
 	m_WriteFile.open(Temp2.c_str(), ios::binary);
 }
 
-JEONG::BineryWrite::BineryWrite(wstring FileName)
+JEONG::BineryWrite::BineryWrite(const wstring& FileName)
 {
 	wstring Temp;
 	Temp = PathManager::Get()->FindPath(DATA_PATH);
@@ -35,22 +35,22 @@ JEONG::BineryWrite::~BineryWrite()
 	m_WriteFile.close();
 }
 
-void JEONG::BineryWrite::WriteData(bool Data)
+void JEONG::BineryWrite::WriteData(const bool& Data)
 {
 	m_WriteFile << Data << endl;
 }
 
-void JEONG::BineryWrite::WriteData(int Data)
+void JEONG::BineryWrite::WriteData(const int& Data)
 {
 	m_WriteFile << Data << endl;
 }
 
-void JEONG::BineryWrite::WriteData(float Data)
+void JEONG::BineryWrite::WriteData(const float& Data)
 {
 	m_WriteFile << Data << endl;
 }
 
-void JEONG::BineryWrite::WriteData(double Data)
+void JEONG::BineryWrite::WriteData(const double& Data)
 {
 	m_WriteFile << Data << endl;
 }
