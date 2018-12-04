@@ -263,7 +263,6 @@ int MainScene::Input(float DeltaTime)
 		SceneManager::Get()->AddSceneComponent<StaticTestScene>("StaticTestScene", false);
 	}
 
-
 	return 0;
 }
 

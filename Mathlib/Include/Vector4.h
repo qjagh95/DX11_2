@@ -13,7 +13,9 @@ union MATH_DLL Vector4
 	};
 
 	Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
-	Vector4(const Vector4& vec3) : x(vec3.x), y(vec3.y), z(vec3.z),w(vec3.w)  {}
+	Vector4(const Vector4& vec3) : x(vec3.x), y(vec3.y), z(vec3.z), w(vec3.w) {}
+	Vector4(const Vector2& vec2) : x(vec2.x), y(vec2.y), z(0.0f), w(0.0f) {}
+	Vector4(const Vector2& 첫번째, const Vector2& 두번째) : x(첫번째.x), y(첫번째.y), z(두번째.x), w(두번째.y) {}
 	Vector4(const XMVECTOR& Xmvec) { XMStoreFloat4((XMFLOAT4*)this, Xmvec); } ///XMVector -> XMFLOAT로 변환 (어차피 같은 메모리크기 여서 XMFLOAT4로 형변환해주면 된다)
 	Vector4(const XMFLOAT4& Xmfloat) { x = Xmfloat.x, y = Xmfloat.y, z = Xmfloat.z, w = Xmfloat.w; }
 	Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}

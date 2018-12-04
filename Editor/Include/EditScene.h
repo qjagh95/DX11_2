@@ -10,8 +10,11 @@ public:
 	int Update(float DeltaTime) override;
 
 private:
+	void ChangeTile(const Vector3& mPos, EditorForm* form, Stage2D_Com* TileStage);
+
+private:
 	BackColor_Com* m_BackColorCom;
-	Vector3 m_CameraScale;
+	wstring m_Path;
 
 public:
 	EditScene();

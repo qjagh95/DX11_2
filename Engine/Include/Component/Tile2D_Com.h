@@ -5,6 +5,7 @@ JEONG_BEGIN
 
 class Shader;
 class Mesh;
+class TileImage_Com;
 class JEONG_DLL Tile2D_Com : public Component_Base
 {
 public:
@@ -33,6 +34,7 @@ private:
 	Mesh* m_Mesh;
 	ID3D11InputLayout* m_Layout;
 	bool  m_isLine;
+	vector<TileImage_Com*> m_vecTileImage;
 
 protected:
 	Tile2D_Com();

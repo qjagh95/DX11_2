@@ -37,7 +37,6 @@ RenderTarget::~RenderTarget()
 	SAFE_RELEASE(m_OldDepthView);
 	SAFE_RELEASE(m_Shader);
 	SAFE_RELEASE(m_Mesh);
-	//SAFE_RELEASE(m_Layout);
 	SAFE_RELEASE(m_DepthState);
 	SAFE_RELEASE(m_FullScreenShader);
 	SAFE_RELEASE(m_Sampler);

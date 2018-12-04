@@ -7,11 +7,11 @@ JEONG::Transform_Com::Transform_Com()
 	m_ComType = CT_TRANSFORM;
 	m_isUpdate = true;
 	m_isStatic = false;
+	m_isZoomMode = false;
 
 	m_DeltaScale.Identity();
 	m_DeltaRot.Identity();
 	m_DeltaPos.Identity();
-	
 }
 
 JEONG::Transform_Com::Transform_Com(const JEONG::Transform_Com& copyObject)
@@ -31,6 +31,8 @@ bool JEONG::Transform_Com::Init()
 		m_LocalAxis[i] = Vector3::Axis[i];
 		m_WorldAxis[i] = Vector3::Axis[i];
 	}
+
+	m_isZoomMode = RenderManager::Get()->GetIsZoomMode();
 
 	return true;
 }
@@ -53,7 +55,7 @@ int JEONG::Transform_Com::Update(float DeltaTime)
 	//최종World에 곱해질 Parent행렬 선언.
 	Matrix Parent;
 	Parent.Identity();
-	
+
 	//자기자신의 행렬정보를 변화량 변수에 넣어준 후 플래그에 따라서 곱한다.
 	m_DeltaScale = m_MatWorldScale;
 	m_DeltaRot = m_MatWorldRotation;
@@ -81,7 +83,6 @@ int JEONG::Transform_Com::Update(float DeltaTime)
 	m_MatWorld = m_MatWorldScale * m_MatWorldRotation * m_MatWorldPos;
 	m_MatWorld *= Parent;	//최종적으로 위 부모행렬과 곱한다. 만약 자식이 없거나 내가 부모, 플래그가 없다면
 							//Identity 단위행렬로 들어가서 곱해봤자 자기자신이다.
-
 	m_isUpdate = false;
 
 	return 0;
@@ -89,6 +90,9 @@ int JEONG::Transform_Com::Update(float DeltaTime)
 
 int JEONG::Transform_Com::LateUpdate(float DeltaTime)
 {
+	if (m_isZoomMode == true)
+		ZoomScale();
+
 	if (m_isStatic == true)
 		return 0;
 	else if (m_isUpdate == false)
@@ -519,4 +523,18 @@ Matrix JEONG::Transform_Com::GetParentRot() const
 Matrix JEONG::Transform_Com::GetParentScale() const
 {
 	return m_ParentScale;
+}
+
+void JEONG::Transform_Com::ZoomScale()
+{
+	if (Vector3::CameraZoom.x < 0.0f || Vector3::CameraZoom.y < 0.0f)
+		Vector3::CameraZoom = Vector3(0.0f, 0.0f, 0.0f);
+
+	if(Vector3::CameraZoom.x > 5.0f || Vector3::CameraZoom.y > 5.0f || Vector3::CameraZoom.z > 5.0f)
+		Vector3::CameraZoom = Vector3(5.0f, 5.0f, 5.0f);
+
+	m_MatLocalScale.Scaling(m_LocalScale * Vector3::CameraZoom);
+	m_MatWorldScale.Scaling(m_WorldScale * Vector3::CameraZoom);
+
+	m_isUpdate = true;
 }

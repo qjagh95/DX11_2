@@ -5,6 +5,7 @@ JEONG_USING
 
 FreeCamera_Com::FreeCamera_Com()
 {
+	m_ComType = CT_FREECAMERA;
 }
 
 FreeCamera_Com::FreeCamera_Com(const FreeCamera_Com & CopyData)

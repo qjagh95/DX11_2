@@ -6,14 +6,6 @@ SINGLETON_VAR_INIT(JEONG::PathManager)
 
 JEONG::PathManager::PathManager()
 {
-}
-
-JEONG::PathManager::~PathManager()
-{
-}
-
-bool JEONG::PathManager::Init()
-{
 	TCHAR strPath[MAX_PATH];
 	//실행파일 있는곳의 경로를 뽑아낸다.
 	GetModuleFileName(NULLPTR, strPath, MAX_PATH);
@@ -34,7 +26,14 @@ bool JEONG::PathManager::Init()
 	AddPath(SHADER_PATH, TEXT("Shader\\"));
 	AddPath(SOUND_PATH, TEXT("Sound\\"));
 	AddPath(DATA_PATH, TEXT("Data\\"));
+}
 
+JEONG::PathManager::~PathManager()
+{
+}
+
+bool JEONG::PathManager::Init()
+{
 	return true;
 }
 

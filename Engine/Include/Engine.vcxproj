@@ -197,6 +197,7 @@
     <ClInclude Include="Component\Stage2D_Com.h" />
     <ClInclude Include="Component\Text_Com.h" />
     <ClInclude Include="Component\Tile2D_Com.h" />
+    <ClInclude Include="Component\TileImage_Com.h" />
     <ClInclude Include="Component\UIBar_Com.h" />
     <ClInclude Include="Component\Button_Com.h" />
     <ClInclude Include="Component\Camera_Com.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="Component\Stage2D_Com.cpp" />
     <ClCompile Include="Component\Text_Com.cpp" />
     <ClCompile Include="Component\Tile2D_Com.cpp" />
+    <ClCompile Include="Component\TileImage_Com.cpp" />
     <ClCompile Include="Component\UIBar_Com.cpp" />
     <ClCompile Include="Component\Button_Com.cpp" />
     <ClCompile Include="Component\Camera_Com.cpp" />

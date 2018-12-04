@@ -12,13 +12,12 @@
 
 #include "EditorDoc.h"
 #include "EditorView.h"
+#include "EditorForm.h"
 #include <Component/FreeCamera_Com.h>
-
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
 
 //EditorView
 
@@ -29,6 +28,7 @@ BEGIN_MESSAGE_MAP(EditorView, CView)
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 //EditorView 생성/소멸
@@ -105,4 +105,52 @@ EditorDoc* EditorView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 
 void EditorView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
+}
+
+BOOL EditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	MainFrame* mainFrame = (MainFrame*)AfxGetMainWnd();
+	EditorForm*	editorForm = mainFrame->GetEditorForm();
+
+	Scene* getScene = SceneManager::Get()->GetCurScene();
+	Camera_Com* getCamera = getScene->GetMainCamera();
+
+	Vector3 CameraNormal = Vector3::Nomallize(getCamera->GetTransform()->GetWorldPos());
+	Vector3 MouseNormal = Vector3::Nomallize(KeyInput::Get()->GetMouseWorldPos());
+
+	Vector3 CameraPos = getCamera->GetTransform()->GetWorldPos();
+	Vector3 MousePos = KeyInput::Get()->GetMouseWorldPos();
+
+	if (KeyInput::Get()->KeyPress("Shift"))
+	{
+		if (zDelta <= 0) //휠 다운
+		{
+			if (Vector3::CameraZoom.x <= 0.0f && Vector3::CameraZoom.y <= 0.0f)
+				editorForm->AddWorkText("Error! 0%이하로 줄일 수 없습니다");
+			else
+			{
+				getCamera->GetTransform()->Move(Vector3(Device::Get()->GetWinSize().Width * -0.1f, Device::Get()->GetWinSize().Height * -0.1f, 0.0f));
+				editorForm->AddWorkText("20% 감소...");
+			}
+		
+			Vector3::AddCameraZoom(Vector3(-0.2f, -0.2f, 0.0f));
+		}
+		else //휠업
+		{
+			if ((Vector3::CameraZoom.x >= 1.0f && Vector3::CameraZoom.y >= 1.0f) && (Vector3::CameraZoom.x < 5.0f && Vector3::CameraZoom.y < 5.0f))
+			{
+				editorForm->AddWorkText("20% 증가...");
+				getCamera->GetTransform()->Move(Vector3(Device::Get()->GetWinSize().Width * 0.1f, Device::Get()->GetWinSize().Height * 0.1f, 0.0f));
+			}
+			if(Vector3::CameraZoom.x >= 5.0f && Vector3::CameraZoom.y >= 5.0f)
+				editorForm->AddWorkText("Error! 500% 이상으로 늘릴 수 없습니다.");
+
+			Vector3::AddCameraZoom(Vector3(0.2f, 0.2f, 0.0f));
+		}
+	}
+
+	SAFE_RELEASE(getScene);
+
+	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }

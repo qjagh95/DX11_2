@@ -59,8 +59,8 @@ void JEONG::Component_Base::Save(BineryWrite & Writer)
 
 void JEONG::Component_Base::Load(BineryRead & Reader)
 {
-	m_ComType = (COMPONENT_TYPE)Reader.ReadInt();
-	m_TagName = Reader.ReadString();
+	Reader.ReadData((int&)m_ComType);
+	Reader.ReadData(m_TagName);
 }
 
 const list<JEONG::Component_Base*>* JEONG::Component_Base::FindComponentFromTag(const string& TagName)

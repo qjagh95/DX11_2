@@ -513,20 +513,46 @@ Vector2 Stage2D_Com::GetIsoTileIndexVec(const Vector3 & Pos)
 	return Vector2((float)XIndex, (float)YIndex);
 }
 
-void Stage2D_Com::SetNoMoveMesh(const Vector3 & Pos)
+void Stage2D_Com::SetNoMoveMesh(const Vector3 & Pos, STAGE2D_TILE_TYPE TileType)
 {
 	Tile2D_Com* getTile = GetTile2D(Pos);
-	
-	if (getTile != NULLPTR)
-		getTile->SetMesh("TileNoMove");
+
+	switch (TileType)
+	{
+		case STT_TILE:
+		{
+			if (getTile != NULLPTR)
+				getTile->SetMesh("TileNoMove");
+		}
+			break;
+		case STT_ISO:
+		{
+			if (getTile != NULLPTR)
+				getTile->SetMesh("IsoTileNomove");
+		}
+			break;
+	}
 }
 
-void Stage2D_Com::SetMoveMesh(const Vector3 & Pos)
+void Stage2D_Com::SetMoveMesh(const Vector3 & Pos, STAGE2D_TILE_TYPE TileType)
 {
 	Tile2D_Com* getTile = GetTile2D(Pos);
 
-	if(getTile != NULLPTR)
-		getTile->SetMesh("ColliderRect");
+	switch (TileType)
+	{
+		case STT_TILE:
+		{
+			if (getTile != NULLPTR)
+				getTile->SetMesh("ColliderRect");
+		}
+		break;
+		case STT_ISO:
+		{
+			if (getTile != NULLPTR)
+				getTile->SetMesh("IsoTileNomal");
+		}
+		break;
+	}
 }
 
 Tile2D_Com * Stage2D_Com::GetTile2D(const Vector3 & Pos)

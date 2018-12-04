@@ -149,6 +149,7 @@ Vector4 Vector4::YellowGreen = { 0.603921592f, 0.803921640f, 0.196078449f, 1.000
 
 float & Vector4::operator[](unsigned int Index)
 {
+
 	switch (Index)
 	{
 		case 0:

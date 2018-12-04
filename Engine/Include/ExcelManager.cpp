@@ -425,6 +425,49 @@ Vector4 JEONG::ExcelManager::ReadVector4Data(const string & KeyName, size_t Cell
 
 	return ReturnValue;
 }
+void JEONG::ExcelManager::ReadData(const string& KeyName, size_t CellX, size_t CellY, int& Data, int SheetIndex)
+{
+	Data = ReadIntData(KeyName, CellX, CellY, SheetIndex);
+}
+void JEONG::ExcelManager::ReadData(const string& KeyName, size_t CellX, size_t CellY, bool& Data, int SheetIndex)
+{
+	Data = ReadBoolData(KeyName, CellX, CellY, SheetIndex);
+}
+
+void JEONG::ExcelManager::ReadData(const string & KeyName, size_t CellX, size_t CellY, double & Data, int SheetIndex)
+{
+	Data = ReadDoubleData(KeyName, CellX, CellY, SheetIndex);
+}
+
+void JEONG::ExcelManager::ReadData(const string & KeyName, size_t CellX, size_t CellY, float & Data, int SheetIndex)
+{
+	Data = ReadFloatData(KeyName, CellX, CellY, SheetIndex);
+}
+
+void JEONG::ExcelManager::ReadData(const string & KeyName, size_t CellX, size_t CellY, string & Data, int SheetIndex)
+{
+	Data = ReadStringData(KeyName, CellX, CellY, SheetIndex);
+}
+
+void JEONG::ExcelManager::ReadData(const string & KeyName, size_t CellX, size_t CellY, wstring & Data, int SheetIndex)
+{
+	Data = ReadWStringData(KeyName, CellX, CellY, SheetIndex);
+}
+
+void JEONG::ExcelManager::ReadData(const string & KeyName, size_t CellX, size_t CellY, Vector2 & Data, int SheetIndex)
+{
+	Data = ReadVector2Data(KeyName, CellX, CellY, SheetIndex);
+}
+
+void JEONG::ExcelManager::ReadData(const string & KeyName, size_t CellX, size_t CellY, Vector3 & Data, int SheetIndex)
+{
+	Data = ReadVector3Data(KeyName, CellX, CellY, SheetIndex);
+}
+
+void JEONG::ExcelManager::ReadData(const string & KeyName, size_t CellX, size_t CellY, Vector4 & Data, int SheetIndex)
+{
+	Data = ReadVector4Data(KeyName, CellX, CellY, SheetIndex);
+}
 
 JEONG::ExcelData* JEONG::ExcelManager::CreateExcel(const string & KeyName)
 {

@@ -10,6 +10,7 @@
 
 #include "EditorDoc.h"
 #include "EditorView.h"
+#include "EditorForm.h"
 #include <Component/FreeCamera_Com.h>
 #include "EditScene.h"
 
@@ -43,7 +44,6 @@ EditorApp::EditorApp()
 }
 
 EditorApp theApp;
-
 
 BOOL EditorApp::InitInstance()
 {

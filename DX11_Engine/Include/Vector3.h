@@ -14,6 +14,7 @@ union MATH_DLL Vector3
 
 	Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
 	Vector3(const Vector3& vec3) : x(vec3.x), y(vec3.y) , z(vec3.z) {}
+	Vector3(const Vector2& vec2) : x(vec2.x), y(vec2.y), z(0.0f) {}
 	Vector3(const XMVECTOR& Xmvec) { XMStoreFloat3((XMFLOAT3*)this, Xmvec); } ///XMVector -> XMFLOAT로 변환 (어차피 같은 메모리크기 여서 XMFLOAT3로 형변환해주면 된다)
 	Vector3(const XMFLOAT3& Xmfloat) { x = Xmfloat.x, y = Xmfloat.y, z = Xmfloat.z; }
 	Vector3(float x, float y, float z) : x(x), y(y) , z(z){}
@@ -157,4 +158,9 @@ union MATH_DLL Vector3
 	static Vector3 Axis[3];
 	static Vector3 Zero;
 	static Vector3 One;
+
+	static void AddCameraZoom(const Vector3& Amount);
+	static void AddCameraZoom(const Vector2& Amount);
+
+	static Vector3 CameraZoom;
 };

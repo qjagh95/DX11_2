@@ -46,6 +46,16 @@ public:
 	Vector3 ReadVector3Data(const string& KeyName, size_t CellX, size_t CellY, int SheetIndex = 0);
 	Vector4 ReadVector4Data(const string& KeyName, size_t CellX, size_t CellY, int SheetIndex = 0);
 
+	void ReadData(const string& KeyName, size_t CellX, size_t CellY, int& Data, int SheetIndex = 0);
+	void ReadData(const string& KeyName, size_t CellX, size_t CellY, bool& Data, int SheetIndex = 0);
+	void ReadData(const string& KeyName, size_t CellX, size_t CellY, double& Data, int SheetIndex = 0);
+	void ReadData(const string& KeyName, size_t CellX, size_t CellY, float& Data, int SheetIndex = 0);
+	void ReadData(const string& KeyName, size_t CellX, size_t CellY, string& Data, int SheetIndex = 0);
+	void ReadData(const string& KeyName, size_t CellX, size_t CellY, wstring& Data, int SheetIndex = 0);
+	void ReadData(const string& KeyName, size_t CellX, size_t CellY, Vector2& Data, int SheetIndex = 0);
+	void ReadData(const string& KeyName, size_t CellX, size_t CellY, Vector3& Data, int SheetIndex = 0);
+	void ReadData(const string& KeyName, size_t CellX, size_t CellY, Vector4& Data, int SheetIndex = 0);
+
 	void AddSheet(const string& KeyName, const string& SheetName);
 
 private:

@@ -10,9 +10,6 @@
     <Filter Include="Core\02. Device">
       <UniqueIdentifier>{a49ff980-6464-4c48-bb82-eb4332917466}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\03. Header">
-      <UniqueIdentifier>{642d290c-399b-4462-9eda-78d5c20537d6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\04. Key">
       <UniqueIdentifier>{32f91592-336e-4371-8520-8a7cd0a8f5aa}</UniqueIdentifier>
     </Filter>
@@ -232,6 +229,9 @@
     <Filter Include="Core\15. BineryIO">
       <UniqueIdentifier>{a30d73ac-14b8-4e86-9586-af92d2eafd4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\03. Header">
+      <UniqueIdentifier>{642d290c-399b-4462-9eda-78d5c20537d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -435,6 +435,9 @@
     <ClInclude Include="BineryWriter.h">
       <Filter>Core\15. BineryIO</Filter>
     </ClInclude>
+    <ClInclude Include="Component\TileImage_Com.h">
+      <Filter>Core\08. Object\Component\BaseComponent\12. Tile2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Copy.bat">
@@ -627,6 +630,9 @@
     </ClCompile>
     <ClCompile Include="BineryWriter.cpp">
       <Filter>Core\15. BineryIO</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\TileImage_Com.cpp">
+      <Filter>Core\08. Object\Component\BaseComponent\12. Tile2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

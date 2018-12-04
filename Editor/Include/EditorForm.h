@@ -56,6 +56,8 @@ public:
 	int m_BackColorB;
 	int m_BackColorA;
 
+	BOOL m_isLine;
+
 	GameObject* GetStageObject() const { return m_StageObject; }
 	Stage2D_Com* GetStageComponent() const { return m_StageCom; }
 	Transform_Com* GetStageTransform() const { return m_StageTransform; }
@@ -78,8 +80,11 @@ public:
 	CEdit m_StartPosYControl;
 	CEdit m_StartPosZControl;
 
+	CImage m_TileImage;
+	wstring m_Path;
+
 	int m_TextCount;
-	static int m_MaxStrLenth;
+	bool m_isImageLoad;
 
 	STAGE2D_TILE_TYPE GetTileType() const;
 	TILE2D_OPTION GetTileOption() const;
@@ -113,10 +118,11 @@ public:
 	afx_msg void OnEnChangeTagname();
 	afx_msg void OnBnClickedTileclear();
 
-	BOOL m_isLine;
 	afx_msg void OnBnClickedLineon();
 	afx_msg void OnBnClickedTileload();
 	afx_msg void OnBnClickedTilesave();
+	virtual void OnDraw(CDC* /*pDC*/);
+	CString m_ImageName;
 };
 
 

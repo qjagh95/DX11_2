@@ -38,7 +38,7 @@ bool JEONG::BineryRead::ReadBool()
 {
 	int Temp = -1;
 
-	m_ReadFile >> Temp;
+	m_ReadFile.read((char*)&Temp, sizeof(bool));
 
 	if (Temp == -1)
 		TrueAssert(true);
@@ -48,11 +48,11 @@ bool JEONG::BineryRead::ReadBool()
 
 int JEONG::BineryRead::ReadInt()
 {
-	int Temp = -1;
+	int Temp = INT_MIN;
 
-	m_ReadFile >> Temp;
+	m_ReadFile.read((char*)&Temp, sizeof(int));
 
-	if (Temp == -1)
+	if (Temp == INT_MIN)
 		TrueAssert(true);
 
 	return Temp;
@@ -60,11 +60,11 @@ int JEONG::BineryRead::ReadInt()
 
 float JEONG::BineryRead::ReadFloat()
 {
-	float Temp = -1.0f;
+	float Temp = (float)INT_MIN;
 
-	m_ReadFile >> Temp;
+	m_ReadFile.read((char*)&Temp, sizeof(float));
 
-	if (Temp == -1.0f)
+	if (Temp == (float)INT_MIN)
 		TrueAssert(true);
 
 	return Temp;
@@ -72,11 +72,11 @@ float JEONG::BineryRead::ReadFloat()
 
 double JEONG::BineryRead::ReadDouble()
 {
-	double Temp = -1.0f;
+	double Temp = (double)INT_MIN;
 
-	m_ReadFile >> Temp;
+	m_ReadFile.read((char*)&Temp, sizeof(double));
 
-	if (Temp == -1.0f)
+	if (Temp == (double)INT_MIN)
 		TrueAssert(true);
 
 	return Temp;
@@ -84,12 +84,11 @@ double JEONG::BineryRead::ReadDouble()
  
 Vector2 JEONG::BineryRead::ReadVector2()
 {
-	Vector2 Temp = Vector2(-1.0f, -1.0f);
+	Vector2 Temp = Vector2((float)INT_MIN, (float)INT_MIN);
 
-	m_ReadFile >> Temp.x;
-	m_ReadFile >> Temp.y;
+	m_ReadFile.read((char*)&Temp, sizeof(Vector2));
 
-	if (Temp == -1.0f)
+	if (Temp == (float)INT_MIN)
 		TrueAssert(true);
 
 	return Temp;
@@ -97,13 +96,11 @@ Vector2 JEONG::BineryRead::ReadVector2()
 
 Vector3 JEONG::BineryRead::ReadVector3()
 {
-	Vector3 Temp = Vector3(-1.0f, -1.0f, -1.0f);
+	Vector3 Temp = Vector3((float)INT_MIN, (float)INT_MIN, (float)INT_MIN);
 
-	m_ReadFile >> Temp.x;
-	m_ReadFile >> Temp.y;
-	m_ReadFile >> Temp.z;
+	m_ReadFile.read((char*)&Temp, sizeof(Vector3));
 
-	if (Temp == -1.0f)
+	if (Temp == (float)INT_MIN)
 		TrueAssert(true);
 
 	return Temp;
@@ -111,14 +108,11 @@ Vector3 JEONG::BineryRead::ReadVector3()
 
 Vector4 JEONG::BineryRead::ReadVector4()
 {
-	Vector4 Temp = Vector4(-1.0f, -1.0f, -1.0f, -1.0f);
-	
-	m_ReadFile >> Temp.x;
-	m_ReadFile >> Temp.y;
-	m_ReadFile >> Temp.z;
-	m_ReadFile >> Temp.w;
+	Vector4 Temp = Vector4((float)INT_MIN, (float)INT_MIN, (float)INT_MIN, (float)INT_MIN);
 
-	if (Temp == -1.0f)
+	m_ReadFile.read((char*)&Temp, sizeof(Vector4));
+
+	if (Temp == (float)INT_MIN)
 		TrueAssert(true);
 
 	return Temp;
@@ -126,70 +120,81 @@ Vector4 JEONG::BineryRead::ReadVector4()
 
 string JEONG::BineryRead::ReadString()
 {
-	string Temp;
+	char getString[255] = {};
+	size_t Datalen;
 
-	m_ReadFile >> Temp;
+	m_ReadFile.read((char*)&Datalen, sizeof(size_t));
+	m_ReadFile.read(getString, Datalen);
 
-	return Temp;
+	return string(getString);
 }
 
 wstring JEONG::BineryRead::ReadWString()
 {
-	string Temp;
-	m_ReadFile >> Temp;
-	wstring ReturnString = CA2W(Temp.c_str());
+	char getString[255];
+	size_t Datalen;
+
+	m_ReadFile.read((char*)&Datalen, sizeof(size_t));
+	m_ReadFile.read(getString, Datalen);
+
+	wstring ReturnString = CA2W(getString);
 
 	return ReturnString;
 }
 
 void JEONG::BineryRead::ReadData(bool & Data)
 {
-	m_ReadFile >> Data;
+	m_ReadFile.read((char*)&Data, sizeof(bool));
 }
 
 void JEONG::BineryRead::ReadData(int & Data)
 {
-	m_ReadFile >> Data;
+	m_ReadFile.read((char*)&Data, sizeof(int));
 }
 
 void JEONG::BineryRead::ReadData(float & Data)
 {
-	m_ReadFile >> Data;
+	m_ReadFile.read((char*)&Data, sizeof(float));
 }
 
 void JEONG::BineryRead::ReadData(double & Data)
 {
-	m_ReadFile >> Data;
+	m_ReadFile.read((char*)&Data, sizeof(double));
 }
 
 void JEONG::BineryRead::ReadData(Vector2 & Data)
 {
-	m_ReadFile >> Data.x;
-	m_ReadFile >> Data.y;
+	m_ReadFile.read((char*)&Data, sizeof(Vector2));
 }
 
 void JEONG::BineryRead::ReadData(Vector3 & Data)
 {
-	m_ReadFile >> Data.x;
-	m_ReadFile >> Data.y;
-	m_ReadFile >> Data.z;
+	m_ReadFile.read((char*)&Data, sizeof(Vector3));
 }
 
 void JEONG::BineryRead::ReadData(Vector4 & Data)
 {
-	m_ReadFile >> Data.x;
-	m_ReadFile >> Data.y;
-	m_ReadFile >> Data.z;
-	m_ReadFile >> Data.w;
+	m_ReadFile.read((char*)&Data, sizeof(Vector4));
 }
 
 void JEONG::BineryRead::ReadData(string & Data)
 {
-	m_ReadFile >> Data;
+	size_t DataLen;
+	char getData[255] = {};
+
+	m_ReadFile.read((char*)&DataLen, sizeof(size_t));
+	m_ReadFile.read(getData, DataLen);
+
+	Data = getData;
 }
 
 void JEONG::BineryRead::ReadData(wstring & Data)
 {
-	string Temp = CW2A(Data.c_str());
-	m_ReadFile >> Temp;
+	size_t DataLen;
+	char getData[255] = {};
+
+	m_ReadFile.read((char*)&DataLen, sizeof(size_t));
+	m_ReadFile.read(getData, DataLen);
+
+	Data = CA2W(getData);
 }

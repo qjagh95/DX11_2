@@ -18,7 +18,7 @@ public:
 
 private:
 	float m_Speed;
-	
+
 protected:
 	FreeCamera_Com();
 	FreeCamera_Com(const FreeCamera_Com& CopyData);

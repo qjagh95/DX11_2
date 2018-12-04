@@ -104,7 +104,5 @@ BulletRot_Com * BulletRot_Com::Clone()
 
 void BulletRot_Com::SetTarget(GameObject * target)
 {
-	target->AddRefCount();
-
 	Target = target;
 }

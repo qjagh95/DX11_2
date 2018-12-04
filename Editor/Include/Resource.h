@@ -1,3 +1,7 @@
+//{{NO_DEPENDENCIES}}
+// Microsoft Visual C++에서 생성한 포함 파일입니다.
+// Editor.rc에서 사용되고 있습니다.
+//
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define IDR_MAINFRAME                   128
@@ -46,6 +50,7 @@
 #define IDC_SCALEZ4                     1041
 #define IDC_COLORG                      1041
 #define IDC_CURTILEIMAGE                1042
+#define IDC_TILEIMAGE                   1042
 #define IDC_NEXTTILEIMAGE               1043
 #define IDC_SCALEZ5                     1044
 #define IDC_COLORA                      1044
@@ -61,6 +66,7 @@
 #define IDC_LINEON                      1060
 #define IDC_TILELOAD                    1061
 #define IDC_TILECLEAR                   1062
+#define IDC_ANIMATE1                    1064
 #define ID_GAMEOBJECT                   32771
 #define ID_GAMEOBJECT_32772             32772
 
@@ -70,7 +76,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        313
 #define _APS_NEXT_COMMAND_VALUE         32773
-#define _APS_NEXT_CONTROL_VALUE         1061
+#define _APS_NEXT_CONTROL_VALUE         1065
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

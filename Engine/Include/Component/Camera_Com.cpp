@@ -2,7 +2,6 @@
 #include "Camera_Com.h"
 #include "../GameObject.h"
 #include "Transform_Com.h"
-
 JEONG_USING
 
 JEONG::Camera_Com::Camera_Com()
@@ -10,7 +9,6 @@ JEONG::Camera_Com::Camera_Com()
 	m_ComType = CT_CAMERA;
 	m_CameraType = CT_PERSPECTIVE;
 	m_Target = NULLPTR;
-	m_Zoom = Vector3(1.0f, 1.0f, 1.0f);
 }
 
 JEONG::Camera_Com::~Camera_Com()
@@ -28,6 +26,7 @@ JEONG::Camera_Com::Camera_Com(const Camera_Com & camera)
 
 bool JEONG::Camera_Com::Init()
 {
+
 	return true;
 }
 
@@ -99,8 +98,8 @@ void JEONG::Camera_Com::SetCameraType(CAMERA_TYPE eType)
 			-0.5, -0.5, 0, 1	0   0   1 0
 								100 100 0 1
 
-			(100) = (0 0 * 0) + (1 0 * 1) + (2 0 * 3) + (3 0 * 3) 
-			(150) = (0 1 * 0) + (1 1 * 1) + (2 1 * 3) + (3 1 * 3)  
+			(100) = (0 0 * 0) + (1 0 * 1) + (2 0 * 3) + (3 0 * 3)
+			(150) = (0 1 * 0) + (1 1 * 1) + (2 1 * 3) + (3 1 * 3)
 
 			위에서 월드행렬에 곱한 버텍스데이터를 직교투영행렬공식에 변환과정.
 			100, 150, 0, 1		1/400 0      0 0
@@ -116,7 +115,7 @@ void JEONG::Camera_Com::SetCameraType(CAMERA_TYPE eType)
 			2/(right-left)      0					0            0
 			0					2/(top-bottom)      0            0
 			0					0					1/(zf-zn)	 0
-			(left+right)/(left-right)  (top+bottom)/(bottom-top)  zn/(zn-zf)  
+			(left+right)/(left-right)  (top+bottom)/(bottom-top)  zn/(zn-zf)
 			*/
 
 			//여기서 Pos가 뒤집어진 결과가 나온다. 
@@ -134,7 +133,7 @@ void JEONG::Camera_Com::SetCameraInfo(CAMERA_TYPE eType, float Width, float Heig
 	m_Near = Near;
 	m_Far = Far;
 	m_ViewAngle = ViewAngle;
-	
+
 	SetCameraType(eType);
 }
 

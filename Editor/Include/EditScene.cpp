@@ -2,7 +2,9 @@
 #include "EditScene.h"
 #include "MainFrame.h"
 #include "EditorForm.h"
+#include "resource.h"
 #include <Component/Tile2D_Com.h>
+#include <Component/FreeCamera_Com.h>
 
 EditScene::EditScene()
 {
@@ -27,11 +29,11 @@ bool EditScene::Init()
 	GameObject* BackObject = GameObject::CreateObject("BackObject", BackLayer);
 	m_BackColorCom = BackObject->AddComponent<BackColor_Com>("BackColor");
 
-	KeyInput::Get()->AddKey("TileOption", VK_TAB);
-	KeyInput::Get()->AddKey("MouseWhill", WM_MOUSEWHEEL);
-	KeyInput::Get()->AddKey("TileOption", VK_TAB);
-
-	m_CameraScale = Vector3::One;
+	KeyInput::Get()->AddKey("TileOption", VK_CONTROL);
+	KeyInput::Get()->AddKey("TileTab", VK_TAB);
+	KeyInput::Get()->AddKey("PrevTileTab", VK_OEM_3);
+	KeyInput::Get()->AddKey("CameraZero", VK_SPACE);
+	KeyInput::Get()->AddKey("Shift", VK_SHIFT);
 
 	SAFE_RELEASE(BackObject);
 
@@ -39,6 +41,8 @@ bool EditScene::Init()
 	SAFE_RELEASE(Default);
 	SAFE_RELEASE(TileLayer);
 	SAFE_RELEASE(UILayer);
+
+	RenderManager::Get()->SetIsZoomMode(true);
 
 	return true;
 }
@@ -57,19 +61,9 @@ int EditScene::Update(float DeltaTime)
 		if (KeyInput::Get()->KeyPress("LButton"))
 		{
 			Vector3	MouseWorld = KeyInput::Get()->GetMouseWorldPos();
-
-			if (editorForm->GetTileOption() == T2D_NORMAL)
-			{
-				TileStage->SetMoveMesh(MouseWorld);
-				TileStage->SetTileOption(MouseWorld, T2D_NORMAL);
-			}
-			else
-			{
-				TileStage->SetNoMoveMesh(MouseWorld);
-				TileStage->SetTileOption(MouseWorld, T2D_NOMOVE);
-			}
+			ChangeTile(MouseWorld, editorForm, TileStage);
 		}
-
+		
 		if (KeyInput::Get()->KeyDown("TileOption"))
 		{
 			if (editorForm->m_TileOptionBox.GetCurSel() == 0)
@@ -79,5 +73,76 @@ int EditScene::Update(float DeltaTime)
 		}
 	}
 
+	if (KeyInput::Get()->KeyDown("TileTab"))
+	{
+		int Index = editorForm->m_TileImageBox.GetCurSel();
+
+		if (editorForm->m_TileImageBox.GetCount() - 1 == Index)
+				editorForm->m_TileImageBox.SetCurSel(0);
+		else
+			editorForm->m_TileImageBox.SetCurSel(Index + 1);
+
+		editorForm->OnCbnSelchangeTileimageselect();
+	}
+
+
+	if (KeyInput::Get()->KeyDown("PrevTileTab"))
+	{
+		int Index = editorForm->m_TileImageBox.GetCurSel();
+
+		if (editorForm->m_TileImageBox.GetCurSel() == 0)
+			editorForm->m_TileImageBox.SetCurSel(editorForm->m_TileImageBox.GetCount() - 1);
+		else
+			editorForm->m_TileImageBox.SetCurSel(Index - 1);
+
+		editorForm->OnCbnSelchangeTileimageselect();
+	}
+
+	if (KeyInput::Get()->KeyDown("CameraZero"))
+	{
+		FreeCamera_Com* getFree = m_Scene->GetMainCameraObject()->FindComponentFromType<FreeCamera_Com>(CT_FREECAMERA);
+		editorForm->AddWorkText(L"카메라가 0, 0위치로 이동합니다");
+
+		getFree->GetTransform()->SetWorldPos(0.0f, 0.0f, 0.0f);
+
+		SAFE_RELEASE(getFree);
+	}
+
 	return 0;
+}
+
+void EditScene::ChangeTile(const Vector3 & mPos, EditorForm* form, Stage2D_Com* TileStage)
+{
+	switch (form->GetTileType())
+	{
+		case STT_TILE:
+		{
+			if (form->GetTileOption() == T2D_NORMAL)
+			{
+				TileStage->SetMoveMesh(mPos, STT_TILE);
+				TileStage->SetTileOption(mPos, T2D_NORMAL);
+			}
+			else
+			{
+				TileStage->SetNoMoveMesh(mPos, STT_TILE);
+				TileStage->SetTileOption(mPos, T2D_NOMOVE);
+			}
+		}
+		break;
+
+		case STT_ISO:
+		{
+			if (form->GetTileOption() == T2D_NORMAL)
+			{
+				TileStage->SetMoveMesh(mPos, STT_ISO);
+				TileStage->SetTileOption(mPos, T2D_NORMAL);
+			}
+			else
+			{
+				TileStage->SetNoMoveMesh(mPos, STT_ISO);
+				TileStage->SetTileOption(mPos, T2D_NOMOVE);
+			}
+		}
+		break;
+	}
 }

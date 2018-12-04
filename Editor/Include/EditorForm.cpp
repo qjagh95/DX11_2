@@ -13,7 +13,6 @@
 // EditorForm
 
 IMPLEMENT_DYNCREATE(EditorForm, CFormView)
-int EditorForm::m_MaxStrLenth = 70;
 
 EditorForm::EditorForm()
 	: CFormView(IDD_DIALOG_EDIT)
@@ -39,6 +38,8 @@ EditorForm::EditorForm()
 	, m_BackColorA(0)
 	, m_TextCount(0)
 	, m_isLine(TRUE)
+	, m_isImageLoad(false)
+	, m_ImageName(_T(""))
 {
 	m_TileCountX = 0;
 	m_TileCountY = 0;
@@ -48,6 +49,8 @@ EditorForm::EditorForm()
 	m_StageObject = NULLPTR;
 	m_StageCom = NULLPTR;
 	m_StageTransform = NULLPTR;
+
+	m_Path = PathManager::Get()->FindPath(TEXTURE_PATH);
 }
 
 EditorForm::~EditorForm()
@@ -60,6 +63,7 @@ EditorForm::~EditorForm()
 void EditorForm::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
+
 	DDX_Control(pDX, IDC_TILESELECT, m_TileTypeBox);
 	DDX_Control(pDX, IDC_TILEOPTIONSELECT, m_TileOptionBox);
 	DDX_Control(pDX, IDC_TILEIMAGESELECT, m_TileImageBox);
@@ -88,6 +92,7 @@ void EditorForm::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_COLORB, m_BackColorB);
 	DDX_Text(pDX, IDC_COLORA, m_BackColorA);
 	DDX_Check(pDX, IDC_LINEON, m_isLine);
+	DDX_CBString(pDX, IDC_TILEIMAGESELECT, m_ImageName);
 
 	if (m_TileTypeBox.GetCurSel() == 0)
 	{
@@ -109,7 +114,6 @@ void EditorForm::DoDataExchange(CDataExchange* pDX)
 		GetDlgItem(IDC_LINEON)->EnableWindow(false);
 	else
 		GetDlgItem(IDC_LINEON)->EnableWindow(true);
-
 }
 
 BEGIN_MESSAGE_MAP(EditorForm, CFormView)
@@ -140,6 +144,7 @@ BEGIN_MESSAGE_MAP(EditorForm, CFormView)
 	ON_BN_CLICKED(IDC_LINEON, &EditorForm::OnBnClickedLineon)
 	ON_BN_CLICKED(IDC_TILELOAD, &EditorForm::OnBnClickedTileload)
 	ON_BN_CLICKED(IDC_TILESAVE, &EditorForm::OnBnClickedTilesave)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 // EditorForm 진단입니다.
@@ -283,8 +288,6 @@ void EditorForm::LoadStage(CString FileName)
 	m_TileCountY = (int)m_StageCom->GetTileYCount();
 	m_TileSizeX = (int)m_StageCom->GetTileScale().x;
 	m_TileSizeY = (int)m_StageCom->GetTileScale().y;
-
-	UpdateData(FALSE);
 }
 
 int EditorForm::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -329,6 +332,21 @@ void EditorForm::OnInitialUpdate()
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	m_TileTypeBox.SetCurSel(1);
 	m_TileOptionBox.SetCurSel(0);
+
+	m_TileImageBox.SetCurSel(1);
+
+	for (size_t i = 1; i <= 72; i++)
+	{
+		wstring Temp = L"line_0";
+
+		if (i < 10)
+			Temp += L"0";
+
+		Temp += to_wstring(i);
+		Temp += L".png";
+
+		m_TileImageBox.AddString(Temp.c_str());
+	}
 }
 
 void EditorForm::OnEnChangeScalex()
@@ -465,10 +483,24 @@ void EditorForm::OnCbnSelchangeTileselect()
 	m_TileTypeBox.GetLBText(m_TileTypeBox.GetCurSel(),Buffer);
 	Buffer += " 선택";
 
-	m_StartPosX = 0;
-	m_StartPosY = 0;
-
 	AddWorkText(Buffer);
+
+	if (m_TileTypeBox.GetCurSel() == 0)
+	{
+		m_TileSizeY = m_TileSizeX / 2;
+
+		m_StartPosX = (int)(m_TileCountX * m_TileSizeX / 2.0f);
+		m_StartPosY = (int)(m_TileCountY * m_TileSizeY / 2.0f);
+
+		wchar_t Buffer2[255];
+		wsprintf(Buffer2, L"타일 시작위치 X : %d ,Y : %d 자동입력 \n", m_StartPosX, m_StartPosY);
+		AddWorkText(Buffer2);
+	}
+	else
+	{
+		m_StartPosX = 0;
+		m_StartPosY = 0;
+	}
 
 	UpdateData(FALSE);
 }
@@ -494,9 +526,15 @@ void EditorForm::OnCbnSelchangeTileimageselect()
 	m_TileImageBox.GetLBText(m_TileImageBox.GetCurSel(), Buffer);
 	Buffer += " 타일 이미지 선택";
 
+	string Temp2 = CW2A(m_ImageName);
+
+	m_Path = PathManager::Get()->FindPath(TEXTURE_PATH);
+	m_Path += L"Tile\\";
+	m_Path += CA2W(Temp2.c_str());
+
 	AddWorkText(Buffer);
 
-	//여기서 Path추가 후 타일 가져와서 Texture변경
+	::InvalidateRect(this->m_hWnd, NULL, TRUE);
 
 	UpdateData(FALSE);
 }
@@ -504,7 +542,12 @@ void EditorForm::OnCbnSelchangeTileimageselect()
 void EditorForm::OnBnClickedTilecreatebutton()
 {
 	if (m_StageObject != NULLPTR)
+	{
+		wchar_t Buffer[255];
+		wsprintf(Buffer, L"Error! 이미 타일이 존재합니다.");
+		AddWorkText(Buffer);
 		return;
+	}
 
 	UpdateData(TRUE);
 
@@ -662,10 +705,6 @@ void EditorForm::OnEnChangeTilecountx()
 	else if (m_TileCountX < 0)
 		m_TileCountX = 0;
 
-	wchar_t Buffer[255];
-	wsprintf(Buffer, L"X축 타일 갯수 : %d 입력", m_TileCountX);
-	AddWorkText(Buffer);
-
 	if (m_TileTypeBox.GetCurSel() == 0)
 	{
 		m_StartPosX = (int)(m_TileCountX * m_TileSizeX / 2.0f);
@@ -673,13 +712,17 @@ void EditorForm::OnEnChangeTilecountx()
 
 		wchar_t Buffer2[255];
 		wsprintf(Buffer2, L"타일 시작위치 X : %d ,Y : %d 자동입력 \n", m_StartPosX, m_StartPosY);
-		AddWorkText(Buffer2, 1);
+		AddWorkText(Buffer2);
 	}
 	else
 	{
 		m_StartPosX = 0;
 		m_StartPosY = 0;
 	}
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"X축 타일 갯수 : %d 입력", m_TileCountX);
+	AddWorkText(Buffer);
 
 	UpdateData(FALSE);
 }
@@ -693,10 +736,6 @@ void EditorForm::OnEnChangeTilecounty()
 	else if (m_TileCountY < 0)
 		m_TileCountY = 0;
 
-	wchar_t Buffer[255];
-	wsprintf(Buffer, L"Y축 타일 갯수 : %d 입력", m_TileCountY);
-	AddWorkText(Buffer);
-
 	if (m_TileTypeBox.GetCurSel() == 0)
 	{
 		m_StartPosX = (int)(m_TileCountX * m_TileSizeX / 2.0f);
@@ -711,6 +750,10 @@ void EditorForm::OnEnChangeTilecounty()
 		m_StartPosX = 0;
 		m_StartPosY = 0;
 	}
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"Y축 타일 갯수 : %d 입력", m_TileCountY);
+	AddWorkText(Buffer);
 
 	UpdateData(FALSE);
 }
@@ -722,24 +765,27 @@ void EditorForm::OnEnChangeTilesizex()
 	if (m_TileSizeX > 500)
 		m_TileSizeX = 500;
 
-	wchar_t Buffer[255];
-	wsprintf(Buffer, L"타일 사이즈X : %d 입력", m_TileSizeX);
-	AddWorkText(Buffer);
-
 	if (m_TileTypeBox.GetCurSel() == 0)
 	{
+		if (m_TileSizeY > m_TileSizeX / 2)
+			m_TileSizeY = m_TileSizeX / 2;
+
 		m_StartPosX = (int)(m_TileCountX * m_TileSizeX / 2.0f);
 		m_StartPosY = (int)(m_TileCountY * m_TileSizeY / 2.0f);
 
 		wchar_t Buffer2[255];
 		wsprintf(Buffer2, L"타일 시작위치 X : %d ,Y : %d 자동입력 \n", m_StartPosX, m_StartPosY);
-		AddWorkText(Buffer2);
+		AddWorkText(Buffer2, 1);
 	}
 	else
 	{
 		m_StartPosX = 0;
 		m_StartPosY = 0;
 	}
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"타일 사이즈X : %d 입력", m_TileSizeX);
+	AddWorkText(Buffer);
 
 	UpdateData(FALSE);
 }
@@ -751,10 +797,6 @@ void EditorForm::OnEnChangeTilesizey()
 	if (m_TileSizeY > 500)
 		m_TileSizeY = 500;
 
-	wchar_t Buffer[255];
-	wsprintf(Buffer, L"타일 사이즈Y : %d 입력", m_TileSizeY);
-	AddWorkText(Buffer);
-
 	if (m_TileTypeBox.GetCurSel() == 0)
 	{
 		if (m_TileSizeY > m_TileSizeX / 2)
@@ -765,13 +807,17 @@ void EditorForm::OnEnChangeTilesizey()
 
 		wchar_t Buffer2[255];
 		wsprintf(Buffer2, L"타일 시작위치 X : %d ,Y : %d 자동입력 \n", m_StartPosX, m_StartPosY);
-		AddWorkText(Buffer2);
+		AddWorkText(Buffer2, 1);
 	}
 	else
 	{
 		m_StartPosX = 0;
 		m_StartPosY = 0;
 	}
+
+	wchar_t Buffer[255];
+	wsprintf(Buffer, L"타일 사이즈Y : %d 입력", m_TileSizeY);
+	AddWorkText(Buffer);
 
 	UpdateData(FALSE);
 }
@@ -882,16 +928,20 @@ void EditorForm::OnBnClickedTileload()
 	//필터 문법.
 	const TCHAR* Filter = TEXT("StageFile(*.tInfo)|*.tInfo|모든파일(*.*)|*.*||");
 	//파일 다이얼로그 띄우기OFN_HIDEREADONLY
-	CFileDialog	FileDlg(FALSE, TEXT(".tInfo"), NULLPTR, OFN_HIDEREADONLY, Filter);
+	CFileDialog	FileDlg(TRUE, TEXT(".tInfo"), NULLPTR, OFN_HIDEREADONLY, Filter);
+
+	wstring Temp;
 
 	if (FileDlg.DoModal() == IDOK)
 	{
 		CString	fileName = FileDlg.GetFileName();
+
 		LoadStage(fileName);
+		Temp = fileName;
 	}
 
-	wsprintf(Buffer, L"타일정보 로드");
-	AddWorkText(Buffer);
+	Temp += L" 파일 타일정보 로드";
+	AddWorkText(Temp);
 
 	UpdateData(FALSE);
 }
@@ -926,4 +976,20 @@ void EditorForm::OnBnClickedTilesave()
 	AddWorkText(Buffer);
 
 	UpdateData(FALSE);
+}
+
+void EditorForm::OnDraw(CDC* pDC)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	m_TileImage.Destroy();
+
+	//m_Path = PathManager::Get()->FindPath(TEXTURE_PATH);
+	//m_Path += L"Tile\\";
+	//m_Path += L"line_001.png";
+
+	if(FAILED(m_TileImage.Load(m_Path.c_str())))
+		return;
+
+	::SetStretchBltMode(pDC->m_hDC, COLORONCOLOR);
+	m_TileImage.StretchBlt(pDC->m_hDC, 240, 333, 128, 128, SRCCOPY);
 }

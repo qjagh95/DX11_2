@@ -9,6 +9,7 @@ JEONG::RenderManager::RenderManager()
 	:m_CreateState(NULLPTR)
 {
 	m_GameMode = GM_2D;
+	m_isZoomMode = false;
 }
 
 JEONG::RenderManager::~RenderManager()
@@ -212,7 +213,6 @@ void JEONG::RenderManager::Render2D(float DeltaTime)
 
 	// 여기에서 포스트 이펙트를 처리한다.
 	// 여기에서 포스트이펙트 처리가 된 타겟을 전체 크기로 화면에 출력한다.
-	// 영역이형 ㅅㅂ;
 	getTarget->RenderFullScreen();
 
 	// UI부터~출력

@@ -41,6 +41,8 @@ public:
 
 	void AddRenderObject(JEONG::GameObject* object);
 	void Render(float DeltaTime);
+	void SetIsZoomMode(bool Value = false) { m_isZoomMode = Value; }
+	bool GetIsZoomMode() const { return m_isZoomMode; }
 
 private:
 	void Render2D(float DeltaTime);
@@ -54,6 +56,7 @@ private:
 
 	BlendState* m_CreateState;
 	RenderGroup m_RenderGroup[RG_END];
+	bool m_isZoomMode;
 
 public:
 	CLASS_IN_SINGLE(RenderManager)

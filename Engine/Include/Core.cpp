@@ -18,6 +18,7 @@ Core::Core()
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(390);  
 	ZeroMemory(ClearColor, sizeof(float) * 4);
+	PathManager::Get();
 }
 
 Core::~Core()
@@ -225,8 +226,6 @@ void Core::CreateWnd(const TCHAR * TitleName, const TCHAR * ClassName)
 
 LRESULT Core::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	m_wParam = wParam; 
-
 	switch (message)
 	{
 		case WM_DESTROY:

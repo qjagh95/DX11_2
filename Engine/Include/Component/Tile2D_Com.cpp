@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Tile2D_Com.h"
+#include "TileImage_Com.h"
+
 #include "../Resource/Mesh.h"
 #include "../Render/Shader.h"
 
@@ -33,6 +35,8 @@ bool Tile2D_Com::Init()
 
 	m_Transform->SetWorldPivot(0.5f, 0.5f, 0.0f);
 
+	m_vecTileImage.resize(4);
+
 	return true;
 }
 
@@ -48,6 +52,7 @@ int Tile2D_Com::Update(float DeltaTime)
 
 int Tile2D_Com::LateUpdate(float DeltaTime)
 {
+
 	return 0;
 }
 
@@ -125,6 +130,38 @@ void Tile2D_Com::Load(BineryRead & Reader)
 
 	Reader.ReadData((int&)m_TileType);
 	Reader.ReadData((int&)m_TileOption);
+
+	SetTileType(m_TileType);
+
+	switch (m_TileType)
+	{
+		case STT_TILE:
+		{
+			switch (m_TileOption)
+			{
+				case T2D_NORMAL:
+					m_Mesh = ResourceManager::Get()->FindMesh("ColliderRect");
+					break;
+				case T2D_NOMOVE:
+					m_Mesh = ResourceManager::Get()->FindMesh("TileNoMove");
+					break;
+			}
+		}
+			break;
+		case STT_ISO:
+		{
+			switch (m_TileOption)
+			{
+				case T2D_NORMAL:
+					m_Mesh = ResourceManager::Get()->FindMesh("IsoTileNomal");
+					break;
+				case T2D_NOMOVE:
+					m_Mesh = ResourceManager::Get()->FindMesh("IsoTileNomove");
+					break;
+			}
+		}
+			break;
+	}
 }
 
 void Tile2D_Com::SetTileType(STAGE2D_TILE_TYPE type)
